@@ -1,0 +1,47 @@
+/* eFaktúra screens and the connection wizard (WP-PEPPOL). Colours only
+   through the tokens of ui/tokens.css. */
+
+.peppol-beta { margin-left: 6px; vertical-align: middle; font-size: 0.7em; }
+
+.peppol-step { margin-bottom: 16px; padding: 16px 20px; }
+.peppol-step h3 { margin: 0 0 12px; font-family: var(--font-display); }
+.peppol-step ol, .peppol-intro { margin: 0 0 12px; padding-left: 20px; color: var(--text-secondary); }
+.peppol-step li { margin-bottom: 4px; }
+
+.peppol-providers { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.peppol-provider.is-disabled { opacity: 0.6; }
+.peppol-flags { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+.peppol-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.peppol-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent-blue); }
+.peppol-link svg { width: 14px; height: 14px; }
+.peppol-more { margin-top: 12px; }
+.peppol-more summary { cursor: pointer; color: var(--text-secondary); min-height: var(--touch-target); display: flex; align-items: center; }
+.peppol-custom-base { margin-top: 12px; max-width: 520px; }
+
+.peppol-actions, .peppol-beta-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; margin: 12px 0 4px; }
+.peppol-beta-form .field { margin: 0; min-width: 220px; }
+.peppol-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 8px 0 0; color: var(--text-secondary); }
+.peppol-result.is-ok { color: var(--success); }
+.peppol-result.is-error { color: var(--danger); }
+.peppol-result.is-wait { color: var(--warning); }
+.peppol-result svg { width: 18px; height: 18px; }
+.peppol-option { margin-bottom: 8px; }
+
+.peppol-filter { margin-bottom: 16px; flex-wrap: wrap; }
+.peppol-count { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.peppol-deadline.is-near { color: var(--warning); }
+.peppol-deadline.is-late { color: var(--danger); font-weight: 600; }
+.peppol-in-status { display: inline-flex; align-items: center; gap: 6px; }
+.peppol-warning { color: var(--warning); display: inline-flex; }
+.peppol-warning svg { width: 16px; height: 16px; }
+.peppol-last { margin-bottom: 12px; }
+
+.peppol-detail dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0; }
+.peppol-detail dt { color: var(--text-secondary); }
+.peppol-detail dd { margin: 0; overflow-wrap: anywhere; }
+.peppol-detail ul { margin: 8px 0 0; padding-left: 20px; }
+
+@media (max-width: 767px) {
+  .peppol-providers { grid-template-columns: 1fr; }
+  .peppol-step { padding: 12px 14px; }
+}
