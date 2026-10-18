@@ -5,7 +5,7 @@ node_modules.nosync/
 # Build outputs
 dist/
 dist-web/
-build/
+/build/
 release/
 release.nosync/
 test-results/
