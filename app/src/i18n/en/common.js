@@ -1,5 +1,5 @@
-// English interface texts. The fallback for missing keys.
-export const en = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Free invoicing and e-invoicing",
   "nav.dashboard": "Overview",

@@ -1,5 +1,5 @@
-// Czech interface texts.
-export const cs = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Fakturace a e-faktura zdarma",
   "nav.dashboard": "Přehled",

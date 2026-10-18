@@ -10,6 +10,10 @@ export function registerRoute(name, render) {
   routes.set(name, render);
 }
 
+export function routeRender(name) {
+  return routes.get(name) || null;
+}
+
 export function hasRoute(name) {
   return routes.has(name);
 }

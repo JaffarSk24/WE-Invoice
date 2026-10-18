@@ -30,7 +30,10 @@ jobs:
       - name: Version matches package.json
         run: test "$(node -p "require('./package.json').version")" = "${{ inputs.version }}"
       - run: npm run lint
-      - run: npm test
+      - name: Unit tests with complete translations
+        run: npm test
+        env:
+          I18N_STRICT: '1'
       - name: Legislation values verified
         run: node scripts/check-legislation.mjs --strict
 
