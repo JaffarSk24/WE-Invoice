@@ -12,7 +12,7 @@ import { emptyState } from '../../components/empty-state.js';
 import { statusBadge } from '../../components/status-badge.js';
 import { previewNumber, resolveSeries, takenNumbers } from '../documents/series.js';
 import { salesHash, routeForKind } from '../documents/kinds.js';
-import { salesStore, companyNow, allDocuments, allContacts, allItems } from '../documents/source.js';
+import { salesStore, companyNow, allDocuments, allContacts, allItems, allPriceLevels } from '../documents/source.js';
 import { newDraft, applyContact, withIssueDate, liveTotals, isPayer } from './draft.js';
 import { relabelUnits, unitLabel } from './units.js';
 import { partyField } from './party-field.js';
@@ -143,7 +143,7 @@ export function renderEditor(root, { route, kind, doc = null, params = {}, trans
       draft: state.draft, company, onDraft,
       items: (q) => searchItems(allItems(), q),
       itemById: (id) => allItems().find(i => i.id === id) || null,
-      itemPrice: (item) => clientPrice(item, { contact: contact(), date: state.draft.issueDate })
+      itemPrice: (item, qty) => clientPrice(item, { contact: contact(), date: state.draft.issueDate, qty, priceLevels: allPriceLevels() })
     });
     form.append(...[party.el, head.el, lines.el, advancesPanel(ctx), payment.el, totalsPanel.el].filter(Boolean));
     refreshIcons(form);

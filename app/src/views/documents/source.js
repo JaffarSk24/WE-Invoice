@@ -42,6 +42,11 @@ export function allItems() {
   return store ? store.list('items') : [];
 }
 
+export function allPriceLevels() {
+  const store = salesStore();
+  return store ? store.list('priceLevels') : [];
+}
+
 export function contactsById() {
   return new Map(allContacts().map(c => [c.id, c]));
 }

@@ -1,11 +1,11 @@
 // Small editor helpers: eKasa rules, payment checks, the status ribbon,
 // prices, advance links, contact search and the quick contact form, the
 // CSP check of the PDF frame, the content check of autosave and units.
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { needsEkasa, overCashLimit, vrp2Url, cashLimit } from './ekasa.js';
 import { validatePayment } from './payments.js';
 import { ribbonSteps } from './ribbon.js';
-import { clientPrice, searchItems, setPriceProvider } from './pricing.js';
+import { clientPrice, searchItems } from './pricing.js';
 import { withDeduction } from './advances.js';
 import { searchContacts, validateQuickContact, quickContactRecord } from './party-field.js';
 import { missingTarget } from './missing.js';
@@ -54,15 +54,11 @@ describe('ribbon', () => {
 });
 
 describe('prices and advances', () => {
-  afterEach(() => setPriceProvider(null));
-
-  it('uses the price level provider when registered, else the item price', () => {
-    const item = { id: 'i', name: 'Hodina', code: 'H1', price: '40' };
-    expect(clientPrice(item)).toBe('40');
-    setPriceProvider(() => '35');
-    expect(clientPrice(item)).toBe('35');
-    setPriceProvider(() => { const e = new Error('x'); e.code = 'NOT_IMPLEMENTED'; throw e; });
-    expect(clientPrice(item)).toBe('40');
+  it('prices an item for the client through the core, else by its list price', () => {
+    const item = { id: 'i', name: 'Hodina', code: 'H1', price: '40', priceType: 'NET', prices: { vo: '30' } };
+    expect(clientPrice(item)).toEqual({ unitPrice: '40', priceType: 'NET', discountPct: null });
+    expect(clientPrice(item, { contact: { priceLevelId: 'vo' }, priceLevels: [{ id: 'vo', name: 'VO' }] }).unitPrice).toBe('30');
+    expect(clientPrice({ id: 'x', name: 'Bez ceny' })).toEqual({ unitPrice: null, priceType: 'NET', discountPct: null });
     expect(searchItems([item, { id: 'j', name: 'Iné', price: '1' }], 'hod').map(i => i.id)).toEqual(['i']);
     expect(searchItems([item], 'h1')[0].hint).toContain('40 EUR');
   });

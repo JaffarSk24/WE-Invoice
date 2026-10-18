@@ -32,7 +32,7 @@ function discountField(draft, onDraft) {
 
 /**
  * @param {{draft: object, company: object, items: Function, itemById: Function, itemPrice: Function, onDraft: Function}} ctx
- *   items(query) -> suggestions; itemPrice(item) -> price for the client; onDraft(patch, {redraw}) applies a change
+ *   items(query) -> suggestions; itemPrice(item, qty) -> { unitPrice, priceType, discountPct } for the client; onDraft(patch, {redraw}) applies a change
  */
 export function createLinesForm(ctx) {
   const el = h('section', { class: 'editor-lines card', 'aria-labelledby': 'editor-lines-title' });
@@ -53,7 +53,8 @@ export function createLinesForm(ctx) {
       const item = ctx.itemById(itemId);
       if (!item) return;
       const line = draft.lines.find(l => l.id === id);
-      const filledLine = { ...lineFromItem(item, { company: ctx.company, date: date(), price: ctx.itemPrice(item), id }), qty: line.qty || '1', discountPct: line.discountPct };
+      const price = ctx.itemPrice(item, line.qty || '1');
+      const filledLine = { ...lineFromItem(item, { company: ctx.company, date: date(), price: price.unitPrice, id }), qty: line.qty || '1', priceType: price.priceType, discountPct: price.discountPct ?? line.discountPct };
       if (filledLine.unit && !filledLine.unit.label) filledLine.unit = { ...filledLine.unit, label: unitLabel(filledLine.unit.code, draft.language) };
       setLines(updateLine(draft.lines, id, filledLine));
     },

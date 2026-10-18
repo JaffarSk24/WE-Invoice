@@ -8,7 +8,7 @@
 - Document card with the status ribbon, payments (partial payments, removal with Undo), related documents, the send log, PDF download and print.
 - eKasa stage 1: for cash, card and on-site QR payments a screen with the invoice number and amount to copy into VRP2, the link to VRP2, the field for the receipt id, and a warning for cash between businesses above the legal limit.
 - Settings: document defaults, numbering series with masks, resets, variable symbol masks and a protected next counter, and the company section with identifiers checked, bank accounts, logo, signature and stamp.
-- Events for other packages: `document:send`, `peppol:send`, `stock:document-issued`; the editor opens on `document:new`, `fab:action` and `quick:invoice`, and takes price levels from `pricing:provider`.
+- Events for other packages: `document:send`, `peppol:send`, `stock:document-issued`; the editor opens on `document:new`, `fab:action` and `quick:invoice`; item prices for the client come from `priceFor` of the core stock module.
 - The dashboard reads documents, contacts, accounts and the inbox count from the store while a company is open.
 - Unit labels in the print dictionaries.
 

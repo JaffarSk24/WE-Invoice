@@ -5,7 +5,6 @@
 //   document:new { kind, contactId? }   opens the editor of a new document
 //   fab:action { id: 'invoice' }, quick:invoice { contact }   the same for an invoice
 //   hotkey:new / hotkey:save / hotkey:issue   on the sales screens
-//   pricing:provider fn(item, { contact, date })   price levels (stock)
 // Events it sends: document:send, peppol:send, stock:document-issued
 // (see views/editor), pdf:download (boot/pdf.js).
 import { registerSettingsSection } from '../views/settings/registry.js';
@@ -16,7 +15,6 @@ import { dashboardSource } from '../views/documents/dashboard-source.js';
 import { allContacts } from '../views/documents/source.js';
 import { hasStore, getStore } from '../store/index.js';
 import { fold } from '../views/documents/rows.js';
-import { setPriceProvider } from '../views/editor/pricing.js';
 import { documentsSettings } from '../views/settings/documents-section.js';
 import { companySection } from '../views/settings/company-section.js';
 
@@ -51,7 +49,6 @@ export async function boot(ctx) {
   ctx.on('hotkey:new', ({ route } = {}) => { if (LIST_ROUTES[route]) openNew(LIST_ROUTES[route].newKinds[0]); });
   ctx.on('hotkey:save', ({ route } = {}) => { if (LIST_ROUTES[route]) click('editor-save'); });
   ctx.on('hotkey:issue', ({ route } = {}) => { if (LIST_ROUTES[route]) click('editor-issue'); });
-  ctx.on('pricing:provider', setPriceProvider);
 
   registerSettingsSection('documents', documentsSettings);
   registerSettingsSection('company', companySection);

@@ -1,26 +1,21 @@
-// The price of a price list item for a client. The stock package owns
-// price levels (priceFor in core stock); until it registers its provider
-// through the "pricing:provider" event, the item's own price is used.
-//   emit('pricing:provider', (item, { contact, date }) => '12.50' | null)
+// The price of a price list item for a client: priceFor of the core stock
+// module (price levels, the client's own price, quantity discounts). An
+// item it cannot price keeps its own list price, so a line is never left
+// empty.
+import { priceFor } from '@we-invoice/core';
 import { fold } from '../documents/rows.js';
 
-let provider = null;
-
-export function setPriceProvider(fn) {
-  provider = typeof fn === 'function' ? fn : null;
-}
-
-/** The client's price of an item: the provider's answer, else the item price. */
-export function clientPrice(item, { contact = null, date = null } = {}) {
-  if (provider) {
-    try {
-      const price = provider(item, { contact, date });
-      if (price !== null && price !== undefined && price !== '') return String(price);
-    } catch (e) {
-      if (!e || e.code !== 'NOT_IMPLEMENTED') console.warn('Price level could not be applied', e);
-    }
+/**
+ * @returns {{unitPrice: string|null, priceType: string, discountPct: string|null}}
+ */
+export function clientPrice(item, { contact = null, date = null, qty = '1', priceLevels = [] } = {}) {
+  try {
+    const price = priceFor(item, contact, qty, date, { priceLevels });
+    return { unitPrice: price.unitPrice, priceType: price.priceType || item.priceType || 'NET', discountPct: price.discountPct ?? null };
+  } catch (e) {
+    console.warn('Client price could not be applied, the list price is used', e);
+    return { unitPrice: item.price ?? null, priceType: item.priceType || 'NET', discountPct: null };
   }
-  return item.price ?? null;
 }
 
 /** Price list items matching a query by name or code, at most 8, as suggestions. */
