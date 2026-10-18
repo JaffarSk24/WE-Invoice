@@ -7,6 +7,7 @@
 //   document:send { documentId, purpose?, penalties? }  opens the e-mail window
 //   recurring:from-document { documentId }              a new recurring invoice from it
 //   scheduler:recurring (desktop tray, hourly)          makes the due recurring invoices
+//   scheduler:reminders (desktop tray, hourly)          sends the due reminders (SMTP)
 import { registerSettingsSection } from '../views/settings/registry.js';
 
 export function lazyRoute(load, ctx) {
@@ -31,7 +32,9 @@ export async function boot(ctx) {
   ctx.registerRoute('contacts', lazyRoute(() => import('../views/contacts/index.js').then(m => m.createContactsView({ transport })), ctx));
   ctx.registerRoute('items', lazyRoute(() => import('../views/items/index.js').then(m => m.createItemsView({ transport })), ctx));
   ctx.registerRoute('recurring', lazyRoute(() => import('../views/recurring/index.js').then(m => m.createRecurringView({ transport })), ctx));
+  ctx.registerRoute('reminders', lazyRoute(() => import('../views/reminders/index.js').then(m => m.createRemindersView({ transport })), ctx));
   registerSettingsSection('email', lazySection(() => import('../views/settings/email-section.js').then(m => m.emailSection), ctx));
+  registerSettingsSection('reminders', lazySection(() => import('../views/settings/reminders-section.js').then(m => m.remindersSection), ctx));
   ctx.on('document:send', (payload) => {
     if (!payload || !payload.documentId) return;
     import('../mail/index.js')
@@ -43,5 +46,8 @@ export async function boot(ctx) {
   });
   import('../views/recurring/service.js')
     .then(m => m.startRecurringService(ctx))
+    .catch(e => ctx.showError(e));
+  import('../views/reminders/service.js')
+    .then(m => m.startReminderService(ctx))
     .catch(e => ctx.showError(e));
 }
