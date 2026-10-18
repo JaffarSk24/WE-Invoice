@@ -39,7 +39,13 @@ describe('provider allow-list', () => {
 
   it('a provider without a published address is not configured', () => {
     const list = buildAllowlist(loadProviders());
-    expect(() => resolveUpstreamBase('verteco', {}, list)).toThrow(expect.objectContaining({ code: 'PROVIDER_NOT_CONFIGURED' }));
+    expect(() => resolveUpstreamBase('dativery', {}, list)).toThrow(expect.objectContaining({ code: 'PROVIDER_NOT_CONFIGURED' }));
+  });
+
+  it('a provider with a published address is proxied to it, the sandbox to its own address', () => {
+    const list = buildAllowlist(loadProviders());
+    expect(resolveUpstreamBase('verteco', {}, list).base.href).toBe('https://peppol.verteco.digital/sapi');
+    expect(resolveUpstreamBase('verteco-sandbox', {}, list).base.href).toBe('https://test.peppol.verteco.digital/sapi');
   });
 
   it('takes the custom base of sapi-sk from the header with checks', () => {

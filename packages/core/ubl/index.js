@@ -1,11 +1,31 @@
-// Peppol BIS Billing 3.0 (UBL 2.1) with the Slovak rules (WP-PEPPOL).
-import { NotImplementedError } from '../errors.js';
+// Peppol BIS Billing 3.0 (UBL 2.1) with the Slovak rules (WP-PEPPOL):
+// building outgoing e-invoices, reading received ones and the local checks
+// before sending. Pure functions: no DOM, no network.
+import { CoreError } from '../errors.js';
+import { ublModel } from './model.js';
+import { writeUbl } from './build.js';
+import { validateUblLocal, hasBlockingIssues } from './validate.js';
 
-/** @returns {string} UBL XML (Invoice or CreditNote) */
-export function buildUbl(document, ctx) { throw new NotImplementedError('buildUbl'); }
+export { parseUbl } from './parse.js';
+export { validateUblLocal, hasBlockingIssues } from './validate.js';
+export { CUSTOMIZATION_ID as UBL_CUSTOMIZATION_ID, PROFILE_ID as UBL_PROFILE_ID } from './codes.js';
 
-/** @returns {{document: object, attachments: object[], warnings: string[]}} */
-export function parseUbl(xml) { throw new NotImplementedError('parseUbl'); }
-
-/** Local checks before sending (SK rules, required BTs). @returns {Array<{rule: string, field?: string}>} */
-export function validateUblLocal(document, ctx) { throw new NotImplementedError('validateUblLocal'); }
+/**
+ * UBL XML (Invoice or CreditNote) of a tax document.
+ * @param {object} document
+ * @param {object} company  the seller (used where the document has no seller snapshot)
+ * @param {{contact?: object, preceding?: Array<{number: string, issueDate?: string}>,
+ *   pdf?: {base64: string, name?: string}, attachPdf?: boolean, maxAttachmentBytes?: number, note?: string}} [options]
+ *   preceding: the invoices a credit or debit note corrects (BT-25, BT-26);
+ *   attachPdf: overrides company.defaults.attachPdfToEInvoice (on by default)
+ * @returns {string}
+ * @throws {CoreError} UBL_INVALID with details.issues when a blocking rule fails
+ */
+export function buildUbl(document, company = {}, options = {}) {
+  const issues = validateUblLocal(document, company, options);
+  if (hasBlockingIssues(issues)) {
+    const codes = issues.filter(i => i.severity === 'error').map(i => i.code);
+    throw new CoreError('UBL_INVALID', `document cannot be sent: ${codes.join(', ')}`, { issues });
+  }
+  return writeUbl(ublModel(document, company, options));
+}
