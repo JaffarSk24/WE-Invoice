@@ -24,7 +24,7 @@ function names(lang) {
   };
 }
 
-export function demoData(lang = document.documentElement.lang) {
+export function demoData(lang = typeof document !== 'undefined' ? document.documentElement.lang : 'sk') {
   if (!cache || cacheLang !== lang) {
     cache = buildDemoData(names(lang), todayLocal());
     cacheLang = lang;

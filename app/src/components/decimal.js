@@ -8,11 +8,16 @@ import * as money from '@we-invoice/core';
 import { currentLang } from '../i18n/index.js';
 import { localeOf } from '../i18n/languages.js';
 
+// A stub is detected once per function, so totals over 10 000 rows do not
+// throw and catch 10 000 times.
+const stubs = new Set();
+
 function viaCore(name, args, fallback) {
+  if (stubs.has(name)) return fallback();
   try {
     return money[name](...args);
   } catch (e) {
-    if (e && e.code === 'NOT_IMPLEMENTED') return fallback();
+    if (e && e.code === 'NOT_IMPLEMENTED') { stubs.add(name); return fallback(); }
     throw e;
   }
 }
