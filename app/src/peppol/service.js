@@ -58,7 +58,7 @@ export function createPeppolService({ getStore, transport, emit, buildPdf = null
     return results;
   }
 
-  /** Fetches the waiting documents now ("Prijať teraz"); runs once at a time. */
+  // Fetches the waiting documents now (the "receive now" button); runs once at a time.
   function receiveNow() {
     if (!receiving) receiving = inbox().receiveAll().finally(() => { receiving = null; });
     return receiving;

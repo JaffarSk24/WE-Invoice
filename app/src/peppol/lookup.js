@@ -9,7 +9,7 @@ const DIC = /^[0-9]{10}$/;
 /** @returns {Promise<{registered: boolean, documentTypes: string[], checkedAt: string}>} */
 export async function lookupParticipant(transport, dic) {
   const id = String(dic || '').replace(/\D/g, '');
-  if (!DIC.test(id)) throw new PeppolError('PEPPOL_NOT_ALLOWED', 'a DIČ has 10 digits');
+  if (!DIC.test(id)) throw new PeppolError('PEPPOL_NOT_ALLOWED', 'a DIC has 10 digits');
   let response;
   try {
     response = await transport.http({ url: transport.gatewayUrl(`/v1/peppol/lookup/0245/${id}`), method: 'GET', headers: { accept: 'application/json' }, timeoutMs: 20000 });

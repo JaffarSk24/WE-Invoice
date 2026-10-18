@@ -46,7 +46,7 @@ export async function openConnection({ transport, company, settings = null, cred
   const s = settings || peppolSettings(company);
   const provider = findProvider(s.providerId);
   if (!provider || !isConnectable(provider)) throw new PeppolError('PEPPOL_NO_PROVIDER', `provider ${s.providerId} cannot be connected`);
-  if (!s.participantId) throw new PeppolError('PEPPOL_NOT_ALLOWED', 'the company has no DIČ');
+  if (!s.participantId) throw new PeppolError('PEPPOL_NOT_ALLOWED', 'the company has no DIC');
   const creds = credentials || await loadCredentials(transport, company.id, provider);
   if (!creds) throw new PeppolError('PEPPOL_NO_CREDENTIALS', 'no credentials stored');
   const customBase = provider.customBaseUrl ? s.baseUrl : null;
