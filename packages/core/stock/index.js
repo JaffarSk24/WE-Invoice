@@ -6,7 +6,7 @@
 export { normalizeStockMove, moveDeltas, companyDelta, sortStockMoves } from './moves.js';
 export { stockLevels, stockOnHand, levelsByItem, negativeStockWarnings, lowStockItems } from './levels.js';
 export { VALUATION_METHODS, costStockMoves, stockValuation, averageCost } from './valuation.js';
-export { movesForDocument, reconcileDocumentMoves, documentsAffectedBy, deliveredByNote } from './documents.js';
+export { movesForDocument, reconcileDocumentMoves, documentsAffectedBy, deliveredByNote, documentMoveIds } from './documents.js';
 export { stockReservations, availableStock } from './reservations.js';
 export { priceFor } from './prices.js';
 export { inventoryDifferences, hasShortage } from './inventory.js';

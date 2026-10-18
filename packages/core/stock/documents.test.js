@@ -111,3 +111,15 @@ describe('stockReservations', () => {
     expect(availableStock('4')).toBe('4');
   });
 });
+
+describe('documentMoveIds', () => {
+  it('derives the same ids on every device and keeps equal moves apart', async () => {
+    const { documentMoveIds } = await import('./index.js');
+    const wanted = movesForDocument(doc({ lines: [line({}), line({ id: 'l2' })] }), ctx());
+    const a = documentMoveIds('d1', wanted);
+    expect(a).toEqual(documentMoveIds('d1', wanted));
+    expect(new Set(a).size).toBe(2);
+    expect(a[0]).toMatch(/^d1~[0-9a-f]{8}$/);
+    expect(documentMoveIds('d1', wanted.slice(0, 1), new Set([a[0]]))[0]).toBe(`${a[0]}r1`);
+  });
+});

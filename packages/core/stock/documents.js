@@ -138,3 +138,37 @@ export function documentsAffectedBy(document, documents = []) {
   ids.delete(document.id);
   return [...ids];
 }
+
+// FNV-1a, 32 bits, as 8 hex digits: short and the same on every device.
+function fnv1a(text) {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(16).padStart(8, '0');
+}
+
+/**
+ * Record ids for the moves of a document, derived from the document and
+ * the move, so two devices that issue the same document store the same
+ * records and the sync merges them instead of doubling the stock effect.
+ * @param {string} docId
+ * @param {Array<object>} moves  moves of that document
+ * @param {Set<string>} [taken]  ids already used (tombstones included); a taken id gets a suffix
+ * @returns {string[]}
+ */
+export function documentMoveIds(docId, moves, taken = new Set()) {
+  const seen = new Map();
+  const prefix = String(docId).slice(0, 50);
+  return (moves || []).map(move => {
+    const sig = signature(move);
+    const n = seen.get(sig) || 0;
+    seen.set(sig, n + 1);
+    const base = `${prefix}~${fnv1a(`${sig}#${n}`)}`;
+    let id = base;
+    for (let r = 1; taken.has(id); r += 1) id = `${base}r${r}`;
+    taken.add(id);
+    return id;
+  });
+}
