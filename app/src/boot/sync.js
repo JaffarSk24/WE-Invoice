@@ -59,9 +59,10 @@ export async function boot(ctx) {
 
   if (store.readOnly) showToast(t('sync.readOnly'), { type: 'error', duration: 15000 });
   const state = await engine.init();
+  // Not connected: an offer that does not block the app (a dialog over the
+  // first screen would stop people who only want to look around).
   if (state.status === 'off' && !dismissedThisSession()) {
-    const modal = openSignInModal({ engine });
-    const close = modal.close;
-    modal.close = () => { dismiss(); close(); };
+    dismiss();
+    showToast(t('sync.signIn.text'), { type: 'info', actionLabel: t('sync.signIn.button'), onAction: () => openSignInModal({ engine }), duration: 20000 });
   }
 }
