@@ -9,6 +9,28 @@ Free invoicing, e-invoicing (Peppol) and simple bookkeeping for small businesses
 
 > Status: early development. Nothing is released yet.
 
+## Installing the desktop app
+
+The installers come from [GitHub Releases](https://github.com/JaffarSk24/WE-Invoice/releases). The app updates itself from there and checks the sha512 of every download against the release's `latest-mac.yml` or `latest.yml`.
+
+### macOS (10.15 or newer, Intel and Apple silicon)
+
+1. Download `WE-Invoice-<version>-mac-universal.dmg`, open it and drag WE Invoice to Applications.
+2. Before opening the app for the first time, run this once in Terminal:
+
+   ```bash
+   xattr -cr "/Applications/WE Invoice.app"
+   ```
+
+   The app is signed ad hoc and not yet notarized by Apple. Files downloaded in a browser carry a flag that makes macOS refuse such apps, and the command removes that flag. After it WE Invoice opens like any other app, and its own updates need no such step.
+
+### Windows (10 or newer, 64-bit)
+
+1. Download `WE-Invoice-<version>-win-x64.exe` and run it. It installs for the current user only, without administrator rights, and puts a shortcut on the desktop and in the Start menu.
+2. The installer is not signed with a paid certificate, so SmartScreen shows "Windows protected your PC". Click "More info", then "Run anyway". Updates installed by the app itself do not show this screen.
+
+Data of the desktop app lives in `we-invoice-data` inside the user's application data folder (`~/Library/Application Support` on macOS, `%APPDATA%` on Windows), with a daily local backup of the last 14 days in `backups/`.
+
 ## Repository
 
 | Folder | What it is |

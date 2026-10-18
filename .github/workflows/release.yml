@@ -1,8 +1,10 @@
 name: Release
 
-# Builds the macOS (universal) and Windows installers and uploads them to a
-# draft GitHub Release with latest-mac.yml and latest.yml. Run by hand only,
-# on the owner's decision; the owner publishes the draft.
+# Builds the macOS (universal, ad-hoc signed) and Windows (NSIS x64)
+# installers and puts them, with latest-mac.yml and latest.yml, into a draft
+# GitHub Release. Run by hand only, on the owner's decision; the owner reads
+# the draft and publishes it. Publishing then runs release-check.yml on the
+# published files.
 
 on:
   workflow_dispatch:
@@ -29,6 +31,13 @@ jobs:
       - run: npm ci
       - name: Version matches package.json
         run: test "$(node -p "require('./package.json').version")" = "${{ inputs.version }}"
+      - name: No release with this tag yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ inputs.version }}" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null | grep -q false; then
+            echo "::error::Release v${{ inputs.version }} is already published"; exit 1
+          fi
       - run: npm run lint
       - name: Unit tests with complete translations
         run: npm test
@@ -41,6 +50,7 @@ jobs:
     name: Build ${{ matrix.os }}
     needs: check
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
@@ -48,6 +58,7 @@ jobs:
           - os: windows-latest
             target: --win --x64
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -60,10 +71,57 @@ jobs:
         env:
           OAUTH_DESKTOP: ${{ secrets.GOOGLE_OAUTH_DESKTOP }}
         run: |
-          if [ -n "$OAUTH_DESKTOP" ]; then printf '%s' "$OAUTH_DESKTOP" > oauth-credentials.json; else echo "::warning::No GOOGLE_OAUTH_DESKTOP secret: the build has no Google sign-in"; fi
+          if [ -z "$OAUTH_DESKTOP" ]; then echo "::error::No GOOGLE_OAUTH_DESKTOP secret: a release needs the Google sign-in client"; exit 1; fi
+          printf '%s' "$OAUTH_DESKTOP" > oauth-credentials.json
+          node -e "const c=require('./oauth-credentials.json'); if(!c.clientId||!c.clientSecret) { console.error('oauth-credentials.json needs clientId and clientSecret'); process.exit(1); }"
       - run: npm run build
-      - name: Build and upload to a draft release
+      - name: Build the installers
+        shell: bash
+        run: npx electron-builder ${{ matrix.target }} --publish never
+      - name: Installer files
+        shell: bash
+        run: ls -la release.nosync
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.os }}
+          if-no-files-found: error
+          path: |
+            release.nosync/*.dmg
+            release.nosync/*.zip
+            release.nosync/*.exe
+            release.nosync/*.blockmap
+            release.nosync/latest*.yml
+
+  draft:
+    name: Draft release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: installers-*
+          merge-multiple: true
+          path: release
+      - name: Release notes from the changelog
+        run: |
+          node -e "
+            const fs = require('fs');
+            const text = fs.readFileSync('docs/CHANGELOG.md', 'utf8');
+            const m = text.split(/^## /m).find(s => s.startsWith('[${{ inputs.version }}]') || s.startsWith('${{ inputs.version }}'));
+            fs.writeFileSync('notes.md', m ? '## ' + m.trim() + '\n' : 'WE Invoice ${{ inputs.version }}\n');
+          "
+          cat notes.md
+      - name: Create or update the draft release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          EP_DRAFT: 'true'
-        run: npx electron-builder ${{ matrix.target }} --publish always
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v${{ inputs.version }}"
+          ls -la release
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$tag" release/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$tag" release/* --repo "$GITHUB_REPOSITORY" --draft --title "WE Invoice $tag" --notes-file notes.md --target "$GITHUB_SHA"
+          fi
+          echo "Draft release $tag is ready for the owner to publish."
