@@ -19,7 +19,7 @@ describe('formatters', () => {
     expect(sk.money('1234567.891', 'EUR')).toBe('1 234 567,89 EUR');
     expect(sk.qty('2.5000')).toBe('2,5');
     expect(sk.percent('23')).toBe('23 %');
-    expect(sk.amount('1234.50')).not.toMatch(/[  ]/);
+    expect(sk.amount('1234.50')).not.toMatch(new RegExp(`[${String.fromCharCode(0xa0)}${String.fromCharCode(0x202f)}]`));
     const en = formatters('en');
     expect(en.date('2026-10-18')).toBe('18/10/2026');
     expect(en.amount('1234.5')).toBe('1,234.50');
