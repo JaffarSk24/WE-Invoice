@@ -8,8 +8,8 @@ export const MODERN = Object.freeze({
   fontSize: 9,
   smallSize: 7.5,
   titleSize: 22,
-  gap: 14,
-  pageMargins: [40, 46, 40, 70],
+  gap: 10,
+  pageMargins: [40, 40, 40, 60],
   columns: ['n', 'description', 'qty', 'unitPrice', 'discount', 'vatRate', 'net', 'vat', 'gross'],
   columnsNonPayer: ['n', 'description', 'qty', 'unitPrice', 'discount', 'net'],
   qtyWithUnit: true,
@@ -19,7 +19,7 @@ export const MODERN = Object.freeze({
   totalsFill: true,
   header(ctx) {
     const { theme } = ctx;
-    const logo = logoNode(ctx, [150, 50]);
+    const logo = logoNode(ctx, [140, 40]);
     const inner = {
       columns: [
         logo ? { width: 'auto', ...logo } : { width: '*', text: ctx.doc.seller.name, bold: true, fontSize: theme.fontSize + 4, color: theme.onBrand },
@@ -31,7 +31,7 @@ export const MODERN = Object.freeze({
     inner.columns[1].stack[0].color = theme.onBrand;
     if (inner.columns[1].stack[1]) inner.columns[1].stack[1].color = theme.onBrand;
     return {
-      table: { widths: ['*'], body: [[{ ...inner, fillColor: theme.brand, margin: [14, 14, 14, 14] }]] },
+      table: { widths: ['*'], body: [[{ ...inner, fillColor: theme.brand, margin: [12, 10, 12, 10] }]] },
       layout: 'noBorders',
       margin: [0, 0, 0, theme.gap]
     };

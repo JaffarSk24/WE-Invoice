@@ -91,11 +91,11 @@ export function buildDocDefinition(document, company, options = {}) {
     template.header(ctx),
     partiesBlock(ctx),
     metaBlock(ctx),
+    paymentBlock(ctx),
     introBlock(ctx),
     linesBlock(ctx),
     totalsBlock(ctx),
     legalBlock(ctx),
-    paymentBlock(ctx),
     outroBlock(ctx),
     signatureBlock(ctx)
   ].filter(Boolean);

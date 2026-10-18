@@ -82,5 +82,6 @@ export function totalsBlock(ctx) {
       }
     ]
   } : { text: '' };
-  return { columns: [{ width: '*', ...left }, { width: 250, ...totals }], columnGap: 20, margin: [0, 0, 0, theme.gap] };
+  // Never split the VAT summary and the totals over two pages.
+  return { unbreakable: true, columns: [{ width: '*', ...left }, { width: 250, ...totals }], columnGap: 20, margin: [0, 0, 0, theme.gap] };
 }

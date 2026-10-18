@@ -142,7 +142,17 @@ describe('docDefinition content rules', () => {
 
   it('falls back to the classic template and Slovak for unknown settings', () => {
     const d = buildDocDefinition({ ...fx.invoice, template: 'NOPE', language: 'xx' }, fx.company);
-    expect(d.pageMargins).toEqual([40, 46, 40, 70]);
+    expect(d.pageMargins).toEqual([40, 40, 40, 60]);
     expect(layerOf(d).join('\n')).toContain('Dátum vyhotovenia');
+  });
+});
+
+// § 74 ods. 1 zákona o DPH: a discount not included in the unit price must be
+// on the invoice, so every template can show the discount column (it is
+// hidden only when no line has a discount).
+describe('discount column', () => {
+  it.each(TEMPLATE_IDS)('%s can print line discounts for payers and non-payers', (id) => {
+    const text = JSON.stringify(buildDocDefinition({ ...fx.invoice, template: id }, fx.company));
+    expect(text).toContain('10 %');
   });
 });

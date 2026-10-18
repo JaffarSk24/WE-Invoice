@@ -7,8 +7,8 @@ export const CLASSIC = Object.freeze({
   fontSize: 9,
   smallSize: 7.5,
   titleSize: 20,
-  gap: 14,
-  pageMargins: [40, 46, 40, 70],
+  gap: 10,
+  pageMargins: [40, 40, 40, 60],
   columns: ['n', 'description', 'qty', 'unitPrice', 'discount', 'vatRate', 'net', 'vat', 'gross'],
   columnsNonPayer: ['n', 'description', 'qty', 'unitPrice', 'discount', 'net'],
   qtyWithUnit: true,
@@ -17,7 +17,7 @@ export const CLASSIC = Object.freeze({
   tableLines: 'grid',
   totalsFill: true,
   header(ctx) {
-    const logo = logoNode(ctx, [150, 54]);
+    const logo = logoNode(ctx, [140, 44]);
     return {
       columns: [
         logo ? { width: 'auto', ...logo } : { width: '*', text: ctx.doc.seller.name, bold: true, fontSize: ctx.theme.fontSize + 3, color: ctx.theme.brand },
