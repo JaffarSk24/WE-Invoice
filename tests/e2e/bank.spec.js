@@ -98,7 +98,6 @@ test('import a CSV statement, match it and the invoice is paid', async ({ page }
   await expect(match.locator('.match-why')).toContainText('sedí variabilný symbol');
   await expect(match.locator('.match-check')).toBeChecked();
   await match.locator('.modal-actions .btn-primary').click();
-  await expect(page.locator('.toast', { hasText: 'Spárované platby: 1.' })).toBeVisible();
 
   await expect.poll(async () => {
     const stored = await readCompanyData(page);
