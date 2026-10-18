@@ -117,7 +117,7 @@ export function renderTemplateForm(root, id) {
         existing ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove }, icon('x'), t('common.delete')) : null,
         h('button', { type: 'button', class: 'btn', onclick: () => go('recurring') }, t('common.cancel')),
         h('button', { type: 'submit', class: 'btn btn-primary', id: 'tpl-save' }, icon('check'), t('common.save')))),
-    historyCard);
+    historyCard || '');
   if (existing) {
     onData(historyCard, ['recurringTemplates', 'documents'], () => {
       const fresh = getOf('recurringTemplates', existing.id);

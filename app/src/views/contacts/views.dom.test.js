@@ -126,3 +126,12 @@ describe('other CRM screens', () => {
     expect(box.querySelector('.mail-way .callout-warning')).not.toBe(null);
   });
 });
+
+describe('no stray text', () => {
+  it('never prints "null" into a screen', async () => {
+    for (const [view, hash] of [[createRecurringView({ transport }), '#/recurring/new'], [createRemindersView({ transport }), '#/reminders'], [createContactsView({ transport }), '#/contacts/new'], [createItemsView({ transport }), '#/items/new']]) {
+      const root = mount(view, hash);
+      expect(root.textContent).not.toMatch(/\bnull\b|\bundefined\b/);
+    }
+  });
+});

@@ -62,14 +62,14 @@ export function createRemindersView({ transport }) {
       const readOnly = !canWrite();
       const input = { documents, contacts, policy, today };
       const due = [...remindersDue(input), ...thankYouDue(input)];
-      body.replaceChildren(
+      body.replaceChildren(...[
         !policy.enabled ? h('p', { class: 'callout callout-warning' }, icon('info'), h('span', {}, t('reminders.disabled'))) : null,
         policy.enabled && policy.lateInterest && !policy.ecbRatePct ? h('p', { class: 'callout callout-warning', id: 'reminders-ecb-missing' }, icon('info'), h('span', {}, t('reminders.ecbMissing'))) : null,
         h('section', { class: 'card reminder-group', id: 'reminders-today' }, h('h2', {}, t('reminders.today')),
           due.length ? due.map(e => dueRow(e, { policy, company, today, readOnly })) : emptyState({ title: t('reminders.today.none'), iconName: 'circle-check' })),
         h('h2', { class: 'settings-subtitle' }, t('reminders.overdue.title')),
         overdueBlock({ documents, contacts, policy, company, today, transport, readOnly }),
-        h('section', { class: 'card reminder-group reminder-journal' }, h('h2', {}, t('reminders.journal.title')), journal(documents)));
+        h('section', { class: 'card reminder-group reminder-journal' }, h('h2', {}, t('reminders.journal.title')), journal(documents))].filter(Boolean));
       refreshIcons(root);
     };
     draw();
