@@ -15,8 +15,8 @@ import { emptyState } from '../../components/empty-state.js';
 import { confirmDialog } from '../../ui/modal.js';
 import { showToast } from '../../ui/toast.js';
 import { languageInfo } from '../../i18n/languages.js';
-import { contactDocuments, contactBalance, documentAmounts } from './model.js';
-import { runVatChecks } from './checks.js';
+import { contactDocuments, contactBalance, documentAmounts, anonymizePatch } from './model.js';
+import { runAllChecks } from './checks.js';
 import { vatBadge, peppolBadge, balanceText } from './badges.js';
 import { getOf, listOf, write, onData, go } from './source.js';
 
@@ -90,11 +90,13 @@ export function renderContactDetail(root, id, { transport }) {
     }
     const documents = listOf('documents');
     const checkVat = async () => {
-      if (!contact.icDph) { showToast(t('contacts.vat.noNumber')); return; }
+      if (!contact.icDph && !contact.dic) { showToast(t('contacts.vat.noNumber')); return; }
       await write(async (store) => {
-        const patch = await runVatChecks(transport, contact);
+        const patch = await runAllChecks(transport, contact);
         await store.update('contacts', contact.id, patch);
-        showToast(t(`contacts.vat.result.${patch.vatReliability.status}`), { type: patch.vatReliability.status === 'RED' ? 'error' : 'success' });
+        const status = patch.vatReliability.status;
+        if (contact.icDph) showToast(t(`contacts.vat.result.${status}`), { type: status === 'RED' ? 'error' : 'success' });
+        if (patch.peppolCapable) showToast(t(patch.peppolCapable.value ? 'contacts.peppol.yes' : 'contacts.peppol.no'));
       });
     };
     const remove = async () => {
@@ -102,15 +104,21 @@ export function renderContactDetail(root, id, { transport }) {
       const done = await write(store => store.remove('contacts', contact.id));
       if (done) go('contacts');
     };
+    const anonymize = async () => {
+      if (!(await confirmDialog(t('contacts.anonymizeConfirm'), { danger: true, okLabel: t('contacts.anonymize') }))) return;
+      if (await write(store => store.update('contacts', contact.id, anonymizePatch(contact)))) showToast(t('contacts.anonymized'));
+    };
+    const canAnonymize = contact.kind === 'PERSON' && !contact.anonymizedAt;
     root.append(
       h('header', { class: 'view-header' },
         h('div', {},
           h('a', { href: '#/contacts', class: 'back-link' }, icon('arrow-left'), t('contacts.back')),
-          h('h1', { id: 'contact-title' }, contact.name),
+          h('h1', { id: 'contact-title' }, contact.anonymizedAt ? t('contacts.anonymizedName') : contact.name),
           h('div', { class: 'contact-badges' }, t(`contacts.kind.${contact.kind || 'COMPANY'}`), ' ', vatBadge(contact, { withDate: true }), ' ', peppolBadge(contact))),
         h('div', { class: 'view-actions' },
-          h('button', { type: 'button', class: 'btn', onclick: checkVat, id: 'contact-check-vat' }, icon('shield-check'), t('contacts.vat.check')),
+          h('button', { type: 'button', class: 'btn', onclick: checkVat, id: 'contact-check-vat' }, icon('shield-check'), t('contacts.vat.checkBoth')),
           h('button', { type: 'button', class: 'btn', onclick: () => go(`contacts/${encodeURIComponent(contact.id)}/edit`), id: 'contact-edit' }, icon('pencil-line'), t('contacts.edit')),
+          canAnonymize ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: anonymize, id: 'contact-anonymize' }, icon('shield-check'), t('contacts.anonymize')) : null,
           h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove, id: 'contact-delete' }, icon('x'), t('common.delete')),
           h('button', { type: 'button', class: 'btn btn-primary', id: 'contact-new-invoice', onclick: () => emit('document:new', { kind: 'INVOICE', contactId: contact.id }) }, icon('file-plus-2'), t('contacts.newInvoice')))),
       createTabs({

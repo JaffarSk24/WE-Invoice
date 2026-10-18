@@ -87,3 +87,13 @@ export function itemToLine(item, id) {
     accountingCategory: item.accountingCategory || null
   };
 }
+
+// A price list entry from a document line ("save to the price list" in
+// the editor of WP-SALES).
+export function lineToItem(line, currency = 'EUR') {
+  return normalizeItem({
+    name: line.name, description: line.description || '', unit: { code: line.unit?.code || 'C62', label: line.unit?.label || '' },
+    price: line.unitPrice, priceType: line.priceType === 'GROSS' ? 'GROSS' : 'NET', vatCategory: line.vatCategory || 'S', vatRate: line.vatRate,
+    accountingCategory: line.accountingCategory || null, currency
+  });
+}

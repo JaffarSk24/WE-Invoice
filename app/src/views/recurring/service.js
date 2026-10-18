@@ -33,9 +33,9 @@ export function runDueRecurring({ transport, today = todayLocal(), quiet = false
   if (running) return running;
   const store = openStore();
   if (isDemo() || !store || store.readOnly) return Promise.resolve(null);
-  const send = async (s, document) => {
+  const send = async (s, document, { copyToSelf = false } = {}) => {
     const mail = await import('../../mail/index.js');
-    return mail.sendAutomatically({ store: s, document, transport });
+    return mail.sendAutomatically({ store: s, document, transport, copyToSelf });
   };
   running = runRecurring({ store, today, send })
     .then(result => { if (!quiet || result.created.length) report(result, { transport }); return result; })

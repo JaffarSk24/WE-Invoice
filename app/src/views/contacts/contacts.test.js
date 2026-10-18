@@ -158,3 +158,30 @@ describe('register and VAT checks', () => {
     expect(isFresh(null, now)).toBe(false);
   });
 });
+
+describe('Peppol lookup', async () => {
+  const { checkPeppol, runAllChecks } = await import('./checks.js');
+  it('looks up 0245:<DIČ> for Slovak contacts only', async () => {
+    const now = new Date('2026-10-18T10:00:00Z');
+    const t = transportFor({ '/peppol/lookup/0245/2020000004': json(200, { registered: true, documentTypes: [], checkedAt: now.toISOString() }) });
+    expect(await checkPeppol(t, { dic: '2020000004', country: 'SK' }, now)).toEqual({ peppolCapable: { value: true, status: 'REGISTERED', checkedAt: now.toISOString() }, peppolId: '0245:2020000004' });
+    expect(await checkPeppol(t, { dic: '123', country: 'SK' }, now)).toBe(null);
+    expect(await checkPeppol(t, { dic: '2020000004', country: 'CZ' }, now)).toBe(null);
+  });
+  it('keeps the VAT result when the Peppol lookup fails', async () => {
+    const t = transportFor({ '/vat/vies/': json(200, { valid: true }), '/reliability': json(200, { status: 'OK' }), '/peppol/': json(502, {}) });
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const patch = await runAllChecks(t, { icDph: 'SK2020000004', dic: '2020000004', country: 'SK' });
+    vi.restoreAllMocks();
+    expect(patch.vatReliability.status).toBe('GREEN');
+    expect(patch.peppolCapable).toBeUndefined();
+  });
+});
+
+describe('anonymization', async () => {
+  const { anonymizePatch, ANONYMIZED_NAME } = await import('./model.js');
+  it('empties the personal data of the card and stops reminders', () => {
+    const patch = anonymizePatch({ kind: 'PERSON', name: 'Ján Novák', country: 'SK', emails: [{ address: 'jan@x.sk' }] }, '2026-10-18T10:00:00.000Z');
+    expect(patch).toMatchObject({ name: ANONYMIZED_NAME, emails: [], persons: [], phone: null, sendReminders: false, anonymizedAt: '2026-10-18T10:00:00.000Z', billingAddress: { street: '', country: 'SK' } });
+  });
+});

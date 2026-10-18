@@ -163,3 +163,18 @@ describe('sendDocumentMail', () => {
     await expect(sendDocumentMail({ store, document: invoice(), company, message: { ...message, to: [] }, transport: {}, win: {}, pdf })).rejects.toMatchObject({ code: 'MAIL_BAD_RECIPIENT' });
   });
 });
+
+describe('sendAutomatically', () => {
+  it('adds the company as a blind copy for recurring invoices and needs SMTP', async () => {
+    const { sendAutomatically } = await import('./index.js');
+    const store = { ...memoryStore(invoice()), company: () => company, list: () => [] };
+    store.get = (c, id) => (c === 'contacts' ? contact : store.doc());
+    expect(await sendAutomatically({ store, document: invoice(), win: {} })).toBe(null);
+    setDesktopPref('smtp', { host: 'smtp.alfa.sk', port: 587, security: 'starttls', user: 'u', from: 'alfa@alfa.sk', fromName: '' });
+    const win = { weMail: { send: vi.fn(async () => ({ ok: true })) } };
+    const pdf = async () => ({ fileName: 'f.pdf', blob: new Uint8Array([1]) });
+    const entry = await sendAutomatically({ store, document: invoice(), win, pdf, copyToSelf: true, transport: {} });
+    expect(entry.result).toBe('SENT');
+    expect(win.weMail.send.mock.calls[0][1]).toMatchObject({ to: ['inv@beta.sk'], bcc: ['alfa@alfa.sk'] });
+  });
+});

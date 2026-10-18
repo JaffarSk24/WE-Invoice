@@ -9,7 +9,7 @@ import { t } from '../../i18n/index.js';
 import { openModal } from '../../ui/modal.js';
 import { showToast } from '../../ui/toast.js';
 import { lookupToContact, normalizeContact } from './model.js';
-import { lookupByIco, searchByName, runVatChecks } from './checks.js';
+import { lookupByIco, searchByName, runAllChecks } from './checks.js';
 import { listOf, write, go } from './source.js';
 
 // Creates (or finds) the contact for a register answer; returns its id.
@@ -22,8 +22,8 @@ export async function createFromLookup(lookup, { transport }) {
   const { contact } = normalizeContact(lookupToContact(lookup));
   const saved = await write(store => store.insert('contacts', contact));
   if (!saved) return null;
-  if (saved.icDph) {
-    runVatChecks(transport, saved)
+  if (saved.icDph || saved.dic) {
+    runAllChecks(transport, saved)
       .then(patch => write(store => store.update('contacts', saved.id, patch)))
       .catch(e => console.warn('VAT check of a new contact failed', e));
   }

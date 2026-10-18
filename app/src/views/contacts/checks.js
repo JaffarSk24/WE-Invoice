@@ -3,7 +3,7 @@
 // and the reliability of a Slovak VAT payer (03-features.md § 3.3). The
 // traffic light of a VAT number is computed here as a pure function from
 // the stored check results, which are kept for seven days.
-import { CoreError, isValidVatId } from '@we-invoice/core';
+import { CoreError, isValidVatId, isValidDic } from '@we-invoice/core';
 
 export const CHECK_TTL_DAYS = 7;
 const DAY_MS = 86400000;
@@ -73,6 +73,28 @@ export async function runVatChecks(transport, contact, now = new Date()) {
   failures.forEach(f => console.warn('A VAT check failed', f));
   const status = combinedStatus(results);
   return { vatReliability: { value: { vies: results.vies?.status || null, fs: results.fs?.status || null }, status, checkedAt } };
+}
+
+// Whether a Slovak contact receives eFaktúry: the Peppol participant
+// 0245:<DIČ> in the SML and SMP. Returns the patch to store, or null for a
+// contact without a valid Slovak DIČ.
+export async function checkPeppol(transport, contact, now = new Date()) {
+  const dic = String(contact.dic || '').replace(/\s/g, '');
+  if ((contact.country || 'SK') !== 'SK' || !isValidDic(dic)) return null;
+  const data = await getJson(transport, `/v1/peppol/lookup/0245/${dic}`);
+  const registered = Boolean(data && data.registered);
+  return {
+    peppolCapable: { value: registered, status: registered ? 'REGISTERED' : 'NOT_REGISTERED', checkedAt: (data && data.checkedAt) || now.toISOString() },
+    peppolId: registered ? `0245:${dic}` : contact.peppolId || null
+  };
+}
+
+// The VAT checks and the Peppol lookup together; a failing Peppol lookup
+// does not hide the VAT result.
+export async function runAllChecks(transport, contact, now = new Date()) {
+  const peppol = checkPeppol(transport, contact, now).catch(e => { console.warn('Peppol lookup failed', e); return null; });
+  const patch = await runVatChecks(transport, contact, now);
+  return { ...patch, ...((await peppol) || {}) };
 }
 
 // One status from the FS lists and VIES: a bad entry wins over a good one.

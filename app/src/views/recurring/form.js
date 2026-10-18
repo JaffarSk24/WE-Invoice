@@ -57,6 +57,7 @@ export function renderTemplateForm(root, id) {
     taxDateAtPeriodEnd: checkboxField({ label: t('recurring.field.taxDateAtPeriodEnd'), checked: tpl.taxDateAtPeriodEnd }),
     issueMode: radioGroup({ label: t('recurring.field.issueMode'), name: 'tpl-issue-mode', value: tpl.issueMode, options: ['DRAFT', 'ISSUE'].map(v => ({ value: v, label: t(`recurring.issueMode.${v}`), hint: t(`recurring.issueMode.${v}.hint`) })) }),
     autoSend: checkboxField({ label: t('recurring.field.autoSend'), checked: tpl.autoSend, hint: t('recurring.field.autoSendHint') }),
+    copyToSelf: checkboxField({ label: t('recurring.field.copyToSelf'), checked: tpl.copyToSelf === true }),
     textIntro: textArea({ label: t('recurring.field.textIntro'), value: tpl.docTemplate.textIntro || '', hint: t('recurring.line.periodHint') })
   };
   const lines = linesEditor({ lines: tpl.docTemplate.lines || [], items: listOf('items'), vatPayer: !company || company.vatMode !== 'NONPAYER' });
@@ -65,12 +66,13 @@ export function renderTemplateForm(root, id) {
   const read = () => ({
     ...tpl, name: f.name.value(), frequency: f.frequency.value(), interval: f.interval.value(), firstRun: f.firstRun.value(),
     endDate: f.endDate.value(), maxCount: f.maxCount.value(), dueShiftDays: f.dueShiftDays.value(),
-    taxDateAtPeriodEnd: f.taxDateAtPeriodEnd.value(), issueMode: f.issueMode.value(), autoSend: f.autoSend.value(),
+    taxDateAtPeriodEnd: f.taxDateAtPeriodEnd.value(), issueMode: f.issueMode.value(), autoSend: f.autoSend.value(), copyToSelf: f.copyToSelf.value(),
     docTemplate: { ...tpl.docTemplate, contactId: f.contact.value() || null, kind: f.kind.value(), language: f.language.value() || null, textIntro: f.textIntro.value(), lines: cleanLines(lines.value()).lines || [] }
   });
   const refresh = () => {
     f.interval.el.hidden = !['MONTHS', 'WEEK'].includes(f.frequency.value());
     f.autoSend.el.hidden = f.issueMode.value() !== 'ISSUE';
+    f.copyToSelf.el.hidden = f.autoSend.el.hidden || !f.autoSend.value();
     const { template, errors } = normalizeTemplate(read());
     if (errors.firstRun || errors.interval) { preview.textContent = ''; return; }
     const runs = upcomingRuns(template, existing ? today : template.firstRun, 3);
@@ -109,7 +111,7 @@ export function renderTemplateForm(root, id) {
       lines.el,
       h('fieldset', { class: 'form-section' }, h('legend', {}, t('recurring.section.schedule')),
         grid(f.frequency.el, f.interval.el, f.firstRun.el, f.endDate.el, f.maxCount.el, f.dueShiftDays.el), f.taxDateAtPeriodEnd.el, preview),
-      h('fieldset', { class: 'form-section' }, h('legend', {}, t('recurring.section.issue')), f.issueMode.el, f.autoSend.el),
+      h('fieldset', { class: 'form-section' }, h('legend', {}, t('recurring.section.issue')), f.issueMode.el, f.autoSend.el, f.copyToSelf.el),
       f.textIntro.el,
       h('div', { class: 'form-actions' },
         existing ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove }, icon('x'), t('common.delete')) : null,

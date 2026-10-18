@@ -25,6 +25,7 @@ export async function mockGateway(page) {
   });
   await page.route('**/v1/vat/vies/**', route => route.fulfill(json({ valid: true, name: CLIENT.name, checkedAt: new Date().toISOString() })));
   await page.route('**/v1/vat/sk/**', route => route.fulfill(json({ status: 'OK', lists: [], checkedAt: new Date().toISOString() })));
+  await page.route('**/v1/peppol/lookup/**', route => route.fulfill(json({ registered: true, documentTypes: [], checkedAt: new Date().toISOString() })));
 }
 
 const next = (page) => page.locator('#ob-next').click();

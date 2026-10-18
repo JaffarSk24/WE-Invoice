@@ -38,6 +38,7 @@ export default {
   'recurring.field.issueMode': 'Čo vytvoriť',
   'recurring.field.autoSend': 'Hneď poslať e-mailom',
   'recurring.field.autoSendHint': 'Automaticky odosiela desktopová aplikácia so SMTP účtom. Inak vás upozorníme, že faktúry čakajú na odoslanie.',
+  'recurring.field.copyToSelf': 'Poslať kópiu aj mne',
   'recurring.field.textIntro': 'Úvodný text faktúry',
   'recurring.field.nextRun': 'Ďalšia faktúra',
   'recurring.field.count': 'Vytvorené',

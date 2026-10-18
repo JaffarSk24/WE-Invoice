@@ -39,7 +39,7 @@ export async function removeDuplicateDrafts(store) {
 }
 
 /**
- * @param {{store: object, today: string, send?: (store, document) => Promise<object|null>}} input
+ * @param {{store: object, today: string, send?: (store, document, options) => Promise<object|null>}} input
  *   send: automatic e-mail; resolves to the log entry or null when it cannot send
  * @returns {Promise<{created: object[], issued: number, sent: number, waiting: object[], errors: object[], removed: number}>}
  */
@@ -70,7 +70,7 @@ export async function runRecurring({ store, today, send = null }) {
       if (template.autoSend && saved.status !== 'DRAFT') {
         let entry = null;
         try {
-          entry = send ? await send(store, saved) : null;
+          entry = send ? await send(store, saved, { copyToSelf: template.copyToSelf === true }) : null;
         } catch (e) {
           console.error('Automatic sending of a recurring invoice failed', e);
           result.errors.push({ templateId: template.id, code: e.code || 'MAIL_FAILED' });

@@ -38,6 +38,7 @@ export default {
   'recurring.field.issueMode': 'What to make',
   'recurring.field.autoSend': 'E-mail it right away',
   'recurring.field.autoSendHint': 'Sent automatically by the desktop app with an SMTP account. Otherwise you are told the invoices wait to be sent.',
+  'recurring.field.copyToSelf': 'Send a copy to me too',
   'recurring.field.textIntro': 'Introduction text of the invoice',
   'recurring.field.nextRun': 'Next invoice',
   'recurring.field.count': 'Made',

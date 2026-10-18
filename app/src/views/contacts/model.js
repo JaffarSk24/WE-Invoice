@@ -179,3 +179,18 @@ export function lookupToContact(lookup) {
     billingAddress: { street: a.street || '', city: a.city || '', zip: a.zip || '', country }
   });
 }
+
+// GDPR: the card of a private person without personal data. Issued
+// documents keep their buyer snapshot, which the law requires for ten
+// years; only the card is emptied. The name becomes a marker the
+// screens show as "anonymized".
+export const ANONYMIZED_NAME = '***';
+
+export function anonymizePatch(contact, now = new Date().toISOString()) {
+  return {
+    name: ANONYMIZED_NAME, ico: null, dic: null, icDph: null, phone: null, iban: null, note: '', tags: [],
+    billingAddress: { street: '', city: '', zip: '', country: contact.country || 'SK' },
+    deliveryAddresses: [], emails: [], persons: [], peppolId: null, peppolCapable: null, vatReliability: null,
+    sendReminders: false, anonymizedAt: now
+  };
+}

@@ -91,3 +91,12 @@ describe('item sections', () => {
     expect(() => registerItemSection(null)).toThrow();
   });
 });
+
+describe('lineToItem', async () => {
+  const { lineToItem } = await import('./model.js');
+  it('turns a document line into a price list entry', () => {
+    const { item, errors } = lineToItem({ name: 'Konzultácia', unitPrice: '50', priceType: 'NET', vatCategory: 'S', vatRate: '23', unit: { code: 'HUR' } });
+    expect(errors).toEqual({});
+    expect(item).toMatchObject({ name: 'Konzultácia', price: '50', unit: { code: 'HUR' }, vatRate: '23', currency: 'EUR' });
+  });
+});

@@ -12,7 +12,7 @@ import { textField, textArea, selectField, checkboxField, numberField } from '..
 import { languageInfo } from '../../i18n/languages.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { blankContact, normalizeContact, lookupToContact } from './model.js';
-import { lookupByIco, runVatChecks } from './checks.js';
+import { lookupByIco, runAllChecks } from './checks.js';
 import { emailEditor, personEditor, deliveryEditor } from './form-lists.js';
 import { getOf, listOf, write, go } from './source.js';
 
@@ -95,13 +95,13 @@ export function renderContactForm(root, id, { transport }) {
     Object.entries(f).forEach(([k, field]) => field.setError(errors[k] ? t(`crm.error.${errors[k]}`) : null));
     if (errors.emails) showToast(t(`crm.error.${errors.emails}`), { type: 'error' });
     if (Object.keys(errors).length) { root.querySelector('[aria-invalid="true"]')?.focus(); return; }
-    const idChanged = !existing || existing.icDph !== contact.icDph;
+    const idChanged = !existing || existing.icDph !== contact.icDph || existing.dic !== contact.dic;
     const saved = await write(store => (existing ? store.update('contacts', existing.id, contact) : store.insert('contacts', contact)));
     if (!saved) return;
     showToast(t('contacts.saved'), { type: 'success' });
     go(`contacts/${encodeURIComponent(saved.id)}`);
-    if (idChanged && saved.icDph) {
-      runVatChecks(transport, saved)
+    if (idChanged && (saved.icDph || saved.dic)) {
+      runAllChecks(transport, saved)
         .then(patch => write(store => store.update('contacts', saved.id, patch)))
         .catch(e => { console.warn('VAT check after saving failed', e); showError(e); });
     }

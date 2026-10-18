@@ -16,7 +16,7 @@ let lastQuery = '';
 
 function columns(balances) {
   return [
-    { id: 'name', label: t('contacts.field.name'), always: true, sortValue: (c) => c.name, render: (c) => h('span', { class: 'contact-name' }, c.name, ' ', vatBadge(c)) },
+    { id: 'name', label: t('contacts.field.name'), always: true, sortValue: (c) => c.name, render: (c) => h('span', { class: 'contact-name' }, c.anonymizedAt ? t('contacts.anonymizedName') : c.name, ' ', vatBadge(c)) },
     { id: 'ico', label: t('contacts.field.ico'), sortValue: (c) => c.ico || '', render: (c) => c.ico || '' },
     { id: 'city', label: t('contacts.field.city'), sortValue: (c) => c.billingAddress?.city || c.city || '', render: (c) => c.billingAddress?.city || c.city || '' },
     { id: 'email', label: t('contacts.field.email'), render: (c) => emailsFor(c, 'INVOICE')[0] || '' },
