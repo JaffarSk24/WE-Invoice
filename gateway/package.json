@@ -1,0 +1,24 @@
+{
+  "name": "we-invoice-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stateless gateway of WE Invoice: proxy to Peppol providers, public registers, VIES, eKasa and ECB rates; waitlist. Stores no user data.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "fastify": "^5.12.7",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
+  }
+}

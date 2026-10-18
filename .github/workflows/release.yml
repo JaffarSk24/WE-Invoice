@@ -1,0 +1,66 @@
+name: Release
+
+# Builds the macOS (universal) and Windows installers and uploads them to a
+# draft GitHub Release with latest-mac.yml and latest.yml. Run by hand only,
+# on the owner's decision; the owner publishes the draft.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release, for example 1.0.0 (must match package.json)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    name: Release gates
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Version matches package.json
+        run: test "$(node -p "require('./package.json').version")" = "${{ inputs.version }}"
+      - run: npm run lint
+      - run: npm test
+      - name: Legislation values verified
+        run: node scripts/check-legislation.mjs --strict
+
+  build:
+    name: Build ${{ matrix.os }}
+    needs: check
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            target: --mac --universal
+          - os: windows-latest
+            target: --win --x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Google sign-in client for the desktop app
+        shell: bash
+        env:
+          OAUTH_DESKTOP: ${{ secrets.GOOGLE_OAUTH_DESKTOP }}
+        run: |
+          if [ -n "$OAUTH_DESKTOP" ]; then printf '%s' "$OAUTH_DESKTOP" > oauth-credentials.json; else echo "::warning::No GOOGLE_OAUTH_DESKTOP secret: the build has no Google sign-in"; fi
+      - run: npm run build
+      - name: Build and upload to a draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EP_DRAFT: 'true'
+        run: npx electron-builder ${{ matrix.target }} --publish always

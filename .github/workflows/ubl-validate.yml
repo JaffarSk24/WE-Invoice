@@ -1,0 +1,34 @@
+name: UBL validation
+
+# Validates generated and fixture UBL documents with the official EN 16931
+# and Peppol BIS 3 Schematron artefacts (04-peppol.md § 4.8). The
+# validation step itself is added by the e-invoicing work package.
+
+on:
+  push:
+    paths: ['packages/core/ubl/**', 'tests/fixtures/ubl/**', '.github/workflows/ubl-validate.yml']
+  pull_request:
+    paths: ['packages/core/ubl/**', 'tests/fixtures/ubl/**', '.github/workflows/ubl-validate.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Schematron EN 16931 and Peppol BIS 3
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: UBL unit tests
+        run: npx vitest run packages/core/ubl
+      - name: Schematron
+        run: |
+          if [ -f scripts/validate-ubl.mjs ]; then node scripts/validate-ubl.mjs; else echo "Schematron validation is not set up yet"; fi

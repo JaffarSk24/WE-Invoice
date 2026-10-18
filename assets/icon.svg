@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00f2fe"/>
+      <stop offset="1" stop-color="#4facfe"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d7e9fb"/>
+      <stop offset="1" stop-color="#a9cdf3"/>
+    </linearGradient>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#tile)"/>
+  <path d="M330 230 H600 L720 350 V770 a24 24 0 0 1 -24 24 H330 a24 24 0 0 1 -24 -24 V254 a24 24 0 0 1 24 -24 Z" fill="#ffffff"/>
+  <path d="M600 230 V326 a24 24 0 0 0 24 24 H720 Z" fill="url(#fold)"/>
+  <path d="M372 430 L420 590 L466 470 L512 590 L560 430" fill="none" stroke="#0b3d6e" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M600 430 H660 M600 510 H650 M600 590 H660 M600 430 V590" fill="none" stroke="#0b3d6e" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="372" y="660" width="288" height="30" rx="15" fill="#4facfe"/>
+</svg>

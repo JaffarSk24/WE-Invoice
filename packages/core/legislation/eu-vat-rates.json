@@ -1,0 +1,7 @@
+{
+  "$comment": "Standard VAT rates of EU member states for OSS (05-accounting-tax.md § 5.2). Filled and verified by WP-TAX from the European Commission TEDB.",
+  "source": "https://ec.europa.eu/taxation_customs/tedb/",
+  "verified": false,
+  "verifiedAt": null,
+  "countries": {}
+}

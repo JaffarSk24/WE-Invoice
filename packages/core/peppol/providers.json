@@ -1,0 +1,78 @@
+{
+  "$comment": "Peppol providers offered in the connection wizard (04-peppol.md § 4.2). Updated by a release, without code changes. Prices and URLs must be re-checked before each release; null means not yet confirmed. The gateway keeps its own server-side copy as the proxy allowlist.",
+  "checkedAt": "2026-10-18",
+  "verified": false,
+  "providers": [
+    {
+      "id": "verteco",
+      "name": "Verteco",
+      "efsk": "031",
+      "protocol": "SAPI_SK",
+      "extensions": ["validate", "status", "mls"],
+      "auth": "API_KEY_TO_JWT",
+      "baseUrl": { "prod": null, "sandbox": null },
+      "sandboxCredentials": "public",
+      "registerUrl": null,
+      "pricingUrl": null,
+      "tariff": { "sk": "Prijímanie zadarmo; API 2 € mesačne za IČO (len v mesiacoch s odoslaním), do 1000 dokladov", "en": "Receiving free; API 2 € per month per company (only in months with sending), up to 1000 documents" },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": true }
+    },
+    {
+      "id": "dativery",
+      "name": "Dativery (Peppoš)",
+      "efsk": "042",
+      "protocol": "SAPI_SK",
+      "extensions": ["native_xml", "invoice_response"],
+      "auth": "API_KEY_HEADER",
+      "baseUrl": { "prod": null, "sandbox": null },
+      "sandboxCredentials": "account",
+      "registerUrl": null,
+      "pricingUrl": null,
+      "tariff": { "sk": "0 € s API: 5 odoslaní a 5 prijatí mesačne, potom 0,16 €; Basic 12 €", "en": "0 € with API: 5 sent and 5 received per month, then 0.16 €; Basic 12 €" },
+      "flags": { "freeReceive": true, "apiOnFree": true, "cors": true, "primaryTest": false }
+    },
+    {
+      "id": "epostak",
+      "name": "ePošťák",
+      "efsk": "012",
+      "protocol": "NATIVE",
+      "extensions": ["validate", "preflight", "json"],
+      "auth": "OAUTH2_CLIENT_CREDENTIALS",
+      "baseUrl": { "prod": null, "sandbox": null },
+      "sandboxCredentials": "on_request",
+      "registerUrl": null,
+      "pricingUrl": null,
+      "tariff": { "sk": "Bez mesačného poplatku: 0,10 € za odoslanie, 0,08 € za prijatie", "en": "No monthly fee: 0.10 € per sent, 0.08 € per received document" },
+      "flags": { "freeReceive": false, "apiOnFree": true, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "ipostar",
+      "name": "iPoštár",
+      "efsk": "072",
+      "protocol": "NATIVE",
+      "extensions": ["schematron"],
+      "auth": "API_KEY_HEADER",
+      "baseUrl": { "prod": null, "sandbox": null },
+      "sandboxCredentials": "account_starts_in_sandbox",
+      "registerUrl": null,
+      "pricingUrl": null,
+      "tariff": { "sk": "Prijímanie zadarmo; 3 € mesačne za 300 odoslaní", "en": "Receiving free; 3 € per month for 300 sent documents" },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": false, "fallback": true }
+    },
+    {
+      "id": "sapi-sk",
+      "name": "Iný poskytovateľ (SAPI-SK)",
+      "efsk": null,
+      "protocol": "SAPI_SK",
+      "extensions": [],
+      "auth": "CLIENT_CREDENTIALS_TO_JWT",
+      "baseUrl": { "prod": null, "sandbox": null },
+      "customBaseUrl": true,
+      "sandboxCredentials": null,
+      "registerUrl": "https://www.sapi-sk.sk/",
+      "pricingUrl": null,
+      "tariff": { "sk": "Podľa cenníka poskytovateľa", "en": "By the provider's price list" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    }
+  ]
+}

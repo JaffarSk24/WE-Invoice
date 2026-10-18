@@ -1,0 +1,384 @@
+openapi: 3.1.0
+info:
+  title: WE Invoice gateway
+  version: 0.1.0
+  description: >
+    Stateless gateway of WE Invoice (06-gateway-server.md). It stores no user
+    data: documents, contacts and amounts are never written to disk or logged.
+    Contract file: change through a "contract:" PR only. Every error answers
+    {error: {code, message}} with a stable code that the client translates.
+servers:
+  - url: https://invoice-api.whiteeagles.sk
+  - url: http://localhost:8787
+tags:
+  - name: system
+  - name: proxy
+  - name: registers
+  - name: rates
+  - name: peppol
+  - name: waitlist
+  - name: admin
+  - name: p2
+paths:
+  /v1/health:
+    get:
+      tags: [system]
+      summary: Version and upstream status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+  /v1/proxy/peppol/{providerId}/{path}:
+    parameters:
+      - { name: providerId, in: path, required: true, schema: { type: string, pattern: '^[a-z0-9-]{2,40}$' } }
+      - { name: path, in: path, required: true, description: Rest of the upstream path (wildcard), schema: { type: string } }
+      - { name: X-Upstream-Authorization, in: header, required: false, description: Moved to Authorization of the upstream request. Never logged or stored., schema: { type: string } }
+      - { name: X-Upstream-Base, in: header, required: false, description: Only for providerId "sapi-sk" with a custom base URL; must pass the SSRF checks., schema: { type: string, format: uri } }
+    x-rate-limit: 60/min per IP; body up to 15 MB; streamed, never stored
+    get: { tags: [proxy], summary: Proxy GET to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
+    post: { tags: [proxy], summary: Proxy POST to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
+    put: { tags: [proxy], summary: Proxy PUT to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
+    delete: { tags: [proxy], summary: Proxy DELETE to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
+  /v1/company/sk/{ico}:
+    get:
+      tags: [registers]
+      summary: Slovak company by IČO (RPO + DIČ and IČ DPH from FS open data)
+      x-cache: 24h
+      x-rate-limit: 30/min
+      parameters:
+        - { name: ico, in: path, required: true, schema: { type: string, pattern: '^[0-9]{6,8}$' } }
+      responses:
+        '200': { description: Found, content: { application/json: { schema: { $ref: '#/components/schemas/CompanyLookup' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/company/sk/search:
+    get:
+      tags: [registers]
+      summary: Slovak companies by name (RPO)
+      x-cache: 24h
+      x-rate-limit: 30/min
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string, minLength: 3, maxLength: 100 } }
+      responses:
+        '200':
+          description: Results
+          content:
+            application/json:
+              schema: { type: object, properties: { results: { type: array, items: { $ref: '#/components/schemas/CompanyLookup' } } }, required: [results] }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/company/cz/{ico}:
+    get:
+      tags: [registers]
+      summary: Czech company by IČO (ARES)
+      x-cache: 24h
+      x-rate-limit: 30/min
+      parameters:
+        - { name: ico, in: path, required: true, schema: { type: string, pattern: '^[0-9]{8}$' } }
+      responses:
+        '200': { description: Found, content: { application/json: { schema: { $ref: '#/components/schemas/CompanyLookup' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/vat/vies/{cc}/{number}:
+    get:
+      tags: [registers]
+      summary: VAT number check in VIES
+      x-cache: 24h
+      x-rate-limit: 30/min
+      parameters:
+        - { name: cc, in: path, required: true, schema: { type: string, pattern: '^[A-Z]{2}$' } }
+        - { name: number, in: path, required: true, schema: { type: string, pattern: '^[0-9A-Z+*]{2,13}$' } }
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [valid, checkedAt]
+                properties:
+                  valid: { type: boolean }
+                  name: { type: [string, 'null'] }
+                  address: { type: [string, 'null'] }
+                  checkedAt: { type: string, format: date-time }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/vat/sk/{icdph}/reliability:
+    get:
+      tags: [registers]
+      summary: Slovak VAT payer reliability from the FS lists
+      x-cache: 24h
+      x-rate-limit: 30/min
+      parameters:
+        - { name: icdph, in: path, required: true, schema: { type: string, pattern: '^SK[0-9]{10}$' } }
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, checkedAt]
+                properties:
+                  status: { type: string, enum: [OK, NOT_REGISTERED, REASONS_FOR_CANCELLATION, DELETED, UNKNOWN] }
+                  lists: { type: array, items: { type: string } }
+                  checkedAt: { type: string, format: date-time }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/rates/ecb:
+    get:
+      tags: [rates]
+      summary: ECB reference rates for a date (latest published on or before it)
+      x-cache: until end of day
+      x-rate-limit: 120/min
+      parameters:
+        - { name: date, in: query, required: false, schema: { type: string, format: date } }
+      responses:
+        '200':
+          description: Rates against EUR
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [date, base, rates]
+                properties:
+                  date: { type: string, format: date }
+                  base: { type: string, const: EUR }
+                  rates: { type: object, additionalProperties: { type: string, pattern: '^[0-9]+(\.[0-9]+)?$' } }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/ekasa/receipt:
+    post:
+      tags: [registers]
+      summary: Receipt details from the public eKasa API of FS
+      x-rate-limit: 20/min
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [receiptId], properties: { receiptId: { type: string, maxLength: 100 } } }
+      responses:
+        '200': { description: Receipt, content: { application/json: { schema: { $ref: '#/components/schemas/EkasaReceipt' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/peppol/lookup/{scheme}/{id}:
+    get:
+      tags: [peppol]
+      summary: SML and SMP lookup of a Peppol participant
+      x-cache: 24h
+      x-rate-limit: 60/min
+      parameters:
+        - { name: scheme, in: path, required: true, schema: { type: string, pattern: '^[0-9]{4}$' } }
+        - { name: id, in: path, required: true, schema: { type: string, maxLength: 50 } }
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [registered, documentTypes, checkedAt]
+                properties:
+                  registered: { type: boolean }
+                  documentTypes: { type: array, items: { type: string } }
+                  checkedAt: { type: string, format: date-time }
+        '502': { $ref: '#/components/responses/Error' }
+  /v1/waitlist:
+    post:
+      tags: [waitlist]
+      summary: Join the waitlist (double opt-in e-mail follows)
+      x-rate-limit: 5/min per IP; honeypot and fill-time check
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, lang, consent]
+              properties:
+                email: { type: string, format: email, maxLength: 320 }
+                lang: { type: string, enum: [sk, cs, en, de, ru, uk] }
+                consent: { type: boolean, const: true }
+                source: { type: string, maxLength: 60 }
+                interests: { type: array, items: { type: string, enum: [efaktura-send, efaktura-receive, simple-bookkeeping, vat-reports] } }
+                vatPayer: { type: [boolean, 'null'] }
+                website: { type: string, description: Honeypot; must be empty }
+                startedAt: { type: integer, description: Form open time in ms, for the fill-time check }
+      responses:
+        '202': { description: Accepted; confirmation e-mail sent, content: { application/json: { schema: { type: object, properties: { status: { type: string, const: pending } } } } } }
+        '400': { $ref: '#/components/responses/Error' }
+        '429': { $ref: '#/components/responses/Error' }
+  /v1/waitlist/confirm:
+    get:
+      tags: [waitlist]
+      summary: Confirm the e-mail, then redirect to the thank-you page
+      parameters:
+        - { name: token, in: query, required: true, schema: { type: string, maxLength: 200 } }
+      responses:
+        '302': { description: Redirect to the site }
+        '400': { $ref: '#/components/responses/Error' }
+  /v1/waitlist/unsubscribe:
+    get:
+      tags: [waitlist]
+      summary: Unsubscribe and delete the record
+      parameters:
+        - { name: token, in: query, required: true, schema: { type: string, maxLength: 200 } }
+      responses:
+        '302': { description: Redirect to the site }
+        '400': { $ref: '#/components/responses/Error' }
+  /v1/beta/redeem:
+    post:
+      tags: [peppol]
+      summary: Exchange an invite code for a signed beta token (HMAC, 1 year)
+      x-rate-limit: 10/min
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [code], properties: { code: { type: string, maxLength: 40 } } }
+      responses:
+        '200':
+          description: Token
+          content:
+            application/json:
+              schema: { type: object, required: [token, expiresAt], properties: { token: { type: string }, expiresAt: { type: string, format: date-time } } }
+        '400': { $ref: '#/components/responses/Error' }
+  /v1/admin/waitlist.csv:
+    get:
+      tags: [admin]
+      summary: Waitlist export for the owner
+      security: [{ adminToken: [] }]
+      responses:
+        '200': { description: CSV, content: { text/csv: { schema: { type: string } } } }
+        '401': { $ref: '#/components/responses/Error' }
+  /v1/admin/stats:
+    get:
+      tags: [admin]
+      summary: Counters without personal data
+      security: [{ adminToken: [] }]
+      responses:
+        '200': { description: Stats, content: { application/json: { schema: { type: object } } } }
+        '401': { $ref: '#/components/responses/Error' }
+  /v1/share:
+    post:
+      tags: [p2]
+      summary: (P2) Upload an encrypted blob for a zero-knowledge link (up to 10 MB, 90 days)
+      requestBody: { required: true, content: { application/octet-stream: { schema: { type: string, format: binary } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { type: object, required: [id, expiresAt], properties: { id: { type: string }, expiresAt: { type: string, format: date-time } } } } } }
+  /v1/share/{id}:
+    get:
+      tags: [p2]
+      summary: (P2) Download the encrypted blob; the first open is recorded
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Blob, content: { application/octet-stream: { schema: { type: string, format: binary } } } }
+        '404': { $ref: '#/components/responses/Error' }
+  /v1/share/{id}/reply:
+    post:
+      tags: [p2]
+      summary: (P2) Encrypted reply to a quote (accept or reject)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody: { required: true, content: { application/octet-stream: { schema: { type: string, format: binary } } } }
+      responses:
+        '201': { description: Stored }
+  /v1/inbox/register:
+    post:
+      tags: [p2]
+      summary: (P2) Register an inbox address with the company public key
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [publicKey], properties: { publicKey: { type: string } } } } } }
+      responses:
+        '201': { description: Address, content: { application/json: { schema: { type: object, properties: { id: { type: string }, address: { type: string } } } } } }
+  /v1/inbox/{id}:
+    get:
+      tags: [p2]
+      summary: (P2) List encrypted messages waiting in the inbox
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Messages, content: { application/json: { schema: { type: object } } } }
+  /v1/inbox/{id}/{msg}:
+    delete:
+      tags: [p2]
+      summary: (P2) Delete a fetched message
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: msg, in: path, required: true, schema: { type: string } }
+      responses:
+        '204': { description: Deleted }
+  /v1/assistant/jobs:
+    post:
+      tags: [p2]
+      summary: (P2) Upload e-mail jobs encrypted with the server key; each is deleted after sending
+      requestBody: { required: true, content: { application/json: { schema: { type: object } } } }
+      responses:
+        '201': { description: Scheduled }
+    delete:
+      tags: [p2]
+      summary: (P2) Cancel all jobs of the caller
+      responses:
+        '204': { description: Cancelled }
+components:
+  securitySchemes:
+    adminToken: { type: http, scheme: bearer }
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, pattern: '^[A-Z_]+$', examples: [BAD_REQUEST, NOT_FOUND, RATE_LIMITED, UPSTREAM_UNAVAILABLE, HOST_NOT_ALLOWED, INVALID_TOKEN] }
+            message: { type: string }
+    Health:
+      type: object
+      required: [status, version, time]
+      properties:
+        status: { type: string, enum: [ok, degraded] }
+        version: { type: string }
+        time: { type: string, format: date-time }
+        upstreams: { type: object, additionalProperties: { type: string, enum: [ok, down, unknown] } }
+    CompanyLookup:
+      type: object
+      required: [name, country]
+      properties:
+        name: { type: string }
+        ico: { type: [string, 'null'] }
+        dic: { type: [string, 'null'] }
+        icDph: { type: [string, 'null'] }
+        legalForm: { type: [string, 'null'], description: Mapped to Company.legalForm }
+        legalFormText: { type: [string, 'null'] }
+        registerEntry: { type: [string, 'null'] }
+        country: { type: string, pattern: '^[A-Z]{2}$' }
+        address:
+          type: object
+          properties:
+            street: { type: [string, 'null'] }
+            city: { type: [string, 'null'] }
+            zip: { type: [string, 'null'] }
+            country: { type: string }
+        source: { type: string, enum: [RPO, ARES, FS] }
+        checkedAt: { type: string, format: date-time }
+    EkasaReceipt:
+      type: object
+      required: [receiptId]
+      properties:
+        receiptId: { type: string }
+        okp: { type: [string, 'null'] }
+        issuedAt: { type: [string, 'null'], format: date-time }
+        seller: { type: object, properties: { name: { type: string }, ico: { type: string }, dic: { type: string }, icDph: { type: [string, 'null'] }, address: { type: string } } }
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              qty: { type: string }
+              price: { type: string }
+              vatRate: { type: string }
+        totals: { type: object, properties: { total: { type: string }, vat: { type: object, additionalProperties: { type: string } } } }
