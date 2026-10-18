@@ -1,0 +1,9 @@
+{
+  "$comment": "Official download address of each XSD named in packages/core/tax/forms/*.json. The addresses are filled in by whoever downloads the schemas from the catalogue of Finančná správa; until then the XSD test is skipped.",
+  "catalogue": "https://www.financnasprava.sk/sk/elektronicke-sluzby/verejne-sluzby/katalogy",
+  "files": {
+    "kv_dph_2025.xsd": { "url": null, "form": "KVDPHv25" },
+    "sv_dph.xsd": { "url": null, "form": "SVDPH" },
+    "dphv25.xsd": { "url": null, "form": "DPHv25" }
+  }
+}

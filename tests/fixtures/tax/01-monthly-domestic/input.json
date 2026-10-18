@@ -1,0 +1,612 @@
+{
+  "title": "Domestic sales and purchases of one month at all three rates",
+  "period": "2026-03",
+  "today": "2026-04-10",
+  "company": {
+    "id": "company-1",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "name": "Biela Orlica s. r. o.",
+    "legalForm": "SRO",
+    "taxpayerType": "PO",
+    "ico": "36835587",
+    "dic": "2020123457",
+    "icDph": "SK2020123457",
+    "vatMode": "PAYER",
+    "vatPeriod": "MONTH",
+    "cashBasis": false,
+    "oss": false,
+    "accountingMode": "EXTERNAL",
+    "address": {
+      "street": "Hlavná 12",
+      "city": "Bratislava",
+      "zip": "811 01",
+      "country": "SK"
+    },
+    "email": "uctaren@example.sk",
+    "phone": "+421 2 1234 5678",
+    "closedPeriods": []
+  },
+  "documents": [
+    {
+      "id": "fa2026001",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA2026001",
+      "issueDate": "2026-03-02",
+      "taxDate": "2026-03-02",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l1",
+          "kind": "ITEM",
+          "name": "Konzultácie",
+          "qty": "10",
+          "unitPrice": "100.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "fa2026002",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA2026002",
+      "issueDate": "2026-03-10",
+      "taxDate": "2026-03-09",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Beta a. s.",
+        "ico": "22222222",
+        "dic": "2022345688",
+        "icDph": "SK2022345688",
+        "address": {
+          "city": "Žilina",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l2",
+          "kind": "ITEM",
+          "name": "Knihy",
+          "qty": "4",
+          "unitPrice": "25.00",
+          "priceType": "NET",
+          "vatRate": "5",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        },
+        {
+          "id": "l3",
+          "kind": "ITEM",
+          "name": "Reštauračné služby",
+          "qty": "2",
+          "unitPrice": "50.00",
+          "priceType": "NET",
+          "vatRate": "19",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        },
+        {
+          "id": "l4",
+          "kind": "ITEM",
+          "name": "Licencia",
+          "qty": "1",
+          "unitPrice": "300.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "fa2026003",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA2026003",
+      "issueDate": "2026-03-15",
+      "taxDate": "2026-03-15",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Ján Novák",
+        "address": {
+          "city": "Nitra",
+          "country": "SK"
+        },
+        "vatPayer": false
+      },
+      "lines": [
+        {
+          "id": "l5",
+          "kind": "ITEM",
+          "name": "Oprava",
+          "qty": "1",
+          "unitPrice": "200.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "fa2026004",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA2026004",
+      "issueDate": "2026-03-31",
+      "taxDate": "2026-03-31",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Malá firma",
+        "ico": "33333333",
+        "dic": "1020304054",
+        "icDph": null,
+        "address": {
+          "city": "Trnava",
+          "country": "SK"
+        },
+        "vatPayer": false
+      },
+      "lines": [
+        {
+          "id": "l6",
+          "kind": "ITEM",
+          "name": "Tlač",
+          "qty": "1",
+          "unitPrice": "80.00",
+          "priceType": "NET",
+          "vatRate": "19",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "fa2026005",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA2026005",
+      "issueDate": "2026-04-01",
+      "taxDate": "2026-04-01",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l7",
+          "kind": "ITEM",
+          "name": "Konzultácie",
+          "qty": "1",
+          "unitPrice": "100.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "fa2026006",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "DRAFT",
+      "number": "FA2026006",
+      "issueDate": "2026-03-20",
+      "taxDate": "2026-03-20",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l8",
+          "kind": "ITEM",
+          "name": "Návrh",
+          "qty": "1",
+          "unitPrice": "50.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "df1001",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "RECEIVED_INVOICE",
+      "status": "PROCESSED",
+      "number": "2026/0457",
+      "issueDate": "2026-02-27",
+      "taxDate": "2026-02-27",
+      "dueDate": null,
+      "receivedDate": "2026-03-03",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Gama s. r. o.",
+        "ico": "44444444",
+        "dic": "2023456798",
+        "icDph": "SK2023456798",
+        "address": {
+          "city": "Prešov",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l9",
+          "kind": "ITEM",
+          "name": "Nájom",
+          "qty": "1",
+          "unitPrice": "1000.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "df1002",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "RECEIVED_INVOICE",
+      "status": "PROCESSED",
+      "number": "F-88",
+      "issueDate": "2026-03-12",
+      "taxDate": "2026-03-12",
+      "dueDate": null,
+      "receivedDate": "2026-03-12",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Delta s. r. o.",
+        "ico": "55555555",
+        "dic": "2024567897",
+        "icDph": "SK2024567897",
+        "address": {
+          "city": "Banská Bystrica",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l10",
+          "kind": "ITEM",
+          "name": "Kancelárske potreby",
+          "qty": "1",
+          "unitPrice": "40.00",
+          "priceType": "NET",
+          "vatRate": "19",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        },
+        {
+          "id": "l11",
+          "kind": "ITEM",
+          "name": "Káva",
+          "qty": "1",
+          "unitPrice": "10.00",
+          "priceType": "NET",
+          "vatRate": "5",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "bl1001",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "EXPENSE_RECEIPT",
+      "status": "PROCESSED",
+      "number": "O-123-1",
+      "issueDate": "2026-03-18",
+      "taxDate": "2026-03-18",
+      "dueDate": null,
+      "receivedDate": "2026-03-18",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Delta s. r. o.",
+        "ico": "55555555",
+        "dic": "2024567897",
+        "icDph": "SK2024567897",
+        "address": {
+          "city": "Banská Bystrica",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l12",
+          "kind": "ITEM",
+          "name": "Pohonné hmoty",
+          "qty": "1",
+          "unitPrice": "60.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "CASH",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    }
+  ],
+  "vies": {}
+}

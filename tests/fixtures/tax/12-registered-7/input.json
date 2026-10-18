@@ -1,0 +1,211 @@
+{
+  "title": "Person registered under § 7a: VAT on services from abroad, no deduction, SV for services supplied",
+  "period": "2026-03",
+  "today": "2026-04-10",
+  "company": {
+    "id": "company-1",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "name": "Ján Malý",
+    "legalForm": "FO_ZIVNOST",
+    "taxpayerType": "FO",
+    "ico": "36835587",
+    "dic": "2020123457",
+    "icDph": "SK2020123457",
+    "vatMode": "REGISTERED_7",
+    "vatPeriod": "MONTH",
+    "cashBasis": false,
+    "oss": false,
+    "accountingMode": "EXTERNAL",
+    "address": {
+      "street": "Hlavná 12",
+      "city": "Bratislava",
+      "zip": "811 01",
+      "country": "SK"
+    },
+    "email": "uctaren@example.sk",
+    "phone": "+421 2 1234 5678",
+    "closedPeriods": []
+  },
+  "documents": [
+    {
+      "id": "r7-df1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "RECEIVED_INVOICE",
+      "status": "PROCESSED",
+      "number": "AS-77",
+      "issueDate": "2026-03-03",
+      "taxDate": "2026-03-03",
+      "dueDate": null,
+      "receivedDate": "2026-03-04",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Alpen Software GmbH",
+        "icDph": "ATU12345678",
+        "address": {
+          "city": "Wien",
+          "country": "AT"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l66",
+          "kind": "ITEM",
+          "name": "Reklama",
+          "qty": "1",
+          "unitPrice": "300.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "r7-fa1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "2026001",
+      "issueDate": "2026-03-20",
+      "taxDate": "2026-03-20",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Nord GmbH",
+        "icDph": "DE123456789",
+        "address": {
+          "city": "Berlin",
+          "country": "DE"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l67",
+          "kind": "ITEM",
+          "name": "Grafika",
+          "qty": "1",
+          "unitPrice": "600.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "r7-fa2",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "2026002",
+      "issueDate": "2026-03-21",
+      "taxDate": "2026-03-21",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Ján Novák",
+        "address": {
+          "city": "Nitra",
+          "country": "SK"
+        },
+        "vatPayer": false
+      },
+      "lines": [
+        {
+          "id": "l68",
+          "kind": "ITEM",
+          "name": "Grafika",
+          "qty": "1",
+          "unitPrice": "200.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "O",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    }
+  ],
+  "vies": {
+    "DE123456789": "VALID"
+  }
+}
