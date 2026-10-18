@@ -1,0 +1,67 @@
+{
+  "$comment": "Edge cases: zero and negative quantities, many tiny lines, empty optional fields, a credit note with positive amounts. Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "zero quantity keeps the group with a zero base",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "0", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "0.00", "vat": "0.00", "gross": "0.00", "breakdown": [ { "category": "S", "rate": "23", "base": "0.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "negative quantity (return)",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "-1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "-100.00", "vat": "-23.00", "gross": "-123.00", "payable": "-123.00" }
+    },
+    {
+      "name": "twenty one-cent lines",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l01", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l02", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l03", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l04", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l05", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l06", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l07", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l08", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l09", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l10", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l11", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l12", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l13", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l14", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l15", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l16", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l17", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l18", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l19", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l20", "name": "a", "qty": "1", "unitPrice": "0.01", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "0.20", "vat": "0.05", "gross": "0.25", "lines": [ { "id": "l01", "vat": "0.00" } ] }
+    },
+    {
+      "name": "empty optional fields are defaults",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "baseQty": null, "discountPct": "", "priceType": "NET", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "100.00", "vat": "23.00" }
+    },
+    {
+      "name": "a rate written as 23.0 joins the 23 group",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "23.0" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "breakdown": [ { "category": "S", "rate": "23", "base": "20.00", "vat": "4.60" } ] }
+    },
+    {
+      "name": "credit note with positive amounts",
+      "document": { "kind": "CREDIT_NOTE", "currency": "EUR", "links": [ { "kind": "CORRECTS", "docId": "inv1" } ], "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "50", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "50.00", "vat": "11.50", "gross": "61.50", "prepaid": "0.00", "payable": "61.50" }
+    },
+    {
+      "name": "half a cent rounds up on the line, VAT on it rounds down",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "0.005", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "0.01", "vat": "0.00", "gross": "0.01" }
+    },
+    {
+      "name": "document without a lines array",
+      "document": { "currency": "EUR" },
+      "expected": { "net": "0.00", "payable": "0.00", "breakdown": [] }
+    }
+  ]
+}

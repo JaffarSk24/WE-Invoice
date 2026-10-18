@@ -1,0 +1,83 @@
+{
+  "$comment": "VAT categories of UNCL5305 used in Slovakia: S, Z, E, AE, K, G, O with exemption reasons (BT-120 / BT-121) and rate normalisation. Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "reverse charge (AE)",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1000", "vatCategory": "AE", "exemptionReasonCode": "VATEX-EU-AE" } ] },
+      "expected": { "net": "1000.00", "vat": "0.00", "gross": "1000.00", "payable": "1000.00",
+        "breakdown": [ { "category": "AE", "rate": "0", "base": "1000.00", "vat": "0.00", "exemptionReasonCode": "VATEX-EU-AE", "exemptionReasonText": null } ] }
+    },
+    {
+      "name": "exempt (E) with reason text",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "2", "unitPrice": "40", "vatCategory": "E", "exemptionReasonCode": "VATEX-EU-132", "exemptionReasonText": "§ 39 zákona o DPH" } ] },
+      "expected": { "net": "80.00", "vat": "0.00", "gross": "80.00",
+        "breakdown": [ { "category": "E", "rate": "0", "base": "80.00", "vat": "0.00", "exemptionReasonCode": "VATEX-EU-132", "exemptionReasonText": "§ 39 zákona o DPH" } ] }
+    },
+    {
+      "name": "intra-community supply (K)",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "250.50", "vatCategory": "K", "exemptionReasonCode": "VATEX-EU-IC" } ] },
+      "expected": { "net": "250.50", "vat": "0.00", "gross": "250.50", "breakdown": [ { "category": "K", "rate": "0", "base": "250.50", "vat": "0.00", "exemptionReasonCode": "VATEX-EU-IC" } ] }
+    },
+    {
+      "name": "export (G)",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "4", "unitPrice": "12.25", "vatCategory": "G", "exemptionReasonCode": "VATEX-EU-G" } ] },
+      "expected": { "net": "49.00", "vat": "0.00", "gross": "49.00", "breakdown": [ { "category": "G", "rate": "0", "base": "49.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "outside the scope of VAT (O) has no rate",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "O", "exemptionReasonCode": "VATEX-EU-O" } ] },
+      "expected": { "net": "100.00", "vat": "0.00", "gross": "100.00", "breakdown": [ { "category": "O", "rate": null, "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "taxed and reverse charge lines",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "100", "vatCategory": "AE", "exemptionReasonCode": "VATEX-EU-AE" } ] },
+      "expected": { "net": "200.00", "vat": "23.00", "gross": "223.00",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" }, { "category": "AE", "rate": "0", "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "a rate on an O line is ignored",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "O", "vatRate": "23" } ] },
+      "expected": { "vat": "0.00", "breakdown": [ { "category": "O", "rate": null, "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "a rate on an E line becomes zero",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "E", "vatRate": "23" } ] },
+      "expected": { "vat": "0.00", "breakdown": [ { "category": "E", "rate": "0", "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "zero rated and standard rated",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "Z" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "vat": "23.00", "gross": "223.00", "breakdown": [ { "category": "Z", "rate": "0", "base": "100.00", "vat": "0.00" }, { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" } ] }
+    },
+    {
+      "name": "exemption text without a code",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10", "vatCategory": "E", "exemptionReasonText": "§ 42" } ] },
+      "expected": { "breakdown": [ { "category": "E", "rate": "0", "base": "10.00", "vat": "0.00", "exemptionReasonCode": null, "exemptionReasonText": "§ 42" } ] }
+    },
+    {
+      "name": "rates are normalised: 23.00 is 23, 19.5 stays",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23.00" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l3", "name": "c", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "19.5" } ] },
+      "expected": { "vat": "65.50", "breakdown": [ { "category": "S", "rate": "23", "base": "200.00", "vat": "46.00" }, { "category": "S", "rate": "19.5", "base": "100.00", "vat": "19.50" } ] }
+    },
+    {
+      "name": "standard category with a zero rate computes zero VAT",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "0" } ] },
+      "expected": { "vat": "0.00", "breakdown": [ { "category": "S", "rate": "0", "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "the first reason on a group names the group",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10", "vatCategory": "E" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "10", "vatCategory": "E", "exemptionReasonCode": "VATEX-EU-132" },
+        { "id": "l3", "name": "c", "qty": "1", "unitPrice": "10", "vatCategory": "E", "exemptionReasonText": "other" } ] },
+      "expected": { "breakdown": [ { "category": "E", "rate": "0", "base": "30.00", "vat": "0.00", "exemptionReasonCode": "VATEX-EU-132", "exemptionReasonText": null } ] }
+    }
+  ]
+}

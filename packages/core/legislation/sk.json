@@ -27,6 +27,9 @@
   "archiveYears": [
     { "years": 10, "validFrom": "2004-05-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
   ],
+  "cashRounding": [
+    { "step": "0.05", "law": "§ 3 ods. 4 zákona č. 18/1996 Z. z. o cenách", "validFrom": "2022-07-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1996/18/", "verified": false, "verifiedAt": null }
+  ],
   "cashPaymentLimitB2b": [
     { "amount": "5000", "law": "zákon č. 394/2012 Z. z.", "validFrom": "2013-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2012/394/", "verified": false, "verifiedAt": null }
   ],

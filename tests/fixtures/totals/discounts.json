@@ -1,0 +1,104 @@
+{
+  "$comment": "Line discounts (BT-136), document discounts (BT-107) split over VAT groups, both at once, a negative document discount as a charge (BT-108). Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "line discount 10 %",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "discountPct": "10", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "90.00", "allowances": "0.00", "net": "90.00", "vat": "20.70", "gross": "110.70",
+        "lines": [ { "id": "l1", "gross": "100.00", "allowance": "10.00", "net": "90.00" } ],
+        "breakdown": [ { "category": "S", "rate": "23", "base": "90.00", "vat": "20.70" } ] }
+    },
+    {
+      "name": "line discount rounded before the net",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "19.99", "discountPct": "15", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "16.99", "vat": "3.91", "gross": "20.90", "lines": [ { "id": "l1", "allowance": "3.00", "net": "16.99" } ] }
+    },
+    {
+      "name": "document discount 10 % on one group",
+      "document": { "currency": "EUR", "docDiscount": { "pct": "10" }, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "100.00", "allowances": "10.00", "charges": "0.00", "net": "90.00", "vat": "20.70", "gross": "110.70",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "90.00", "vat": "20.70", "allowance": "10.00" } ],
+        "docAllowances": [ { "category": "S", "rate": "23", "amount": "10.00", "charge": false } ] }
+    },
+    {
+      "name": "document discount 10 % over two rates",
+      "document": { "currency": "EUR", "docDiscount": { "pct": "10" }, "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "50", "vatCategory": "S", "vatRate": "19" } ] },
+      "expected": { "lineNet": "150.00", "allowances": "15.00", "net": "135.00", "vat": "29.25", "gross": "164.25",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "90.00", "vat": "20.70" }, { "category": "S", "rate": "19", "base": "45.00", "vat": "8.55" } ] }
+    },
+    {
+      "name": "document discount amount split in proportion",
+      "document": { "currency": "EUR", "docDiscount": { "amount": "10" }, "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "50", "vatCategory": "S", "vatRate": "19" } ] },
+      "expected": { "lineNet": "150.00", "allowances": "10.00", "net": "140.00", "vat": "30.34", "gross": "170.34",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "93.33", "vat": "21.47", "allowance": "6.67" }, { "category": "S", "rate": "19", "base": "46.67", "vat": "8.87", "allowance": "3.33" } ] }
+    },
+    {
+      "name": "document discount amount, rounding remainder on the largest group",
+      "document": { "currency": "EUR", "docDiscount": { "amount": "1" }, "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "19" },
+        { "id": "l3", "name": "c", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "5" } ] },
+      "expected": { "allowances": "1.00", "net": "29.00", "vat": "4.54", "gross": "33.54",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "9.66", "vat": "2.22", "allowance": "0.34" }, { "category": "S", "rate": "19", "base": "9.67", "vat": "1.84", "allowance": "0.33" }, { "category": "S", "rate": "5", "base": "9.67", "vat": "0.48", "allowance": "0.33" } ] }
+    },
+    {
+      "name": "line discount and document discount at once",
+      "document": { "currency": "EUR", "docDiscount": { "pct": "10" }, "lines": [ { "id": "l1", "name": "a", "qty": "2", "unitPrice": "100", "discountPct": "5", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "190.00", "allowances": "19.00", "net": "171.00", "vat": "39.33", "gross": "210.33",
+        "lines": [ { "id": "l1", "gross": "200.00", "allowance": "10.00", "net": "190.00" } ],
+        "breakdown": [ { "category": "S", "rate": "23", "base": "171.00", "vat": "39.33" } ] }
+    },
+    {
+      "name": "document discount amount over uneven groups",
+      "document": { "currency": "EUR", "docDiscount": { "amount": "55" }, "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "10", "vatCategory": "S", "vatRate": "5" } ] },
+      "expected": { "allowances": "55.00", "net": "55.00", "vat": "11.75", "gross": "66.75",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "50.00", "vat": "11.50" }, { "category": "S", "rate": "5", "base": "5.00", "vat": "0.25" } ] }
+    },
+    {
+      "name": "negative document discount is a charge",
+      "document": { "currency": "EUR", "docDiscount": { "amount": "-5" }, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "allowances": "0.00", "charges": "5.00", "net": "105.00", "vat": "24.15", "gross": "129.15",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "105.00", "vat": "24.15", "allowance": "0.00", "charge": "5.00" } ],
+        "docAllowances": [ { "category": "S", "rate": "23", "amount": "5.00", "charge": true } ] }
+    },
+    {
+      "name": "line discount 100 %",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "discountPct": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "0.00", "net": "0.00", "vat": "0.00", "gross": "0.00", "breakdown": [ { "category": "S", "rate": "23", "base": "0.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "document discount over a taxed and a reverse charge group",
+      "document": { "currency": "EUR", "docDiscount": { "pct": "10" }, "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "100", "vatCategory": "AE", "exemptionReasonCode": "VATEX-EU-AE" } ] },
+      "expected": { "allowances": "20.00", "net": "180.00", "vat": "20.70", "gross": "200.70",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "90.00", "vat": "20.70" }, { "category": "AE", "rate": "0", "base": "90.00", "vat": "0.00", "exemptionReasonCode": "VATEX-EU-AE" } ] }
+    },
+    {
+      "name": "percentage wins when both percentage and amount are set",
+      "document": { "currency": "EUR", "docDiscount": { "pct": "10", "amount": "50" }, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "allowances": "10.00", "net": "90.00" }
+    },
+    {
+      "name": "document discount amount on lines without value goes to the first group",
+      "document": { "currency": "EUR", "docDiscount": { "amount": "5" }, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "0", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "allowances": "5.00", "net": "-5.00", "vat": "-1.15", "gross": "-6.15", "breakdown": [ { "category": "S", "rate": "23", "base": "-5.00", "vat": "-1.15" } ] }
+    },
+    {
+      "name": "line discount with a long fraction",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "3", "unitPrice": "33.33", "discountPct": "33.33", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "66.66", "vat": "15.33", "gross": "81.99", "lines": [ { "id": "l1", "gross": "99.99", "allowance": "33.33", "net": "66.66" } ] }
+    },
+    {
+      "name": "empty document discount object changes nothing",
+      "document": { "currency": "EUR", "docDiscount": { "pct": null, "amount": null }, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "allowances": "0.00", "charges": "0.00", "net": "100.00", "docAllowances": [] }
+    }
+  ]
+}

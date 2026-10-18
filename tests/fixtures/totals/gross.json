@@ -1,0 +1,62 @@
+{
+  "$comment": "Prices entered with VAT (priceType GROSS): the unit price is converted to net at 4 places and the net calculation follows; a difference against the total the user expects is reported per line as grossDiff, never hidden. Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "123 with VAT is 100 net",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "123", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "100.00", "vat": "23.00", "gross": "123.00", "lines": [ { "id": "l1", "unitNet": "100.0000", "net": "100.00", "total": "123.00", "grossDiff": null } ] }
+    },
+    {
+      "name": "10 with VAT: 8.1301 net",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "8.13", "vat": "1.87", "gross": "10.00", "lines": [ { "id": "l1", "unitNet": "8.1301", "net": "8.13", "grossDiff": null } ] }
+    },
+    {
+      "name": "three pieces at 10 with VAT",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "3", "unitPrice": "10", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "24.39", "vat": "5.61", "gross": "30.00", "lines": [ { "id": "l1", "grossDiff": null } ] }
+    },
+    {
+      "name": "seven pieces at 9.99 with VAT",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "7", "unitPrice": "9.99", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "56.85", "vat": "13.08", "gross": "69.93", "lines": [ { "id": "l1", "unitNet": "8.1220", "grossDiff": null } ] }
+    },
+    {
+      "name": "a tiny gross price times a large quantity shows the difference",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1000", "unitPrice": "0.01", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "8.10", "vat": "1.86", "gross": "9.96", "lines": [ { "id": "l1", "unitNet": "0.0081", "net": "8.10", "total": "9.96", "grossDiff": "0.04" } ] }
+    },
+    {
+      "name": "gross price with a line discount",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "123", "priceType": "GROSS", "discountPct": "10", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "90.00", "vat": "20.70", "gross": "110.70", "lines": [ { "id": "l1", "allowance": "10.00", "net": "90.00", "grossDiff": null } ] }
+    },
+    {
+      "name": "gross price at 19 %",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "119", "priceType": "GROSS", "vatCategory": "S", "vatRate": "19" } ] },
+      "expected": { "net": "100.00", "vat": "19.00", "gross": "119.00" }
+    },
+    {
+      "name": "gross price at 5 %",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "2", "unitPrice": "5.25", "priceType": "GROSS", "vatCategory": "S", "vatRate": "5" } ] },
+      "expected": { "net": "10.00", "vat": "0.50", "gross": "10.50", "lines": [ { "id": "l1", "unitNet": "5.0000" } ] }
+    },
+    {
+      "name": "gross price on a reverse charge line is the net price",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "50", "priceType": "GROSS", "vatCategory": "AE" } ] },
+      "expected": { "net": "50.00", "vat": "0.00", "lines": [ { "id": "l1", "unitNet": "50.0000", "net": "50.00" } ] }
+    },
+    {
+      "name": "net and gross lines at the same rate share one group",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "priceType": "NET", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "123", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "200.00", "vat": "46.00", "gross": "246.00", "breakdown": [ { "category": "S", "rate": "23", "base": "200.00", "vat": "46.00" } ] }
+    },
+    {
+      "name": "gross price with a base quantity",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "250", "unitPrice": "12.30", "baseQty": "100", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "25.00", "vat": "5.75", "gross": "30.75", "lines": [ { "id": "l1", "unitNet": "10.0000", "grossDiff": null } ] }
+    }
+  ]
+}
