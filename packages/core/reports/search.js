@@ -8,7 +8,7 @@ import { isReceived } from '../documents/kinds.js';
 import { parseAmount, round } from '../money/index.js';
 
 export const SEARCH_TYPES = Object.freeze(['document', 'received', 'contact', 'item']);
-const COMBINING = /[̀-ͯ]/g;
+const COMBINING = /[\u0300-\u036f]/g;
 
 /** Lower case without diacritics: "Žilina" -> "zilina". */
 export function fold(text) {

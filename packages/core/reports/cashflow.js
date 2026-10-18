@@ -92,7 +92,7 @@ export function cashflowForecast(data = {}, ctx = {}) {
     if (dueDate < today) {
       if (incoming) overdueIn = add(overdueIn, due); else overdueOut = add(overdueOut, due);
     }
-    items.push({ source: incoming ? 'receivable' : 'payable', id: doc.id, number: doc.number || '', name: party.name, dueDate, date: expected < today ? today : expected, amount: incoming ? due : neg(due) });
+    items.push({ source: incoming ? 'receivable' : 'payable', id: doc.id, kind: doc.kind, number: doc.number || '', name: party.name, dueDate, date: expected < today ? today : expected, amount: incoming ? due : neg(due) });
   }
 
   for (const template of data.recurringTemplates || []) {
@@ -112,7 +112,7 @@ export function cashflowForecast(data = {}, ctx = {}) {
     for (const run of recurringRuns(template, until)) {
       const date = addDays(run, shift);
       if (date > until) break;
-      items.push({ source: 'recurring', id: template.id, number: '', name: template.name || party.name, dueDate: date, date: date < today ? today : date, amount });
+      items.push({ source: 'recurring', id: template.id, kind: doc.kind || 'INVOICE', number: '', name: template.name || party.name, dueDate: date, date: date < today ? today : date, amount });
     }
   }
 
