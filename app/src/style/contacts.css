@@ -1,0 +1,57 @@
+/* Contacts, shared bits of the CRM screens (forms with repeating rows,
+   back links, fact lists) and the VAT traffic light. */
+
+.view-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 4px; }
+.back-link svg { width: 16px; height: 16px; }
+.contacts-search { margin-bottom: 16px; max-width: 520px; }
+.contact-name { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.contact-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 14px; margin-top: 4px; }
+
+.vat-light { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.vat-light svg { width: 14px; height: 14px; }
+.vat-green { color: var(--success); }
+.vat-yellow { color: var(--warning); }
+.vat-red { color: var(--danger); }
+.vat-grey { color: var(--text-muted); }
+
+.contact-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+.contact-overview h2 { font-size: 15px; margin-bottom: 10px; }
+.contact-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; font-size: 14px; }
+.contact-facts dt { color: var(--text-secondary); }
+.contact-facts dd { margin: 0; overflow-wrap: anywhere; }
+.contact-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 14px; padding: 0; margin: 12px 0; }
+.contact-list .badge { margin-left: 4px; color: var(--text-secondary); }
+.contact-docs { width: 100%; margin-top: 12px; }
+.pre-line { white-space: pre-line; }
+
+.form-section { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
+.form-section legend { font-weight: 600; font-size: 15px; margin-bottom: 10px; padding: 0; }
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.ico-lookup { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+.ico-lookup .field { flex: 1; min-width: 160px; }
+.ico-lookup .btn { margin-bottom: 16px; }
+.ico-lookup p { flex-basis: 100%; margin: -10px 0 8px; }
+.repeat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.repeat-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.repeat-row > input { flex: 1; min-width: 140px; }
+.purpose-boxes { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.inline-check { min-height: 32px; font-size: 13px; }
+
+.lookup-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.lookup-row input { flex: 1; min-width: 180px; }
+.lookup-results { list-style: none; padding: 0; margin: 8px 0 16px; display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; }
+.lookup-result {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; text-align: left; padding: 10px 12px; min-height: var(--touch-target);
+  border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); color: var(--text-primary); font: inherit; cursor: pointer;
+}
+.lookup-result:hover, .lookup-result:focus-visible { border-color: var(--border-focus); background: var(--bg-card-hover); }
+.merge-group { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 14px; margin: 10px 0; display: flex; flex-direction: column; gap: 4px; }
+.merge-group legend { font-size: 13px; color: var(--text-secondary); padding: 0 4px; }
+.merge-group .btn { align-self: flex-start; margin-top: 6px; }
+
+@media (max-width: 767px) {
+  .view-actions { width: 100%; }
+  .view-actions .btn { flex: 1; justify-content: center; }
+  .contact-docs { display: block; overflow-x: auto; }
+}
