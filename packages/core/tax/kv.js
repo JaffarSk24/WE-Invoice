@@ -48,6 +48,7 @@ const perDocument = (e) => `${e.docId}|${e.rate ?? ''}|${e.paymentId || ''}`;
 function docRow(e, partnerField) {
   return {
     docId: e.docId,
+    kind: e.kind,
     [partnerField]: e.partner.icDph || '',
     number: e.number || '',
     date: e.date,
@@ -94,7 +95,7 @@ export function buildKv(records, ctx = {}) {
     total: simplified.length ? groupBy(simplified, () => 'all', () => ({}))[0] : null,
     suppliers: perSupplier ? groupBy(simplified, e => e.partner.icDph || '', e => ({ supplier: e.partner.icDph || '' })).sort((a, b) => a.supplier.localeCompare(b.supplier)) : []
   };
-  const correctionRow = (e, field) => ({ docId: e.docId, [field]: e.partner.icDph || '', number: e.number || '', original: e.originalNumber || '', rate: rateText(e.rate) });
+  const correctionRow = (e, field) => ({ docId: e.docId, kind: e.kind, [field]: e.partner.icDph || '', number: e.number || '', original: e.originalNumber || '', rate: rateText(e.rate) });
   const c1 = groupBy(domesticOut.filter(e => e.correction && isSkPayer(e.partner)), perDocument, e => correctionRow(e, 'buyer'));
   const c2 = groupBy(deducted.filter(e => e.correction), perDocument, e => correctionRow(e, 'supplier'));
   const d1 = rateTotals(domesticOut.filter(e => e.ekasa));

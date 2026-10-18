@@ -1,0 +1,59 @@
+/* The tax screens: VAT records, kontrolný výkaz, súhrnný výkaz and the VAT
+   return. Colours only through the tokens of ui/tokens.css. */
+
+.tax-body { display: flex; flex-direction: column; gap: 16px; }
+.tax-disclaimer { margin-top: 0; }
+.callout-success { border-color: var(--success); color: var(--text-primary); }
+.callout-success svg { color: var(--success); }
+
+.tax-period { display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 12px; }
+.tax-period-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; min-width: 180px; text-align: center; }
+
+.tax-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; }
+.tax-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.tax-field-label { color: var(--text-secondary); font-weight: 600; }
+.tax-deadline { margin: 0 0 8px; }
+.tax-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.tax-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.tax-closing { display: flex; align-items: center; gap: 10px; }
+.tax-closing .badge { display: inline-flex; align-items: center; gap: 6px; }
+.tax-closing .badge svg { width: 14px; height: 14px; }
+.badge-locked { color: var(--warning); border-color: var(--warning); }
+.tax-filing { display: flex; align-items: center; gap: 8px; margin: 0; }
+.tax-filing svg { width: 16px; height: 16px; flex: none; }
+.tax-reason { width: 100%; min-height: 72px; background: var(--input-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; font: inherit; }
+
+.tax-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.tax-tile { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); }
+.tax-tile-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.tax-tile-value { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.tax-tile.is-due .tax-tile-value { color: var(--danger); }
+.tax-tile.is-refund .tax-tile-value { color: var(--success); }
+
+.tax-problems h2, .tax-preview h2, .tax-threshold h2 { font-size: 16px; margin-bottom: 8px; }
+.tax-problem-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.tax-problem { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: var(--radius-sm); background: var(--overlay-02); font-size: 14px; }
+.tax-problem svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.tax-problem.is-error svg { color: var(--danger); }
+.tax-problem.is-warning svg { color: var(--warning); }
+.tax-problem-text { flex: 1; min-width: 0; }
+.tax-problem-link { white-space: nowrap; }
+
+.tax-sections { display: flex; flex-direction: column; gap: 16px; }
+.tax-section h3 { font-size: 14px; margin-bottom: 6px; color: var(--text-secondary); }
+.tax-table-wrap { overflow-x: auto; }
+.tax-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tax-table th, .tax-table td { padding: var(--row-padding-y) var(--row-padding-x); border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: top; }
+.tax-table th { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.tax-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tax-table tfoot td { font-weight: 700; }
+
+.tax-threshold { padding: 16px 18px; }
+.tax-xml summary { cursor: pointer; color: var(--text-secondary); font-weight: 600; }
+.tax-xml-text { max-height: 360px; overflow: auto; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 12px; white-space: pre; }
+
+@media (max-width: 767px) {
+  .tax-buttons { margin-left: 0; width: 100%; }
+  .tax-buttons .btn { flex: 1; }
+  .tax-period-name { min-width: 0; font-size: 16px; }
+}
