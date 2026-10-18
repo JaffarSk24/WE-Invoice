@@ -1,0 +1,4 @@
+Date started (UTC),Date completed (UTC),ID,Type,State,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+2026-10-05,2026-10-05,6720a1b2-0000-4000-8000-000000000001,TRANSFER,COMPLETED,From Alfa s.r.o.,FA20260001,Alfa s.r.o.,,EUR,1230.00,EUR,1230.00,0.00,5230.00,EUR Main,,,,
+2026-10-06,2026-10-06,6720a1b2-0000-4000-8000-000000000002,TRANSFER,COMPLETED,To Dodavatel s.r.o.,VS 2026555,,,EUR,-369.00,EUR,-369.00,0.20,4860.80,EUR Main,,,SK8583300000005566778899,SLSPSKBA
+2026-10-07,,6720a1b2-0000-4000-8000-000000000003,CARD_PAYMENT,PENDING,Coffee shop,,,4111********1111,EUR,-3.50,EUR,-3.50,0.00,4857.30,EUR Main,,,,

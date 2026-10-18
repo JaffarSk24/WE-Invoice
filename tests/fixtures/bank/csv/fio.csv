@@ -1,0 +1,7 @@
+"Výpis č. 10/2026 z účtu ""2400123456/2010"""
+"Majitel účtu: Vzorová firma s.r.o."
+"Období: 01.10.2026 - 31.10.2026"
+
+"ID pohybu";"Datum";"Objem";"Měna";"Protiúčet";"Název protiúčtu";"Kód banky";"Název banky";"KS";"VS";"SS";"Poznámka";"Zpráva pro příjemce";"Typ";"Provedl";"Upřesnění";"Komentář";"BIC";"ID pokynu"
+"26100001";"05.10.2026";"30750,00";"CZK";"670100-2212345678";"Alfa CZ s.r.o.";"6210";"mBank S.A.";"0308";"20260001";"";"";"Faktura FA20260001";"Bezhotovostní příjem";"";"";"";"";""
+"26100002";"06.10.2026";"-9225,50";"CZK";"123456789";"Dodavatel CZ s.r.o.";"0100";"Komerční banka";"";"2026555";"";"";"";"Bezhotovostní platba";"";"";"";"";"1001"

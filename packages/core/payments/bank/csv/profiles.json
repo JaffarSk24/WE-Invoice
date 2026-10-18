@@ -1,0 +1,150 @@
+{
+  "$comment": "CSV statement layouts of Slovak and Czech banks and of two payment institutions. Header names are compared without case, diacritics and a leading '#'. signature: names that must all be present for the profile to be detected. columns: for each field the header names to look for; the first non-empty cell of the listed columns wins. The layouts follow the public descriptions of the exports known on 2026-10-18 and must be checked against real exports of each bank before release (verified=false).",
+  "verified": false,
+  "verifiedAt": null,
+  "profiles": [
+    {
+      "id": "tatra",
+      "name": "Tatra banka",
+      "country": "SK",
+      "signature": ["datum zauctovania", "iban protistrany", "referencia platitela", "popis transakcie"],
+      "columns": {
+        "date": ["datum zauctovania"], "valueDate": ["datum valuty"], "amount": ["suma"], "currency": ["mena"],
+        "counterpartyName": ["nazov protistrany"], "counterpartyAccount": ["iban protistrany"],
+        "vs": ["variabilny symbol"], "ks": ["konstantny symbol"], "ss": ["specificky symbol"],
+        "symbols": ["referencia platitela"], "message": ["sprava pre prijimatela", "popis transakcie"], "ref": ["referencia platitela"]
+      }
+    },
+    {
+      "id": "slsp",
+      "name": "Slovenská sporiteľňa",
+      "country": "SK",
+      "signature": ["partner", "iban partnera", "referencia platby"],
+      "columns": {
+        "date": ["datum zauctovania"], "valueDate": ["datum valuty"], "amount": ["suma"], "currency": ["mena"],
+        "counterpartyName": ["partner"], "counterpartyAccount": ["iban partnera"],
+        "vs": ["variabilny symbol"], "ks": ["konstantny symbol"], "ss": ["specificky symbol"],
+        "symbols": ["referencia platby"], "message": ["sprava pre prijemcu", "poznamka"], "ref": ["cislo transakcie"]
+      }
+    },
+    {
+      "id": "vub",
+      "name": "VÚB banka",
+      "country": "SK",
+      "signature": ["datum spracovania", "cislo uctu protistrany", "debet", "kredit"],
+      "columns": {
+        "date": ["datum transakcie"], "valueDate": ["datum spracovania"], "debit": ["debet"], "credit": ["kredit"], "currency": ["mena"],
+        "counterpartyName": ["nazov protistrany"], "counterpartyAccount": ["cislo uctu protistrany"],
+        "vs": ["vs"], "ks": ["ks"], "ss": ["ss"], "message": ["popis"], "ref": ["identifikacia transakcie"]
+      }
+    },
+    {
+      "id": "csob-sk",
+      "name": "ČSOB (SK)",
+      "country": "SK",
+      "signature": ["ucet protistrany", "informacia pre prijemcu", "typ transakcie"],
+      "columns": {
+        "date": ["datum zauctovania"], "amount": ["suma"], "currency": ["mena"],
+        "counterpartyName": ["nazov protistrany"], "counterpartyAccount": ["ucet protistrany"],
+        "vs": ["vs"], "ks": ["ks"], "ss": ["ss"], "message": ["informacia pre prijemcu", "typ transakcie"], "ref": ["referencia banky"]
+      }
+    },
+    {
+      "id": "365bank",
+      "name": "365.bank",
+      "country": "SK",
+      "signature": ["protiucet", "meno protistrany", "id transakcie"],
+      "columns": {
+        "date": ["datum"], "amount": ["suma"], "currency": ["mena"],
+        "counterpartyName": ["meno protistrany"], "counterpartyAccount": ["protiucet"],
+        "vs": ["variabilny symbol"], "ks": ["konstantny symbol"], "ss": ["specificky symbol"], "message": ["poznamka"], "ref": ["id transakcie"]
+      }
+    },
+    {
+      "id": "prima",
+      "name": "Prima banka",
+      "country": "SK",
+      "signature": ["datum uctovania", "suma transakcie", "cislo protiuctu"],
+      "columns": {
+        "date": ["datum uctovania"], "valueDate": ["datum valuty"], "amount": ["suma transakcie"], "currency": ["mena"],
+        "counterpartyName": ["nazov protiuctu"], "counterpartyAccount": ["cislo protiuctu"],
+        "vs": ["vs"], "ks": ["ks"], "ss": ["ss"], "message": ["popis platby"], "ref": ["referencia"]
+      }
+    },
+    {
+      "id": "unicredit",
+      "name": "UniCredit Bank",
+      "country": "SK",
+      "signature": ["protiucet - iban", "protiucet - nazov", "detaily platby"],
+      "columns": {
+        "date": ["datum zauctovania"], "valueDate": ["datum valuty"], "amount": ["suma"], "currency": ["mena", "mena uctu"],
+        "counterpartyName": ["protiucet - nazov"], "counterpartyAccount": ["protiucet - iban"],
+        "vs": ["variabilny symbol"], "ks": ["konstantny symbol"], "ss": ["specificky symbol"], "message": ["detaily platby"], "ref": ["referencia transakcie"]
+      }
+    },
+    {
+      "id": "fio",
+      "name": "Fio banka",
+      "country": "CZ",
+      "signature": ["id pohybu", "objem", "kod banky", "nazev protiuctu"],
+      "columns": {
+        "date": ["datum"], "amount": ["objem"], "currency": ["mena"],
+        "counterpartyName": ["nazev protiuctu"], "counterpartyAccount": ["protiucet"], "counterpartyBankCode": ["kod banky"],
+        "vs": ["vs"], "ks": ["ks"], "ss": ["ss"], "message": ["zprava pro prijemce", "poznamka", "upresneni"], "ref": ["id pohybu"]
+      }
+    },
+    {
+      "id": "mbank",
+      "name": "mBank",
+      "country": "CZ",
+      "signature": ["datum uskutecneni transakce", "platce/prijemce", "castka transakce"],
+      "columns": {
+        "date": ["datum zauctovani transakce", "datum uskutecneni transakce"], "amount": ["castka transakce"],
+        "counterpartyName": ["platce/prijemce"], "counterpartyAccount": ["cislo uctu platce/prijemce"],
+        "vs": ["vs"], "ks": ["ks"], "ss": ["ss"], "message": ["zprava pro prijemce", "popis transakce"]
+      }
+    },
+    {
+      "id": "revolut-business",
+      "name": "Revolut Business",
+      "country": "LT",
+      "dateOrder": "ymd",
+      "signature": ["date completed (utc)", "payment currency", "beneficiary iban"],
+      "columns": {
+        "date": ["date completed (utc)", "date started (utc)"], "amount": ["amount"], "currency": ["payment currency"], "fee": ["fee"],
+        "counterpartyName": ["payer", "description"], "counterpartyAccount": ["beneficiary iban"],
+        "message": ["reference", "description"], "ref": ["id"], "state": ["state"]
+      }
+    },
+    {
+      "id": "wise",
+      "name": "Wise",
+      "country": "BE",
+      "signature": ["transferwise id", "payment reference", "running balance"],
+      "columns": {
+        "date": ["date"], "amount": ["amount"], "currency": ["currency"], "fee": ["total fees"],
+        "counterpartyName": ["payer name", "payee name", "merchant"], "counterpartyAccount": ["payee account number"],
+        "message": ["payment reference", "description"], "ref": ["transferwise id"]
+      }
+    }
+  ],
+  "generic": {
+    "date": ["datum zauctovania", "datum zauctovani", "booking date", "datum transakcie", "datum transakce", "transaction date", "datum", "date"],
+    "valueDate": ["datum valuty", "value date", "valuta"],
+    "amount": ["suma", "castka", "ciastka", "amount", "objem", "betrag"],
+    "debit": ["debet", "debit", "vydaj", "odchozi", "paid out"],
+    "credit": ["kredit", "credit", "prijem", "prichozi", "paid in"],
+    "currency": ["mena", "currency", "waehrung"],
+    "counterpartyName": ["nazov protistrany", "protistrana", "nazev protiuctu", "partner", "counterparty", "payee", "name"],
+    "counterpartyAccount": ["iban protistrany", "iban", "protiucet", "ucet protistrany", "counterparty iban"],
+    "counterpartyBankCode": ["kod banky", "bank code"],
+    "vs": ["variabilny symbol", "variabilni symbol", "vs"],
+    "ks": ["konstantny symbol", "konstantni symbol", "ks"],
+    "ss": ["specificky symbol", "ss"],
+    "message": ["sprava pre prijemcu", "zprava pro prijemce", "poznamka", "popis", "message", "description", "reference"],
+    "ref": ["referencia", "reference id", "id transakcie", "id"],
+    "fee": ["poplatok", "poplatek", "fee"],
+    "state": ["stav", "state", "status"]
+  },
+  "completedStates": ["completed", "booked", "zauctovane", "zauctovano", "done", "settled", ""]
+}
