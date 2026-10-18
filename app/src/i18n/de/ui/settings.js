@@ -11,7 +11,7 @@ export default {
   "settings.section.peppol.text": "Anbieter für E-Rechnungen, API-Schlüssel, Verbindungstest und Teilnehmerstatus.",
   "settings.section.reminders": "Mahnungen",
   "settings.section.reminders.text": "Wann und wie Mahnungen versendet werden.",
-  "settings.section.sync": "Synchronisierung und Verschlüsselung",
+  "settings.section.sync": "Sync und Verschlüsselung",
   "settings.section.sync.text": "Google Drive, Passwort, Wiederherstellungsschlüssel und Geräte.",
   "settings.section.exim": "Export und Import",
   "settings.section.exim.text": "Sicherung aller Daten und Import aus anderen Programmen.",

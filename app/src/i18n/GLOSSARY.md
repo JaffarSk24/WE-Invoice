@@ -25,7 +25,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | bloček | účtenka | receipt | Kassenbon | чек | чек |
 | predajka | prodejka | sales receipt | Kassenbeleg | товарный чек | товарний чек |
 | upomienka | upomínka | payment reminder | Mahnung | напоминание об оплате | нагадування про оплату |
-| pravidelná faktúra | pravidelná faktura | recurring invoice | wiederkehrende Rechnung | регулярный счёт | регулярний рахунок |
+| pravidelná faktúra | pravidelná faktura | recurring invoice | Serienrechnung (wiederkehrende Rechnung) | регулярный счёт | регулярний рахунок |
 | doklad | doklad | document | Beleg | документ | документ |
 | zjednodušená faktúra | zjednodušená faktura | simplified invoice | vereinfachte Rechnung | упрощённый счёт | спрощений рахунок |
 | eFaktúra | e-faktura | e-invoice | E-Rechnung | eFaktúra (электронный счёт) | eFaktúra (електронний рахунок) |
@@ -70,7 +70,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | zdaňovacie obdobie | zdaňovací období | tax period | Besteuerungszeitraum | налоговый период | податковий період |
 | priznanie DPH | přiznání k DPH | VAT return | USt-Voranmeldung | декларация по НДС | декларація з ПДВ |
 | kontrolný výkaz | kontrolní výkaz | VAT control statement | Kontrollmeldung | контрольная ведомость | контрольна відомість |
-| súhrnný výkaz | souhrnný výkaz | EC sales list | Zusammenfassende Meldung | сводная ведомость | зведена відомість |
+| súhrnný výkaz | souhrnný výkaz | EC sales list | Zusammenfassende Meldung (menu: EU-Meldung (ZM)) | сводная ведомость | зведена відомість |
 | evidencia DPH | evidence DPH | VAT records | USt-Aufzeichnungen | учёт НДС | облік ПДВ |
 | limit registrácie DPH | limit pro registraci k DPH | VAT registration threshold | USt-Registrierungsgrenze | порог регистрации по НДС | поріг реєстрації платником ПДВ |
 | obrat | obrat | turnover | Umsatz | оборот | оборот |
