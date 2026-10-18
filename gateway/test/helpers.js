@@ -8,7 +8,7 @@ import { loadConfig } from '../src/config.js';
 export const PUBLIC_IP = '93.184.216.34';
 
 export function testEnv(extra = {}) {
-  return { DATABASE_PATH: ':memory:', RATE_LIMIT_SCALE: '0', PUBLIC_URL: 'https://api.test', SITE_URL: 'https://site.test/', ...extra };
+  return { DATABASE_PATH: ':memory:', RATE_LIMIT_SCALE: '0', PUBLIC_URL: 'https://api.test', SITE_URL: 'https://site.test/', WAITLIST_CONFIRM_EMAIL: 'true', ...extra };
 }
 
 export const publicLookup = async () => [{ address: PUBLIC_IP, family: 4 }];
