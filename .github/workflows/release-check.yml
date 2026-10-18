@@ -1,8 +1,7 @@
 name: Release check
 
 # Checks the files that users actually download: the published release, not
-# a fresh CI build. Runs when a release is published, by hand, and when this
-# workflow changes.
+# a fresh CI build. Runs when a release is published and by hand.
 
 on:
   release:
@@ -12,9 +11,6 @@ on:
       tag:
         description: Release tag, for example v1.0.0 (empty means the latest release)
         required: false
-  push:
-    branches: [develop]
-    paths: ['.github/workflows/release-check.yml']
 
 permissions:
   contents: read
