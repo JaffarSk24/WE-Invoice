@@ -55,9 +55,9 @@
     "consent": "Souhlasím se zpracováním e-mailu pro účely seznamu čekatelů podle [zásad ochrany osobních údajů](./privacy.html).",
     "submit": "Zapsat se",
     "sending": "Odesílám...",
-    "note": "Po odeslání vám přijde e-mail s potvrzovacím odkazem. Bez potvrzení vás na seznam nezařadíme.",
+    "note": "Žádné automatické e-maily: až otevřeme další vlnu bety, napíšeme vám osobně.",
     "msg": {
-      "success": "Hotovo. Zkontrolujte si schránku a potvrďte e-mail odkazem, který jsme vám poslali.",
+      "success": "Hotovo. Jste na seznamu, a až otevřeme další vlnu, napíšeme vám osobně.",
       "invalidEmail": "Zadejte platnou e-mailovou adresu.",
       "consent": "Bez souhlasu vás na seznam nemůžeme zařadit.",
       "rateLimited": "Příliš mnoho pokusů. Zkuste to za minutu.",

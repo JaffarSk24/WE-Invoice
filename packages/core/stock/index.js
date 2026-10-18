@@ -1,6 +1,14 @@
-// Stock levels, moves and valuation by average cost (WP-STOCK).
-import { NotImplementedError } from '../errors.js';
-
-export function stockLevels(moves, ctx) { throw new NotImplementedError('stockLevels'); }
-export function movesForDocument(document, ctx) { throw new NotImplementedError('movesForDocument'); }
-export function averageCost(moves, itemId, date) { throw new NotImplementedError('averageCost'); }
+// Stock (WP-STOCK, 03-features.md § 3.4): warehouses and moves, levels on
+// a date, valuation by average cost or FIFO, moves caused by documents,
+// reservations by received orders, prices for a client, stocktaking, the
+// quick sale (predajka) and CSV export. Pure functions only: no DOM, no
+// storage, no network.
+export { normalizeStockMove, moveDeltas, companyDelta, sortStockMoves } from './moves.js';
+export { stockLevels, stockOnHand, levelsByItem, negativeStockWarnings, lowStockItems } from './levels.js';
+export { VALUATION_METHODS, costStockMoves, stockValuation, averageCost } from './valuation.js';
+export { movesForDocument, reconcileDocumentMoves, documentsAffectedBy, deliveredByNote, documentMoveIds } from './documents.js';
+export { stockReservations, availableStock } from './reservations.js';
+export { priceFor } from './prices.js';
+export { inventoryDifferences, hasShortage } from './inventory.js';
+export { SALES_RECEIPT_METHODS, salesReceiptSeries, salesReceiptLine, issueSalesReceipt, vrpSummary } from './receipt.js';
+export { stockCsv } from './csv.js';

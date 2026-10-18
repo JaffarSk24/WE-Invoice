@@ -108,7 +108,7 @@
         <p class="help">WE Invoice поможет и принимать, и отправлять э-счета. Входящий счёт загружается целиком, со всеми строками, а исходящий сохраняется в исходном XML на 10 лет, как требует закон.</p>
         <p class="buttons"><a class="btn primary" href="#waitlist">Записаться в бету электронных счетов</a></p>
         <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Отправляем..." data-msg-success="Готово. Проверьте почту и подтвердите e-mail по ссылке, которую мы вам отправили." data-msg-invalid-email="Введите корректный адрес e-mail." data-msg-consent="Без согласия мы не можем добавить вас в список." data-msg-rate-limited="Слишком много попыток. Попробуйте через минуту." data-msg-bad-request="Сервер отклонил заявку. Проверьте e-mail и попробуйте ещё раз." data-msg-network="Не удалось связаться с сервером. Проверьте подключение и попробуйте ещё раз.">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Отправляем..." data-msg-success="Готово. Вы в списке, и когда откроем следующую волну, мы напишем вам лично." data-msg-invalid-email="Введите корректный адрес e-mail." data-msg-consent="Без согласия мы не можем добавить вас в список." data-msg-rate-limited="Слишком много попыток. Попробуйте через минуту." data-msg-bad-request="Сервер отклонил заявку. Проверьте e-mail и попробуйте ещё раз." data-msg-network="Не удалось связаться с сервером. Проверьте подключение и попробуйте ещё раз.">
             <h3 id="waitlist-title">Запишитесь в бету электронных счетов</h3>
             <p>Бету открываем волнами. Записавшимся присылаем код приглашения и инструкцию, как выбрать провайдера э-счетов (digitálny poštár). Никакого спама, отписка в один клик.</p>
             <input type="hidden" name="lang" value="ru">
@@ -137,7 +137,7 @@
             <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Согласен на обработку e-mail для ведения списка ожидания согласно <a href="./privacy.html">политике защиты персональных данных</a>.</span></label>
             <button type="submit" class="btn primary">Записаться</button>
             <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">После отправки вам придёт письмо со ссылкой для подтверждения. Без подтверждения в список не добавим.</p>
+            <p class="note">Никаких автоматических писем: когда откроем следующую волну беты, напишем вам лично.</p>
           </form>
         </div>
       </div>
