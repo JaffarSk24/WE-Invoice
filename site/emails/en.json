@@ -1,0 +1,10 @@
+{
+  "confirm": {
+    "subject": "Confirm your e-mail for the WE Invoice e-invoicing beta",
+    "body": "Hello,\n\nThank you for your interest in the e-invoicing beta in WE Invoice. To add you to the list, please confirm your e-mail by clicking the link:\n\n{confirmUrl}\n\nThe link is valid for 7 days. If you didn't sign up, just ignore this e-mail; without confirmation we won't add you to anything and we'll delete your details.\n\nWE Invoice: invoicing and e-invoicing, free. Your data stays with you.\n{siteUrl}\n\nWhite Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava"
+  },
+  "invite": {
+    "subject": "You're in the WE Invoice e-invoicing beta, here's your code",
+    "body": "Hello,\n\nWe've opened the next wave of the e-invoicing beta and you're in it. Your invitation code:\n\n{code}\n\nHow to use it:\n1. Open WE Invoice: {appUrl}\n2. Go to Settings, E-invoicing, Invitation code.\n3. Choose your e-invoicing provider (digitálny poštár), register them with the Financial Administration at vpds.financnasprava.sk and paste in your API key.\n\nReceiving e-invoices is free with several providers. If you run into a problem, reply to this e-mail; during the beta we read every message.\n\nNo longer interested in the beta? Unsubscribe here: {unsubscribeUrl}\n\nWhite Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "langName": "Slovenčina",
+  "skipToContent": "Preskočiť na obsah",
+  "langSwitch": "Jazyk stránky",
+  "nav": {
+    "features": "Funkcie",
+    "efaktura": "eFaktúra",
+    "compare": "Porovnanie",
+    "faq": "Otázky",
+    "github": "GitHub",
+    "app": "Otvoriť aplikáciu"
+  },
+  "footer": {
+    "madeBy": "Aplikáciu vyvíja",
+    "company": "White Eagles & Co. s. r. o.",
+    "address": "Bohrova 1194/1, 851 01 Bratislava, Slovensko",
+    "ico": "IČO 57098581",
+    "email": "welcome@whiteeagles.sk",
+    "privacy": "Ochrana osobných údajov",
+    "terms": "Podmienky používania",
+    "github": "Zdrojový kód",
+    "license": "Licencia MIT",
+    "cookies": "Nastavenia cookies",
+    "otherApps": "Ďalšie aplikácie WE:"
+  },
+  "consent": {
+    "title": "Cookies a meranie návštevnosti",
+    "text": "Používame Google Analytics, aby sme vedeli, ktoré časti stránky vám pomáhajú. Zapne sa až po vašom súhlase. Samotná aplikácia WE Invoice žiadnu analytiku nemá.",
+    "accept": "Súhlasím",
+    "reject": "Odmietnuť",
+    "more": "Viac o ochrane údajov"
+  },
+  "thanks": {
+    "title": "Ďakujeme, ste na zozname",
+    "description": "Váš e-mail je potvrdený. Keď otvoríme ďalšiu vlnu bety eFaktúr, pošleme vám kód pozvánky.",
+    "h1": "Ďakujeme, ste na zozname",
+    "lead": "Váš e-mail je potvrdený. Keď otvoríme ďalšiu vlnu bety eFaktúr, dostanete kód pozvánky. Zadáte ho v aplikácii v časti Nastavenia, eFaktúra, Kód pozvánky.",
+    "meanwhile": "Medzitým nemusíte čakať: fakturácia, výdavky a účtovníctvo fungujú už dnes. Bez registrácie, zadarmo.",
+    "ctaApp": "Otvoriť aplikáciu",
+    "ctaBack": "Späť na úvod",
+    "unsubscribe": "Ak si to rozmyslíte, každý náš e-mail má odkaz na odhlásenie. Zmažeme vás zo zoznamu hneď."
+  },
+  "notFound": {
+    "title": "Stránka sa nenašla",
+    "h1": "Stránka sa nenašla",
+    "text": "Odkaz je neplatný alebo stránka už neexistuje.",
+    "cta": "Na úvodnú stránku"
+  },
+  "redirect": {
+    "title": "WE Invoice",
+    "text": "Vyberte jazyk:"
+  }
+}

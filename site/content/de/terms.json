@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Nutzungsbedingungen: WE Invoice",
+    "description": "WE Invoice ist kostenlos und wird „wie besehen“ unter der MIT-Lizenz bereitgestellt. Für die Richtigkeit der Steuerbelege und deren Einreichung ist der Nutzer verantwortlich."
+  },
+  "h1": "Nutzungsbedingungen",
+  "effective": "Web- und Desktop-App WE Invoice. Gültig ab 18. Oktober 2026.",
+  "intro": "WE Invoice wird von White Eagles & Co. s. r. o. (im Folgenden „wir“) entwickelt. Mit der Nutzung der App stimmen Sie diesen Bedingungen zu. Sie sind kurz, weil wir nichts zu verbergen haben.",
+  "sections": [
+    {
+      "h2": "Kostenlos und ohne Konto",
+      "blocks": [
+        { "p": "Die App ist für jeden kostenlos, ohne Limits bei der Zahl der Firmen, Belege, Kontakte oder Nutzer, ohne Testphase und ohne kostenpflichtige Versionen. Eine Registrierung bei uns ist nicht nötig. Wir behalten uns vor, die App jederzeit zu ändern oder ihre Entwicklung einzustellen; Ihre Daten bleiben bei Ihnen, und Sie können sie jederzeit exportieren." }
+      ]
+    },
+    {
+      "h2": "Open Source und MIT-Lizenz",
+      "blocks": [
+        { "p": "Der Quellcode ist auf [GitHub](https://github.com/JaffarSk24/WE-Invoice) unter der MIT-Lizenz veröffentlicht. Sie dürfen ihn zu den Bedingungen dieser Lizenz nutzen, kopieren, ändern und weitergeben. Der Name WE Invoice und das Logo von White Eagles sind nicht Teil der Lizenz." }
+      ]
+    },
+    {
+      "h2": "Bereitstellung „wie besehen“",
+      "blocks": [
+        { "p": "Die App wird ohne jede Gewährleistung bereitgestellt, weder ausdrücklich noch stillschweigend, einschließlich der Eignung für einen bestimmten Zweck. Soweit gesetzlich zulässig, haften wir nicht für Schäden, entgangenen Gewinn, Datenverlust, Bußgelder oder Sanktionen, die aus der Nutzung oder der Unmöglichkeit der Nutzung der App entstehen. Wir empfehlen, die Daten regelmäßig zu exportieren und den Wiederherstellungsschlüssel außerhalb des Geräts aufzubewahren." }
+      ]
+    },
+    {
+      "h2": "Für Steuerbelege sind Sie verantwortlich",
+      "blocks": [
+        { "p": "Die App hilft beim Ausstellen von Belegen, beim Führen der Aufzeichnungen und beim Vorbereiten der Meldungen. Für Richtigkeit, Vollständigkeit und rechtzeitige Ausstellung der Rechnungen, für deren Archivierung, für den Inhalt von Steuererklärungen und Meldungen und für deren Einreichung ist der Nutzer verantwortlich. Steuersätze, Fristen und Gesetzestexte in der App aktualisieren wir mit jeder Version, prüfen Sie aber selbst, ob sie für Ihren Fall gelten." },
+        { "p": "WE Invoice ersetzt weder Buchhalter noch Steuerberater. Im Zweifel wenden Sie sich an einen Fachmann." }
+      ]
+    },
+    {
+      "h2": "E-Rechnung und Drittanbieter",
+      "blocks": [
+        { "p": "E-Rechnungen (eFaktúra) werden über einen zertifizierten Provider versendet und empfangen, mit dem Sie einen eigenen Vertrag haben. Für seine Verfügbarkeit, Preise und die Erfüllung der gesetzlichen Pflichten ist der Provider verantwortlich. Dasselbe gilt für Google Drive, Banken und andere Drittdienste, die Sie in der App verbinden." },
+        { "p": "Die Funktion E-Rechnung befindet sich in einer geschlossenen Beta. Den Zugang per Einladungscode können wir einschränken oder beenden, wenn die Stabilität des Dienstes es erfordert." }
+      ]
+    },
+    {
+      "h2": "Warteliste",
+      "blocks": [
+        { "p": "Mit der Eintragung in die Warteliste stimmen Sie dem Erhalt von E-Mails zur E-Rechnungs-Beta zu. Abmelden können Sie sich über den Link in jeder E-Mail. Einzelheiten stehen in der [Datenschutzerklärung](./privacy.html)." }
+      ]
+    },
+    {
+      "h2": "Anwendbares Recht",
+      "blocks": [
+        { "p": "Diese Bedingungen unterliegen dem Recht der Slowakischen Republik. Sollte eine Bestimmung unwirksam sein, bleiben die übrigen wirksam." }
+      ]
+    },
+    {
+      "h2": "Kontakt",
+      "blocks": [
+        { "p": "White Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava, Slowakei. Firmen-ID (IČO) 57098581. E-Mail: [welcome@whiteeagles.sk](mailto:welcome@whiteeagles.sk)" }
+      ]
+    }
+  ]
+}

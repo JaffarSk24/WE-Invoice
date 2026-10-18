@@ -1,0 +1,53 @@
+{
+  "langName": "English",
+  "skipToContent": "Skip to content",
+  "langSwitch": "Site language",
+  "nav": {
+    "features": "Features",
+    "efaktura": "E-invoicing",
+    "compare": "Comparison",
+    "faq": "FAQ",
+    "github": "GitHub",
+    "app": "Open the app"
+  },
+  "footer": {
+    "madeBy": "Developed by",
+    "company": "White Eagles & Co. s. r. o.",
+    "address": "Bohrova 1194/1, 851 01 Bratislava, Slovakia",
+    "ico": "Company ID (IČO) 57098581",
+    "email": "welcome@whiteeagles.sk",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "github": "Source code",
+    "license": "MIT licence",
+    "cookies": "Cookie settings",
+    "otherApps": "More WE apps:"
+  },
+  "consent": {
+    "title": "Cookies and traffic measurement",
+    "text": "We use Google Analytics to see which parts of this site help you. It only switches on once you agree. The WE Invoice app itself has no analytics at all.",
+    "accept": "Accept",
+    "reject": "Decline",
+    "more": "More about data protection"
+  },
+  "thanks": {
+    "title": "Thanks, you're on the list",
+    "description": "Your e-mail is confirmed. When we open the next wave of the e-invoicing beta, we'll send you an invitation code.",
+    "h1": "Thanks, you're on the list",
+    "lead": "Your e-mail is confirmed. When we open the next wave of the e-invoicing beta, you'll get an invitation code. Enter it in the app under Settings, E-invoicing, Invitation code.",
+    "meanwhile": "No need to wait in the meantime: invoicing, expenses and bookkeeping work today. No sign-up, free.",
+    "ctaApp": "Open the app",
+    "ctaBack": "Back to the homepage",
+    "unsubscribe": "Changed your mind? Every e-mail we send has an unsubscribe link. We'll take you off the list straight away."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "h1": "Page not found",
+    "text": "The link is invalid or the page no longer exists.",
+    "cta": "Go to the homepage"
+  },
+  "redirect": {
+    "title": "WE Invoice",
+    "text": "Choose your language:"
+  }
+}

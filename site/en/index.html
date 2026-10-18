@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WE Invoice: free invoicing and e-invoicing</title>
+  <meta name="description" content="Invoicing, e-invoicing via Peppol, bank imports, payment reminders, VAT filings and single-entry bookkeeping. Free, no sign-up, no limits. Your data encrypted in your own Google Drive.">
+  <link rel="canonical" href="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <link rel="alternate" hreflang="sk" href="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <link rel="alternate" hreflang="cs" href="https://jaffarsk24.github.io/WE-Invoice/cs/">
+  <link rel="alternate" hreflang="en" href="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <link rel="alternate" hreflang="de" href="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <link rel="alternate" hreflang="ru" href="https://jaffarsk24.github.io/WE-Invoice/ru/">
+  <link rel="alternate" hreflang="uk" href="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://jaffarsk24.github.io/WE-Invoice/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WE Invoice">
+  <meta property="og:title" content="Invoicing and e-invoicing, free">
+  <meta property="og:description" content="Everything others charge 5 to 15&nbsp;€ a month for. No sign-up, no limits. Your data encrypted in your own Google Drive.">
+  <meta property="og:url" content="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <meta property="og:image" content="https://jaffarsk24.github.io/WE-Invoice/assets/og/en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="sk_SK">
+  <meta property="og:locale:alternate" content="cs_CZ">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="uk_UA">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#090b11" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/landing.css">
+  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/consent.js"></script>
+  <script type="module" src="../assets/waitlist.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/en/","inLanguage":"en","description":"Invoicing, e-invoicing via Peppol, bank imports, payment reminders, VAT filings and single-entry bookkeeping. Free, no sign-up, no limits. Your data encrypted in your own Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Invoices and documents","E-invoicing (Peppol)","Bank and payment matching","Payment reminders with interest","Expenses and receipt scanning","VAT filings","Single-entry bookkeeping","Several companies, free","Phone and desktop"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/en.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Is it really free? Why?","acceptedAnswer":{"@type":"Answer","text":"Yes: no plans, no limits, no trial period. We have almost no running costs: the site runs on GitHub Pages, your data is in your Google Drive and you pay for e-invoicing directly to your provider. The app is built by the White Eagles agency as a showcase of its work and a way to reach small business owners."}},{"@type":"Question","name":"Where is my data?","acceptedAnswer":{"@type":"Answer","text":"On your device and in your Google Drive, encrypted with a key only you know. Our server is just a gateway to e-invoicing providers, public registers and exchange rates: it stores nothing. In the web version your provider API key also passes through it, because providers don't accept requests straight from a browser; the gateway hands it over only for the duration of the request and never logs or caches it. The desktop version for macOS and Windows talks to the provider directly from your computer and bypasses the gateway; if you want maximum privacy, choose that one."}},{"@type":"Question","name":"What if I lose my password?","acceptedAnswer":{"@type":"Answer","text":"On first launch you get a recovery key. Keep it away from your computer, printed out for example. Without the password and the recovery key the data cannot be decrypted; not even we can do it."}},{"@type":"Question","name":"Do I have to receive e-invoices even if I'm not a VAT payer?","acceptedAnswer":{"@type":"Answer","text":"Yes. From 1 January 2027 every business and every legal entity in Slovakia has to receive e-invoices. Only VAT payers have to issue them. Receiving is free with several providers."}},{"@type":"Question","name":"How much does an e-invoicing provider cost?","acceptedAnswer":{"@type":"Answer","text":"Several providers offer receiving for free. Sending costs from 0 to about 3 € a month, or a few cents per document, depending on the provider. You pay them directly; WE Invoice adds nothing on top."}},{"@type":"Question","name":"Why does my Mac say the developer is unverified?","acceptedAnswer":{"@type":"Answer","text":"The desktop app isn't yet signed with an Apple developer certificate, which costs 99 USD a year. On first launch, right-click the app and choose Open, or allow it under Settings, Privacy & Security. Later updates run without the warning."}},{"@type":"Question","name":"Will it replace my accountant?","acceptedAnswer":{"@type":"Answer","text":"No. It prepares the groundwork: reports, journal, exports in common formats. You or your accountant remain responsible for the accuracy of tax documents and for filing them. A good accountant saves time with WE Invoice; the work is still theirs."}},{"@type":"Question","name":"What we don't do, and why","acceptedAnswer":{"@type":"Answer","text":"No eKasa cash register of our own and no direct link to the VRP virtual register: Act No. 384/2025 Coll. bans using VRP through third-party apps, and a cash register of our own would need Financial Administration certification. When an invoice is paid in cash, we prepare the data for VRP and store the receipt number. No real-time bank connection via PSD2: it needs a licence and your data would pass through someone else's server, so we import statements instead. No SMS reminders: a paid channel we would have to charge for. E-mail and Peppol instead."}}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="../assets/icon.png" alt="" width="32" height="32">WE Invoice</a>
+      <nav class="links" aria-label="WE Invoice">
+        <a href="#features">Features</a>
+        <a href="#efaktura">E-invoicing</a>
+        <a href="#compare">Comparison</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">GitHub</a>
+        <a class="btn small primary" href="../app/">Open the app</a>
+      </nav>
+      <nav class="langs" aria-label="Site language">
+        <ul>
+          <li><a href="../sk/index.html" hreflang="sk" lang="sk">SK</a></li>
+          <li><a href="../cs/index.html" hreflang="cs" lang="cs">CS</a></li>
+          <li><a href="../en/index.html" hreflang="en" lang="en" aria-current="page">EN</a></li>
+          <li><a href="../de/index.html" hreflang="de" lang="de">DE</a></li>
+          <li><a href="../ru/index.html" hreflang="ru" lang="ru">RU</a></li>
+          <li><a href="../uk/index.html" hreflang="uk" lang="uk">UK</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="wrap">
+        <h1>Invoicing and e-invoicing, free</h1>
+        <p class="lead">Everything others charge 5 to 15&nbsp;€ a month for. No sign-up, no limits. Your data encrypted in your own Google Drive.</p>
+        <div class="buttons">
+          <a class="btn primary" href="../app/">Open the web app</a>
+          <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Download for Mac / Windows</a>
+        </div>
+        <p class="hint">Open source (MIT). Invoicing, expenses and bookkeeping for everyone; e-invoicing via Peppol in a closed, invite-only beta.</p>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="WE Invoice screen: invoice list with statuses, what is overdue, and an invoice preview with a payment QR code" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
+      </div>
+    </section>
+    <section class="block efaktura" id="efaktura">
+      <div class="wrap">
+        <p class="badge">E-invoicing from 1 January 2027</p>
+        <h2>From 1 January 2027, invoices between businesses go electronic</h2>
+        <p class="intro">Act No. 385/2025 Coll. makes e-invoicing (eFaktúra) via the Peppol network mandatory. And not just for large companies.</p>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg></span>
+            <h3>Who has to issue e-invoices</h3>
+            <p>VAT payers, for every domestic invoice to another business or public body. The deadline for issuing is 15 days from delivery.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg></span>
+            <h3>Who has to receive e-invoices</h3>
+            <p>Every business and legal entity in Slovakia, including sole traders who are not VAT payers. There is no exemption from receiving.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <h3>What stays the same</h3>
+            <p>Invoices to consumers, simplified eKasa receipts up to 400&nbsp;€ and tax-exempt supplies remain as they are.</p>
+          </div>
+        </div>
+        <p class="help">WE Invoice helps you both receive and send e-invoices. A received invoice is imported in full, every line included, and a sent one is kept in its original XML for 10 years, as the law requires.</p>
+        <p class="buttons"><a class="btn primary" href="#waitlist">Join the e-invoicing beta</a></p>
+        <div class="waitlist-wrap" id="waitlist">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Sending..." data-msg-success="Done. Check your inbox and confirm your e-mail using the link we&#39;ve sent you." data-msg-invalid-email="Enter a valid e-mail address." data-msg-consent="We can&#39;t add you to the list without your consent." data-msg-rate-limited="Too many attempts. Try again in a minute." data-msg-bad-request="The server rejected the sign-up. Check your e-mail address and try again." data-msg-network="Couldn&#39;t reach the server. Check your connection and try again.">
+            <h3 id="waitlist-title">Join the e-invoicing beta</h3>
+            <p>We open the beta in waves. Everyone on the list gets an invitation code and a guide to choosing an e-invoicing provider (digitálny poštár). No spam, one-click unsubscribe.</p>
+            <input type="hidden" name="lang" value="en">
+            <input type="hidden" name="source" value="site">
+            <input type="hidden" name="startedAt" value="">
+            <div class="field">
+              <label for="wl-email">E-mail</label>
+              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="name@company.com">
+            </div>
+            <fieldset>
+              <legend>What interests you</legend>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> E-invoicing: sending</label>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> E-invoicing: receiving</label>
+              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Single-entry bookkeeping</label>
+              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> VAT filings</label>
+            </fieldset>
+            <fieldset>
+              <legend>I am a VAT payer</legend>
+              <label class="check"><input type="radio" name="vatPayer" value="true"> Yes</label>
+              <label class="check"><input type="radio" name="vatPayer" value="false"> No</label>
+            </fieldset>
+            <div class="hp" aria-hidden="true">
+              <label for="wl-website">Website</label>
+              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>I agree to my e-mail being processed for the waiting list, as described in the <a href="./privacy.html">privacy policy</a>.</span></label>
+            <button type="submit" class="btn primary">Sign me up</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="note">We&#39;ll send you an e-mail with a confirmation link. Without confirmation you won&#39;t be added to the list.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="features">
+      <div class="wrap">
+        <h2>What WE Invoice does</h2>
+        <p class="intro">Everything in one app, with no paid add-ons and no Premium tier.</p>
+        <div class="grid">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+            <h3>Invoices and documents</h3>
+            <p>Invoices, proforma invoices, credit notes, quotes, delivery notes and sales receipts. PDFs with a PAY by square QR code, printed in Slovak, Czech, English, German or bilingually.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></span>
+            <h3>E-invoicing (Peppol)</h3>
+            <p>Send and receive through a provider you choose yourself. A received invoice is imported in full, a sent one is archived in its original XML.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>
+            <h3>Bank and payment matching</h3>
+            <p>Import statements from any bank for any period. Payments are matched to invoices by variable symbol, amount and customer.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/></svg></span>
+            <h3>Payment reminders with interest</h3>
+            <p>Three reminder levels, statutory late-payment interest and the flat 40&nbsp;€ recovery charge. Sent by e-mail, even when you don&#39;t have the app open.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span>
+            <h3>Expenses and receipt scanning</h3>
+            <p>Snap a receipt or scan the eKasa QR code and the expense is recorded. Recognition runs on your device, free and without limits.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>
+            <h3>VAT filings</h3>
+            <p>VAT control statement, EC sales list and VAT return as XML, ready to file through the Financial Administration (financnasprava.sk) portal.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg></span>
+            <h3>Single-entry bookkeeping</h3>
+            <p>Cash journal, receivables and payables ledger and the figures for a sole trader&#39;s tax return. Or just the records you need for flat-rate expenses.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
+            <h3>Several companies, free</h3>
+            <p>As many companies as you want. No extra charge for another company, another user or another document.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
+            <h3>Phone and desktop</h3>
+            <p>The web app runs in a browser and on your phone; the desktop version for macOS and Windows works offline and sends recurring invoices in the background.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="compare">
+      <div class="wrap">
+        <h2>WE Invoice vs paid apps</h2>
+        <p class="intro">How we compare with what typical paid invoicing apps offer in their basic plans.</p>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col">Feature</th><th scope="col" class="us">WE Invoice</th><th scope="col">Typical paid app</th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row">Price</th>
+                <td data-label="WE Invoice">0&nbsp;€</td>
+                <td data-label="Typical paid app">from 5&nbsp;€ a month, higher plans 8 to 15&nbsp;€ a month</td>
+              </tr>
+              <tr>
+                <th scope="row">Contacts and documents</th>
+                <td data-label="WE Invoice">no limit</td>
+                <td data-label="Typical paid app">free usually up to 5 contacts</td>
+              </tr>
+              <tr>
+                <th scope="row">Another company or user</th>
+                <td data-label="WE Invoice">free</td>
+                <td data-label="Typical paid app">separate licence or a surcharge of around 5&nbsp;€ a month</td>
+              </tr>
+              <tr>
+                <th scope="row">Recurring invoices</th>
+                <td data-label="WE Invoice">included</td>
+                <td data-label="Typical paid app">paid add-on or higher plan</td>
+              </tr>
+              <tr>
+                <th scope="row">Bank</th>
+                <td data-label="WE Invoice">statement imports from any bank for any period</td>
+                <td data-label="Typical paid app">a few banks only, 3 months of history, consent renewed every 180 days</td>
+              </tr>
+              <tr>
+                <th scope="row">Payment reminders</th>
+                <td data-label="WE Invoice">levels, late-payment interest, flat 40&nbsp;€ recovery charge</td>
+                <td data-label="Typical paid app">no levels, sent only when you log in</td>
+              </tr>
+              <tr>
+                <th scope="row">VAT control statement, EC sales list, VAT return</th>
+                <td data-label="WE Invoice">in the app, XML</td>
+                <td data-label="Typical paid app">only in a separate desktop program, or not at all</td>
+              </tr>
+              <tr>
+                <th scope="row">Single-entry bookkeeping</th>
+                <td data-label="WE Invoice">in the app</td>
+                <td data-label="Typical paid app">separate paid program</td>
+              </tr>
+              <tr>
+                <th scope="row">Received e-invoice</th>
+                <td data-label="WE Invoice">the whole document with every line</td>
+                <td data-label="Typical paid app">only the header is carried over</td>
+              </tr>
+              <tr>
+                <th scope="row">Receipt recognition</th>
+                <td data-label="WE Invoice">free, on your device</td>
+                <td data-label="Typical paid app">for example 20&nbsp;€ per 100 receipts</td>
+              </tr>
+              <tr>
+                <th scope="row">E-invoicing provider</th>
+                <td data-label="WE Invoice">any, switch without losing data</td>
+                <td data-label="Typical paid app">only the app&#39;s own provider</td>
+              </tr>
+              <tr>
+                <th scope="row">Where your data lives</th>
+                <td data-label="WE Invoice">encrypted in your Google Drive</td>
+                <td data-label="Typical paid app">on the operator&#39;s server</td>
+              </tr>
+              <tr>
+                <th scope="row">Source code</th>
+                <td data-label="WE Invoice">open, MIT licence</td>
+                <td data-label="Typical paid app">closed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">As of 10/2026, based on the public price lists and documentation of common invoicing apps on the Slovak market. Prices for annual billing, excluding VAT.</p>
+      </div>
+    </section>
+    <section class="block privacy-note" id="privacy">
+      <div class="wrap">
+        <h2>Privacy and openness</h2>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>No server of ours holds your data</h3>
+            <p>Invoices, contacts and bookkeeping are encrypted on your device (AES-GCM 256) and stored in your Google Drive. Only you hold the key.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+            <h3>Open source (MIT)</h3>
+            <p>All the code is public on GitHub. Anyone can check what the app does and where it sends data.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 7.5V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-1.5"/><path d="M2 13h10"/><path d="m5 10-3 3 3 3"/></svg></span>
+            <h3>Export any time</h3>
+            <p>PDF, XML, CSV, Excel, ISDOC and UBL. Your data isn&#39;t locked in, and you can leave with your full history.</p>
+          </div>
+        </div>
+        <p><a href="./privacy.html">Read the privacy policy</a></p>
+      </div>
+    </section>
+    <section class="block" id="connect">
+      <div class="wrap">
+        <h2>How to switch on e-invoicing in three steps</h2>
+        <p class="intro">WE Invoice is not an e-invoicing provider. It&#39;s a client for the provider you choose yourself. You never pay twice.</p>
+        <ol class="steps">
+          <li>
+            <h3>Choose an e-invoicing provider (digitálny poštár)</h3>
+            <p>A certified e-invoicing service provider. Receiving is free with several of them; sending costs from 0 to about 3&nbsp;€ a month.</p>
+          </li>
+          <li>
+            <h3>Register your provider with the Financial Administration</h3>
+            <p>Log in to <a href="https://vpds.financnasprava.sk/" rel="noopener">the Financial Administration (financnasprava.sk)</a> with your chip-enabled ID card and confirm your provider.</p>
+          </li>
+          <li>
+            <h3>Paste the API key into WE Invoice</h3>
+            <p>Settings, E-invoicing, provider and key. From then on, invoices are sent and received straight from the app.</p>
+          </li>
+        </ol>
+        <p class="note">You can switch providers at any time. Your invoices and XML archive stay with you.</p>
+      </div>
+    </section>
+    <section class="block" id="faq">
+      <div class="wrap narrow">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>Is it really free? Why?</summary>
+          <p>Yes: no plans, no limits, no trial period. We have almost no running costs: the site runs on GitHub Pages, your data is in your Google Drive and you pay for e-invoicing directly to your provider. The app is built by the White Eagles agency as a showcase of its work and a way to reach small business owners.</p>
+        </details>
+        <details>
+          <summary>Where is my data?</summary>
+          <p>On your device and in your Google Drive, encrypted with a key only you know. Our server is just a gateway to e-invoicing providers, public registers and exchange rates: it stores nothing. In the web version your provider API key also passes through it, because providers don&#39;t accept requests straight from a browser; the gateway hands it over only for the duration of the request and never logs or caches it. The desktop version for macOS and Windows talks to the provider directly from your computer and bypasses the gateway; if you want maximum privacy, choose that one.</p>
+        </details>
+        <details>
+          <summary>What if I lose my password?</summary>
+          <p>On first launch you get a recovery key. Keep it away from your computer, printed out for example. Without the password and the recovery key the data cannot be decrypted; not even we can do it.</p>
+        </details>
+        <details>
+          <summary>Do I have to receive e-invoices even if I&#39;m not a VAT payer?</summary>
+          <p>Yes. From 1 January 2027 every business and every legal entity in Slovakia has to receive e-invoices. Only VAT payers have to issue them. Receiving is free with several providers.</p>
+        </details>
+        <details>
+          <summary>How much does an e-invoicing provider cost?</summary>
+          <p>Several providers offer receiving for free. Sending costs from 0 to about 3&nbsp;€ a month, or a few cents per document, depending on the provider. You pay them directly; WE Invoice adds nothing on top.</p>
+        </details>
+        <details>
+          <summary>Why does my Mac say the developer is unverified?</summary>
+          <p>The desktop app isn&#39;t yet signed with an Apple developer certificate, which costs 99&nbsp;USD a year. On first launch, right-click the app and choose Open, or allow it under Settings, Privacy &amp; Security. Later updates run without the warning.</p>
+        </details>
+        <details>
+          <summary>Will it replace my accountant?</summary>
+          <p>No. It prepares the groundwork: reports, journal, exports in common formats. You or your accountant remain responsible for the accuracy of tax documents and for filing them. A good accountant saves time with WE Invoice; the work is still theirs.</p>
+        </details>
+        <details>
+          <summary>What we don&#39;t do, and why</summary>
+          <p>No eKasa cash register of our own and no direct link to the VRP virtual register: Act No. 384/2025 Coll. bans using VRP through third-party apps, and a cash register of our own would need Financial Administration certification. When an invoice is paid in cash, we prepare the data for VRP and store the receipt number. No real-time bank connection via PSD2: it needs a licence and your data would pass through someone else&#39;s server, so we import statements instead. No SMS reminders: a paid channel we would have to charge for. E-mail and Peppol instead.</p>
+        </details>
+      </div>
+    </section>
+    <section class="block agency" id="white-eagles">
+      <div class="wrap narrow">
+        <h2>Need a website or advertising?</h2>
+        <p>The app is built by White Eagles: websites, Google and Meta ads, analytics. We build solutions for your business with the same care we put into WE Invoice.</p>
+        <p><a class="btn" href="https://whiteeagles.sk/" rel="noopener">Visit whiteeagles.sk</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <p><strong>White Eagles &amp; Co. s. r. o.</strong><br>Bohrova 1194/1, 851 01 Bratislava, Slovakia<br>Company ID (IČO) 57098581</p>
+          <p><a href="mailto:welcome@whiteeagles.sk">welcome@whiteeagles.sk</a></p>
+        </div>
+        <div>
+          <p><a href="./privacy.html">Privacy policy</a><br><a href="./terms.html">Terms of use</a><br><a href="#" class="consent-open">Cookie settings</a></p>
+        </div>
+        <div>
+          <p><a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">Source code</a><br><a href="https://github.com/JaffarSk24/WE-Invoice/blob/main/LICENSE" rel="noopener">MIT licence</a></p>
+          <p>More WE apps:<br><a href="https://jaffarsk24.github.io/WE-Time-Tracker/" rel="noopener">WE Time Tracker</a> &middot; <a href="https://jaffarsk24.github.io/WE-Budget/" rel="noopener">WE Budget</a></p>
+        </div>
+      </div>
+      <p class="copy">&copy; 2026 <a href="https://whiteeagles.sk/" rel="noopener">White Eagles &amp; Co. s. r. o.</a></p>
+    </div>
+  </footer>
+  <div class="consent" id="consent" role="region" aria-labelledby="consent-title" hidden>
+    <div class="wrap">
+      <p class="consent-title" id="consent-title">Cookies and traffic measurement</p>
+      <p>We use Google Analytics to see which parts of this site help you. It only switches on once you agree. The WE Invoice app itself has no analytics at all. <a href="./privacy.html">More about data protection</a></p>
+      <div class="consent-actions">
+        <button type="button" class="btn primary" data-consent="accept">Accept</button>
+        <button type="button" class="btn" data-consent="reject">Decline</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

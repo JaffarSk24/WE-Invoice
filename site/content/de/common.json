@@ -1,0 +1,53 @@
+{
+  "langName": "Deutsch",
+  "skipToContent": "Zum Inhalt springen",
+  "langSwitch": "Sprache der Website",
+  "nav": {
+    "features": "Funktionen",
+    "efaktura": "E-Rechnung",
+    "compare": "Vergleich",
+    "faq": "Fragen",
+    "github": "GitHub",
+    "app": "App öffnen"
+  },
+  "footer": {
+    "madeBy": "Entwickelt von",
+    "company": "White Eagles & Co. s. r. o.",
+    "address": "Bohrova 1194/1, 851 01 Bratislava, Slowakei",
+    "ico": "Firmen-ID (IČO) 57098581",
+    "email": "welcome@whiteeagles.sk",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "github": "Quellcode",
+    "license": "MIT-Lizenz",
+    "cookies": "Cookie-Einstellungen",
+    "otherApps": "Weitere WE-Apps:"
+  },
+  "consent": {
+    "title": "Cookies und Besuchsstatistik",
+    "text": "Wir nutzen Google Analytics, um zu sehen, welche Teile der Website Ihnen helfen. Es startet erst nach Ihrer Zustimmung. Die App WE Invoice selbst enthält keinerlei Analytik.",
+    "accept": "Einverstanden",
+    "reject": "Ablehnen",
+    "more": "Mehr zum Datenschutz"
+  },
+  "thanks": {
+    "title": "Danke, Sie stehen auf der Liste",
+    "description": "Ihre E-Mail-Adresse ist bestätigt. Sobald wir die nächste Welle der Beta für die E-Rechnung (eFaktúra) öffnen, schicken wir Ihnen einen Einladungscode.",
+    "h1": "Danke, Sie stehen auf der Liste",
+    "lead": "Ihre E-Mail-Adresse ist bestätigt. Sobald wir die nächste Welle der E-Rechnungs-Beta öffnen, erhalten Sie einen Einladungscode. Sie geben ihn in der App unter Einstellungen, E-Rechnung, Einladungscode ein.",
+    "meanwhile": "Bis dahin müssen Sie nicht warten: Rechnungen, Ausgaben und Buchführung funktionieren schon heute. Ohne Registrierung, kostenlos.",
+    "ctaApp": "App öffnen",
+    "ctaBack": "Zurück zur Startseite",
+    "unsubscribe": "Wenn Sie es sich anders überlegen: Jede unserer E-Mails enthält einen Abmeldelink. Wir streichen Sie sofort von der Liste."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "h1": "Seite nicht gefunden",
+    "text": "Der Link ist ungültig oder die Seite existiert nicht mehr.",
+    "cta": "Zur Startseite"
+  },
+  "redirect": {
+    "title": "WE Invoice",
+    "text": "Sprache wählen:"
+  }
+}

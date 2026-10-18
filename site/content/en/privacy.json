@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "title": "Privacy policy: WE Invoice",
+    "description": "What data WE Invoice processes, where it is stored, what passes through our gateway without being stored, and your rights under the GDPR."
+  },
+  "h1": "Privacy policy",
+  "effective": "The WE Invoice web and desktop app and this website. Effective from 18 October 2026.",
+  "intro": "WE Invoice is developed by White Eagles & Co. s. r. o. (“we”). This document explains what data the app and the website process, where it is stored and how to delete it. We wrote it to be read, not skipped.",
+  "sections": [
+    {
+      "h2": "In short",
+      "blocks": [
+        { "ul": [
+          "Your invoices, contacts, expenses and bookkeeping are encrypted on your device and stored in your Google Drive. We have no access to them.",
+          "Our server is just a gateway: it forwards requests to e-invoicing providers, public registers and the exchange-rate feed, and stores none of their content.",
+          "On the server we keep only the beta waiting list, invitation codes and a short-lived cache of public register data.",
+          "There is no analytics or advertising in the app. On this website, Google Analytics switches on only after you consent."
+        ] }
+      ]
+    },
+    {
+      "h2": "Data on your device and in your Google Drive",
+      "blocks": [
+        { "p": "The app stores all business data (companies, contacts, documents, payments, expenses, stock, bookkeeping, settings) on your device: in the browser, or in the desktop app's data folder. Before saving, it encrypts the data with AES-GCM using a 256-bit key derived from your password. The recovery key you receive on first launch is the only other way to the data." },
+        { "p": "If you switch on sync, an encrypted copy is stored in your Google Drive, in files the app created itself. The transfer runs directly between your device and Google. We don't see these files, and even if we did, they are unreadable without your password." },
+        { "p": "When you sign in with Google, the app asks for permission to manage its own files in your Google Drive and for your e-mail address, so it can show which account is connected. It cannot see any other files in your Drive." },
+        { "p": "WE Invoice's use and transfer of information received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements. We don't use Google data for advertising, don't sell it, don't share it with anyone and don't use it to train machine-learning models." }
+      ]
+    },
+    {
+      "h2": "What passes through our gateway and is not stored",
+      "blocks": [
+        { "p": "The server invoice-api.whiteeagles.sk is a thin gateway. We need it because a browser cannot call some services directly. The gateway forwards the request and returns the response; it does not store the content." },
+        { "ul": [
+          "E-invoicing providers (Peppol): sent and received invoices in XML pass through the gateway to your provider and back. They are not stored, read or analysed.",
+          "Public business registers (Slovakia, Czech Republic) and VAT number checks in VIES: lookups by company ID or VAT number.",
+          "Verification of an eKasa receipt by its QR code.",
+          "The European Central Bank's exchange rates."
+        ] },
+        { "p": "**API keys and tokens of your e-invoicing provider.** Providers do not accept requests straight from a browser (a CORS restriction), so in the web version your provider API key or token (SAPI-SK as well as native interfaces) also passes through the gateway. The gateway hands it to the provider only for the duration of that one request: it is never logged, cached or stored. The same applies to document bodies: they are neither stored nor logged." },
+        { "p": "**The desktop version goes direct.** The app for macOS and Windows talks to your e-invoicing provider directly from your computer, bypasses the gateway, and your key never leaves your device. If you want the highest level of privacy, we recommend the desktop version." },
+        { "p": "The gateway keeps a technical log (time, IP address, service called, result) to protect against abuse and to troubleshoot faults. The log contains no keys, tokens or document content. Logs are deleted after 30 days at the latest." }
+      ]
+    },
+    {
+      "h2": "What is stored on our server",
+      "blocks": [
+        { "ul": [
+          "The e-invoicing beta waiting list: e-mail, language, your interests, whether you are a VAT payer, time of consent and the IP address at sign-up. The legal basis is your consent. We keep the data until you unsubscribe, for at most 24 months from sign-up. Unconfirmed sign-ups are deleted after 7 days.",
+          "Beta invitation codes and whether they have been used.",
+          "A cache of public register responses (company data that is public anyway), so we don't overload the registers. For 24 hours at most.",
+          "If you switch on optional features in future, such as sharing a document via an encrypted link or a server-side helper for recurring invoices, we will keep only encrypted data we cannot read without your key, and only for as long as the feature needs it. Before you switch on any such feature, the app explains this and asks for your consent."
+        ] }
+      ]
+    },
+    {
+      "h2": "Your e-invoicing provider is a separate controller",
+      "blocks": [
+        { "p": "You send and receive e-invoices through a certified e-invoicing provider (digitálny poštár), with whom you sign a contract yourself. The provider processes your invoices as a separate data controller under its own terms and Act No. 385/2025 Coll., and submits data to the Financial Administration. We are neither its processor nor its agent and have no access to your account with it." }
+      ]
+    },
+    {
+      "h2": "This website and cookies",
+      "blocks": [
+        { "p": "The site runs on GitHub Pages. GitHub sees technical data such as your IP address with every page load and is governed by [GitHub's privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)." },
+        { "p": "We use Google Analytics 4 only to measure site traffic, and only after you consent in the bar at the bottom of the page (Consent Mode v2). Without consent, the script is not loaded and no Google cookies are set. You can change your choice at any time via the Cookie settings link in the footer. The site remembers your choice in your browser." },
+        { "p": "The WE Invoice app itself has no analytics, tracking or advertising." }
+      ]
+    },
+    {
+      "h2": "Desktop app and updates",
+      "blocks": [
+        { "p": "The desktop app for macOS and Windows asks GitHub (api.github.com) for a new version at start-up and every six hours after that, and downloads it from GitHub. The request contains only technical data, nothing about you or your documents." }
+      ]
+    },
+    {
+      "h2": "Your rights",
+      "blocks": [
+        { "p": "Under the GDPR you have the right to access your data, have it corrected or erased, restrict its processing, port it, and object. You can withdraw your consent to the waiting list at any time via the link in every e-mail we send or by writing to our contact address; we will delete the record without undue delay. You also have the right to lodge a complaint with the [Office for Personal Data Protection of the Slovak Republic](https://dataprotection.gov.sk/)." },
+        { "p": "Business data in the app is yours alone. You delete it by removing the app's files from Google Drive (Google Drive, Settings, Manage apps) and by clearing your browser data or the desktop app's data folder. You can revoke the app's access to your Google account at [myaccount.google.com/permissions](https://myaccount.google.com/permissions)." }
+      ]
+    },
+    {
+      "h2": "Changes to this document",
+      "blocks": [
+        { "p": "If a new version of the app starts handling data differently, we will update this page before releasing it and change the date at the top." }
+      ]
+    },
+    {
+      "h2": "Contact",
+      "blocks": [
+        { "p": "White Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava, Slovakia. Company ID (IČO) 57098581." },
+        { "p": "E-mail: [welcome@whiteeagles.sk](mailto:welcome@whiteeagles.sk)" }
+      ]
+    }
+  ]
+}

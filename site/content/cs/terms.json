@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Podmínky používání: WE Invoice",
+    "description": "WE Invoice je zdarma a „tak, jak je“, pod licencí MIT. Za správnost daňových dokladů a jejich podání odpovídá uživatel."
+  },
+  "h1": "Podmínky používání",
+  "effective": "Webová a desktopová aplikace WE Invoice. Platné od 18. října 2026.",
+  "intro": "WE Invoice vyvíjí White Eagles & Co. s. r. o. (dále „my“). Používáním aplikace souhlasíte s těmito podmínkami. Jsou krátké, protože nemáme co skrývat.",
+  "sections": [
+    {
+      "h2": "Zdarma a bez účtu",
+      "blocks": [
+        { "p": "Aplikace je bezplatná pro každého, bez limitů na počet firem, dokladů, kontaktů nebo uživatelů, bez zkušebního období a bez placených verzí. Nevyžaduje registraci u nás. Vyhrazujeme si právo aplikaci kdykoli změnit nebo ukončit její vývoj; vaše data zůstávají u vás a exportovat je můžete kdykoli." }
+      ]
+    },
+    {
+      "h2": "Otevřený kód a licence MIT",
+      "blocks": [
+        { "p": "Zdrojový kód je zveřejněný na [GitHubu](https://github.com/JaffarSk24/WE-Invoice) pod licencí MIT. Můžete ho používat, kopírovat, měnit a šířit za podmínek této licence. Název WE Invoice a logo White Eagles nejsou součástí licence." }
+      ]
+    },
+    {
+      "h2": "Poskytuje se „tak, jak je“",
+      "blocks": [
+        { "p": "Aplikace se poskytuje bez jakékoli záruky, výslovné nebo předpokládané, včetně záruky vhodnosti pro konkrétní účel. V rozsahu, který připouští zákon, neodpovídáme za žádnou škodu, ušlý zisk, ztrátu dat, pokuty ani sankce, které vzniknou používáním nebo nemožností používat aplikaci. Doporučujeme pravidelně exportovat data a uchovávat klíč pro obnovu mimo zařízení." }
+      ]
+    },
+    {
+      "h2": "Za daňové doklady odpovídáte vy",
+      "blocks": [
+        { "p": "Aplikace pomáhá vystavovat doklady, vést evidenci a připravovat výkazy. Za správnost, úplnost a včasné vystavení faktur, za jejich archivaci, za obsah daňových přiznání a výkazů a za jejich podání odpovídá uživatel. Sazby, lhůty a texty zákonů v aplikaci aktualizujeme s každým vydáním, ale jejich platnost pro váš případ si ověřte." },
+        { "p": "WE Invoice nenahrazuje účetního ani daňového poradce. Při pochybnostech se poraďte s odborníkem." }
+      ]
+    },
+    {
+      "h2": "eFaktura a poskytovatelé třetích stran",
+      "blocks": [
+        { "p": "eFaktury se odesílají a přijímají přes certifikovaného poskytovatele, se kterým máte vlastní smlouvu. Za jeho dostupnost, ceny a splnění zákonných povinností odpovídá poskytovatel. Totéž platí pro Google Drive, banky a jiné služby třetích stran, které si v aplikaci připojíte." },
+        { "p": "Funkce eFaktura je v uzavřené betě. Přístup na základě kódu pozvánky můžeme omezit nebo ukončit, pokud to vyžaduje stabilita služby." }
+      ]
+    },
+    {
+      "h2": "Seznam čekatelů",
+      "blocks": [
+        { "p": "Zápisem do seznamu čekatelů souhlasíte se zasíláním e-mailů o betě eFaktur. Ze seznamu se odhlásíte odkazem v každém e-mailu. Podrobnosti jsou v [zásadách ochrany osobních údajů](./privacy.html)." }
+      ]
+    },
+    {
+      "h2": "Rozhodné právo",
+      "blocks": [
+        { "p": "Tyto podmínky se řídí právem Slovenské republiky. Pokud některé ustanovení není platné, ostatní zůstávají v platnosti." }
+      ]
+    },
+    {
+      "h2": "Kontakt",
+      "blocks": [
+        { "p": "White Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava, Slovensko. IČO 57098581. E-mail: [welcome@whiteeagles.sk](mailto:welcome@whiteeagles.sk)" }
+      ]
+    }
+  ]
+}

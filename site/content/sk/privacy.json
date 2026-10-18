@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "title": "Ochrana osobných údajov: WE Invoice",
+    "description": "Aké údaje WE Invoice spracúva, kde sú uložené, čo prechádza cez našu bránu bez ukladania a aké máte práva podľa GDPR."
+  },
+  "h1": "Ochrana osobných údajov",
+  "effective": "Webová a desktopová aplikácia WE Invoice a táto stránka. Platné od 18. októbra 2026.",
+  "intro": "WE Invoice vyvíja White Eagles & Co. s. r. o. (ďalej „my“). Tento dokument vysvetľuje, aké údaje aplikácia a stránka spracúvajú, kde sú uložené a ako ich odstrániť. Píšeme ho tak, aby ste ho prečítali, nie preskočili.",
+  "sections": [
+    {
+      "h2": "V skratke",
+      "blocks": [
+        { "ul": [
+          "Vaše faktúry, kontakty, výdavky a účtovníctvo sú zašifrované vo vašom zariadení a uložené vo vašom Google Drive. My k nim nemáme prístup.",
+          "Náš server je len brána: preposiela požiadavky poskytovateľom eFaktúr, verejným registrom a kurzovému lístku a nič z ich obsahu si neukladá.",
+          "Na serveri uchovávame iba zoznam čakateľov na betu, kódy pozvánok a krátkodobú vyrovnávaciu pamäť verejných registrov.",
+          "V aplikácii nie je žiadna analytika ani reklama. Na tejto stránke sa Google Analytics zapne až po vašom súhlase."
+        ] }
+      ]
+    },
+    {
+      "h2": "Dáta vo vašom zariadení a vo vašom Google Drive",
+      "blocks": [
+        { "p": "Všetky obchodné dáta (firmy, kontakty, doklady, platby, výdavky, sklad, účtovníctvo, nastavenia) aplikácia ukladá vo vašom zariadení: v prehliadači, alebo v desktopovej aplikácii v jej dátovom priečinku. Pred uložením ich zašifruje algoritmom AES-GCM s 256-bitovým kľúčom odvodeným z vášho hesla. Kľúč na obnovu, ktorý dostanete pri prvom spustení, je jediná ďalšia cesta k dátam." },
+        { "p": "Ak zapnete synchronizáciu, zašifrovaná kópia sa ukladá do vášho Google Drive, do súborov, ktoré aplikácia sama vytvorila. Prenos prebieha priamo medzi vaším zariadením a Googlom. My tieto súbory nevidíme a ani keby sme ich videli, bez vášho hesla sú nečitateľné." },
+        { "p": "Pri prihlásení Googlom aplikácia žiada o oprávnenie spravovať svoje vlastné súbory vo vašom Google Drive a o vašu e-mailovú adresu, aby ukázala, ktorý účet je pripojený. Do ostatných súborov vo vašom Drive nevidí." },
+        { "p": "Používanie a prenos informácií získaných z rozhraní Google API sa v aplikácii WE Invoice riadi [pravidlami Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy) vrátane požiadaviek na obmedzené použitie (Limited Use). Údaje z Googlu nepoužívame na reklamu, nepredávame ich, nikomu ich neposkytujeme a nepoužívame ich na trénovanie modelov strojového učenia." }
+      ]
+    },
+    {
+      "h2": "Čo prechádza cez našu bránu a neukladá sa",
+      "blocks": [
+        { "p": "Server invoice-api.whiteeagles.sk je tenká brána. Potrebujeme ju preto, lebo prehliadač nesmie volať niektoré služby priamo. Brána požiadavku prepošle a odpoveď vráti; obsah si neukladá." },
+        { "ul": [
+          "Poskytovatelia eFaktúr (Peppol): odosielané a prijímané faktúry v XML prechádzajú cez bránu k vášmu poskytovateľovi a späť. Neukladajú sa, nečítajú sa a neanalyzujú sa.",
+          "Verejné registre firiem (Slovensko, Česko) a overenie IČ DPH v systéme VIES: dopyty podľa IČO alebo IČ DPH.",
+          "Overenie dokladu eKasa podľa jeho QR kódu.",
+          "Kurzový lístok Európskej centrálnej banky."
+        ] },
+        { "p": "**API kľúče a tokeny poskytovateľa eFaktúr.** Poskytovatelia neprijímajú požiadavky priamo z prehliadača (obmedzenie CORS), preto vo webovej verzii prechádza cez bránu aj váš API kľúč alebo token poskytovateľa (SAPI-SK aj natívne rozhrania). Brána ho odovzdá poskytovateľovi iba na čas danej požiadavky: nezapisuje ho do záznamov, nekešuje ho a neukladá. To isté platí pre telá dokumentov: neukladajú sa ani nelogujú." },
+        { "p": "**Desktopová verzia ide priamo.** Aplikácia pre macOS a Windows komunikuje s poskytovateľom eFaktúr priamo z vášho počítača, bránu obchádza a kľúč z vášho zariadenia nikdy neodíde. Ak chcete najvyššiu mieru súkromia, odporúčame desktopovú verziu." },
+        { "p": "Brána vedie technický záznam (čas, IP adresa, volaná služba, výsledok) na ochranu pred zneužitím a na riešenie porúch. Záznam neobsahuje kľúče, tokeny ani obsah dokumentov. Záznamy sa mažú najneskôr po 30 dňoch." }
+      ]
+    },
+    {
+      "h2": "Čo sa ukladá na našom serveri",
+      "blocks": [
+        { "ul": [
+          "Zoznam čakateľov na betu eFaktúr: e-mail, jazyk, vaše záujmy, údaj, či ste platiteľ DPH, čas súhlasu a IP adresa pri zápise. Právnym základom je váš súhlas. Údaje uchovávame do odhlásenia, najdlhšie 24 mesiacov od zápisu. Nepotvrdený zápis mažeme po 7 dňoch.",
+          "Kódy pozvánok do bety a informácia, či boli použité.",
+          "Vyrovnávacia pamäť odpovedí verejných registrov (údaje o firmách, ktoré sú verejné), aby sme registre nezaťažovali. Najdlhšie 24 hodín.",
+          "Ak v budúcnosti zapnete voliteľné funkcie, ako zdieľanie dokladu zašifrovaným odkazom alebo serverového pomocníka pre opakované faktúry, uchováme len zašifrované dáta, ktoré bez vášho kľúča nevieme prečítať, a to iba po dobu, ktorú funkcia potrebuje. Pred zapnutím každej takejto funkcie vám to aplikácia vysvetlí a vyžiada si súhlas."
+        ] }
+      ]
+    },
+    {
+      "h2": "Poskytovateľ eFaktúr je samostatný prevádzkovateľ",
+      "blocks": [
+        { "p": "eFaktúry odosielate a prijímate cez certifikovaného poskytovateľa (digitálneho poštára), s ktorým uzatvárate zmluvu sami. Poskytovateľ spracúva vaše faktúry ako samostatný prevádzkovateľ podľa svojich podmienok a zákona 385/2025 Z. z. a predkladá údaje finančnej správe. My nie sme jeho sprostredkovateľom ani zástupcom a nemáme prístup k vášmu účtu u neho." }
+      ]
+    },
+    {
+      "h2": "Táto stránka a cookies",
+      "blocks": [
+        { "p": "Stránka beží na GitHub Pages. GitHub pri každom načítaní vidí technické údaje ako IP adresu a riadi sa [vyhlásením GitHubu o ochrane súkromia](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)." },
+        { "p": "Google Analytics 4 používame iba na meranie návštevnosti stránky a až po vašom súhlase v lište na spodku stránky (Consent Mode v2). Bez súhlasu sa skript nenačíta a žiadne cookies Googlu sa neuložia. Súhlas môžete kedykoľvek zmeniť odkazom Nastavenia cookies v pätičke. Vašu voľbu si stránka pamätá vo vašom prehliadači." },
+        { "p": "Samotná aplikácia WE Invoice nemá žiadnu analytiku, meranie ani reklamu." }
+      ]
+    },
+    {
+      "h2": "Desktopová aplikácia a aktualizácie",
+      "blocks": [
+        { "p": "Desktopová aplikácia pre macOS a Windows sa pri štarte a potom každých šesť hodín pýta GitHubu (api.github.com) na novú verziu a sťahuje ju z GitHubu. Požiadavka obsahuje len technické údaje, nič o vás ani o vašich dokladoch." }
+      ]
+    },
+    {
+      "h2": "Vaše práva",
+      "blocks": [
+        { "p": "Podľa nariadenia GDPR máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo namietať. Súhlas so zoznamom čakateľov môžete kedykoľvek odvolať odkazom v každom našom e-maile alebo správou na náš kontakt; záznam vymažeme bez zbytočného odkladu. Máte tiež právo podať sťažnosť na [Úrad na ochranu osobných údajov Slovenskej republiky](https://dataprotection.gov.sk/)." },
+        { "p": "Obchodné dáta v aplikácii máte výlučne vy. Vymažete ich odstránením súborov aplikácie z Google Drive (Google Drive, Nastavenia, Spravovať aplikácie) a vymazaním dát prehliadača alebo dátového priečinka desktopovej aplikácie. Prístup aplikácie k vášmu účtu Google zrušíte na [myaccount.google.com/permissions](https://myaccount.google.com/permissions)." }
+      ]
+    },
+    {
+      "h2": "Zmeny tohto dokumentu",
+      "blocks": [
+        { "p": "Ak nová verzia aplikácie začne s údajmi narábať inak, túto stránku zmeníme pred jej vydaním a zmeníme dátum na začiatku." }
+      ]
+    },
+    {
+      "h2": "Kontakt",
+      "blocks": [
+        { "p": "White Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava, Slovensko. IČO 57098581." },
+        { "p": "E-mail: [welcome@whiteeagles.sk](mailto:welcome@whiteeagles.sk)" }
+      ]
+    }
+  ]
+}

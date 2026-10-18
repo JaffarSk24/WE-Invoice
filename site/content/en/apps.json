@@ -1,0 +1,43 @@
+{
+  "name": "WE Invoice",
+  "tagline": "Invoicing and e-invoicing, free. Genuinely free.",
+  "description": "Invoices, e-invoicing via Peppol, bank imports, payment reminders, expenses, VAT filings and single-entry bookkeeping for sole traders and small businesses in Slovakia and the Czech Republic. No sign-up, no limits and no paid plans. Your data is encrypted in your own Google Drive, not on someone else's server. Open source under the MIT licence.",
+  "featuresTitle": "What it does",
+  "features": [
+    "Invoices, proformas, credit notes, quotes and sales receipts with a PAY by square QR code",
+    "E-invoicing via Peppol with a provider of your choice",
+    "Bank statement imports and automatic payment matching",
+    "Three-level payment reminders with late-payment interest",
+    "Receipt and eKasa QR code scanning right on your device",
+    "VAT control statement, EC sales list and VAT return as XML",
+    "Single-entry bookkeeping and the groundwork for your tax return",
+    "Unlimited companies, documents and contacts",
+    "Six interface languages, documents printed bilingually too"
+  ],
+  "buttons": {
+    "open": "Open the web app",
+    "download": "Download for Mac / Windows",
+    "site": "App website",
+    "github": "Source code on GitHub"
+  },
+  "faqTitle": "Frequently asked questions",
+  "faq": [
+    {
+      "q": "Why is WE Invoice free?",
+      "a": "It has almost no running costs: your data is in your Google Drive, the site runs on GitHub and you pay for e-invoicing directly to your provider. For White Eagles the app is a showcase of its work and a way to reach small business owners."
+    },
+    {
+      "q": "Where is my data?",
+      "a": "Encrypted on your device and in your Google Drive. The White Eagles server is just a gateway to e-invoicing providers and registers; it stores nothing."
+    },
+    {
+      "q": "Do I have to receive e-invoices from 2027?",
+      "a": "Yes, every business in Slovakia, including non-VAT payers. WE Invoice receives them in full, every line included, through a provider where receiving is often free."
+    },
+    {
+      "q": "Will it replace my accountant?",
+      "a": "No. It prepares the groundwork and exports; responsibility for tax documents stays with you or your accountant."
+    }
+  ],
+  "screenshotAlt": "WE Invoice screen with an invoice list and an invoice preview"
+}

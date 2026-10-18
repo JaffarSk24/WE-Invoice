@@ -1,0 +1,43 @@
+{
+  "name": "WE Invoice",
+  "tagline": "Rechnungen und E-Rechnung kostenlos. Wirklich kostenlos.",
+  "description": "Rechnungen, E-Rechnung (eFaktúra) über Peppol, Bank, Mahnungen, Ausgaben, Umsatzsteuer-Meldungen und einfache Buchführung (Einnahmen-Ausgaben-Rechnung) für Gewerbetreibende und kleine Firmen in der Slowakei und Tschechien. Ohne Registrierung, ohne Limits und ohne kostenpflichtige Pakete. Die Daten sind in Ihrem Google Drive verschlüsselt, nicht auf einem fremden Server. Open Source unter der MIT-Lizenz.",
+  "featuresTitle": "Was die App kann",
+  "features": [
+    "Rechnungen, Anzahlungsrechnungen, Gutschriften, Angebote und Verkaufsbelege mit QR-Code PAY by square",
+    "E-Rechnung über Peppol mit einem Provider Ihrer Wahl",
+    "Import von Kontoauszügen und automatischer Zahlungsabgleich",
+    "Mahnungen in drei Stufen mit Verzugszinsen",
+    "Scan von Kassenbons und eKasa-QR-Codes direkt auf dem Gerät",
+    "Kontrollmeldung (kontrolný výkaz), Zusammenfassende Meldung und Umsatzsteuererklärung als XML",
+    "Einfache Buchführung und Unterlagen für die Steuererklärung",
+    "Unbegrenzt viele Firmen, Belege und Kontakte",
+    "Sechs Sprachen der Oberfläche, Belegdruck auch zweisprachig"
+  ],
+  "buttons": {
+    "open": "Web-App öffnen",
+    "download": "Für Mac / Windows herunterladen",
+    "site": "Website der App",
+    "github": "Quellcode auf GitHub"
+  },
+  "faqTitle": "Häufige Fragen",
+  "faq": [
+    {
+      "q": "Warum ist WE Invoice kostenlos?",
+      "a": "Die App hat fast keine Betriebskosten: Die Daten liegen in Ihrem Google Drive, die Website läuft auf GitHub, und E-Rechnungen zahlen Sie direkt an den Provider. Für White Eagles ist die App eine Referenz ihrer Arbeit und ein Weg zu Inhabern kleiner Firmen."
+    },
+    {
+      "q": "Wo sind meine Daten?",
+      "a": "Verschlüsselt auf Ihrem Gerät und in Ihrem Google Drive. Der Server von White Eagles ist nur ein Gateway zu E-Rechnungs-Providern und Registern und speichert nichts."
+    },
+    {
+      "q": "Muss ich ab 2027 E-Rechnungen empfangen?",
+      "a": "Ja, jeder Unternehmer in der Slowakei, auch wer nicht umsatzsteuerpflichtig ist. WE Invoice nimmt sie komplett entgegen, mit allen Positionen, über einen Provider, bei dem der Empfang oft kostenlos ist."
+    },
+    {
+      "q": "Ersetzt das den Buchhalter?",
+      "a": "Nein. Die App bereitet Unterlagen und Exporte vor, die Verantwortung für die Steuerbelege bleibt bei Ihnen oder Ihrem Buchhalter."
+    }
+  ],
+  "screenshotAlt": "Bildschirm von WE Invoice mit Rechnungsliste und Rechnungsvorschau"
+}

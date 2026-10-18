@@ -1,0 +1,53 @@
+{
+  "langName": "Čeština",
+  "skipToContent": "Přeskočit na obsah",
+  "langSwitch": "Jazyk stránky",
+  "nav": {
+    "features": "Funkce",
+    "efaktura": "eFaktura",
+    "compare": "Srovnání",
+    "faq": "Otázky",
+    "github": "GitHub",
+    "app": "Otevřít aplikaci"
+  },
+  "footer": {
+    "madeBy": "Aplikaci vyvíjí",
+    "company": "White Eagles & Co. s. r. o.",
+    "address": "Bohrova 1194/1, 851 01 Bratislava, Slovensko",
+    "ico": "IČO 57098581",
+    "email": "welcome@whiteeagles.sk",
+    "privacy": "Ochrana osobních údajů",
+    "terms": "Podmínky používání",
+    "github": "Zdrojový kód",
+    "license": "Licence MIT",
+    "cookies": "Nastavení cookies",
+    "otherApps": "Další aplikace WE:"
+  },
+  "consent": {
+    "title": "Cookies a měření návštěvnosti",
+    "text": "Používáme Google Analytics, abychom věděli, které části stránky vám pomáhají. Zapne se až po vašem souhlasu. Samotná aplikace WE Invoice žádnou analytiku nemá.",
+    "accept": "Souhlasím",
+    "reject": "Odmítnout",
+    "more": "Více o ochraně údajů"
+  },
+  "thanks": {
+    "title": "Děkujeme, jste na seznamu",
+    "description": "Váš e-mail je potvrzený. Až otevřeme další vlnu bety eFaktur, pošleme vám kód pozvánky.",
+    "h1": "Děkujeme, jste na seznamu",
+    "lead": "Váš e-mail je potvrzený. Až otevřeme další vlnu bety eFaktur, dostanete kód pozvánky. Zadáte ho v aplikaci v části Nastavení, eFaktura, Kód pozvánky.",
+    "meanwhile": "Mezitím nemusíte čekat: fakturace, výdaje a účetnictví fungují už dnes. Bez registrace, zdarma.",
+    "ctaApp": "Otevřít aplikaci",
+    "ctaBack": "Zpět na úvod",
+    "unsubscribe": "Pokud si to rozmyslíte, každý náš e-mail má odkaz na odhlášení. Ze seznamu vás smažeme hned."
+  },
+  "notFound": {
+    "title": "Stránka nenalezena",
+    "h1": "Stránka nenalezena",
+    "text": "Odkaz je neplatný nebo stránka už neexistuje.",
+    "cta": "Na úvodní stránku"
+  },
+  "redirect": {
+    "title": "WE Invoice",
+    "text": "Vyberte jazyk:"
+  }
+}

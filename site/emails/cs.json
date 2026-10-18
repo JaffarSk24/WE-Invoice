@@ -1,0 +1,10 @@
+{
+  "confirm": {
+    "subject": "Potvrďte svůj e-mail pro betu eFaktur (Slovensko) WE Invoice",
+    "body": "Dobrý den,\n\nděkujeme za zájem o betu eFaktur (Slovensko) ve WE Invoice. Abychom vás zařadili do seznamu, potvrďte prosím svůj e-mail kliknutím na odkaz:\n\n{confirmUrl}\n\nOdkaz platí 7 dní. Pokud jste se nezapsali vy, tento e-mail ignorujte; bez potvrzení vás nikam nezařadíme a vaše údaje smažeme.\n\nWE Invoice: fakturace a eFaktura zdarma. Vaše data zůstávají u vás.\n{siteUrl}\n\nWhite Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava"
+  },
+  "invite": {
+    "subject": "Jste v betě eFaktur (Slovensko) WE Invoice, tady je váš kód",
+    "body": "Dobrý den,\n\notevřeli jsme další vlnu bety eFaktur (Slovensko) a vy jste v ní. Váš kód pozvánky:\n\n{code}\n\nJak ho použít:\n1. Otevřete WE Invoice: {appUrl}\n2. Nastavení, eFaktura, Kód pozvánky.\n3. Vyberte si digitálního pošťáka (poskytovatele eFaktur), zaregistrujte ho na vpds.financnasprava.sk (portál slovenské finanční správy) a vložte API klíč.\n\nPřijímání eFaktur je u řady poskytovatelů zdarma. Pokud narazíte na problém, odpovězte na tento e-mail; v betě čteme každou zprávu.\n\nUž vás beta nezajímá? Odhlaste se tady: {unsubscribeUrl}\n\nWhite Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava"
+  }
+}
