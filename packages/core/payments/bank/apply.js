@@ -84,7 +84,7 @@ export function applyMatch(tx, proposal, documents, { newId = uuidv7 } = {}) {
   const byId = new Map(documents.map(d => [d.id, d]));
   const patches = proposal.allocations.map(a => {
     const doc = byId.get(a.docId);
-    if (!doc) throw new CoreError('DOCUMENT_NOT_FOUND', `document ${a.docId} not found`);
+    if (!doc) throw new CoreError('BANK_DOCUMENT_NOT_FOUND', `document ${a.docId} not found`);
     const payment = makePayment(doc, {
       id: newId(), date: tx.date, amount: a.amount, currency: tx.currency, method: 'TRANSFER', source: 'BANK_IMPORT', bankTxId: tx.id
     });

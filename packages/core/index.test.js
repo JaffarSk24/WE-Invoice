@@ -24,7 +24,7 @@ const API = [
   'sepaText', 'paymentsForReceived', 'creditorIbanOf', 'defaultCashSeries', 'bookVouchers', 'cashBalance', 'cashBookRows',
   'checkCashOut', 'cashKindForPayment', 'buildCashVoucher', 'cashDifference', 'cashLimitCheck', 'isBusinessParty',
   'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded', 'ekasaManualEntry',
-  'listPayments', 'bankTxDirection'
+  'listPayments', 'bankTxDirection', 'paymentCandidates', 'paymentParty', 'openPaymentAmount'
 ];
 
 describe('core public API', () => {

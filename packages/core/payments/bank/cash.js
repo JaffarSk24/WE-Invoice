@@ -98,7 +98,7 @@ export function cashKindForPayment(document) {
 export function buildCashVoucher(input) {
   const { book, kind, date, amount, purpose, series } = input;
   if (!CASH_KINDS.includes(kind)) throw new CoreError('CASH_KIND_INVALID', `unknown voucher kind ${kind}`);
-  if (!series) throw new CoreError('SERIES_MISSING', 'the cash book has no series');
+  if (!series) throw new CoreError('CASH_SERIES_MISSING', 'the cash book has no series');
   const value = round(abs(amount), 2);
   if (cmp(value, '0') <= 0) throw new CoreError('AMOUNT_INVALID', 'a voucher needs an amount');
   const { number, counterKey, nextCounter } = nextNumber(series, { date, taken: input.taken || [] });
