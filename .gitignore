@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+node_modules.nosync/
+
+# Build outputs
+dist/
+dist-web/
+build/
+release/
+release.nosync/
+test-results/
+playwright-report/
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editors and OS
+.idea/
+.vscode/
+*.sw?
+.DS_Store
+
+# Secrets and local configuration: never committed. The repository is
+# public; OAuth clients, provider keys and SMTP passwords live only on the
+# owner's machines, in GitHub Actions secrets or in the server's .env.
+.env
+.env.*
+!.env.example
+*.local.json
+oauth-credentials.json
+google-credentials.json
+*.pem
+*.key
+private/
+
+# Gateway runtime data
+gateway/data/
+*.sqlite
+*.sqlite3
+*.db
