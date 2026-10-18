@@ -1,0 +1,61 @@
+/* Bookkeeping screens (WP-LEDGER): peňažný denník, assets, closing, and
+   the print page of the statements. Colours only through tokens.css. */
+
+.ledger-header .view-actions { flex-wrap: wrap; }
+.ledger-year { min-height: var(--touch-target); padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); }
+.ledger-stats { margin-bottom: 16px; }
+.ledger-stats .stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; }
+.ledger-stats .stat-danger .stat-value { color: var(--danger); }
+.ledger-tabs { margin-top: 8px; }
+.ledger-tabs .tab-panel { padding-top: 16px; }
+.ledger-tabs .callout, .ledger-header + .callout, .ledger-stats + .callout { margin-bottom: 12px; }
+
+.ledger-column-totals { margin-top: 16px; }
+.ledger-dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; margin: 0; }
+.ledger-dl dt { color: var(--text-secondary); }
+.ledger-dl dd { margin: 0; text-align: right; }
+
+.ledger-book { margin-bottom: 24px; }
+.ledger-book h2 { display: flex; align-items: baseline; gap: 8px; font-size: 18px; }
+
+.ledger-simple-table { width: 100%; border-collapse: collapse; }
+.ledger-simple-table th, .ledger-simple-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); text-align: left; }
+.ledger-simple-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.ledger-simple-table tfoot td, .ledger-simple-table .is-total td { font-weight: 700; }
+
+.ledger-plan { margin-top: 16px; }
+.ledger-plan h4 { margin: 0 0 8px; }
+
+.card + .card, .card + .ledger-statements, .ledger-statements + .card { margin-top: 16px; }
+.ledger-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ledger-check { display: flex; align-items: center; gap: 8px; }
+.ledger-check svg { width: 18px; height: 18px; flex: none; }
+.ledger-check.is-ok svg { color: var(--success); }
+.ledger-check.is-pending svg { color: var(--text-muted); }
+.ledger-check.is-bad svg { color: var(--warning); }
+.ledger-statements { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.ledger-carry .btn { margin-top: 8px; }
+
+@media (max-width: 767px) {
+  .ledger-statements { grid-template-columns: 1fr; }
+  .ledger-header .btn-label { display: none; }
+  .ledger-simple-table th, .ledger-simple-table td { padding: 6px; }
+}
+
+/* Print page: shown alone while the statements print, on its own landscape
+   page type so other printing keeps its layout. Paper colours are the
+   system colours of the print medium, not theme tokens. */
+.ledger-print { display: none; }
+@media print {
+  @page ledger { size: A4 landscape; margin: 12mm; }
+  html.ledger-printing body > *:not(.ledger-print) { display: none !important; }
+  html.ledger-printing .ledger-print { display: block; page: ledger; color: CanvasText; background: Canvas; font-size: 9pt; }
+  .ledger-print h1 { font-size: 14pt; margin: 0 0 4pt; }
+  .ledger-print-table { width: 100%; border-collapse: collapse; margin: 10pt 0; page-break-inside: auto; }
+  .ledger-print-table caption { text-align: left; font-weight: 700; padding: 4pt 0; }
+  .ledger-print-table th, .ledger-print-table td { border: 0.5pt solid GrayText; padding: 2pt 4pt; text-align: left; vertical-align: top; }
+  .ledger-print-table .num { text-align: right; white-space: nowrap; }
+  .ledger-print-table tfoot td { font-weight: 700; }
+  .ledger-print-table tr { page-break-inside: avoid; }
+  .ledger-print-foot { margin-top: 12pt; font-size: 8pt; }
+}
