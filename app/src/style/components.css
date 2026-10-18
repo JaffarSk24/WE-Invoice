@@ -46,3 +46,19 @@
 .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
 .modal-body { padding: 20px; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--border-color); }
+
+/* Sync dialogs (WP-SYNC): fields, recovery words, hints. */
+.sync-text { color: var(--text-secondary); margin: 0 0 16px; line-height: 1.5; }
+.sync-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.sync-field label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.sync-input { width: 100%; }
+.sync-hint { font-size: 12px; color: var(--text-muted); margin: -8px 0 14px; }
+.sync-hint[data-strength="1"] { color: var(--danger); }
+.sync-hint[data-strength="2"] { color: var(--warning, var(--text-secondary)); }
+.sync-hint[data-strength="3"] { color: var(--success); }
+.sync-error { color: var(--danger); font-size: 13px; min-height: 18px; margin-bottom: 8px; }
+.sync-link { padding: 0; min-height: 0; color: var(--accent-blue); }
+.sync-words { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; margin: 0 0 16px; padding-left: 28px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.sync-words li { padding: 2px 0; }
+.sync-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+@media (max-width: 480px) { .sync-words { grid-template-columns: repeat(2, 1fr); } }

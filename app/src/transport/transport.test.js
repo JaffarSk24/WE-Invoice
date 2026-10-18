@@ -25,8 +25,11 @@ describe('transport', () => {
     expect(TRANSPORT_SHAPE.groups.drive).toEqual(['list', 'get', 'put', 'delete']);
   });
 
-  it('unimplemented parts reject with NOT_IMPLEMENTED', async () => {
-    await expect(createWebTransport().drive.list('/')).rejects.toMatchObject({ code: 'NOT_IMPLEMENTED' });
+  it('drive and secrets refuse to work before sign-in and unlock', async () => {
+    const t = createWebTransport({ adapter: { get: async () => null, put: async () => {}, delete: async () => {}, keys: async () => [] } });
+    await expect(t.drive.list('')).rejects.toMatchObject({ code: 'NOT_SIGNED_IN' });
+    expect((await t.auth.status()).signedIn).toBe(false);
+    await expect(t.secrets.set('peppol', 'key')).rejects.toMatchObject({ code: 'LOCKED' });
   });
 
   it('http wraps fetch into the response shape', async () => {

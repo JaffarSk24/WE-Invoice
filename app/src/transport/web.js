@@ -1,11 +1,14 @@
 // Transport of the browser and PWA build. Peppol providers, registers and
 // eKasa are reached through the gateway, because most of them do not allow
-// browser (CORS) requests. Drive and Google sign-in arrive with WP-SYNC.
-import { NotImplementedError } from '@we-invoice/core';
+// browser (CORS) requests. Google sign-in and Drive go straight to Google
+// with the user's own token (sync/google); secrets are sealed with the
+// data key in the local store (sync/secrets-web.js).
 import { fromFetchResponse } from './interface.js';
 import { GATEWAY_URL } from '../config.js';
-
-const notYet = (name) => () => Promise.reject(new NotImplementedError(name));
+import { createWebAuth, dropToken } from '../sync/google/auth-web.js';
+import { createDriveClient } from '../sync/google/drive-api.js';
+import { createWebSecrets } from '../sync/secrets-web.js';
+import { deviceAdapter } from '../store/local.js';
 
 function saveAs(name, blob) {
   const url = URL.createObjectURL(blob);
@@ -36,8 +39,18 @@ function openFile({ accept = '', multiple = false } = {}) {
   });
 }
 
-export function createWebTransport({ gatewayUrl = GATEWAY_URL, fetchImpl = (...a) => fetch(...a) } = {}) {
+// `keyProvider` returns the data key of the vault (set at boot through
+// transport.secrets.useKey); until then secrets are locked.
+export function createWebTransport({ gatewayUrl = GATEWAY_URL, fetchImpl = (...a) => fetch(...a), adapter = null } = {}) {
   const base = gatewayUrl.replace(/\/+$/, '');
+  const auth = createWebAuth({ fetchImpl });
+  const drive = createDriveClient({ fetchImpl, getToken: () => auth.getAccessToken(), onUnauthorized: dropToken });
+  let getKey = () => null;
+  let secretsStore = null;
+  const secrets = () => {
+    if (!secretsStore) secretsStore = createWebSecrets({ adapter: adapter || deviceAdapter(), getKey: () => getKey() });
+    return secretsStore;
+  };
   return {
     platform: 'web',
     gatewayUrl: (path) => `${base}${path.startsWith('/') ? '' : '/'}${path}`,
@@ -45,10 +58,15 @@ export function createWebTransport({ gatewayUrl = GATEWAY_URL, fetchImpl = (...a
       const response = await fetchImpl(url, { method, headers, body, signal: AbortSignal.timeout(timeoutMs) });
       return fromFetchResponse(response);
     },
-    drive: { list: notYet('drive.list'), get: notYet('drive.get'), put: notYet('drive.put'), delete: notYet('drive.delete') },
-    auth: { signIn: notYet('auth.signIn'), signOut: notYet('auth.signOut'), getAccessToken: notYet('auth.getAccessToken'), status: () => Promise.resolve({ signedIn: false }) },
+    drive: { list: (p) => drive.list(p), get: (p) => drive.get(p), put: (p, d) => drive.put(p, d), delete: (p) => drive.delete(p) },
+    auth,
     files: { saveAs, openFile },
-    secrets: { get: notYet('secrets.get'), set: notYet('secrets.set'), delete: notYet('secrets.delete') },
+    secrets: {
+      get: (name) => secrets().get(name),
+      set: (name, value) => secrets().set(name, value),
+      delete: (name) => secrets().delete(name),
+      useKey: (provider) => { getKey = provider; }
+    },
     notify(title, body) {
       if (typeof Notification !== 'undefined' && Notification.permission === 'granted') new Notification(title, { body });
     }

@@ -10,6 +10,9 @@ import { serviceWorker } from './build/service-worker.js';
 const root = fileURLToPath(new URL('.', import.meta.url));
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const PUBLIC_FILES = ['manifest.webmanifest', 'favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
+// The OAuth client of the web app (public, drive.file scope). The GitHub
+// repository variable GOOGLE_CLIENT_ID overrides it at build time.
+const DEFAULT_GOOGLE_CLIENT_ID = '176979689768-bvoi2igmaclfkf3je441kmfvb6vjjfq4.apps.googleusercontent.com';
 
 export default defineConfig(({ mode }) => {
   const web = mode === 'web';
@@ -20,7 +23,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __APP_VERSION__: JSON.stringify(pkg.version),
       __WEB_BUILD__: JSON.stringify(web),
-      __GATEWAY_URL__: JSON.stringify(process.env.GATEWAY_URL || 'https://invoice-api.whiteeagles.sk')
+      __GATEWAY_URL__: JSON.stringify(process.env.GATEWAY_URL || 'https://invoice-api.whiteeagles.sk'),
+      __GOOGLE_CLIENT_ID__: JSON.stringify(process.env.GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID)
     },
     plugins: web ? [serviceWorker({ version: pkg.version, publicFiles: PUBLIC_FILES })] : [],
     build: {

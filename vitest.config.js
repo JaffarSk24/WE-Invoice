@@ -7,7 +7,8 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify('test'),
     __WEB_BUILD__: JSON.stringify(false),
-    __GATEWAY_URL__: JSON.stringify('http://localhost:8787')
+    __GATEWAY_URL__: JSON.stringify('http://localhost:8787'),
+    __GOOGLE_CLIENT_ID__: JSON.stringify('test-client-id.apps.googleusercontent.com')
   },
   test: {
     include: ['packages/**/*.test.js', 'app/**/*.test.js', 'desktop/**/*.test.js', 'tests/**/*.test.js'],
