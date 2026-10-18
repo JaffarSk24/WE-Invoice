@@ -13,6 +13,7 @@
     "./peppol/providers.json": "./peppol/providers.json"
   },
   "dependencies": {
-    "big.js": "^7.0.1"
+    "big.js": "^7.0.1",
+    "bysquare": "^4.1.0"
   }
 }
