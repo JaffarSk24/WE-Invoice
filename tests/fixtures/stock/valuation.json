@@ -1,0 +1,36 @@
+{
+  "description": "Golden cases for stock valuation by weighted average cost and FIFO. Moves are stored moves of one item; expected values are the cost of each move and the balance at the end.",
+  "cases": [
+    {
+      "name": "two receipts, issue across both, receipt, issue",
+      "moves": [
+        { "id": "m1", "kind": "RECEIPT", "date": "2026-01-05", "warehouseId": "w1", "itemId": "i1", "qty": "10", "unitCost": "2.00" },
+        { "id": "m2", "kind": "RECEIPT", "date": "2026-01-10", "warehouseId": "w1", "itemId": "i1", "qty": "10", "unitCost": "3.00" },
+        { "id": "m3", "kind": "ISSUE", "date": "2026-01-15", "warehouseId": "w1", "itemId": "i1", "qty": "15" },
+        { "id": "m4", "kind": "RECEIPT", "date": "2026-01-20", "warehouseId": "w1", "itemId": "i1", "qty": "5", "unitCost": "4.00" },
+        { "id": "m5", "kind": "ISSUE", "date": "2026-01-25", "warehouseId": "w1", "itemId": "i1", "qty": "5" }
+      ],
+      "AVERAGE": { "values": ["20.00", "30.00", "37.50", "20.00", "16.25"], "qty": "5", "value": "16.25", "unitCost": "3.2500" },
+      "FIFO": { "values": ["20.00", "30.00", "35.00", "20.00", "15.00"], "qty": "5", "value": "20.00", "unitCost": "4.0000" }
+    },
+    {
+      "name": "issue before the first receipt",
+      "moves": [
+        { "id": "m1", "kind": "ISSUE", "date": "2026-02-01", "warehouseId": "w1", "itemId": "i1", "qty": "3" },
+        { "id": "m2", "kind": "RECEIPT", "date": "2026-02-02", "warehouseId": "w1", "itemId": "i1", "qty": "5", "unitCost": "10" }
+      ],
+      "AVERAGE": { "values": ["0.00", "50.00"], "qty": "2", "value": "20.00", "unitCost": "10.0000" },
+      "FIFO": { "values": ["0.00", "50.00"], "qty": "2", "value": "20.00", "unitCost": "10.0000" }
+    },
+    {
+      "name": "transfer between warehouses keeps the value",
+      "moves": [
+        { "id": "m1", "kind": "RECEIPT", "date": "2026-03-01", "warehouseId": "w1", "itemId": "i1", "qty": "4", "unitCost": "2.50" },
+        { "id": "m2", "kind": "TRANSFER", "date": "2026-03-02", "warehouseId": "w1", "targetWarehouseId": "w2", "itemId": "i1", "qty": "4" },
+        { "id": "m3", "kind": "ADJUSTMENT", "date": "2026-03-03", "warehouseId": "w2", "itemId": "i1", "qty": "-1" }
+      ],
+      "AVERAGE": { "values": ["10.00", "10.00", "2.50"], "qty": "3", "value": "7.50", "unitCost": "2.5000" },
+      "FIFO": { "values": ["10.00", "10.00", "2.50"], "qty": "3", "value": "7.50", "unitCost": "2.5000" }
+    }
+  ]
+}
