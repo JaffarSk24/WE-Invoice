@@ -57,12 +57,15 @@ function documentList(contact, documents) {
   const docs = contactDocuments(contact, documents);
   if (!docs.length) return emptyState({ title: t('contacts.documents.none'), iconName: 'file-text' });
   return h('table', { class: 'table contact-docs' },
-    h('thead', {}, h('tr', {}, ['docKind', 'number', 'issueDate', 'dueDate', 'status', 'amount', 'due'].map(k => h('th', { scope: 'col', class: k === 'amount' || k === 'due' ? 'num' : null }, t(`contacts.documents.${k}`))))),
+    h('thead', {}, h('tr', {}, ['docKind', 'number', 'issueDate', 'dueDate', 'status', 'amount', 'due'].map(k => h('th', { scope: 'col', class: k === 'amount' || k === 'due' ? 'num' : null }, t(`contacts.documents.${k}`))), h('td', {}))),
     h('tbody', {}, docs.map(d => {
       const { gross, due } = documentAmounts(d);
       return h('tr', {},
         h('td', {}, t(`crm.kind.${d.kind}`)), h('td', {}, d.number || t('status.DRAFT')), h('td', {}, formatDate(d.issueDate)), h('td', {}, formatDate(d.dueDate)),
-        h('td', {}, statusBadge(d.status)), h('td', { class: 'num' }, formatAmount(gross, d.currency || 'EUR')), h('td', { class: 'num' }, formatAmount(due, d.currency || 'EUR')));
+        h('td', {}, statusBadge(d.status)), h('td', { class: 'num' }, formatAmount(gross, d.currency || 'EUR')), h('td', { class: 'num' }, formatAmount(due, d.currency || 'EUR')),
+        h('td', {}, d.status === 'DRAFT' ? null : h('button', {
+          type: 'button', class: 'btn btn-ghost btn-sm doc-send', dataset: { doc: d.id }, onclick: () => emit('document:send', { documentId: d.id })
+        }, icon('send'), t('reminders.send'))));
     })));
 }
 
