@@ -58,10 +58,23 @@ export function loadConfig(env = process.env) {
       pass: env.SMTP_PASS || '',
       from: env.SMTP_FROM || ''
     },
+    // Mailgun HTTP API, used when SMTP is not set (the White Eagles site
+    // sends through it already). The key lives only in the server env.
+    mailgun: {
+      apiKey: env.MAILGUN_API_KEY || '',
+      domain: env.MAILGUN_DOMAIN || '',
+      endpoint: env.MAILGUN_ENDPOINT || 'api.eu.mailgun.net'
+    },
     waitlist: {
       confirmTtlHours: num(env.WAITLIST_CONFIRM_TTL_HOURS, 48),
       minFillSeconds: num(env.WAITLIST_MIN_FILL_SECONDS, 3),
-      retentionMonths: num(env.WAITLIST_RETENTION_MONTHS, 24)
+      retentionMonths: num(env.WAITLIST_RETENTION_MONTHS, 24),
+      // Off by default: sign-ups are taken at once and the owner writes to
+      // people personally. On: double opt-in e-mail to the applicant.
+      confirmByEmail: env.WAITLIST_CONFIRM_EMAIL === 'true',
+      // Where a notice of every new sign-up goes (empty: no notice).
+      ownerEmail: env.OWNER_NOTIFY_EMAIL || '',
+      ownerLang: env.OWNER_NOTIFY_LANG || 'ru'
     },
     adminToken: env.ADMIN_TOKEN || '',
     betaHmacSecret: env.BETA_HMAC_SECRET || ''

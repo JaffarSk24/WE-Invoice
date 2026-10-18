@@ -185,7 +185,7 @@ describe('recording the match', () => {
 
   it('23. refuses payments in another currency and empty amounts', () => {
     const d = doc();
-    expect(() => addPayment(d, { ...makePayment(d, { date: '2026-10-05', amount: '5' }), currency: 'CZK' })).toThrow(expect.objectContaining({ code: 'PAYMENT_CURRENCY_MISMATCH' }));
+    expect(() => addPayment(d, { ...makePayment(d, { date: '2026-10-05', amount: '5' }), currency: 'CZK' })).toThrow(expect.objectContaining({ code: 'BANK_PAYMENT_CURRENCY_MISMATCH' }));
     expect(() => makePayment(d, { date: '2026-10-05', amount: '0' })).toThrow(expect.objectContaining({ code: 'AMOUNT_INVALID' }));
     expect(() => applyMatch({ date: '2026-10-05' }, { allocations: [] }, [])).toThrow(expect.objectContaining({ code: 'BANK_TX_NOT_STORED' }));
   });

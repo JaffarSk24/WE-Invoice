@@ -36,8 +36,8 @@ export function statusAfterPayments(document) {
 export function makePayment(document, input) {
   const method = input.method || 'TRANSFER';
   const source = input.source || 'MANUAL';
-  if (!PAYMENT_METHODS.includes(method)) throw new CoreError('PAYMENT_METHOD_INVALID', `unknown method ${method}`);
-  if (!PAYMENT_SOURCES.includes(source)) throw new CoreError('PAYMENT_SOURCE_INVALID', `unknown source ${source}`);
+  if (!PAYMENT_METHODS.includes(method)) throw new CoreError('BANK_PAYMENT_METHOD_INVALID', `unknown method ${method}`);
+  if (!PAYMENT_SOURCES.includes(source)) throw new CoreError('BANK_PAYMENT_SOURCE_INVALID', `unknown source ${source}`);
   if (!input.date) throw new CoreError('DATE_INVALID', 'a payment needs a date');
   const value = round(abs(input.amount), 2);
   if (value === '0.00') throw new CoreError('AMOUNT_INVALID', 'a payment needs an amount');
@@ -60,7 +60,7 @@ export function makePayment(document, input) {
 /** The patch that adds a payment to a document. @returns {{payments: object[], status: string}} */
 export function addPayment(document, payment) {
   if (payment.currency && document.currency && payment.currency !== document.currency) {
-    throw new CoreError('PAYMENT_CURRENCY_MISMATCH', `${payment.currency} payment on a ${document.currency} document`);
+    throw new CoreError('BANK_PAYMENT_CURRENCY_MISMATCH', `${payment.currency} payment on a ${document.currency} document`);
   }
   const payments = [...(document.payments || []), payment];
   return { payments, status: statusAfterPayments({ ...document, payments }) };
