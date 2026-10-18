@@ -13,4 +13,5 @@ export function lazyRoute(load, ctx) {
 export async function boot(ctx) {
   const { transport } = ctx;
   ctx.registerRoute('contacts', lazyRoute(() => import('../views/contacts/index.js').then(m => m.createContactsView({ transport })), ctx));
+  ctx.registerRoute('items', lazyRoute(() => import('../views/items/index.js').then(m => m.createItemsView({ transport })), ctx));
 }

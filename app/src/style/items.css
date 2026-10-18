@@ -1,0 +1,8 @@
+/* The price list and the item card. */
+
+.items-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.items-tools .search-field { flex: 1; min-width: 220px; max-width: 520px; }
+.items-tools select { min-width: 180px; }
+.item-form .form-grid { margin-bottom: 4px; }
+.item-sections { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.import-errors { margin: 8px 0 0 20px; font-size: 14px; color: var(--text-secondary); max-height: 260px; overflow-y: auto; }

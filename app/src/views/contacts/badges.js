@@ -28,5 +28,5 @@ export function peppolBadge(contact) {
 // "1 234,00 €" for each currency, or a dash.
 export function balanceText(byCurrency, field) {
   const parts = Object.entries(byCurrency || {}).filter(([, v]) => v[field] && v[field] !== '0.00').map(([cur, v]) => formatAmount(v[field], cur));
-  return parts.length ? parts.join(', ') : '−';
+  return parts.length ? parts.join(', ') : '\u2212';
 }

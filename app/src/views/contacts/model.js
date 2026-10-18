@@ -73,7 +73,7 @@ export function emailsFor(contact, purpose = 'INVOICE') {
 
 // Folds case and diacritics, so "kos" finds "Košice".
 export function fold(value) {
-  return text(value).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  return text(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
 // Contacts matching a query in name, IČO, DIČ, IČ DPH, e-mail or tag.
