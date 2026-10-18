@@ -43,7 +43,7 @@
 .field-check svg { width: 14px; height: 14px; }
 .field-source { font-size: 11px; margin-top: 2px; }
 .field-picked input { border-color: var(--success); }
-.review-actions { display: flex; flex-wrap: wrap; gap: 10px; position: sticky; bottom: 0; padding: 12px 0; background: var(--bg-primary); }
+.review-actions { display: flex; flex-wrap: wrap; gap: 10px; position: sticky; bottom: var(--promo-height, 0px); z-index: 1; padding: 12px 0; background: var(--bg-primary); }
 
 .review-preview { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--overlay-02); padding: 12px; }
 .preview-pages { display: grid; gap: 12px; }
@@ -54,6 +54,7 @@
 .pick-box { position: absolute; min-height: 0; padding: 0; margin: 0; border: 1px solid var(--accent-blue); border-radius: 2px; background: var(--overlay-04); cursor: crosshair; }
 .pick-box:hover, .pick-box:focus-visible { background: var(--overlay-hover); border-width: 2px; outline: none; box-shadow: var(--focus-ring); }
 .pick-banner { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin-bottom: 10px; border-radius: var(--radius-sm); background: var(--bg-elevated); border: 1px solid var(--accent-blue); }
+.pick-banner[hidden] { display: none; }
 .pick-banner span { flex: 1; }
 .pick-banner svg { width: 18px; height: 18px; color: var(--accent-blue); }
 
@@ -66,7 +67,7 @@
 
 @media (max-width: 1023px) {
   .review-grid { grid-template-columns: 1fr; }
-  .review-preview { position: static; max-height: 60vh; }
+  .review-preview { position: static; max-height: 45vh; }
 }
 @media (max-width: 767px) {
   .review-section { grid-template-columns: 1fr; }

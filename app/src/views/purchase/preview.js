@@ -57,7 +57,7 @@ export function createPreview(doc, { onPicked }) {
   let pages = [];
   const banner = h('div', { class: 'pick-banner', hidden: true, role: 'status' });
   const body = h('div', { class: 'preview-pages' }, h('p', { class: 'muted' }, t('purchase.preview.loading')));
-  const el = h('section', { class: 'review-preview', 'aria-label': t('purchase.preview.title') }, banner, body);
+  const el = h('section', { class: 'review-preview', tabindex: '0', 'aria-label': t('purchase.preview.title') }, banner, body);
 
   function stopPick() {
     picking = null;

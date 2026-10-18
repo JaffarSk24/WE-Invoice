@@ -24,12 +24,46 @@ export function setOcrEngine(custom) {
   creating = null;
 }
 
-async function languageData() {
-  return Promise.all(Object.entries(OCR_LANGUAGES).map(async ([code, url]) => {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`${code} model answered ${response.status}`);
-    return { code, data: new Uint8Array(await response.arrayBuffer()) };
-  }));
+// tesseract.js 7 cannot initialise from language data passed in memory
+// (it joins the data instead of the codes), so the models are put where
+// its worker looks first: its IndexedDB cache (idb-keyval, database
+// "keyval-store", store "keyval"), under a key of our own cache path.
+// Read-only cache mode then never touches the network.
+export const MODEL_CACHE_PATH = 'we-invoice-ocr-4.0.0_best_int';
+const modelKey = (code) => `${MODEL_CACHE_PATH}/${code}.traineddata`;
+
+function cacheDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('keyval-store');
+    req.onupgradeneeded = () => req.result.createObjectStore('keyval');
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function cacheRun(db, mode, fn) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('keyval', mode);
+    const req = fn(tx.objectStore('keyval'));
+    tx.oncomplete = () => resolve(req.result);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function installModels() {
+  const db = await cacheDb();
+  try {
+    for (const [code, url] of Object.entries(OCR_LANGUAGES)) {
+      const present = await cacheRun(db, 'readonly', s => s.count(modelKey(code)));
+      if (present) continue;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`${code} model answered ${response.status}`);
+      const data = new Uint8Array(await response.arrayBuffer());
+      await cacheRun(db, 'readwrite', s => s.put(data, modelKey(code)));
+    }
+  } finally {
+    db.close();
+  }
 }
 
 // Words of tesseract blocks as positioned items in page fractions.
@@ -49,12 +83,15 @@ export function wordsOf(data, width, height) {
 }
 
 async function createBrowserEngine() {
-  const [{ createWorker }, langs] = await Promise.all([import('tesseract.js'), languageData()]);
-  const worker = await createWorker(langs, 1, {
+  const [{ createWorker }] = await Promise.all([import('tesseract.js'), installModels()]);
+  const worker = await createWorker(Object.keys(OCR_LANGUAGES).join('+'), 1, {
     workerPath: workerUrl,
     corePath: coreUrl,
     workerBlobURL: false,
-    cacheMethod: 'none',
+    cacheMethod: 'readOnly',
+    cachePath: MODEL_CACHE_PATH,
+    // Never used while the cache holds the models; it keeps the CDN out.
+    langPath: new URL('ocr-models', document.baseURI).href,
     logger: (m) => { if (progressListener && m.status === 'recognizing text') progressListener(m.progress); }
   });
   return {

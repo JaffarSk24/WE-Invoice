@@ -34,7 +34,7 @@
     { "id": "sk-invoice-nonpayer", "type": "text", "file": "text/sk-invoice-nonpayer.txt",
       "expected": { "number": "2026-014", "ico": "33334447", "dic": "1022334401", "iban": "SK3702000000003312345678", "vs": "202614", "issueDate": "2026-10-03", "dueDate": "2026-10-17", "currency": "EUR", "total": "540.00", "supplierName": "Ján Novák - Maliarske práce" } },
     { "id": "sk-invoice-label-below", "type": "text", "file": "text/sk-invoice-label-below.txt",
-      "expected": { "number": "2026-3307", "ico": "46120092", "icDph": "SK2012334401", "iban": "SK1175000000004012345678", "vs": "20263307", "issueDate": "2026-10-08", "dueDate": "2026-10-22", "currency": "EUR", "net": "64.00", "vat": "14.72", "total": "78.72" } },
+      "expected": { "number": "2026-3307", "supplierName": "Kuriér Express Slovakia a.s.", "ico": "46120092", "icDph": "SK2012334401", "iban": "SK1175000000004012345678", "vs": "20263307", "issueDate": "2026-10-08", "dueDate": "2026-10-22", "currency": "EUR", "net": "64.00", "vat": "14.72", "total": "78.72" } },
     { "id": "sk-credit-note", "type": "text", "file": "text/sk-credit-note.txt",
       "expected": { "kind": "RECEIVED_CREDIT_NOTE", "number": "DB-2026-0012", "ico": "44445555", "icDph": "SK2044556602", "issueDate": "2026-10-15", "currency": "EUR", "total": "-123.00" } },
     { "id": "cz-invoice", "type": "text", "file": "text/cz-invoice.txt",
@@ -44,9 +44,9 @@
     { "id": "de-invoice", "type": "text", "file": "text/de-invoice.txt",
       "expected": { "number": "2026-10077", "icDph": "DE123456789", "iban": "DE89370400440532013000", "issueDate": "2026-10-09", "taxDate": "2026-10-07", "dueDate": "2026-10-23", "currency": "EUR", "net": "1200.00", "vat": "228.00", "total": "1428.00" } },
     { "id": "sk-receipt-ekasa", "type": "text", "file": "text/sk-receipt-ekasa.txt",
-      "expected": { "kind": "EXPENSE_RECEIPT", "ico": "36987123", "dic": "2055667702", "icDph": "SK2055667702", "issueDate": "2026-10-14", "currency": "EUR", "total": "79.83", "net": "64.90", "vat": "14.93" } },
+      "expected": { "kind": "EXPENSE_RECEIPT", "supplierName": "ČERPACIA STANICA SLNOVRAT s.r.o.", "ico": "36987123", "dic": "2055667702", "icDph": "SK2055667702", "issueDate": "2026-10-14", "currency": "EUR", "total": "79.83", "net": "64.90", "vat": "14.93" } },
     { "id": "sk-receipt-shop", "type": "text", "file": "text/sk-receipt-shop.txt",
-      "expected": { "kind": "EXPENSE_RECEIPT", "ico": "50778811", "dic": "2099887702", "issueDate": "2026-10-10", "currency": "EUR", "total": "15.40", "net": "12.52", "vat": "2.88" } },
+      "expected": { "kind": "EXPENSE_RECEIPT", "supplierName": "PAPIERNICTVO U SOVY", "ico": "50778811", "dic": "2099887702", "issueDate": "2026-10-10", "currency": "EUR", "total": "15.40", "net": "12.52", "vat": "2.88" } },
     { "id": "sk-invoice-noisy", "type": "text", "file": "text/sk-invoice-noisy.txt",
       "expected": { "number": "7712345601", "ico": "47773332", "icDph": "SK2077733306", "iban": "SK6609000000005012345678", "vs": "7712345601", "issueDate": "2026-10-02", "dueDate": "2026-10-16", "currency": "EUR", "net": "32.52", "vat": "7.48", "total": "40.00" } }
   ]

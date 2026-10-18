@@ -95,4 +95,12 @@ export function findSupplierName(scan, result, ctx) {
       return;
     }
   }
+  // No supplier label (a receipt): the shop's name heads the document.
+  const own = ctx.company && ctx.company.name ? fold(ctx.company.name).trim() : null;
+  const first = scan.text.split('\n').slice(0, 4).map(l => l.trim().replace(/\s{2,}.*$/, ''))
+    .find(l => l.length >= 3 && /[A-Za-z\u00c0-\u024f]{3}/.test(l) && !isLabel(l) && !HEADINGS.test(fold(l)) && fold(l) !== own);
+  if (first) setField(result, 'supplierName', first.slice(0, 200), ctx.source, 0.4);
 }
+
+// Document headings that are not a supplier's name.
+const HEADINGS = /^(faktura|invoice|rechnung|dobropis|credit note|gutschrift|pokladnicny doklad|pokladnicni doklad|danovy doklad|blocek|uctenka|kassenbon|doklad)\b/;

@@ -4,7 +4,7 @@
 import { h, icon } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { textField, dateField, selectField, textArea } from '../../components/fields.js';
-import { toInputText } from '../../components/decimal.js';
+import { amountText } from './amount-text.js';
 import { EXPENSE_CATEGORIES, schema } from '@we-invoice/core';
 import { valuesOf, AMOUNT_FIELDS } from './review-values.js';
 
@@ -31,7 +31,7 @@ function control(name, value) {
   }
   if (name.endsWith('Date')) return dateField({ label, value });
   if (name === 'note') return textArea({ label, value, rows: 2 });
-  if (AMOUNT_FIELDS.includes(name)) return textField({ label, value: value ? toInputText(value) : '', attrs: { inputmode: 'decimal', class: 'num' } });
+  if (AMOUNT_FIELDS.includes(name)) return textField({ label, value: value ? amountText(value) : '', attrs: { inputmode: 'decimal', class: 'num' } });
   const hint = name === 'vatDeductionPeriod' ? t('purchase.field.vatDeductionPeriod.hint') : null;
   return textField({ label, value, hint, attrs: name === 'currency' ? { maxlength: '3', class: 'input-currency' } : {} });
 }
@@ -54,12 +54,13 @@ export function createReviewForm(doc, { onPick = null, pickEnabled = false, vatP
       const field = control(name, initial[name]);
       field.input.dataset.field = name;
       field.el.dataset.field = name;
-      const low = conf[name] !== undefined && conf[name] < LOW && sources[name] !== 'user';
+      // The kind is a guess from keywords; marking it would mostly be noise.
+      const low = name !== 'kind' && conf[name] !== undefined && conf[name] < LOW && sources[name] !== 'user';
       if (low) {
         field.el.classList.add('field-low');
         field.el.append(h('div', { class: 'field-check' }, icon('triangle-alert'), t('purchase.review.check')));
       }
-      if (sources[name] && initial[name]) field.el.append(h('div', { class: 'field-source muted' }, t(`purchase.source.${sources[name]}`)));
+      if (name !== 'kind' && sources[name] && initial[name]) field.el.append(h('div', { class: 'field-source muted' }, t(`purchase.source.${sources[name]}`)));
       if (pickEnabled && onPick && PICKABLE.has(name)) {
         const pick = h('button', {
           type: 'button', class: 'btn btn-ghost btn-icon btn-sm field-pick', dataset: { pick: name },
@@ -88,7 +89,7 @@ export function createReviewForm(doc, { onPick = null, pickEnabled = false, vatP
     setValue(name, value) {
       const f = fields[name];
       if (!f) return;
-      f.input.value = AMOUNT_FIELDS.includes(name) ? toInputText(value) : value;
+      f.input.value = AMOUNT_FIELDS.includes(name) ? amountText(value) : value;
       f.el.classList.remove('field-low');
       f.el.querySelector('.field-check')?.remove();
       f.el.classList.add('field-picked');

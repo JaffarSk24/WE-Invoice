@@ -7,11 +7,11 @@ import { h } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { openModal } from '../../ui/modal.js';
 import { dateField, textField, selectField } from '../../components/fields.js';
-import { toInputText } from '../../components/decimal.js';
+import { amountText } from './amount-text.js';
 
 export function openPaymentDialog(doc, { today, onSave }) {
   const date = dateField({ label: t('purchase.payment.date'), value: today, required: true });
-  const amount = textField({ label: t('purchase.payment.amount'), value: toInputText(amountDue(doc)), required: true, attrs: { inputmode: 'decimal', class: 'num' } });
+  const amount = textField({ label: t('purchase.payment.amount'), value: amountText(amountDue(doc)), required: true, attrs: { inputmode: 'decimal', class: 'num' } });
   const method = selectField({
     label: t('purchase.field.paymentMethod'), value: doc.paymentMethod || 'TRANSFER',
     options: schema.PAYMENT_METHODS.map(m => ({ value: m, label: t(`purchase.paymentMethod.${m}`) }))

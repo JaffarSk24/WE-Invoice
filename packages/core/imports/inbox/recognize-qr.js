@@ -47,7 +47,8 @@ function fromPayment(format, payment) {
   setField(r, 'total', payment.amount, 'qr', 1);
   setField(r, 'currency', payment.currency, 'qr', 1);
   ['vs', 'ks', 'ss', 'dueDate'].forEach(k => setField(r, k, payment[k], 'qr', 1));
-  setField(r, 'supplierName', payment.beneficiary, 'qr', 0.9);
+  // Banking apps often strip diacritics from the name: a printed name wins.
+  setField(r, 'supplierName', payment.beneficiary, 'qr', 0.5);
   setField(r, 'number', payment.invoiceId, 'qr', 0.9);
   setField(r, 'kind', 'RECEIVED_INVOICE', 'qr', 0.6);
   return finish(r);
