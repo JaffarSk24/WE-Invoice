@@ -128,3 +128,13 @@ describe('generic CSV', () => {
     expect(result.items).toEqual([expect.objectContaining({ name: 'Pero', code: 'P1', price: '12.5', priceType: 'NET', vatCategory: 'O' })]);
   });
 });
+
+describe('e-shop orders', () => {
+  it('reads a WooCommerce order export as documents with lines', () => {
+    const text = 'Order Number,Order Date,Billing Company,Item Name,Quantity,Item Cost,Order Total\n1001,2026-09-03 10:15:00,Zákazník s.r.o.,Tričko,2,10.00,20.00\n1001,2026-09-03 10:15:00,Zákazník s.r.o.,Hrnček,1,5.00,25.00\n';
+    const result = importCsv(text, null, { company, entity: 'documents' });
+    expect(result.documents).toHaveLength(1);
+    expect(result.documents[0]).toMatchObject({ number: '1001', issueDate: '2026-09-03', buyer: { name: 'Zákazník s.r.o.' } });
+    expect(result.documents[0].lines.map(l => [l.name, l.qty, l.unitPrice])).toEqual([['Tričko', '2', '10'], ['Hrnček', '1', '5']]);
+  });
+});

@@ -82,7 +82,7 @@ describe('accountant package', () => {
     const result = await accountantFiles(data, { ...period, formats: ['csv', 'xlsx', 'pohoda', 'money', 'omega', 'isdoc'], names: { register: 'doklady', lines: 'polozky' } });
     const names = result.files.map(f => f.name);
     expect(names).toEqual(expect.arrayContaining([
-      'doklady.csv', 'polozky.csv', 'doklady.xlsx', 'pohoda.xml', 'money-s3.xml', 'omega-faktury-vydane.txt', 'omega-faktury-prijate.txt',
+      'doklady.csv', 'polozky.csv', 'doklady.xlsx', 'pohoda.xml', 'money-s3.xml', 'omega-issued.txt', 'omega-received.txt',
       'isdoc/FA2026001.isdoc', 'isdoc/2026_0815.isdoc', 'isdoc/BL-77.isdoc'
     ]));
     expect(result.documents).toHaveLength(5);

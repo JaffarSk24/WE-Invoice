@@ -1,5 +1,6 @@
 // English texts: exports, imports, migration, backup (WP-EXIM).
 export default {
+  "nav.exim": "Export and import",
   "exim.title": "Export and import",
   "exim.intro": "Files for your accountant, moving over from another program, the link to WE Time Tracker and WE Budget, and a backup of all data.",
   "exim.tab.export": "Export for the accountant",
@@ -49,6 +50,8 @@ export default {
 
   "exim.file.register": "documents",
   "exim.file.lines": "lines",
+  "exim.file.omegaIssued": "omega-issued-invoices",
+  "exim.file.omegaReceived": "omega-received-invoices",
   "exim.file.summary": "summary",
   "exim.file.backup": "we-invoice-backup",
 
@@ -271,6 +274,8 @@ export default {
   "exim.backup.consequence2": "Changes made after the backup was created are lost.",
   "exim.backup.consequence3": "After syncing, your other devices get the restored data too.",
   "exim.backup.restored": "The data is restored. Records restored: {restored}, removed: {removed}.",
+  "exim.backup.readOnly": "The data is open read-only, a restore is not possible.",
+  "exim.backup.newCompany": "The company from the backup is created on this device.",
   "exim.backup.untouched": "Your data has not changed.",
 
   "errors.EXPORT_FAILED": "The export failed.",

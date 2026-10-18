@@ -24,7 +24,7 @@ export function lineHeaders() {
 }
 
 export function fileNames() {
-  return { register: t('exim.file.register'), lines: t('exim.file.lines'), pohoda: 'pohoda', money: 'money-s3' };
+  return { register: t('exim.file.register'), lines: t('exim.file.lines'), pohoda: 'pohoda', money: 'money-s3', omegaIssued: t('exim.file.omegaIssued'), omegaReceived: t('exim.file.omegaReceived') };
 }
 
 /** A translated reason or warning code, with the code itself when the dictionary has none. */

@@ -1,6 +1,7 @@
 // Column mapping for table imports (CSV, XLSX): the fields each entity
 // can take and the header names other programs use for them (iDoklad,
-// SuperFaktúra, KROS, Pohoda list exports, generic English), compared
+// SuperFaktúra, KROS, Pohoda list exports, WooCommerce order exports,
+// generic English), compared
 // without case and diacritics. The user can always correct the mapping
 // in the preview; a guess only saves typing.
 import { normalizeKey } from './values.js';
@@ -36,26 +37,26 @@ export const FIELDS = Object.freeze({
     description: ['poznamka', 'description', 'dlhy popis']
   },
   documents: {
-    number: ['cislo', 'cislo faktury', 'cislo dokladu', 'number', 'invoice number', 'doklad', 'faktura', 'cislo faktury dodavatela'],
+    number: ['cislo', 'cislo faktury', 'cislo dokladu', 'number', 'invoice number', 'doklad', 'faktura', 'cislo faktury dodavatela', 'order number', 'order id'],
     kind: ['typ', 'typ dokladu', 'druh', 'druh dokladu', 'document type', 'type'],
-    issueDate: ['datum vystavenia', 'datum vystaveni', 'vystavene', 'vystaveno', 'issue date', 'date', 'datum'],
+    issueDate: ['datum vystavenia', 'datum vystaveni', 'vystavene', 'vystaveno', 'issue date', 'date', 'datum', 'order date'],
     taxDate: ['datum dodania', 'duzp', 'datum zdanitelneho plneni', 'datum uskutecneni zdanitelneho plneni', 'tax point date', 'delivery date', 'datum dodani', 'dodanie'],
     dueDate: ['datum splatnosti', 'splatnost', 'due date', 'splatne', 'splatna'],
-    partner: ['odberatel', 'klient', 'zakaznik', 'customer', 'partner', 'nazov odberatela', 'nazev odberatele', 'firma', 'dodavatel', 'supplier', 'obchodny partner', 'nazov'],
+    partner: ['odberatel', 'klient', 'zakaznik', 'customer', 'partner', 'nazov odberatela', 'nazev odberatele', 'firma', 'dodavatel', 'supplier', 'obchodny partner', 'nazov', 'billing company', 'customer name', 'billing name'],
     ...ADDRESS,
     currency: ['mena', 'currency', 'mena dokladu'],
     fxRate: ['kurz', 'exchange rate', 'kurs'],
     vs: ['variabilny symbol', 'variabilni symbol', 'vs', 'variable symbol'],
     ks: ['konstantny symbol', 'konstantni symbol', 'ks'],
     ss: ['specificky symbol', 'ss'],
-    lineName: ['polozka', 'nazov polozky', 'popis polozky', 'item', 'text polozky', 'line'],
+    lineName: ['polozka', 'nazov polozky', 'popis polozky', 'item', 'text polozky', 'line', 'item name', 'product name'],
     qty: ['mnozstvo', 'mnozstvi', 'pocet', 'qty', 'quantity', 'pocet mj'],
     unit: ['mj', 'jednotka', 'unit'],
-    unitPrice: ['jednotkova cena', 'cena za mj', 'unit price', 'cena/mj'],
+    unitPrice: ['jednotkova cena', 'cena za mj', 'unit price', 'cena/mj', 'item cost', 'item price'],
     vatRate: ['sadzba dph', 'sazba dph', 'dph %', 'vat rate', 'sadzba', 'dph (%)'],
     net: ['zaklad', 'zaklad dane', 'suma bez dph', 'celkem bez dph', 'spolu bez dph', 'bez dph', 'net', 'total without vat', 'zaklad dph', 'celkom bez dph'],
     vat: ['dph', 'vyska dph', 'suma dph', 'vat', 'vat amount', 'dph spolu', 'dph celkem', 'dph celkom'],
-    gross: ['celkom', 'suma', 'spolu', 'celkem', 'celkom s dph', 'celkem s dph', 'suma s dph', 'total', 'total with vat', 'k uhrade', 'celkova suma'],
+    gross: ['celkom', 'suma', 'spolu', 'celkem', 'celkom s dph', 'celkem s dph', 'suma s dph', 'total', 'total with vat', 'k uhrade', 'celkova suma', 'order total'],
     paid: ['uhradene', 'uhrazeno', 'zaplatene', 'paid', 'uhrada', 'uhradena suma', 'zaplateno'],
     paidDate: ['datum uhrady', 'paid date', 'zaplatene dna', 'uhrazeno dne', 'datum zaplatenia'],
     text: ['popis', 'text', 'poznamka', 'note', 'predmet', 'uvodny text'],

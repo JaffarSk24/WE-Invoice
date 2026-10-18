@@ -1,5 +1,6 @@
 // Slovak texts: exports, imports, migration, backup (WP-EXIM).
 export default {
+  "nav.exim": "Export a import",
   "exim.title": "Export a import",
   "exim.intro": "Podklady pre účtovníka, prechod z iného programu, prepojenie s WE Time Tracker a WE Budget a záloha všetkých dát.",
   "exim.tab.export": "Export pre účtovníka",
@@ -49,6 +50,8 @@ export default {
 
   "exim.file.register": "doklady",
   "exim.file.lines": "polozky",
+  "exim.file.omegaIssued": "omega-faktury-vydane",
+  "exim.file.omegaReceived": "omega-faktury-prijate",
   "exim.file.summary": "prehlad",
   "exim.file.backup": "zaloha-we-invoice",
 
@@ -271,6 +274,8 @@ export default {
   "exim.backup.consequence2": "Zmeny urobené po vytvorení zálohy sa stratia.",
   "exim.backup.consequence3": "Po synchronizácii uvidia obnovené dáta aj ostatné zariadenia.",
   "exim.backup.restored": "Dáta sú obnovené. Obnovené záznamy: {restored}, odstránené: {removed}.",
+  "exim.backup.readOnly": "Údaje sú otvorené len na čítanie, obnova nie je možná.",
+  "exim.backup.newCompany": "Firma zo zálohy sa na tomto zariadení vytvorí nanovo.",
   "exim.backup.untouched": "Vaše dáta zostali bez zmeny.",
 
   "errors.EXPORT_FAILED": "Export sa nepodaril.",

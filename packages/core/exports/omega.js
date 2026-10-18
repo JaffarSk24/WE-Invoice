@@ -67,7 +67,8 @@ function documentRecords(document) {
 
 /**
  * Omega import files of a period, one for issued and one for received
- * invoices (only those that have documents).
+ * invoices (only those that have documents). ctx.names may name them
+ * ({ T01, T02 }, without the extension).
  * @returns {{files: Array<{name: string, data: Uint8Array, text: string}>, count: number, replaced: number, skipped: Array}}
  */
 export function exportOmega(data, ctx = {}) {
@@ -88,7 +89,8 @@ export function exportOmega(data, ctx = {}) {
     const text = `${[record('R00', [type]), ...list.flatMap(documentRecords)].join('\r\n')}\r\n`;
     const encoded = encodeWindows1250(text);
     replaced += encoded.replaced;
-    files.push({ name: type === 'T01' ? 'omega-faktury-vydane.txt' : 'omega-faktury-prijate.txt', data: encoded.bytes, text });
+    const names = { T01: 'omega-issued', T02: 'omega-received', ...(ctx.names || {}) };
+    files.push({ name: `${names[type]}.txt`, data: encoded.bytes, text });
   });
   return { files, count: docs.length - skipped.length, replaced, skipped };
 }

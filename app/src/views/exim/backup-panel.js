@@ -31,8 +31,15 @@ function askPassword() {
   });
 }
 
+// A company record for a backup restored where no company is open yet.
+export async function createCompanyFor(store, backup) {
+  const fields = { ...(backup.data.company || {}) };
+  ['id', 'createdAt', 'updatedAt', 'deleted'].forEach(k => { delete fields[k]; });
+  return store.createCompany({ ...fields, name: fields.name || backup.companyName || '' });
+}
+
 export function fileNameFor(company, now = new Date()) {
-  return `${t('exim.file.backup')}_${exportFileName(company && company.name, 'firma')}_${now.toISOString().slice(0, 10)}.json`;
+  return `${t('exim.file.backup')}_${exportFileName(company && company.name, 'company')}_${now.toISOString().slice(0, 10)}.json`;
 }
 
 async function downloadBackup(source, password, transport) {
@@ -81,8 +88,10 @@ export function renderBackupPanel(panel, deps = {}) {
   function showRestore(backup) {
     const source = eximSource();
     const counts = backup.counts || {};
-    const keep = h('input', { type: 'checkbox', id: 'exim-restore-keep', checked: true });
-    const restoreButton = h('button', { type: 'button', class: 'btn btn-danger', id: 'exim-restore-apply', disabled: !source.writable }, t('exim.backup.restore'));
+    // On a new device there is no company yet: the backup creates it.
+    const canRestore = Boolean(source.store) && !source.store.readOnly && !source.demo;
+    const keep = h('input', { type: 'checkbox', id: 'exim-restore-keep', checked: Boolean(source.company) });
+    const restoreButton = h('button', { type: 'button', class: 'btn btn-danger', id: 'exim-restore-apply', disabled: !canRestore }, t('exim.backup.restore'));
     restoreButton.addEventListener('click', async () => {
       const ok = await confirmIrreversible({
         title: t('exim.backup.restoreTitle'), message: t('exim.backup.restoreText', { name: backup.companyName || '' }), okLabel: t('exim.backup.restore'),
@@ -92,7 +101,8 @@ export function renderBackupPanel(panel, deps = {}) {
       try {
         restoreButton.disabled = true;
         const current = eximSource();
-        if (keep.checked) await downloadBackup(current, null, deps.transport);
+        if (keep.checked && current.company) await downloadBackup(current, null, deps.transport);
+        if (!current.store.data) await createCompanyFor(current.store, backup);
         const plan = planRestore(current.store.data, backup, { now: new Date().toISOString(), schemaVersion: SCHEMA_VERSION });
         await replaceCompanyData(current.store, plan.data);
         clear(restoreInfo);
@@ -105,7 +115,8 @@ export function renderBackupPanel(panel, deps = {}) {
     restoreInfo.append(h('div', { class: 'callout' },
       h('p', {}, h('strong', {}, backup.companyName || ''), ` (${formatDateTime(backup.createdAt)})`),
       h('p', { class: 'small' }, t('exim.backup.contents', { documents: counts.documents || 0, contacts: counts.contacts || 0, items: counts.items || 0 })),
-      !source.writable ? h('p', { class: 'small' }, t(source.demo ? 'exim.demoReadOnly' : 'exim.noCompany')) : null,
+      !canRestore ? h('p', { class: 'small' }, t(source.demo ? 'exim.demoReadOnly' : 'exim.backup.readOnly')) : null,
+      canRestore && !source.company ? h('p', { class: 'small' }, t('exim.backup.newCompany')) : null,
       h('label', { for: 'exim-restore-keep', class: 'checkbox-label' }, keep, h('span', {}, t('exim.backup.keepCurrent'))),
       h('div', { class: 'exim-actions' }, restoreButton)));
   }

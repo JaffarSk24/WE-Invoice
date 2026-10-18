@@ -35,6 +35,7 @@ export function renderImportPanel(panel, deps = {}) {
       const r = state.plan.report.added;
       importButton.disabled = !source.writable || !(r.contacts + r.items + r.documents);
       if (source.demo) preview.append(h('p', { class: 'callout' }, t('exim.demoReadOnly')));
+      else if (!source.company) preview.append(h('p', { class: 'callout' }, t('exim.noCompany')));
     } catch (e) {
       console.error('Import preview failed', e);
       preview.append(h('p', { class: 'callout callout-danger', role: 'alert' }, errorText(e, 'errors.IMPORT_FAILED')));

@@ -142,3 +142,18 @@ describe('WE Time Tracker draft', () => {
     expect(computeTotals(draft).payable).toBe('98.40');
   });
 });
+
+describe('restore on a new device', () => {
+  it('creates the company from the backup and fills it', async () => {
+    const { createCompanyFor } = await import('./backup-panel.js');
+    const store = new Store({ adapter: memoryAdapter(), emit: () => {} });
+    await store.open();
+    const backup = parseBackup(serializeBackup(buildBackup({ schemaVersion: 1, companyId: 'old-id', updatedAt: 'T', company: { ...company, id: 'old-id' }, contacts, documents }, { now: 'T' })));
+    await createCompanyFor(store, backup);
+    const plan = planRestore(store.data, backup, { now: new Date().toISOString(), schemaVersion: SCHEMA_VERSION });
+    await replaceCompanyData(store, plan.data);
+    expect(store.company()).toMatchObject({ name: 'Biela Hora s. r. o.', ico: '12345679' });
+    expect(store.company().id).not.toBe('old-id');
+    expect(store.list('documents')).toHaveLength(documents.length);
+  });
+});

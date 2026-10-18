@@ -130,7 +130,7 @@ describe('Omega text', () => {
   const result = exportOmega(data, period);
 
   it('writes one windows-1250 file per direction with R00, R01, R02 and R03 records', () => {
-    expect(result.files.map(f => f.name)).toEqual(['omega-faktury-vydane.txt', 'omega-faktury-prijate.txt']);
+    expect(result.files.map(f => f.name)).toEqual(['omega-issued.txt', 'omega-received.txt']);
     const issued = decodeWindows1250(result.files[0].data).split('\r\n');
     expect(issued[0]).toBe('R00\tT01');
     const header = issued[1].split('\t');

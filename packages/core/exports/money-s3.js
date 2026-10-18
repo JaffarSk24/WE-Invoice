@@ -10,7 +10,6 @@ import { partnerOf } from './pohoda.js';
 
 const ISSUED = ['INVOICE', 'SELF_BILLING', 'CREDIT_NOTE', 'DEBIT_NOTE', 'PROFORMA'];
 const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE'];
-const PAYMENT = { TRANSFER: 'prevodom', CASH: 'v hotovosti', CARD: 'kartou', COD: 'dobierkou', OFFSET: 'zápočtom', ONLINE: 'online', QR_ON_SITE: 'prevodom' };
 
 function partner(party) {
   const a = party.address || {};
@@ -53,7 +52,7 @@ function items(document, totals) {
   }));
 }
 
-function invoice(tag, document) {
+function invoice(tag, document, labels) {
   const totals = documentTotals(document);
   const date = periodDate(document);
   const foreign = document.currency && document.currency !== 'EUR';
@@ -71,7 +70,7 @@ function invoice(tag, document) {
     leaf('SpecSymbol', document.ss),
     leaf('Dobropis', credit ? '1' : '0'),
     leaf('Proforma', document.kind === 'PROFORMA' ? '1' : null),
-    leaf('Uhrada', PAYMENT[document.paymentMethod]),
+    leaf('Uhrada', (labels && labels[document.paymentMethod]) || document.paymentMethod),
     vatSummary(totals, date),
     leaf('Celkem', totals.gross),
     foreign ? el('Valuty', null,
@@ -84,7 +83,8 @@ function invoice(tag, document) {
 
 /**
  * @param {{documents: object[], company: object}} data
- * @param {{from?: string, to?: string, now?: string}} [ctx]
+ * @param {{from?: string, to?: string, now?: string, payment?: object}} [ctx]
+ *   payment: the names of the payment methods (Uhrada is free text), else the codes
  * @returns {{content: string, count: number, skipped: Array<{id: string, number: string, reason: string}>}}
  */
 export function exportMoneyS3(data, ctx = {}) {
@@ -99,7 +99,7 @@ export function exportMoneyS3(data, ctx = {}) {
     ICAgendy: company.ico, JazykVerze: 'SK', description: 'WE Invoice',
     ExpZkratka: '_FA', ExpDate: expDate, ExpTime: expTime ? expTime.slice(0, 8) : null
   },
-  issued.length ? el('SeznamFaktVyd', null, issued.map(d => invoice('FaktVyd', d))) : null,
-  received.length ? el('SeznamFaktPrij', null, received.map(d => invoice('FaktPrij', d))) : null);
+  issued.length ? el('SeznamFaktVyd', null, issued.map(d => invoice('FaktVyd', d, ctx.payment))) : null,
+  received.length ? el('SeznamFaktPrij', null, received.map(d => invoice('FaktPrij', d, ctx.payment))) : null);
   return { content: serializeXml(root), count: issued.length + received.length, skipped };
 }

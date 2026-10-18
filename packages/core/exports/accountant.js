@@ -85,12 +85,12 @@ export async function accountantFiles(data, ctx) {
     r.skipped.forEach(s => skipped.push({ ...s, format: 'pohoda' }));
   }
   if (formats.has('money')) {
-    const r = exportMoneyS3(xmlData, range);
+    const r = exportMoneyS3(xmlData, { ...range, payment: ctx.labels && ctx.labels.payment });
     files.push({ name: `${names.money}.xml`, data: r.content });
     r.skipped.forEach(s => skipped.push({ ...s, format: 'money' }));
   }
   if (formats.has('omega')) {
-    const r = exportOmega(xmlData, range);
+    const r = exportOmega(xmlData, { ...range, names: { T01: names.omegaIssued || 'omega-issued', T02: names.omegaReceived || 'omega-received' } });
     r.files.forEach(f => files.push({ name: f.name, data: f.data }));
     r.skipped.forEach(s => skipped.push({ ...s, format: 'omega' }));
     if (r.replaced) warnings.push('OMEGA_CHARACTERS_REPLACED');
