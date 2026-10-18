@@ -86,5 +86,11 @@ export default {
   "errors.DATA_DAMAGED": "The stored data cannot be read. Nothing was overwritten.",
   "errors.NO_COMPANY": "Create a company first.",
   "errors.NOT_FOUND": "The record was not found.",
-  "errors.ALREADY_ENCRYPTED": "Encryption is already on."
+  "errors.ALREADY_ENCRYPTED": "Encryption is already on.",
+  "sync.banner.renewTitle": "Sync is paused.",
+  "sync.banner.renewText": "Access to Google Drive ended after an hour. Sign in again and your changes go up.",
+  "sync.banner.lockedTitle": "Your data is locked.",
+  "sync.banner.lockedText": "The data in Google Drive is encrypted. Enter the password or the recovery key and sync continues.",
+  "sync.banner.unlock": "Unlock",
+  "sync.banner.later": "Later"
 };

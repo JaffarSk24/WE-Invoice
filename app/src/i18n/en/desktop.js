@@ -75,5 +75,13 @@ export default {
   "errors.SECRETS_FAILED": "The system keychain is not available.",
   "errors.LOGIN_ITEM_FAILED": "Starting at login could not be set.",
   "errors.STORAGE_CORRUPT": "The data file is damaged and could not be loaded. The original file is kept in the backups folder.",
-  "errors.STORAGE_UNREADABLE": "The data file could not be read."
+  "errors.STORAGE_UNREADABLE": "The data file could not be read.",
+  "desktop.updates.availableLong": "Version {version} is out, you have {current}. We recommend updating.",
+  "desktop.updates.readyLong": "Version {version} is downloaded and verified. The app restarts; your data stays.",
+  "desktop.updates.installing": "Installing the update...",
+  "desktop.updates.whatsNew": "What's new",
+  "desktop.updates.later": "Later",
+  "desktop.updates.notesTitle": "What's new in version {version}",
+  "desktop.updates.noNotes": "No release notes are attached.",
+  "errors.UPDATE_INSTALL": "The update could not be installed. Try again, or download the installer from the app's website."
 };

@@ -75,5 +75,13 @@ export default {
   "errors.SECRETS_FAILED": "Kľúčenka systému nie je dostupná.",
   "errors.LOGIN_ITEM_FAILED": "Spustenie pri prihlásení sa nepodarilo nastaviť.",
   "errors.STORAGE_CORRUPT": "Dátový súbor je poškodený a nedal sa načítať. Pôvodný súbor je odložený v priečinku záloh.",
-  "errors.STORAGE_UNREADABLE": "Dátový súbor sa nepodarilo prečítať."
+  "errors.STORAGE_UNREADABLE": "Dátový súbor sa nepodarilo prečítať.",
+  "desktop.updates.availableLong": "Vyšla verzia {version}, máte {current}. Odporúčame aktualizovať.",
+  "desktop.updates.readyLong": "Verzia {version} je stiahnutá a overená. Aplikácia sa reštartuje, vaše dáta zostanú.",
+  "desktop.updates.installing": "Inštaluje sa aktualizácia...",
+  "desktop.updates.whatsNew": "Čo je nové",
+  "desktop.updates.later": "Neskôr",
+  "desktop.updates.notesTitle": "Čo je nové vo verzii {version}",
+  "desktop.updates.noNotes": "Poznámky k vydaniu nie sú priložené.",
+  "errors.UPDATE_INSTALL": "Aktualizáciu sa nepodarilo nainštalovať. Skúste to znova alebo si stiahnite inštalátor zo stránky aplikácie."
 };

@@ -11,6 +11,9 @@ import { setEngine } from '../sync/index.js';
 import { openSignInModal } from '../sync/ui/signin.js';
 import { openSetupModal } from '../sync/ui/setup.js';
 import { openUnlockModal } from '../sync/ui/unlock.js';
+import { createSyncBanner } from '../sync/ui/banner.js';
+import '../style/update-banner.css';
+import { topBanner } from '../ui/top-banners.js';
 
 const DISMISSED = 'we-invoice-signin-dismissed';
 
@@ -35,8 +38,17 @@ export async function boot(ctx) {
   const engine = new SyncEngine({ store, transport, vault, emit, readme: t('sync.drive.readme') });
   setEngine(engine);
 
+  // A banner that stays while sync cannot run, as in WE Budget.
+  const bannerEl = topBanner('sync-banner', 'alert');
+  const banner = createSyncBanner({
+    el: bannerEl, t,
+    onRenew: () => openSignInModal({ engine, renew: true }),
+    onUnlock: () => openUnlockModal({ engine, showToast })
+  });
+
   const dialogs = { setup: false, locked: false };
   on('sync:status', (state) => {
+    banner.update(state);
     if (state.status === 'setup' && !dialogs.setup) {
       dialogs.setup = true;
       openSetupModal({ engine, transport, showToast, showError });
@@ -46,9 +58,6 @@ export async function boot(ctx) {
       openUnlockModal({ engine, showToast });
     }
     if (state.status !== 'locked') dialogs.locked = false;
-    if (state.status === 'renew') {
-      showToast(t('errors.RENEW_NEEDED'), { type: 'info', actionLabel: t('sync.signIn.renewButton'), onAction: () => openSignInModal({ engine, renew: true }), duration: 15000 });
-    }
     if (state.status === 'error' && state.error) showError({ code: state.error });
   });
   on('sync:conflicts', ({ conflicts, renumbered }) => {

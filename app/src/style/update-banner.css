@@ -1,0 +1,21 @@
+/* Desktop update banner over the page, as in WE Budget: the new version,
+   then the download progress, then "Restart and update". */
+.top-banners {
+  position: fixed; top: 12px; inset-inline-start: calc(var(--sidebar-width) + 16px); inset-inline-end: 16px; z-index: 40;
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.update-banner {
+  pointer-events: auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px;
+  border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
+  background: var(--bg-elevated); color: var(--text-primary);
+}
+.update-banner[hidden] { display: none; }
+.update-banner-text { display: flex; align-items: center; gap: 10px; flex: 1 1 320px; font-weight: 500; }
+.update-banner-text svg { width: 18px; height: 18px; color: var(--accent-blue); flex: none; }
+.update-banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.update-progress { flex: 1 1 100%; height: 6px; border-radius: 999px; background: var(--overlay-04); overflow: hidden; }
+.update-progress-bar { height: 100%; background: var(--grad-brand); transition: width var(--transition-fast); }
+@media (max-width: 767px) {
+  .top-banners { inset-inline-start: 16px; }
+}

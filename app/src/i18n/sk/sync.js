@@ -86,5 +86,11 @@ export default {
   "errors.DATA_DAMAGED": "Uložené dáta sa nedajú prečítať. Nič sa neprepísalo.",
   "errors.NO_COMPANY": "Najprv vytvorte firmu.",
   "errors.NOT_FOUND": "Záznam sa nenašiel.",
-  "errors.ALREADY_ENCRYPTED": "Šifrovanie je už zapnuté."
+  "errors.ALREADY_ENCRYPTED": "Šifrovanie je už zapnuté.",
+  "sync.banner.renewTitle": "Synchronizácia je pozastavená.",
+  "sync.banner.renewText": "Prístup k Google Drive vypršal po hodine. Prihláste sa znova a zmeny sa odošlú.",
+  "sync.banner.lockedTitle": "Dáta sú zamknuté.",
+  "sync.banner.lockedText": "Dáta v Google Drive sú šifrované. Zadajte heslo alebo kľúč na obnovenie a synchronizácia pokračuje.",
+  "sync.banner.unlock": "Odomknúť",
+  "sync.banner.later": "Neskôr"
 };
