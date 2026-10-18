@@ -6,6 +6,7 @@
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
+import { on } from '../../events.js';
 import { currentCompany } from '../shell/company-state.js';
 import { isDemo } from '../shell/demo-mode.js';
 import { stepCard } from './peppol-section-save.js';
@@ -33,6 +34,14 @@ export function createPeppolSection({ transport }) {
   return function peppolSection(root, { redraw }) {
     const company = currentCompany();
     const demo = isDemo();
+    // Drawn again when another company opens (or the first one arrives after
+    // start-up); saving this company's settings does not redraw the wizard.
+    const off = on('company:switched', () => {
+      if (!root.isConnected) return off();
+      if ((currentCompany()?.id || null) === (company?.id || null)) return;
+      off();
+      redraw();
+    });
     const settings = peppolSettings(company);
     const firstConnectable = providerList().find(p => p.flags?.primaryTest) || providerList()[0];
     const state = {

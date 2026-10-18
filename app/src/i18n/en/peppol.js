@@ -49,6 +49,7 @@ export default {
   "peppol.connect.test": "Test the connection",
   "peppol.connect.testing": "Checking the connection…",
   "peppol.connect.ok": "The connection works.",
+  "peppol.connect.needsDrive": "The key is saved only once Google Drive is connected and the data unlocked; the e-invoice archive lives in Drive too.",
   "peppol.connect.saved": "The connection is saved.",
   "peppol.connect.stored": "Key stored: {mask}",
   "peppol.connect.change": "Change the key",

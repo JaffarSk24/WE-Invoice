@@ -49,6 +49,7 @@ export default {
   "peppol.connect.test": "Otestovať pripojenie",
   "peppol.connect.testing": "Overujem pripojenie…",
   "peppol.connect.ok": "Pripojenie funguje.",
+  "peppol.connect.needsDrive": "Kľúč sa uloží až po pripojení Google Disku a odomknutí údajov; na Disku je aj archív eFaktúr.",
   "peppol.connect.saved": "Pripojenie je uložené.",
   "peppol.connect.stored": "Kľúč je uložený: {mask}",
   "peppol.connect.change": "Zmeniť kľúč",

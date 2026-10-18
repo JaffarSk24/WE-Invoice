@@ -17,6 +17,12 @@ import { lookupParticipant } from '../../peppol/lookup.js';
 import { PeppolError } from '../../peppol/errors.js';
 import { savePeppolSettings, stepCard } from './peppol-section-save.js';
 
+// The translated text of an error, or the general one when it has none.
+function errorLabel(error) {
+  const key = `errors.${error && error.code}`;
+  return t(key) === key ? t('errors.UNKNOWN') : t(key);
+}
+
 const LABELS = { clientId: 'peppol.connect.clientId', clientSecret: 'peppol.connect.clientSecret', apiKey: 'peppol.connect.apiKey' };
 
 function credentialInputs(provider, demo) {
@@ -56,17 +62,25 @@ export function connectStep(ctx) {
       const settings = { providerId: provider.id, baseUrl: customBase, sandbox: ctx.state.sandbox, participantId: participantId(ctx.company.dic) };
       const connection = await openConnection({ transport: ctx.transport, company: ctx.company, settings, credentials });
       await connection.adapter.test();
-      if (fresh) await saveCredentials(ctx.transport, ctx.company.id, provider, values);
-      await savePeppolSettings({ ...settings, enabled: true, lastCheckAt: new Date().toISOString(), capabilities: connection.adapter.capabilities() });
       result.className = 'peppol-result is-ok';
       result.replaceChildren(icon('circle-check'), ' ', t('peppol.connect.ok'));
       refreshIcons(result);
+      try {
+        if (fresh) await saveCredentials(ctx.transport, ctx.company.id, provider, values);
+        await savePeppolSettings({ ...settings, enabled: true, lastCheckAt: new Date().toISOString(), capabilities: connection.adapter.capabilities() });
+      } catch (error) {
+        // The key works but cannot be kept: the secrets are sealed with the data key of Drive.
+        console.error('peppol: connection could not be saved', error.code || error.name);
+        result.append(h('span', { class: 'peppol-save-error' }, ' ', error.code === 'LOCKED' ? t('peppol.connect.needsDrive') : errorLabel(error)));
+        result.className = 'peppol-result is-wait';
+        return;
+      }
       showToast(t('peppol.connect.saved'), { type: 'success' });
       inputs.forEach(i => { i.input.value = ''; });
       disconnect.hidden = false;
     } catch (error) {
       result.className = 'peppol-result is-error';
-      result.textContent = t(`errors.${error.code}`) === `errors.${error.code}` ? t('errors.UNKNOWN') : t(`errors.${error.code}`);
+      result.textContent = errorLabel(error);
       console.error('peppol: connection test failed', error.code || error.name, error.status || '');
     } finally {
       testButton.disabled = ctx.demo;
