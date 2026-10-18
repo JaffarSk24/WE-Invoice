@@ -62,7 +62,8 @@ export const NAV = Object.freeze([
   {
     items: [
       { route: 'reports', label: 'nav.reports', icon: 'chart-column' },
-      { route: 'settings', label: 'nav.settings', icon: 'settings' }
+      { route: 'settings', label: 'nav.settings', icon: 'settings' },
+      { route: 'help', label: 'nav.help', icon: 'circle-help' }
     ]
   }
 ]);
@@ -75,6 +76,26 @@ export function navItem(route) {
     if (item) return item;
   }
   return null;
+}
+
+// Whether an item is shown for a company. Without a company (nothing loaded
+// yet, or the sync package has not reported one) everything is shown.
+export function navVisible(item, company) {
+  if (!item.when || !company) return true;
+  const vat = company.vatMode;
+  const acc = company.accountingMode;
+  if (item.when === 'vatPayer') return vat === 'PAYER';
+  if (item.when === 'vatRegistered') return vat === 'PAYER' || vat === 'REGISTERED_7';
+  if (item.when === 'bookkeeping') return acc === 'SIMPLE' || acc === 'TAX_RECORDS_FLAT';
+  return true;
+}
+
+// The groups with only the items visible for the company; a group left
+// without items disappears.
+export function visibleNav(company) {
+  return NAV
+    .map(group => ({ ...group, items: group.items.filter(item => navVisible(item, company)) }))
+    .filter(group => group.items.length);
 }
 
 // Phone bottom bar: Prehľad, Doklady, + (FAB), Nákup, Viac.

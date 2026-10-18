@@ -38,10 +38,8 @@
 .sidebar-footer .prefs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .sidebar-footer select { min-height: 34px; padding: 4px 8px; font-size: 13px; }
 .app-version { font-size: 12px; color: var(--text-muted); padding: 0 6px; }
-.promo { font-size: 12px; color: var(--text-muted); padding: 0 6px; text-decoration: none; }
-.promo:hover { color: var(--text-secondary); }
 
-.main { flex: 1; min-width: 0; margin-left: var(--sidebar-width); padding: 32px clamp(16px, 3vw, 40px) 48px; }
+.main { flex: 1; min-width: 0; margin-left: var(--sidebar-width); padding: 32px clamp(16px, 3vw, 40px) calc(var(--promo-height) + 32px); }
 .view-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
 
 .bottom-bar { display: none; }
@@ -49,7 +47,8 @@
 
 @media (max-width: 767px) {
   .sidebar { display: none; }
-  .main { margin-left: 0; padding: 20px 16px calc(var(--bottom-bar-height) + 24px + env(safe-area-inset-bottom, 0px)); }
+  .main { margin-left: 0; padding: calc(20px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-right, 0px)) calc(var(--bottom-bar-height) + 24px + env(safe-area-inset-bottom, 0px)) calc(16px + env(safe-area-inset-left, 0px)); }
+  #app[data-bare="true"] .main { padding-bottom: 32px; }
 
   .bottom-bar {
     position: fixed; inset: auto 0 0 0; z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr);
@@ -76,4 +75,48 @@
     z-index: 31; display: grid; gap: 8px; padding: 12px; border-radius: var(--radius-md);
     background: var(--bg-elevated); border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);
   }
+}
+
+/* Company switcher and sync status at the bottom of the menu. */
+.company-row { display: flex; align-items: center; gap: 8px; padding: 0 2px; }
+.company-row svg { width: 16px; height: 16px; color: var(--text-muted); flex: none; }
+.company-switcher { min-height: 36px; padding: 4px 8px; font-size: 13px; }
+.sync-status {
+  display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 8px; border: 0; border-radius: var(--radius-sm);
+  background: none; color: var(--text-secondary); font: inherit; font-size: 13px; cursor: pointer; text-align: left; width: 100%;
+}
+.sync-status:hover { background: var(--overlay-hover); color: var(--text-primary); }
+.sync-status svg { width: 15px; height: 15px; flex: none; }
+.sync-ok svg { color: var(--success); }
+.sync-error svg, .sync-reauth svg, .sync-locked svg { color: var(--warning); }
+.sync-syncing svg { animation: sync-spin 1.2s linear infinite; }
+@keyframes sync-spin { to { transform: rotate(360deg); } }
+
+/* The White Eagles strip at the bottom of the main area. */
+:root { --promo-height: 56px; }
+.promo-footer {
+  position: fixed; bottom: 0; inset-inline-start: var(--sidebar-width); width: calc(100vw - var(--sidebar-width)); min-height: var(--promo-height);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 24px; z-index: 15;
+  background: var(--bg-sidebar); backdrop-filter: blur(24px); border-top: 1px solid var(--border-color);
+}
+.promo-content { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-secondary); }
+.promo-badge {
+  background: var(--grad-brand); color: var(--brand-text); font-weight: 800; padding: 4px 8px; border-radius: 4px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+}
+.promo-text a {
+  font-weight: 700; text-decoration: none; background: var(--grad-brand); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; display: inline-flex; align-items: center; gap: 4px; border-bottom: 1px solid transparent;
+}
+.promo-text a:hover, .promo-text a:focus-visible { border-color: var(--accent-blue); }
+.promo-text a svg { width: 14px; height: 14px; color: var(--accent-blue); }
+.promo-copyright { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.promo-inline { position: static; width: auto; margin-top: 32px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+#app[data-bare="true"] .promo-footer { display: none; }
+@media (max-width: 1100px) { .promo-copyright { display: none; } }
+@media (max-width: 767px) {
+  .promo-footer { display: none; }
+  .promo-footer.promo-inline { display: flex; flex-direction: column; align-items: flex-start; }
+  .promo-content { flex-wrap: wrap; }
+  .promo-copyright { display: block; white-space: normal; }
 }

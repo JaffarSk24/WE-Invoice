@@ -1,0 +1,45 @@
+/* The Overview grid and its widgets. */
+
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.widget { display: flex; flex-direction: column; gap: 12px; padding: 16px 18px; }
+.widget-wide { grid-column: span 2; }
+@media (max-width: 700px) { .widget-wide { grid-column: span 1; } }
+.widget.is-dragging { opacity: 0.5; }
+.widget.is-drop { border-color: var(--accent-blue); box-shadow: var(--shadow-glow); }
+.widget-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.widget-head h2 { font-size: 15px; }
+.widget-tools { display: flex; gap: 2px; opacity: 0.55; }
+.widget:hover .widget-tools, .widget:focus-within .widget-tools { opacity: 1; }
+.widget-body { flex: 1; }
+.view-actions { display: flex; align-items: center; gap: 10px; }
+.badge-demo { color: var(--warning); }
+.badge-new { color: var(--accent-blue); margin-left: 6px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.stat-value { font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+.stat-hint { font-size: 12px; color: var(--text-secondary); }
+.stat-change { font-size: 12px; font-weight: 600; }
+.stat-change.is-up { color: var(--success); }
+.stat-change.is-down { color: var(--danger); }
+
+.aging, .rank, .calendar { list-style: none; margin: 8px 0; display: flex; flex-direction: column; gap: 4px; }
+.aging-row, .rank li, .calendar-row { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+.aging-row.is-worst span:last-child { color: var(--danger); }
+.rank { counter-reset: rank; }
+.rank li::before { counter-increment: rank; content: counter(rank) "."; color: var(--text-muted); width: 20px; flex: none; }
+.rank-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.calendar-date { flex: none; width: 96px; }
+.calendar-name { flex: 1; }
+.calendar-left { color: var(--text-secondary); flex: none; }
+.calendar-row.is-soon .calendar-left { color: var(--warning); font-weight: 600; }
+
+.quick-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 767px) { .quick-actions .btn { flex: 1 1 calc(50% - 10px); } }
+
+.threshold-bar { height: 10px; border-radius: 999px; background: var(--overlay-04); overflow: hidden; }
+.threshold-fill { height: 100%; background: var(--success); transition: width var(--transition-normal); }
+.threshold.is-warn .threshold-fill { background: var(--warning); }
+.threshold.is-over .threshold-fill { background: var(--danger); }
+.threshold-text { margin-top: 8px; font-size: 14px; color: var(--text-secondary); }
