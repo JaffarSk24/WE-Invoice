@@ -18,7 +18,14 @@ const API = [
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
-  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
+  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
+  // WP-EXIM
+  'protectCell', 'weBudgetRows', 'selectExportDocuments', 'registerRows', 'lineRows', 'exportState', 'exportFingerprint', 'exportedPatch',
+  'accountantFiles', 'accountantSummary', 'exportFileName', 'buildBackup', 'serializeBackup', 'backupChecksum', 'buildZip', 'buildXlsx',
+  'encodeWindows1250', 'decodeWindows1250', 'pohodaAddressbook', 'documentUuid', 'importOmegaText', 'importRows', 'readTimeTracker',
+  'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan', 'contactKey', 'documentKey', 'itemKey', 'continueSeries',
+  'guessMapping', 'guessEntity', 'importFields', 'readCsv', 'decodeText', 'detectDelimiter', 'readXlsx', 'readZip', 'isZip',
+  'parseBackup', 'planRestore', 'createReport', 'mergeReports'
 ];
 
 describe('core public API', () => {
