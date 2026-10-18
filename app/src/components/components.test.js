@@ -1,6 +1,7 @@
 // Pure logic of the components: decimals, dates, virtual scrolling,
 // column choice, row sorting, undo, status styles, filters.
 import { describe, it, expect, beforeEach } from 'vitest';
+import { performance } from 'node:perf_hooks';
 import { parseDecimal, sum, round, cmp, toInputText } from './decimal.js';
 import { todayLocal, addDays, daysBetween, periodRange, inRange, daysInMonth } from './dates.js';
 import { visibleRange } from './virtual-list.js';

@@ -7,7 +7,7 @@ import { sk } from '../../i18n/sk/index.js';
 import { en } from '../../i18n/en/index.js';
 
 const tr = (dict) => (k) => dict[k] ?? k;
-const DASHES = /[–—]/;
+const DASHES = new RegExp(`[${String.fromCharCode(0x2013)}${String.fromCharCode(0x2014)}]`);
 
 describe('help', () => {
   it('has title, short line and body for every topic in SK and EN', () => {

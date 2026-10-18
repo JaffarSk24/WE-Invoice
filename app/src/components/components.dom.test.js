@@ -3,6 +3,7 @@
 // keeps only a window of them in the page; fields, tabs and the
 // irreversible confirmation behave for the keyboard.
 import { describe, it, expect, beforeEach } from 'vitest';
+import { performance } from 'node:perf_hooks';
 import { createTable } from './table.js';
 import { amountField, textField } from './fields.js';
 import { createTabs } from './tabs.js';
