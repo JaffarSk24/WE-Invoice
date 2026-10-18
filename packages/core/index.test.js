@@ -17,6 +17,10 @@ const API = [
   'exportPohoda', 'exportMoneyS3', 'exportOmega', 'exportCsv', 'exportWeBudgetCsv',
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
+  'normalizeStockMove', 'moveDeltas', 'companyDelta', 'sortStockMoves', 'stockOnHand', 'levelsByItem', 'negativeStockWarnings',
+  'lowStockItems', 'costStockMoves', 'stockValuation', 'reconcileDocumentMoves', 'documentsAffectedBy', 'deliveredByNote',
+  'stockReservations', 'availableStock', 'priceFor', 'inventoryDifferences', 'hasShortage', 'salesReceiptSeries', 'salesReceiptLine',
+  'issueSalesReceipt', 'vrpSummary', 'stockCsv',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
   'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
 ];
