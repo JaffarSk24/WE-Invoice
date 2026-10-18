@@ -75,7 +75,12 @@
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Stáhnout pro Mac / Windows</a>
         </div>
         <p class="hint">Otevřený kód (MIT). Fakturace, výdaje a účetnictví pro všechny, eFaktura přes Peppol (pro Slovensko) v uzavřené betě na pozvánky.</p>
-        <div class="shot"><img src="../assets/preview.png" width="1440" height="900" alt="Obrazovka WE Invoice: seznam faktur se stavy, co je po splatnosti, a náhled faktury s QR kódem pro platbu" fetchpriority="high" decoding="async"></div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="Obrazovka WE Invoice: seznam faktur se stavy, co je po splatnosti, a náhled faktury s QR kódem pro platbu" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
       </div>
     </section>
     <section class="block efaktura" id="efaktura">

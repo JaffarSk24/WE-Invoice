@@ -17,7 +17,12 @@ function hero(h) {
     `      <a class="btn" href="${RELEASES_URL}" rel="noopener">${text(h.ctaDownload)}</a>`,
     '    </div>',
     `    <p class="hint">${text(h.hint)}</p>`,
-    `    <div class="shot"><img src="../assets/preview.png" width="1440" height="900" alt="${attr(h.shotAlt)}" fetchpriority="high" decoding="async"></div>`,
+    '    <div class="shot">',
+    '      <picture>',
+    '        <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">',
+    `        <img src="../assets/preview.png" width="1440" height="900" alt="${attr(h.shotAlt)}" fetchpriority="high" decoding="async">`,
+    '      </picture>',
+    '    </div>',
     '  </div>',
     '</section>'
   );

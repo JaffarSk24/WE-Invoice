@@ -75,7 +75,12 @@
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Download for Mac / Windows</a>
         </div>
         <p class="hint">Open source (MIT). Invoicing, expenses and bookkeeping for everyone; e-invoicing via Peppol in a closed, invite-only beta.</p>
-        <div class="shot"><img src="../assets/preview.png" width="1440" height="900" alt="WE Invoice screen: invoice list with statuses, what is overdue, and an invoice preview with a payment QR code" fetchpriority="high" decoding="async"></div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="WE Invoice screen: invoice list with statuses, what is overdue, and an invoice preview with a payment QR code" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
       </div>
     </section>
     <section class="block efaktura" id="efaktura">

@@ -75,7 +75,12 @@
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Скачать для Mac / Windows</a>
         </div>
         <p class="hint">Открытый код (MIT). Счета, расходы и учёт доступны всем, электронные счета через Peppol пока в закрытой бете по приглашениям.</p>
-        <div class="shot"><img src="../assets/preview.png" width="1440" height="900" alt="Экран WE Invoice: список счетов со статусами и просрочкой, рядом предпросмотр счёта с QR-кодом для оплаты" fetchpriority="high" decoding="async"></div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="Экран WE Invoice: список счетов со статусами и просрочкой, рядом предпросмотр счёта с QR-кодом для оплаты" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
       </div>
     </section>
     <section class="block efaktura" id="efaktura">
