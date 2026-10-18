@@ -121,7 +121,7 @@ export default [
     rules: commonRules
   },
   {
-    ignores: ['dist/**', 'dist-web/**', 'release/**', 'release.nosync/**', '**/node_modules/**', 'coverage/**',
+    ignores: ['dist/**', 'dist-web/**', 'release/**', 'release.nosync/**', '**/node_modules/**', '**/*.nosync/**', 'coverage/**',
       'test-results/**', 'playwright-report/**', 'private/**', 'docs/tz/**']
   }
 ];
