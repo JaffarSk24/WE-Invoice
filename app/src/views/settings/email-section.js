@@ -23,8 +23,8 @@ function sendingBlock(win) {
       h('span', {}, account ? t('settings.email.smtpReady', { from: account.from }) : t('settings.email.smtpMissing'))));
     const host = h('div', { class: 'smtp-host' });
     block.append(host);
-    import('../desktop/smtp-form.js')
-      .then(mod => host.append(mod.renderSmtpForm({ t, showToast, showError, weMail: win.weMail, weSecrets: win.weSecrets })))
+    Promise.all([import('../desktop/smtp-form.js'), import('../desktop/desktop.css')])
+      .then(([mod]) => host.append(mod.renderSmtpForm({ t, showToast, showError, weMail: win.weMail, weSecrets: win.weSecrets })))
       .catch(e => showError(e));
   } else {
     block.append(h('p', { class: 'callout' }, icon('info'), h('span', {}, t('settings.email.webWay'))),

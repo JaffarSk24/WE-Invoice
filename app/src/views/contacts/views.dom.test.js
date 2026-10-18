@@ -115,4 +115,14 @@ describe('other CRM screens', () => {
     emailSection(mail, { win: {} });
     expect(mail.querySelectorAll('.templates-table tbody tr').length).toBe(24);
   });
+
+  it('offers the SMTP account in the e-mail settings of the desktop app', async () => {
+    const box = document.createElement('div');
+    document.body.replaceChildren(box);
+    const win = { weMail: { send: async () => ({ ok: true }), hasPassword: async () => false, test: async () => ({ ok: true }), setPassword: async () => ({ ok: true }) }, weSecrets: { available: async () => true } };
+    emailSection(box, { win });
+    for (let i = 0; i < 50 && !box.querySelector('.smtp-host form'); i++) await new Promise(r => setTimeout(r, 20));
+    expect(box.querySelector('.smtp-host form')).not.toBe(null);
+    expect(box.querySelector('.mail-way .callout-warning')).not.toBe(null);
+  });
 });
