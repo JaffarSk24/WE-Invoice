@@ -55,7 +55,8 @@ const browserGlobals = {
   Worker: 'readonly',
   __APP_VERSION__: 'readonly',
   __WEB_BUILD__: 'readonly',
-  __GATEWAY_URL__: 'readonly'
+  __GATEWAY_URL__: 'readonly',
+  __GOOGLE_CLIENT_ID__: 'readonly'
 };
 
 const nodeGlobals = {

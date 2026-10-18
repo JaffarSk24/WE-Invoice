@@ -10,3 +10,16 @@ contextBridge.exposeInMainWorld('wePlatform', { os: process.platform });
 contextBridge.exposeInMainWorld('weApp', {
   info: () => ipcRenderer.invoke('app:info')
 });
+
+// Google sign-in and Drive from the main process (cloud.cjs); every call
+// answers { ok, ... }.
+contextBridge.exposeInMainWorld('weCloud', {
+  status: () => ipcRenderer.invoke('cloud:status'),
+  signIn: (texts) => ipcRenderer.invoke('cloud:sign-in', texts),
+  signOut: () => ipcRenderer.invoke('cloud:sign-out'),
+  getAccessToken: () => ipcRenderer.invoke('cloud:token'),
+  list: (folder) => ipcRenderer.invoke('cloud:list', folder),
+  get: (file) => ipcRenderer.invoke('cloud:get', file),
+  put: (file, data) => ipcRenderer.invoke('cloud:put', file, data),
+  delete: (file) => ipcRenderer.invoke('cloud:delete', file)
+});

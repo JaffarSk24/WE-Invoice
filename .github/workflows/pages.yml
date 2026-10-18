@@ -32,6 +32,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build:web
+        env:
+          GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
       - name: Put the site and the app together
         run: |
           mkdir -p _site

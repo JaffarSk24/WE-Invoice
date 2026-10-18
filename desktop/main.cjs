@@ -6,6 +6,7 @@ const { app, BrowserWindow, ipcMain, protocol, shell, Menu, nativeImage } = requ
 const path = require('path');
 const { spawn } = require('child_process');
 const { registerAppProtocol } = require('./app-protocol.cjs');
+const { Cloud, registerCloudIpc } = require('./cloud.cjs');
 
 const APP_NAME = 'WE Invoice';
 const APP_ID = 'com.whiteeagles.weinvoice';
@@ -74,6 +75,7 @@ function createWindow(url) {
 
 function initIpc() {
   ipcMain.handle('app:info', () => ({ version: app.getVersion(), name: APP_NAME, platform: process.platform, packaged: app.isPackaged }));
+  registerCloudIpc(ipcMain, new Cloud({ electron: { shell }, userData: app.getPath('userData'), bundledDir: ROOT }));
 }
 
 // Waits for the Vite dev server instead of guessing how long it needs.
