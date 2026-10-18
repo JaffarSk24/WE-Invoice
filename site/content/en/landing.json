@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "title": "WE Invoice: free invoicing and e-invoicing",
+    "description": "Invoicing, e-invoicing via Peppol, bank imports, payment reminders, VAT filings and single-entry bookkeeping. Free, no sign-up, no limits. Your data encrypted in your own Google Drive.",
+    "ogTitle": "Invoicing and e-invoicing, free",
+    "ogDescription": "Everything others charge 5 to 15 € a month for. No sign-up, no limits. Your data encrypted in your own Google Drive.",
+    "ogTagline": "Genuinely free. Your data stays with you."
+  },
+  "hero": {
+    "h1": "Invoicing and e-invoicing, free",
+    "lead": "Everything others charge 5 to 15 € a month for. No sign-up, no limits. Your data encrypted in your own Google Drive.",
+    "ctaApp": "Open the web app",
+    "ctaDownload": "Download for Mac / Windows",
+    "hint": "Open source (MIT). Invoicing, expenses and bookkeeping for everyone; e-invoicing via Peppol in a closed, invite-only beta.",
+    "shotAlt": "WE Invoice screen: invoice list with statuses, what is overdue, and an invoice preview with a payment QR code"
+  },
+  "efaktura": {
+    "badge": "E-invoicing from 1 January 2027",
+    "h2": "From 1 January 2027, invoices between businesses go electronic",
+    "intro": "Act No. 385/2025 Coll. makes e-invoicing (eFaktúra) via the Peppol network mandatory. And not just for large companies.",
+    "cards": [
+      {
+        "title": "Who has to issue e-invoices",
+        "text": "VAT payers, for every domestic invoice to another business or public body. The deadline for issuing is 15 days from delivery."
+      },
+      {
+        "title": "Who has to receive e-invoices",
+        "text": "Every business and legal entity in Slovakia, including sole traders who are not VAT payers. There is no exemption from receiving."
+      },
+      {
+        "title": "What stays the same",
+        "text": "Invoices to consumers, simplified eKasa receipts up to 400 € and tax-exempt supplies remain as they are."
+      }
+    ],
+    "help": "WE Invoice helps you both receive and send e-invoices. A received invoice is imported in full, every line included, and a sent one is kept in its original XML for 10 years, as the law requires.",
+    "cta": "Join the e-invoicing beta"
+  },
+  "form": {
+    "title": "Join the e-invoicing beta",
+    "intro": "We open the beta in waves. Everyone on the list gets an invitation code and a guide to choosing an e-invoicing provider (digitálny poštár). No spam, one-click unsubscribe.",
+    "email": "E-mail",
+    "emailPlaceholder": "name@company.com",
+    "interests": {
+      "legend": "What interests you",
+      "send": "E-invoicing: sending",
+      "receive": "E-invoicing: receiving",
+      "bookkeeping": "Single-entry bookkeeping",
+      "vat": "VAT filings"
+    },
+    "vat": {
+      "legend": "I am a VAT payer",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "consent": "I agree to my e-mail being processed for the waiting list, as described in the [privacy policy](./privacy.html).",
+    "submit": "Sign me up",
+    "sending": "Sending...",
+    "note": "We'll send you an e-mail with a confirmation link. Without confirmation you won't be added to the list.",
+    "msg": {
+      "success": "Done. Check your inbox and confirm your e-mail using the link we've sent you.",
+      "invalidEmail": "Enter a valid e-mail address.",
+      "consent": "We can't add you to the list without your consent.",
+      "rateLimited": "Too many attempts. Try again in a minute.",
+      "badRequest": "The server rejected the sign-up. Check your e-mail address and try again.",
+      "network": "Couldn't reach the server. Check your connection and try again."
+    }
+  },
+  "features": {
+    "h2": "What WE Invoice does",
+    "intro": "Everything in one app, with no paid add-ons and no Premium tier.",
+    "items": [
+      {
+        "title": "Invoices and documents",
+        "text": "Invoices, proforma invoices, credit notes, quotes, delivery notes and sales receipts. PDFs with a PAY by square QR code, printed in Slovak, Czech, English, German or bilingually."
+      },
+      {
+        "title": "E-invoicing (Peppol)",
+        "text": "Send and receive through a provider you choose yourself. A received invoice is imported in full, a sent one is archived in its original XML."
+      },
+      {
+        "title": "Bank and payment matching",
+        "text": "Import statements from any bank for any period. Payments are matched to invoices by variable symbol, amount and customer."
+      },
+      {
+        "title": "Payment reminders with interest",
+        "text": "Three reminder levels, statutory late-payment interest and the flat 40 € recovery charge. Sent by e-mail, even when you don't have the app open."
+      },
+      {
+        "title": "Expenses and receipt scanning",
+        "text": "Snap a receipt or scan the eKasa QR code and the expense is recorded. Recognition runs on your device, free and without limits."
+      },
+      {
+        "title": "VAT filings",
+        "text": "VAT control statement, EC sales list and VAT return as XML, ready to file through the Financial Administration (financnasprava.sk) portal."
+      },
+      {
+        "title": "Single-entry bookkeeping",
+        "text": "Cash journal, receivables and payables ledger and the figures for a sole trader's tax return. Or just the records you need for flat-rate expenses."
+      },
+      {
+        "title": "Several companies, free",
+        "text": "As many companies as you want. No extra charge for another company, another user or another document."
+      },
+      {
+        "title": "Phone and desktop",
+        "text": "The web app runs in a browser and on your phone; the desktop version for macOS and Windows works offline and sends recurring invoices in the background."
+      }
+    ]
+  },
+  "compare": {
+    "h2": "WE Invoice vs paid apps",
+    "intro": "How we compare with what typical paid invoicing apps offer in their basic plans.",
+    "colFeature": "Feature",
+    "colUs": "WE Invoice",
+    "colOther": "Typical paid app",
+    "rows": [
+      { "feature": "Price", "us": "0 €", "other": "from 5 € a month, higher plans 8 to 15 € a month" },
+      { "feature": "Contacts and documents", "us": "no limit", "other": "free usually up to 5 contacts" },
+      { "feature": "Another company or user", "us": "free", "other": "separate licence or a surcharge of around 5 € a month" },
+      { "feature": "Recurring invoices", "us": "included", "other": "paid add-on or higher plan" },
+      { "feature": "Bank", "us": "statement imports from any bank for any period", "other": "a few banks only, 3 months of history, consent renewed every 180 days" },
+      { "feature": "Payment reminders", "us": "levels, late-payment interest, flat 40 € recovery charge", "other": "no levels, sent only when you log in" },
+      { "feature": "VAT control statement, EC sales list, VAT return", "us": "in the app, XML", "other": "only in a separate desktop program, or not at all" },
+      { "feature": "Single-entry bookkeeping", "us": "in the app", "other": "separate paid program" },
+      { "feature": "Received e-invoice", "us": "the whole document with every line", "other": "only the header is carried over" },
+      { "feature": "Receipt recognition", "us": "free, on your device", "other": "for example 20 € per 100 receipts" },
+      { "feature": "E-invoicing provider", "us": "any, switch without losing data", "other": "only the app's own provider" },
+      { "feature": "Where your data lives", "us": "encrypted in your Google Drive", "other": "on the operator's server" },
+      { "feature": "Source code", "us": "open, MIT licence", "other": "closed" }
+    ],
+    "note": "As of 10/2026, based on the public price lists and documentation of common invoicing apps on the Slovak market. Prices for annual billing, excluding VAT."
+  },
+  "privacy": {
+    "h2": "Privacy and openness",
+    "items": [
+      {
+        "title": "No server of ours holds your data",
+        "text": "Invoices, contacts and bookkeeping are encrypted on your device (AES-GCM 256) and stored in your Google Drive. Only you hold the key."
+      },
+      {
+        "title": "Open source (MIT)",
+        "text": "All the code is public on GitHub. Anyone can check what the app does and where it sends data."
+      },
+      {
+        "title": "Export any time",
+        "text": "PDF, XML, CSV, Excel, ISDOC and UBL. Your data isn't locked in, and you can leave with your full history."
+      }
+    ],
+    "link": "Read the privacy policy"
+  },
+  "connect": {
+    "h2": "How to switch on e-invoicing in three steps",
+    "intro": "WE Invoice is not an e-invoicing provider. It's a client for the provider you choose yourself. You never pay twice.",
+    "steps": [
+      {
+        "title": "Choose an e-invoicing provider (digitálny poštár)",
+        "text": "A certified e-invoicing service provider. Receiving is free with several of them; sending costs from 0 to about 3 € a month."
+      },
+      {
+        "title": "Register your provider with the Financial Administration",
+        "text": "Log in to [the Financial Administration (financnasprava.sk)](https://vpds.financnasprava.sk/) with your chip-enabled ID card and confirm your provider."
+      },
+      {
+        "title": "Paste the API key into WE Invoice",
+        "text": "Settings, E-invoicing, provider and key. From then on, invoices are sent and received straight from the app."
+      }
+    ],
+    "note": "You can switch providers at any time. Your invoices and XML archive stay with you."
+  },
+  "faq": {
+    "h2": "Frequently asked questions",
+    "items": [
+      {
+        "q": "Is it really free? Why?",
+        "a": "Yes: no plans, no limits, no trial period. We have almost no running costs: the site runs on GitHub Pages, your data is in your Google Drive and you pay for e-invoicing directly to your provider. The app is built by the White Eagles agency as a showcase of its work and a way to reach small business owners."
+      },
+      {
+        "q": "Where is my data?",
+        "a": "On your device and in your Google Drive, encrypted with a key only you know. Our server is just a gateway to e-invoicing providers, public registers and exchange rates: it stores nothing. In the web version your provider API key also passes through it, because providers don't accept requests straight from a browser; the gateway hands it over only for the duration of the request and never logs or caches it. The desktop version for macOS and Windows talks to the provider directly from your computer and bypasses the gateway; if you want maximum privacy, choose that one."
+      },
+      {
+        "q": "What if I lose my password?",
+        "a": "On first launch you get a recovery key. Keep it away from your computer, printed out for example. Without the password and the recovery key the data cannot be decrypted; not even we can do it."
+      },
+      {
+        "q": "Do I have to receive e-invoices even if I'm not a VAT payer?",
+        "a": "Yes. From 1 January 2027 every business and every legal entity in Slovakia has to receive e-invoices. Only VAT payers have to issue them. Receiving is free with several providers."
+      },
+      {
+        "q": "How much does an e-invoicing provider cost?",
+        "a": "Several providers offer receiving for free. Sending costs from 0 to about 3 € a month, or a few cents per document, depending on the provider. You pay them directly; WE Invoice adds nothing on top."
+      },
+      {
+        "q": "Why does my Mac say the developer is unverified?",
+        "a": "The desktop app isn't yet signed with an Apple developer certificate, which costs 99 USD a year. On first launch, right-click the app and choose Open, or allow it under Settings, Privacy & Security. Later updates run without the warning."
+      },
+      {
+        "q": "Will it replace my accountant?",
+        "a": "No. It prepares the groundwork: reports, journal, exports in common formats. You or your accountant remain responsible for the accuracy of tax documents and for filing them. A good accountant saves time with WE Invoice; the work is still theirs."
+      },
+      {
+        "q": "What we don't do, and why",
+        "a": "No eKasa cash register of our own and no direct link to the VRP virtual register: Act No. 384/2025 Coll. bans using VRP through third-party apps, and a cash register of our own would need Financial Administration certification. When an invoice is paid in cash, we prepare the data for VRP and store the receipt number. No real-time bank connection via PSD2: it needs a licence and your data would pass through someone else's server, so we import statements instead. No SMS reminders: a paid channel we would have to charge for. E-mail and Peppol instead."
+      }
+    ]
+  },
+  "we": {
+    "h2": "Need a website or advertising?",
+    "text": "The app is built by White Eagles: websites, Google and Meta ads, analytics. We build solutions for your business with the same care we put into WE Invoice.",
+    "cta": "Visit whiteeagles.sk"
+  }
+}

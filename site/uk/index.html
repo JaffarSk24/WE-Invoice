@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WE Invoice: рахунки та електронні рахунки безкоштовно</title>
+  <meta name="description" content="Рахунки, електронні рахунки (eFaktúra) через Peppol, банк, нагадування про оплату, звіти з ПДВ і простий облік. Безкоштовно, без реєстрації та без обмежень. Дані зашифровані у вашому Google Drive.">
+  <link rel="canonical" href="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <link rel="alternate" hreflang="sk" href="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <link rel="alternate" hreflang="cs" href="https://jaffarsk24.github.io/WE-Invoice/cs/">
+  <link rel="alternate" hreflang="en" href="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <link rel="alternate" hreflang="de" href="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <link rel="alternate" hreflang="ru" href="https://jaffarsk24.github.io/WE-Invoice/ru/">
+  <link rel="alternate" hreflang="uk" href="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://jaffarsk24.github.io/WE-Invoice/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WE Invoice">
+  <meta property="og:title" content="Рахунки та електронні рахунки безкоштовно">
+  <meta property="og:description" content="Усе, за що деінде платять від 5 до 15&nbsp;€ на місяць. Без реєстрації, без обмежень. Ваші дані зашифровані у вашому Google Drive.">
+  <meta property="og:url" content="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <meta property="og:image" content="https://jaffarsk24.github.io/WE-Invoice/assets/og/uk.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:locale:alternate" content="sk_SK">
+  <meta property="og:locale:alternate" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#090b11" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/landing.css">
+  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/consent.js"></script>
+  <script type="module" src="../assets/waitlist.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/uk/","inLanguage":"uk","description":"Рахунки, електронні рахунки (eFaktúra) через Peppol, банк, нагадування про оплату, звіти з ПДВ і простий облік. Безкоштовно, без реєстрації та без обмежень. Дані зашифровані у вашому Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Рахунки й документи","Е-рахунки (Peppol)","Банк і звірка платежів","Нагадування про оплату з пенею","Витрати та сканування чеків","Звіти з ПДВ","Простий облік","Кілька компаній безкоштовно","Телефон і комп'ютер"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/uk.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"uk","mainEntity":[{"@type":"Question","name":"Це справді безкоштовно? Чому?","acceptedAnswer":{"@type":"Answer","text":"Так, без пакетів, обмежень і пробного періоду. У нас майже немає операційних витрат: сайт працює на GitHub Pages, дані у вашому Google Drive, а за е-рахунки ви платите напряму своєму провайдеру. Застосунок розробляє агентство White Eagles як приклад своєї роботи та як спосіб познайомитися з власниками малого бізнесу."}},{"@type":"Question","name":"Де мої дані?","acceptedAnswer":{"@type":"Answer","text":"На вашому пристрої та у вашому Google Drive, зашифровані ключем, який знаєте лише ви. Наш сервер лише шлюз до провайдерів е-рахунків, публічних реєстрів і курсів валют: він нічого не зберігає. У вебверсії через нього проходить і ваш API-ключ провайдера, бо провайдери не приймають запити прямо з браузера; шлюз передає його лише на час запиту, не записує і не кешує. Десктопна версія для macOS і Windows спілкується з провайдером прямо з вашого комп'ютера, оминаючи шлюз; якщо хочете максимум приватності, обирайте її."}},{"@type":"Question","name":"Що, як я забуду пароль?","acceptedAnswer":{"@type":"Answer","text":"Під час першого запуску ви отримаєте ключ відновлення. Збережіть його поза комп'ютером, наприклад у роздрукованому вигляді. Без пароля і без ключа відновлення дані розшифрувати неможливо, навіть ми цього не зможемо."}},{"@type":"Question","name":"Чи мушу я приймати е-рахунки, якщо я не платник ПДВ?","acceptedAnswer":{"@type":"Answer","text":"Так. З 1.1.2027 приймати е-рахунки повинен кожен підприємець і кожна юридична особа у Словаччині. Виставляти їх зобов'язані лише платники ПДВ. Приймання в багатьох провайдерів безкоштовне."}},{"@type":"Question","name":"Скільки коштує провайдер е-рахунків (digitálny poštár)?","acceptedAnswer":{"@type":"Answer","text":"Приймання е-рахунків кілька провайдерів пропонують безкоштовно. Надсилання коштує від 0 до приблизно 3 € на місяць або кілька центів за документ, залежно від провайдера. Платите напряму йому, WE Invoice нічого не додає."}},{"@type":"Question","name":"Чому Mac попереджає про неперевіреного розробника?","acceptedAnswer":{"@type":"Answer","text":"Десктопний застосунок поки що не підписаний сертифікатом розробника Apple, який коштує 99 USD на рік. Під час першого запуску відкрийте застосунок через праву кнопку миші та Відкрити або дозвольте його в Налаштуваннях, Конфіденційність і безпека. Наступні оновлення вже працюють без попередження."}},{"@type":"Question","name":"Чи замінить це бухгалтера?","acceptedAnswer":{"@type":"Answer","text":"Ні. Застосунок підготує вам матеріали: звіти, касову книгу, експорти в поширених форматах. За правильність податкових документів та їх подання відповідаєте ви або ваш бухгалтер. Хороший бухгалтер із WE Invoice заощадить час, а не роботу."}},{"@type":"Question","name":"Чого ми не робимо і чому","acceptedAnswer":{"@type":"Answer","text":"Власної каси eKasa та прямого підключення до віртуальної каси VRP: словацький закон 384/2025 Z. z. забороняє використовувати VRP через інші застосунки, а власна каса потребує сертифікації фінансової адміністрації. При оплаті рахунка готівкою ми підготуємо вам дані для VRP і збережемо номер документа. Банку в реальному часі через PSD2: потрібна ліцензія, а ваші дані йшли б через чужий сервер, тому імпортуємо виписки. SMS-нагадувань: це платний канал, за який довелося б брати гроші. Замість цього e-mail і Peppol."}}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Перейти до вмісту</a>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="../assets/icon.png" alt="" width="32" height="32">WE Invoice</a>
+      <nav class="links" aria-label="WE Invoice">
+        <a href="#features">Функції</a>
+        <a href="#efaktura">Е-рахунки</a>
+        <a href="#compare">Порівняння</a>
+        <a href="#faq">Питання</a>
+        <a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">GitHub</a>
+        <a class="btn small primary" href="../app/">Відкрити застосунок</a>
+      </nav>
+      <nav class="langs" aria-label="Мова сайту">
+        <ul>
+          <li><a href="../sk/index.html" hreflang="sk" lang="sk">SK</a></li>
+          <li><a href="../cs/index.html" hreflang="cs" lang="cs">CS</a></li>
+          <li><a href="../en/index.html" hreflang="en" lang="en">EN</a></li>
+          <li><a href="../de/index.html" hreflang="de" lang="de">DE</a></li>
+          <li><a href="../ru/index.html" hreflang="ru" lang="ru">RU</a></li>
+          <li><a href="../uk/index.html" hreflang="uk" lang="uk" aria-current="page">UK</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="wrap">
+        <h1>Рахунки та електронні рахунки безкоштовно</h1>
+        <p class="lead">Усе, за що деінде платять від 5 до 15&nbsp;€ на місяць. Без реєстрації, без обмежень. Ваші дані зашифровані у вашому Google Drive.</p>
+        <div class="buttons">
+          <a class="btn primary" href="../app/">Відкрити вебзастосунок</a>
+          <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Завантажити для Mac / Windows</a>
+        </div>
+        <p class="hint">Відкритий код (MIT). Рахунки, витрати й облік доступні всім, електронні рахунки (eFaktúra) через Peppol у закритій беті за запрошеннями.</p>
+        <div class="shot"><img src="../assets/preview.png" width="1440" height="900" alt="Екран WE Invoice: список рахунків зі статусами, що прострочено, і попередній перегляд рахунка з QR-кодом для оплати" fetchpriority="high" decoding="async"></div>
+      </div>
+    </section>
+    <section class="block efaktura" id="efaktura">
+      <div class="wrap">
+        <p class="badge">eFaktúra з 1.1.2027</p>
+        <h2>З 1 січня 2027 року рахунки між компаніями у Словаччині надсилаються в електронному вигляді</h2>
+        <p class="intro">Словацький закон 385/2025 Z. z. запроваджує обов&#39;язковий електронний рахунок (eFaktúra) через мережу Peppol. Це стосується не лише великих компаній.</p>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg></span>
+            <h3>Хто повинен виставляти е-рахунки</h3>
+            <p>Платники ПДВ (DPH), і то за кожним внутрішнім рахунком для іншої компанії чи державної установи. Строк на виставлення: 15 днів від дати постачання.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg></span>
+            <h3>Хто повинен приймати е-рахунки</h3>
+            <p>Усі підприємці та юридичні особи у Словаччині, зокрема підприємці-ФОП (živnostník), які не є платниками ПДВ. Винятків для приймання немає.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <h3>Що не змінюється</h3>
+            <p>Рахунки для споживачів, спрощені документи з eKasa до 400&nbsp;€ та постачання, звільнені від податку, залишаються як є.</p>
+          </div>
+        </div>
+        <p class="help">WE Invoice допоможе вам і приймати, і надсилати е-рахунки. Отриманий рахунок завантажить повністю, з усіма рядками, а надісланий збереже в оригінальному XML на 10 років, як вимагає закон.</p>
+        <p class="buttons"><a class="btn primary" href="#waitlist">Записатися до бети е-рахунків</a></p>
+        <div class="waitlist-wrap" id="waitlist">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Надсилаємо..." data-msg-success="Готово. Перевірте пошту й підтвердьте e-mail за посиланням, яке ми вам надіслали." data-msg-invalid-email="Введіть дійсну адресу e-mail." data-msg-consent="Без згоди ми не можемо додати вас до списку." data-msg-rate-limited="Забагато спроб. Спробуйте за хвилину." data-msg-bad-request="Сервер відхилив заявку. Перевірте e-mail і спробуйте ще раз." data-msg-network="Не вдалося з&#39;єднатися із сервером. Перевірте з&#39;єднання і спробуйте ще раз.">
+            <h3 id="waitlist-title">Запишіться до бети е-рахунків</h3>
+            <p>Бету відкриваємо хвилями. Записаним надсилаємо код запрошення та інструкцію, як обрати провайдера е-рахунків (digitálny poštár). Жодного спаму, відписка одним кліком.</p>
+            <input type="hidden" name="lang" value="uk">
+            <input type="hidden" name="source" value="site">
+            <input type="hidden" name="startedAt" value="">
+            <div class="field">
+              <label for="wl-email">E-mail</label>
+              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="meno@firma.sk">
+            </div>
+            <fieldset>
+              <legend>Що вас цікавить</legend>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> Е-рахунки: надсилання</label>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> Е-рахунки: приймання</label>
+              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Простий облік</label>
+              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> Звіти з ПДВ</label>
+            </fieldset>
+            <fieldset>
+              <legend>Я платник ПДВ</legend>
+              <label class="check"><input type="radio" name="vatPayer" value="true"> Так</label>
+              <label class="check"><input type="radio" name="vatPayer" value="false"> Ні</label>
+            </fieldset>
+            <div class="hp" aria-hidden="true">
+              <label for="wl-website">Website</label>
+              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Погоджуюся на обробку e-mail для ведення списку очікування згідно з <a href="./privacy.html">політикою захисту персональних даних</a>.</span></label>
+            <button type="submit" class="btn primary">Записатися</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="note">Після відправлення вам надійде лист із посиланням для підтвердження. Без підтвердження до списку вас не додамо.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="features">
+      <div class="wrap">
+        <h2>Що вміє WE Invoice</h2>
+        <p class="intro">Усе в одному застосунку, без платних доповнень і без версії Premium.</p>
+        <div class="grid">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+            <h3>Рахунки й документи</h3>
+            <p>Рахунки, рахунки на передоплату, кредит-ноти (dobropis), комерційні пропозиції, накладні та товарні чеки. PDF з QR-кодом PAY by square, друк словацькою, чеською, англійською, німецькою або двома мовами.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></span>
+            <h3>Е-рахунки (Peppol)</h3>
+            <p>Надсилання та приймання через провайдера, якого ви обираєте самі. Отриманий рахунок завантажується повністю, надісланий архівується в оригінальному XML.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>
+            <h3>Банк і звірка платежів</h3>
+            <p>Імпорт виписок з будь-якого банку за будь-який період. Платежі зіставляються з рахунками за варіабельним символом, сумою та покупцем.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/></svg></span>
+            <h3>Нагадування про оплату з пенею</h3>
+            <p>Три рівні нагадувань, пеня за прострочення згідно із законом і фіксована компенсація 40&nbsp;€ за стягнення. Надсилання e-mail, навіть коли застосунок не відкритий.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span>
+            <h3>Витрати та сканування чеків</h3>
+            <p>Сфотографуйте чек або зчитайте QR-код з eKasa, і витрата записана. Розпізнавання працює на вашому пристрої, безкоштовно й без обмежень.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>
+            <h3>Звіти з ПДВ</h3>
+            <p>Контрольний звіт з ПДВ (kontrolný výkaz), зведений звіт (súhrnný výkaz) і декларація з ПДВ у XML, готові до подання через портал фінансової адміністрації (Finančná správa).</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg></span>
+            <h3>Простий облік</h3>
+            <p>Касова книга (peňažný denník), книга дебіторів і кредиторів та дані до податкової декларації для підприємців-ФОП (živnostník). Або лише облік під фіксовані витрати (paušálne výdavky).</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
+            <h3>Кілька компаній безкоштовно</h3>
+            <p>Скільки компаній потрібно, стільки й матимете. Без доплати за ще одну компанію, ще одного користувача чи ще один документ.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
+            <h3>Телефон і комп&#39;ютер</h3>
+            <p>Вебзастосунок працює у браузері й на телефоні, десктопна версія для macOS і Windows працює офлайн і надсилає повторювані рахунки у фоновому режимі.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="compare">
+      <div class="wrap">
+        <h2>WE Invoice vs. платні застосунки</h2>
+        <p class="intro">Порівняння з тим, що звичайні платні застосунки для виставлення рахунків пропонують у базових пакетах.</p>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col">Функція</th><th scope="col" class="us">WE Invoice</th><th scope="col">Звичайний платний застосунок</th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row">Ціна</th>
+                <td data-label="WE Invoice">0&nbsp;€</td>
+                <td data-label="Звичайний платний застосунок">від 5&nbsp;€ на місяць, вищі пакети від 8 до 15&nbsp;€ на місяць</td>
+              </tr>
+              <tr>
+                <th scope="row">Контакти й документи</th>
+                <td data-label="WE Invoice">без обмежень</td>
+                <td data-label="Звичайний платний застосунок">безкоштовно зазвичай до 5 контактів</td>
+              </tr>
+              <tr>
+                <th scope="row">Ще одна компанія або користувач</th>
+                <td data-label="WE Invoice">безкоштовно</td>
+                <td data-label="Звичайний платний застосунок">окрема ліцензія або доплата близько 5&nbsp;€ на місяць</td>
+              </tr>
+              <tr>
+                <th scope="row">Повторювані рахунки</th>
+                <td data-label="WE Invoice">включено</td>
+                <td data-label="Звичайний платний застосунок">платне доповнення або вищий пакет</td>
+              </tr>
+              <tr>
+                <th scope="row">Банк</th>
+                <td data-label="WE Invoice">імпорт виписок з будь-якого банку за будь-який період</td>
+                <td data-label="Звичайний платний застосунок">лише кілька банків, історія 3 місяці, згоду треба оновлювати кожні 180 днів</td>
+              </tr>
+              <tr>
+                <th scope="row">Нагадування про оплату</th>
+                <td data-label="WE Invoice">рівні, пеня за прострочення, фіксована компенсація 40&nbsp;€</td>
+                <td data-label="Звичайний платний застосунок">без рівнів, надсилаються лише під час входу</td>
+              </tr>
+              <tr>
+                <th scope="row">Контрольний звіт, зведений звіт, декларація з ПДВ</th>
+                <td data-label="WE Invoice">у застосунку, XML</td>
+                <td data-label="Звичайний платний застосунок">лише в окремій десктопній програмі або взагалі ні</td>
+              </tr>
+              <tr>
+                <th scope="row">Простий облік</th>
+                <td data-label="WE Invoice">у застосунку</td>
+                <td data-label="Звичайний платний застосунок">окрема платна програма</td>
+              </tr>
+              <tr>
+                <th scope="row">Отриманий е-рахунок</th>
+                <td data-label="WE Invoice">весь документ з усіма рядками</td>
+                <td data-label="Звичайний платний застосунок">переноситься лише шапка</td>
+              </tr>
+              <tr>
+                <th scope="row">Розпізнавання чеків</th>
+                <td data-label="WE Invoice">безкоштовно, на вашому пристрої</td>
+                <td data-label="Звичайний платний застосунок">наприклад, 20&nbsp;€ за 100 документів</td>
+              </tr>
+              <tr>
+                <th scope="row">Провайдер е-рахунків</th>
+                <td data-label="WE Invoice">будь-який, зміна без втрати даних</td>
+                <td data-label="Звичайний платний застосунок">лише провайдер цього застосунку</td>
+              </tr>
+              <tr>
+                <th scope="row">Де ваші дані</th>
+                <td data-label="WE Invoice">зашифровані у вашому Google Drive</td>
+                <td data-label="Звичайний платний застосунок">на сервері оператора</td>
+              </tr>
+              <tr>
+                <th scope="row">Вихідний код</th>
+                <td data-label="WE Invoice">відкритий, ліцензія MIT</td>
+                <td data-label="Звичайний платний застосунок">закритий</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Станом на 10/2026 за публічними прайсами та документацією поширених застосунків для виставлення рахунків на словацькому ринку. Ціни при річній оплаті, без ПДВ.</p>
+      </div>
+    </section>
+    <section class="block privacy-note" id="privacy">
+      <div class="wrap">
+        <h2>Приватність і відкритість</h2>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>Жодного нашого сервера з вашими даними</h3>
+            <p>Рахунки, контакти й облік зашифровані на вашому пристрої (AES-GCM 256) і збережені у вашому Google Drive. Ключ є лише у вас.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+            <h3>Open source (MIT)</h3>
+            <p>Увесь код відкритий на GitHub. Кожен може перевірити, що робить застосунок і куди надсилає дані.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 7.5V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-1.5"/><path d="M2 13h10"/><path d="m5 10-3 3 3 3"/></svg></span>
+            <h3>Експорт у будь-який момент</h3>
+            <p>PDF, XML, CSV, Excel, ISDOC і UBL. Ваші дані не замкнені, і піти ви можете з повною історією.</p>
+          </div>
+        </div>
+        <p><a href="./privacy.html">Прочитайте політику захисту персональних даних</a></p>
+      </div>
+    </section>
+    <section class="block" id="connect">
+      <div class="wrap">
+        <h2>Як увімкнути е-рахунки за три кроки</h2>
+        <p class="intro">WE Invoice не є провайдером е-рахунків. Це клієнт до провайдера, якого ви обираєте самі. Нікому не платите двічі.</p>
+        <ol class="steps">
+          <li>
+            <h3>Оберіть провайдера е-рахунків (digitálny poštár)</h3>
+            <p>Сертифікованого постачальника послуг eFaktúra. Приймання в багатьох безкоштовне, надсилання коштує від 0 до приблизно 3&nbsp;€ на місяць.</p>
+          </li>
+          <li>
+            <h3>Зареєструйте його у VPDS</h3>
+            <p>На <a href="https://vpds.financnasprava.sk/" rel="noopener">vpds.financnasprava.sk</a> увійдіть за посвідченням особи з чипом (občiansky preukaz) і підтвердьте свого провайдера.</p>
+          </li>
+          <li>
+            <h3>Вставте API-ключ у WE Invoice</h3>
+            <p>Налаштування, Електронні рахунки, провайдер і ключ. Відтоді рахунки надсилаються і приймаються прямо із застосунку.</p>
+          </li>
+        </ol>
+        <p class="note">Провайдера можна будь-коли змінити. Ваші рахунки та архів XML залишаються у вас.</p>
+      </div>
+    </section>
+    <section class="block" id="faq">
+      <div class="wrap narrow">
+        <h2>Часті питання</h2>
+        <details>
+          <summary>Це справді безкоштовно? Чому?</summary>
+          <p>Так, без пакетів, обмежень і пробного періоду. У нас майже немає операційних витрат: сайт працює на GitHub Pages, дані у вашому Google Drive, а за е-рахунки ви платите напряму своєму провайдеру. Застосунок розробляє агентство White Eagles як приклад своєї роботи та як спосіб познайомитися з власниками малого бізнесу.</p>
+        </details>
+        <details>
+          <summary>Де мої дані?</summary>
+          <p>На вашому пристрої та у вашому Google Drive, зашифровані ключем, який знаєте лише ви. Наш сервер лише шлюз до провайдерів е-рахунків, публічних реєстрів і курсів валют: він нічого не зберігає. У вебверсії через нього проходить і ваш API-ключ провайдера, бо провайдери не приймають запити прямо з браузера; шлюз передає його лише на час запиту, не записує і не кешує. Десктопна версія для macOS і Windows спілкується з провайдером прямо з вашого комп&#39;ютера, оминаючи шлюз; якщо хочете максимум приватності, обирайте її.</p>
+        </details>
+        <details>
+          <summary>Що, як я забуду пароль?</summary>
+          <p>Під час першого запуску ви отримаєте ключ відновлення. Збережіть його поза комп&#39;ютером, наприклад у роздрукованому вигляді. Без пароля і без ключа відновлення дані розшифрувати неможливо, навіть ми цього не зможемо.</p>
+        </details>
+        <details>
+          <summary>Чи мушу я приймати е-рахунки, якщо я не платник ПДВ?</summary>
+          <p>Так. З 1.1.2027 приймати е-рахунки повинен кожен підприємець і кожна юридична особа у Словаччині. Виставляти їх зобов&#39;язані лише платники ПДВ. Приймання в багатьох провайдерів безкоштовне.</p>
+        </details>
+        <details>
+          <summary>Скільки коштує провайдер е-рахунків (digitálny poštár)?</summary>
+          <p>Приймання е-рахунків кілька провайдерів пропонують безкоштовно. Надсилання коштує від 0 до приблизно 3&nbsp;€ на місяць або кілька центів за документ, залежно від провайдера. Платите напряму йому, WE Invoice нічого не додає.</p>
+        </details>
+        <details>
+          <summary>Чому Mac попереджає про неперевіреного розробника?</summary>
+          <p>Десктопний застосунок поки що не підписаний сертифікатом розробника Apple, який коштує 99&nbsp;USD на рік. Під час першого запуску відкрийте застосунок через праву кнопку миші та Відкрити або дозвольте його в Налаштуваннях, Конфіденційність і безпека. Наступні оновлення вже працюють без попередження.</p>
+        </details>
+        <details>
+          <summary>Чи замінить це бухгалтера?</summary>
+          <p>Ні. Застосунок підготує вам матеріали: звіти, касову книгу, експорти в поширених форматах. За правильність податкових документів та їх подання відповідаєте ви або ваш бухгалтер. Хороший бухгалтер із WE Invoice заощадить час, а не роботу.</p>
+        </details>
+        <details>
+          <summary>Чого ми не робимо і чому</summary>
+          <p>Власної каси eKasa та прямого підключення до віртуальної каси VRP: словацький закон 384/2025 Z. z. забороняє використовувати VRP через інші застосунки, а власна каса потребує сертифікації фінансової адміністрації. При оплаті рахунка готівкою ми підготуємо вам дані для VRP і збережемо номер документа. Банку в реальному часі через PSD2: потрібна ліцензія, а ваші дані йшли б через чужий сервер, тому імпортуємо виписки. SMS-нагадувань: це платний канал, за який довелося б брати гроші. Замість цього e-mail і Peppol.</p>
+        </details>
+      </div>
+    </section>
+    <section class="block agency" id="white-eagles">
+      <div class="wrap narrow">
+        <h2>Потрібен сайт або реклама?</h2>
+        <p>Застосунок розробляє White Eagles: сайти, реклама в Google і Meta, аналітика. Так само чесно, як будуємо WE Invoice, будуємо й рішення для вашого бізнесу.</p>
+        <p><a class="btn" href="https://whiteeagles.sk/" rel="noopener">Перейти на whiteeagles.sk</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <p><strong>White Eagles &amp; Co. s. r. o.</strong><br>Bohrova 1194/1, 851 01 Bratislava, Slovensko<br>IČO 57098581</p>
+          <p><a href="mailto:welcome@whiteeagles.sk">welcome@whiteeagles.sk</a></p>
+        </div>
+        <div>
+          <p><a href="./privacy.html">Захист персональних даних</a><br><a href="./terms.html">Умови використання</a><br><a href="#" class="consent-open">Налаштування cookies</a></p>
+        </div>
+        <div>
+          <p><a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">Вихідний код</a><br><a href="https://github.com/JaffarSk24/WE-Invoice/blob/main/LICENSE" rel="noopener">Ліцензія MIT</a></p>
+          <p>Інші застосунки WE:<br><a href="https://jaffarsk24.github.io/WE-Time-Tracker/" rel="noopener">WE Time Tracker</a> &middot; <a href="https://jaffarsk24.github.io/WE-Budget/" rel="noopener">WE Budget</a></p>
+        </div>
+      </div>
+      <p class="copy">&copy; 2026 <a href="https://whiteeagles.sk/" rel="noopener">White Eagles &amp; Co. s. r. o.</a></p>
+    </div>
+  </footer>
+  <div class="consent" id="consent" role="region" aria-labelledby="consent-title" hidden>
+    <div class="wrap">
+      <p class="consent-title" id="consent-title">Cookies і вимірювання відвідуваності</p>
+      <p>Ми використовуємо Google Analytics, щоб розуміти, які частини сайту вам допомагають. Він увімкнеться лише після вашої згоди. У самому застосунку WE Invoice аналітики немає. <a href="./privacy.html">Більше про захист даних</a></p>
+      <div class="consent-actions">
+        <button type="button" class="btn primary" data-consent="accept">Погоджуюся</button>
+        <button type="button" class="btn" data-consent="reject">Відхилити</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

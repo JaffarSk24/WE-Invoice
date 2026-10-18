@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Terms of use: WE Invoice",
+    "description": "WE Invoice is free and provided “as is” under the MIT licence. The user is responsible for the accuracy and filing of tax documents."
+  },
+  "h1": "Terms of use",
+  "effective": "The WE Invoice web and desktop app. Effective from 18 October 2026.",
+  "intro": "WE Invoice is developed by White Eagles & Co. s. r. o. (“we”). By using the app you agree to these terms. They are short, because we have nothing to hide.",
+  "sections": [
+    {
+      "h2": "Free and no account",
+      "blocks": [
+        { "p": "The app is free for everyone, with no limits on the number of companies, documents, contacts or users, no trial period and no paid tiers. It requires no registration with us. We reserve the right to change the app or stop developing it at any time; your data stays with you and you can export it whenever you like." }
+      ]
+    },
+    {
+      "h2": "Open source and the MIT licence",
+      "blocks": [
+        { "p": "The source code is published on [GitHub](https://github.com/JaffarSk24/WE-Invoice) under the MIT licence. You may use, copy, modify and distribute it under the terms of that licence. The WE Invoice name and the White Eagles logo are not part of the licence." }
+      ]
+    },
+    {
+      "h2": "Provided “as is”",
+      "blocks": [
+        { "p": "The app is provided without any warranty, express or implied, including any warranty of fitness for a particular purpose. To the extent permitted by law, we are not liable for any damage, lost profit, loss of data, fines or penalties arising from the use of or inability to use the app. We recommend exporting your data regularly and keeping your recovery key away from your device." }
+      ]
+    },
+    {
+      "h2": "You are responsible for your tax documents",
+      "blocks": [
+        { "p": "The app helps you issue documents, keep records and prepare reports. The user is responsible for the accuracy, completeness and timely issue of invoices, for archiving them, for the content of tax returns and reports, and for filing them. We update rates, deadlines and legal texts in the app with every release, but check that they apply to your case." },
+        { "p": "WE Invoice does not replace an accountant or a tax adviser. When in doubt, consult a professional." }
+      ]
+    },
+    {
+      "h2": "E-invoicing and third-party providers",
+      "blocks": [
+        { "p": "E-invoices are sent and received through a certified provider with whom you have your own contract. The provider is responsible for its availability, pricing and compliance with legal obligations. The same applies to Google Drive, banks and other third-party services you connect in the app." },
+        { "p": "The e-invoicing feature is in closed beta. We may restrict or end access granted by an invitation code if the stability of the service requires it." }
+      ]
+    },
+    {
+      "h2": "Waiting list",
+      "blocks": [
+        { "p": "By joining the waiting list you agree to receive e-mails about the e-invoicing beta. You can unsubscribe via the link in every e-mail. Details are in the [privacy policy](./privacy.html)." }
+      ]
+    },
+    {
+      "h2": "Governing law",
+      "blocks": [
+        { "p": "These terms are governed by the law of the Slovak Republic. If any provision is invalid, the rest remain in force." }
+      ]
+    },
+    {
+      "h2": "Contact",
+      "blocks": [
+        { "p": "White Eagles & Co. s. r. o., Bohrova 1194/1, 851 01 Bratislava, Slovakia. Company ID (IČO) 57098581. E-mail: [welcome@whiteeagles.sk](mailto:welcome@whiteeagles.sk)" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "title": "WE Invoice: fakturácia a eFaktúra zadarmo",
+    "description": "Fakturácia, eFaktúra cez Peppol, banka, upomienky, DPH výkazy a jednoduché účtovníctvo. Zadarmo, bez registrácie a bez limitov. Dáta šifrované vo vašom Google Drive.",
+    "ogTitle": "Fakturácia a eFaktúra zadarmo",
+    "ogDescription": "Všetko, za čo inde platíte 5 až 15 € mesačne. Bez registrácie, bez limitov. Vaše dáta šifrované vo vašom Google Drive.",
+    "ogTagline": "Naozaj zadarmo. Vaše dáta zostávajú u vás."
+  },
+  "hero": {
+    "h1": "Fakturácia a eFaktúra zadarmo",
+    "lead": "Všetko, za čo inde platíte 5 až 15 € mesačne. Bez registrácie, bez limitov. Vaše dáta šifrované vo vašom Google Drive.",
+    "ctaApp": "Otvoriť webovú aplikáciu",
+    "ctaDownload": "Stiahnuť pre Mac / Windows",
+    "hint": "Otvorený kód (MIT). Fakturácia, výdavky a účtovníctvo pre všetkých, eFaktúra cez Peppol v uzavretej bete na pozvánky.",
+    "shotAlt": "Obrazovka WE Invoice: zoznam faktúr so stavmi, čo je po splatnosti a náhľad faktúry s QR kódom na platbu"
+  },
+  "efaktura": {
+    "badge": "eFaktúra od 1. 1. 2027",
+    "h2": "Od 1. januára 2027 sa faktúry medzi firmami posielajú elektronicky",
+    "intro": "Zákon 385/2025 Z. z. zavádza povinnú eFaktúru cez sieť Peppol. Netýka sa len veľkých firiem.",
+    "cards": [
+      {
+        "title": "Kto musí eFaktúry vystavovať",
+        "text": "Platitelia DPH, a to pri každej tuzemskej faktúre pre inú firmu alebo verejnú inštitúciu. Lehota na vystavenie je 15 dní od dodania."
+      },
+      {
+        "title": "Kto musí eFaktúry prijímať",
+        "text": "Všetci podnikatelia a právnické osoby na Slovensku, vrátane živnostníkov, ktorí nie sú platiteľmi DPH. Výnimka pre prijímanie neexistuje."
+      },
+      {
+        "title": "Čo sa nemení",
+        "text": "Faktúry pre spotrebiteľov, zjednodušené doklady z eKasy do 400 € a dodávky oslobodené od dane ostávajú tak, ako sú."
+      }
+    ],
+    "help": "WE Invoice vám pomôže eFaktúry prijímať aj posielať. Prijatú faktúru načíta celú, so všetkými riadkami, a odoslanú uloží v pôvodnom XML na 10 rokov, ako žiada zákon.",
+    "cta": "Zapísať sa do bety eFaktúr"
+  },
+  "form": {
+    "title": "Zapíšte sa do bety eFaktúr",
+    "intro": "Betu otvárame po vlnách. Zapísaným posielame kód pozvánky a návod, ako si vybrať digitálneho poštára. Žiadny spam, odhlásenie jedným kliknutím.",
+    "email": "E-mail",
+    "emailPlaceholder": "meno@firma.sk",
+    "interests": {
+      "legend": "Čo vás zaujíma",
+      "send": "eFaktúra: odosielanie",
+      "receive": "eFaktúra: prijímanie",
+      "bookkeeping": "Jednoduché účtovníctvo",
+      "vat": "DPH výkazy"
+    },
+    "vat": {
+      "legend": "Som platiteľ DPH",
+      "yes": "Áno",
+      "no": "Nie"
+    },
+    "consent": "Súhlasím so spracovaním e-mailu na účely zoznamu čakateľov podľa [zásad ochrany osobných údajov](./privacy.html).",
+    "submit": "Zapísať sa",
+    "sending": "Odosielam...",
+    "note": "Po odoslaní vám príde e-mail s potvrdzovacím odkazom. Bez potvrdenia vás na zoznam nezaradíme.",
+    "msg": {
+      "success": "Hotovo. Skontrolujte si schránku a potvrďte e-mail odkazom, ktorý sme vám poslali.",
+      "invalidEmail": "Zadajte platnú e-mailovú adresu.",
+      "consent": "Bez súhlasu vás na zoznam nemôžeme zaradiť.",
+      "rateLimited": "Príliš veľa pokusov. Skúste to o minútu.",
+      "badRequest": "Server prihlášku odmietol. Skontrolujte e-mail a skúste to znova.",
+      "network": "Nepodarilo sa spojiť so serverom. Skontrolujte pripojenie a skúste to znova."
+    }
+  },
+  "features": {
+    "h2": "Čo WE Invoice robí",
+    "intro": "Všetko v jednej aplikácii, bez platených doplnkov a bez verzie Premium.",
+    "items": [
+      {
+        "title": "Faktúry a doklady",
+        "text": "Faktúry, zálohové faktúry, dobropisy, cenové ponuky, dodacie listy a predajky. PDF s QR kódom PAY by square, tlač v slovenčine, češtine, angličtine, nemčine alebo dvojjazyčne."
+      },
+      {
+        "title": "eFaktúra (Peppol)",
+        "text": "Odosielanie a prijímanie cez poskytovateľa, ktorého si vyberiete sami. Prijatá faktúra sa načíta celá, odoslaná sa archivuje v pôvodnom XML."
+      },
+      {
+        "title": "Banka a párovanie",
+        "text": "Import výpisov z ktorejkoľvek banky za ľubovoľné obdobie. Platby sa spárujú s faktúrami podľa variabilného symbolu, sumy a odberateľa."
+      },
+      {
+        "title": "Upomienky s úrokmi",
+        "text": "Tri úrovne upomienok, úroky z omeškania podľa zákona a paušálna náhrada 40 € za vymáhanie. Odosielanie e-mailom, aj keď aplikáciu práve neotvoríte."
+      },
+      {
+        "title": "Výdavky a skenovanie bločkov",
+        "text": "Odfotíte bloček alebo načítate QR kód z eKasy a výdavok je zapísaný. Rozpoznávanie beží na vašom zariadení, zadarmo a bez limitu."
+      },
+      {
+        "title": "DPH výkazy",
+        "text": "Kontrolný výkaz, súhrnný výkaz a daňové priznanie k DPH v XML, pripravené na odoslanie cez portál finančnej správy."
+      },
+      {
+        "title": "Jednoduché účtovníctvo",
+        "text": "Peňažný denník, kniha pohľadávok a záväzkov a podklady k daňovému priznaniu pre živnostníkov. Alebo len evidencia k paušálnym výdavkom."
+      },
+      {
+        "title": "Viac firiem zadarmo",
+        "text": "Koľko firiem chcete, toľko ich máte. Bez príplatku za ďalšiu firmu, ďalšieho používateľa alebo ďalší doklad."
+      },
+      {
+        "title": "Mobil aj počítač",
+        "text": "Webová aplikácia funguje v prehliadači aj na telefóne, desktopová verzia pre macOS a Windows pracuje offline a posiela opakované faktúry na pozadí."
+      }
+    ]
+  },
+  "compare": {
+    "h2": "WE Invoice vs. platené aplikácie",
+    "intro": "Porovnanie s tým, čo bežné platené fakturačné aplikácie ponúkajú v základných balíkoch.",
+    "colFeature": "Funkcia",
+    "colUs": "WE Invoice",
+    "colOther": "Bežná platená aplikácia",
+    "rows": [
+      { "feature": "Cena", "us": "0 €", "other": "od 5 € mesačne, vyššie balíky 8 až 15 € mesačne" },
+      { "feature": "Kontakty a doklady", "us": "bez limitu", "other": "zadarmo spravidla do 5 kontaktov" },
+      { "feature": "Ďalšia firma alebo používateľ", "us": "zadarmo", "other": "samostatná licencia alebo príplatok okolo 5 € mesačne" },
+      { "feature": "Opakované faktúry", "us": "v cene", "other": "platený doplnok alebo vyšší balík" },
+      { "feature": "Banka", "us": "import výpisov z ktorejkoľvek banky za ľubovoľné obdobie", "other": "len niekoľko bánk, história 3 mesiace, súhlas sa obnovuje každých 180 dní" },
+      { "feature": "Upomienky", "us": "úrovne, úroky z omeškania, paušálna náhrada 40 €", "other": "bez úrovní, odosielajú sa len pri prihlásení" },
+      { "feature": "Kontrolný výkaz, súhrnný výkaz, priznanie DPH", "us": "v aplikácii, XML", "other": "len v samostatnom desktopovom programe alebo vôbec" },
+      { "feature": "Jednoduché účtovníctvo", "us": "v aplikácii", "other": "samostatný platený program" },
+      { "feature": "Prijatá eFaktúra", "us": "celý doklad so všetkými riadkami", "other": "prenesie sa len hlavička" },
+      { "feature": "Rozpoznávanie bločkov", "us": "zadarmo, na vašom zariadení", "other": "napríklad 20 € za 100 dokladov" },
+      { "feature": "Poskytovateľ eFaktúr", "us": "ktorýkoľvek, zmena bez straty dát", "other": "len poskytovateľ danej aplikácie" },
+      { "feature": "Kde sú vaše dáta", "us": "šifrované vo vašom Google Drive", "other": "na serveri prevádzkovateľa" },
+      { "feature": "Zdrojový kód", "us": "otvorený, licencia MIT", "other": "uzavretý" }
+    ],
+    "note": "Stav k 10/2026 podľa verejných cenníkov a dokumentácie bežných fakturačných aplikácií na slovenskom trhu. Ceny pri ročnej platbe, bez DPH."
+  },
+  "privacy": {
+    "h2": "Súkromie a otvorenosť",
+    "items": [
+      {
+        "title": "Žiadny náš server s vašimi dátami",
+        "text": "Faktúry, kontakty a účtovníctvo sú zašifrované vo vašom zariadení (AES-GCM 256) a uložené vo vašom Google Drive. Kľúč máte len vy."
+      },
+      {
+        "title": "Open source (MIT)",
+        "text": "Celý kód je verejný na GitHube. Každý si môže overiť, čo aplikácia robí a kam posiela dáta."
+      },
+      {
+        "title": "Export kedykoľvek",
+        "text": "PDF, XML, CSV, Excel, ISDOC a UBL. Vaše dáta nie sú zamknuté a odísť môžete s kompletnou históriou."
+      }
+    ],
+    "link": "Prečítajte si zásady ochrany osobných údajov"
+  },
+  "connect": {
+    "h2": "Ako si zapnúť eFaktúru v troch krokoch",
+    "intro": "WE Invoice nie je poskytovateľ eFaktúr. Je to klient k poskytovateľovi, ktorého si vyberiete sami. Nikomu neplatíte dvakrát.",
+    "steps": [
+      {
+        "title": "Vyberte si digitálneho poštára",
+        "text": "Certifikovaného poskytovateľa služieb eFaktúry. Prijímanie je u viacerých zadarmo, odosielanie stojí od 0 do približne 3 € mesačne."
+      },
+      {
+        "title": "Zaregistrujte ho vo VPDS",
+        "text": "Na [vpds.financnasprava.sk](https://vpds.financnasprava.sk/) sa prihlásite občianskym preukazom s čipom a svojho poskytovateľa potvrdíte."
+      },
+      {
+        "title": "Vložte API kľúč do WE Invoice",
+        "text": "Nastavenia, eFaktúra, poskytovateľ a kľúč. Od tej chvíle sa faktúry posielajú a prijímajú priamo z aplikácie."
+      }
+    ],
+    "note": "Poskytovateľa môžete kedykoľvek vymeniť. Vaše faktúry a archív XML ostávajú u vás."
+  },
+  "faq": {
+    "h2": "Časté otázky",
+    "items": [
+      {
+        "q": "Je to naozaj zadarmo? Prečo?",
+        "a": "Áno, bez balíkov, limitov a skúšobného obdobia. Nemáme takmer žiadne prevádzkové náklady: stránka beží na GitHub Pages, dáta sú vo vašom Google Drive a eFaktúry si platíte priamo svojmu poskytovateľovi. Aplikáciu vyvíja agentúra White Eagles ako ukážku svojej práce a ako cestu k majiteľom malých firiem."
+      },
+      {
+        "q": "Kde sú moje dáta?",
+        "a": "Vo vašom zariadení a vo vašom Google Drive, zašifrované kľúčom, ktorý poznáte len vy. Náš server je len brána k poskytovateľom eFaktúr, verejným registrom a kurzom: nič si neukladá. Vo webovej verzii cez ňu prechádza aj váš API kľúč poskytovateľa, lebo poskytovatelia neprijímajú požiadavky priamo z prehliadača; brána ho odovzdá len na čas požiadavky, nezapisuje ho a nekešuje. Desktopová verzia pre macOS a Windows komunikuje s poskytovateľom priamo z vášho počítača a bránu obchádza; ak chcete maximum súkromia, zvoľte ju."
+      },
+      {
+        "q": "Čo ak stratím heslo?",
+        "a": "Pri prvom spustení dostanete kľúč na obnovu. Uložte si ho mimo počítača, napríklad vytlačený. Bez hesla a bez kľúča na obnovu sa dáta dešifrovať nedajú, ani my to nedokážeme."
+      },
+      {
+        "q": "Musím prijímať eFaktúry, aj keď nie som platiteľ DPH?",
+        "a": "Áno. Od 1. 1. 2027 musí eFaktúry prijímať každý podnikateľ a každá právnická osoba na Slovensku. Vystavovať ich musia len platitelia DPH. Prijímanie je u viacerých poskytovateľov zadarmo."
+      },
+      {
+        "q": "Koľko stojí digitálny poštár?",
+        "a": "Prijímanie eFaktúr ponúka viacero poskytovateľov zadarmo. Odosielanie stojí od 0 do približne 3 € mesačne, alebo niekoľko centov za doklad, podľa poskytovateľa. Platíte priamo jemu, WE Invoice si nič nepridáva."
+      },
+      {
+        "q": "Prečo Mac hlási neovereného vývojára?",
+        "a": "Desktopová aplikácia zatiaľ nie je podpísaná vývojárskym certifikátom Apple, ktorý stojí 99 USD ročne. Pri prvom spustení otvorte aplikáciu cez pravé tlačidlo a Otvoriť, alebo ju povoľte v Nastaveniach, Súkromie a bezpečnosť. Ďalšie aktualizácie už bežia bez upozornenia."
+      },
+      {
+        "q": "Nahradí to účtovníka?",
+        "a": "Nie. Pripraví vám podklady: výkazy, denník, exporty v bežných formátoch. Za správnosť daňových dokladov a ich podanie zodpovedáte vy alebo váš účtovník. Dobrý účtovník s WE Invoice ušetrí čas, nie prácu."
+      },
+      {
+        "q": "Čo nerobíme a prečo",
+        "a": "Vlastnú pokladnicu eKasa ani priame prepojenie s virtuálnou pokladnicou VRP: zákon 384/2025 Z. z. zakazuje používať VRP cez iné aplikácie a vlastná pokladnica vyžaduje certifikáciu finančnej správy. Pri hotovostnej úhrade faktúry vám pripravíme údaje pre VRP a uložíme číslo dokladu. Banku v reálnom čase cez PSD2: vyžaduje licenciu a vaše dáta by šli cez cudzí server, preto importujeme výpisy. SMS upomienky: platený kanál, ktorý by sme museli účtovať. Namiesto toho e-mail a Peppol."
+      }
+    ]
+  },
+  "we": {
+    "h2": "Potrebujete web alebo reklamu?",
+    "text": "Aplikáciu vyvíja White Eagles: weby, reklama Google a Meta, analytika. Rovnako poctivo, ako staviame WE Invoice, staviame aj riešenia pre vašu firmu.",
+    "cta": "Pozrieť whiteeagles.sk"
+  }
+}

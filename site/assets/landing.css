@@ -1,0 +1,109 @@
+/* Landing page: hero, section blocks, feature cards, the eFaktura block
+   with the waitlist form, the comparison table, the three steps and the
+   FAQ. Colours only through the variables of base.css. */
+.hero { padding: 64px 0 32px; text-align: center; }
+.hero h1 { font-size: clamp(32px, 5.5vw, 52px); margin: 0 0 18px; }
+.hero .lead { font-size: 19px; color: var(--text-soft); max-width: 720px; margin: 0 auto 28px; }
+.hint { color: var(--text-soft); font-size: 14px; margin-top: 14px; }
+.shot { margin: 40px auto 0; }
+.shot img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+section.block { padding: 56px 0; scroll-margin-top: 16px; }
+section.block h2 { font-size: clamp(24px, 3.4vw, 32px); margin: 0 0 12px; }
+section.block .intro { color: var(--text-soft); font-size: 17px; max-width: 760px; margin: 0 0 24px; }
+.note { color: var(--text-soft); font-size: 14px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.grid.three { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.card .icon { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 10px; margin-bottom: 12px; background: var(--bg-soft); color: var(--accent-2); }
+.card h3 { margin: 0 0 8px; font-size: 17px; }
+.card p { margin: 0; color: var(--text-soft); font-size: 15px; }
+
+/* eFaktura 2027 */
+.efaktura { background: var(--bg-soft); }
+.badge {
+  display: inline-block; margin: 0 0 14px; padding: 6px 14px; border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); font-weight: 700; font-size: 14px;
+}
+.efaktura .help { font-size: 17px; max-width: 760px; margin: 24px 0; }
+.efaktura .buttons { justify-content: flex-start; }
+
+/* Waitlist form */
+.waitlist-wrap { margin-top: 32px; scroll-margin-top: 16px; }
+.waitlist {
+  max-width: 640px; padding: 28px; border-radius: var(--radius);
+  background: var(--card); border: 1px solid var(--border);
+}
+.waitlist h3 { margin: 0 0 8px; font-size: 22px; }
+.waitlist > p { color: var(--text-soft); margin: 0 0 18px; }
+.waitlist .field { margin-bottom: 16px; }
+.waitlist label { display: block; font-weight: 600; margin-bottom: 6px; }
+.waitlist input[type="email"] {
+  width: 100%; padding: 12px 14px; border-radius: 10px; font: inherit;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+.waitlist input[type="email"]:focus { border-color: var(--accent-2); }
+.waitlist fieldset { border: 0; padding: 0; margin: 0 0 16px; }
+.waitlist legend { font-weight: 600; margin-bottom: 6px; padding: 0; }
+.waitlist label.check { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; margin: 6px 0; }
+.waitlist label.check input { width: 18px; height: 18px; margin: 3px 0 0; flex-shrink: 0; accent-color: var(--accent-2); }
+.waitlist .consent-check { margin: 4px 0 18px; font-size: 15px; }
+.waitlist .btn { width: 100%; }
+.form-status { margin: 14px 0 0; font-weight: 600; min-height: 1.4em; }
+.form-status.ok { color: var(--ok); }
+.form-status.bad { color: var(--bad); }
+.waitlist .note { margin: 12px 0 0; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Comparison table */
+.table-wrap { overflow-x: auto; }
+table.compare { width: 100%; border-collapse: collapse; font-size: 15px; }
+table.compare th, table.compare td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+table.compare thead th { font-size: 14px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+table.compare thead th.us { color: var(--accent-2); }
+table.compare tbody th { font-weight: 600; width: 28%; }
+table.compare td:nth-child(2) { color: var(--text); font-weight: 600; background: rgba(79, 172, 254, 0.06); }
+table.compare td:nth-child(3) { color: var(--text-soft); }
+table.compare + .note { margin-top: 16px; }
+
+/* Privacy */
+.privacy-note { background: var(--bg-soft); }
+.privacy-note .grid { margin-bottom: 20px; }
+
+/* Steps */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 0 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.steps li { counter-increment: step; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.steps li::before {
+  content: counter(step); display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center;
+  border-radius: 50%; margin-bottom: 12px; font-weight: 700; color: var(--on-accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.steps h3 { margin: 0 0 8px; font-size: 17px; }
+.steps p { margin: 0; color: var(--text-soft); font-size: 15px; }
+
+/* FAQ */
+#faq details { border-bottom: 1px solid var(--border); padding: 4px 0; }
+#faq summary { cursor: pointer; font-weight: 600; font-size: 17px; padding: 12px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+#faq summary::-webkit-details-marker { display: none; }
+#faq summary::after { content: "+"; color: var(--accent-2); font-size: 22px; line-height: 1; flex-shrink: 0; }
+#faq details[open] summary::after { content: "\2212"; }
+#faq details p { margin: 0 0 14px; color: var(--text-soft); }
+
+/* White Eagles */
+.agency { text-align: center; background: var(--bg-soft); }
+.agency p { font-size: 17px; color: var(--text-soft); max-width: 640px; margin: 0 auto 20px; }
+
+@media (max-width: 640px) {
+  .hero { padding-top: 40px; }
+  section.block { padding: 44px 0; }
+  table.compare thead { position: absolute; left: -9999px; }
+  table.compare tr { display: block; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  table.compare th, table.compare td { display: block; width: auto; border: 0; padding: 4px 0; }
+  table.compare td::before { content: attr(data-label) ": "; color: var(--text-soft); font-weight: 400; }
+  table.compare td:nth-child(2) { background: none; }
+}
