@@ -1,0 +1,21 @@
+/* Desktop settings screen: sections as cards, a two-column form on wide
+   screens, one column on narrow ones. Colours only through tokens. */
+.desktop-section { margin-bottom: 20px; }
+.desktop-section h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.form-hint { color: var(--text-muted); font-size: 0.9rem; margin: 4px 0 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-group label { font-weight: 500; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.option-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color); }
+.option-row:first-of-type { border-top: 0; }
+.option-row input[type="checkbox"] { margin-top: 4px; width: 18px; height: 18px; }
+.option-row .option-text { flex: 1; }
+.option-row .option-text strong { display: block; font-weight: 500; }
+.option-row .option-text span { color: var(--text-muted); font-size: 0.9rem; }
+.task-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border-color); }
+.task-row:first-of-type { border-top: 0; }
+.task-row .task-when { color: var(--text-muted); font-size: 0.9rem; }
+@media (max-width: 720px) {
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+}
