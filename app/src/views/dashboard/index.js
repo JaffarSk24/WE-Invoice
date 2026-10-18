@@ -49,8 +49,8 @@ function widgetCard(id, ctx, { layout, onLayout }) {
   h('header', { class: 'widget-head' },
     h('h2', { id: `widget-${id}-title` }, t(`dashboard.widget.${id}`)),
     h('div', { class: 'widget-tools' },
-      h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('dashboard.moveLeft'), disabled: index <= 0, onclick: () => onLayout(moveWidget(layout, id, -1)) }, icon('chevron-left')),
-      h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('dashboard.moveRight'), disabled: index >= visible.length - 1, onclick: () => onLayout(moveWidget(layout, id, 1)) }, icon('chevron-right')),
+      h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm widget-move', 'aria-label': t('dashboard.moveLeft'), disabled: index <= 0, onclick: () => onLayout(moveWidget(layout, id, -1)) }, icon('chevron-left')),
+      h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm widget-move', 'aria-label': t('dashboard.moveRight'), disabled: index >= visible.length - 1, onclick: () => onLayout(moveWidget(layout, id, 1)) }, icon('chevron-right')),
       h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('dashboard.hide'), onclick: () => onLayout(hideWidget(layout, id)) }, icon('x')))),
   body);
   card.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', id); e.dataTransfer.effectAllowed = 'move'; card.classList.add('is-dragging'); });

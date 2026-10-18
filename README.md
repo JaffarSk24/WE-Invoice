@@ -63,7 +63,7 @@ WE Invoice is the third free app of the WE line by [White Eagles](https://whitee
   </tr>
   <tr>
     <td width="50%" align="center"><img src="docs/screenshots/invoice-pdf.png" width="420" alt="Invoice PDF with PAY by square"></td>
-    <td width="50%" align="center"><img src="docs/screenshots/phone-fab.png" width="300" alt="Phone layout with the create menu"></td>
+    <td width="50%" align="center"><img src="docs/screenshots/phone.png" width="200" alt="Phone layout, overview"> <img src="docs/screenshots/phone-fab.png" width="200" alt="Phone layout with the create menu"></td>
   </tr>
 </table>
 
