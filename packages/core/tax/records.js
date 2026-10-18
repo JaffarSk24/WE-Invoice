@@ -171,7 +171,7 @@ function placement(document, direction, treatment, ctx) {
   if (isSelfAssessed(treatment, direction)) {
     const date = selfAssessedDate(document, treatment);
     if (!date) return { inside: false, problems };
-    if (!document.taxDate && treatment !== 'EU_GOODS_ACQ') problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
+    if (!document.taxDate) problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
     return { inside: inside(date), date, problems };
   }
   const received = document.receivedDate || null;
@@ -180,10 +180,13 @@ function placement(document, direction, treatment, ctx) {
   if (!date) return { inside: false, problems };
   const chosen = document.vatDeductionPeriod;
   if (chosen) {
-    if (!periodContains(p.key, chosen) && !periodContains(chosen, p.key)) return { inside: false, problems };
+    // A deduction period of the other length counts in the company's own
+    // period that holds its end: a quarter in its last month, a month in
+    // its quarter.
+    const effective = periodOf(parsePeriod(chosen).to, kind);
     if (parsePeriod(chosen).kind !== kind) problems.push(problem('DEDUCTION_PERIOD_KIND', document, { severity: 'warning' }));
     if (parsePeriod(chosen).to < date) problems.push(problem('DEDUCTION_PERIOD_TOO_EARLY', document, { severity: 'error' }));
-    return { inside: periodContains(p.key, chosen) || chosen === p.key, date, problems };
+    return { inside: periodContains(p.key, effective), date, problems };
   }
   return { inside: periodOf(date, kind) === p.key, date, problems };
 }

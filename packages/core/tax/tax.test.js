@@ -78,6 +78,14 @@ describe('VAT records', () => {
     expect(vatRecords([received], '2026-03', company()).problems.map(p => p.code)).toContain('DEDUCTION_PERIOD_TOO_EARLY');
   });
 
+  it('counts a quarter deduction period of a monthly payer in the last month of the quarter', () => {
+    const received = doc({ kind: 'RECEIVED_INVOICE', seller: party({ icDph: 'SK2023456798' }), receivedDate: '2026-01-20', vatDeductionPeriod: '2026-Q1' });
+    expect(vatRecords([received], '2026-02', company()).entries).toEqual([]);
+    const march = vatRecords([received], '2026-03', company());
+    expect(march.entries).toHaveLength(1);
+    expect(march.problems.map(p => p.code)).toEqual(['DEDUCTION_PERIOD_KIND']);
+  });
+
   it('does not deduct for a person registered under § 7 and warns when it charges VAT', () => {
     const c = company({ vatMode: 'REGISTERED_7' });
     const records = vatRecords([doc(), doc({ kind: 'RECEIVED_INVOICE', seller: party({ icDph: 'SK2023456798' }), receivedDate: '2026-03-11' })], '2026-03', c);
@@ -107,6 +115,18 @@ describe('reports', () => {
     const old = doc({ kind: 'CREDIT_NOTE', taxDate: null, lines: [{ id: 'l', name: 'X', qty: '1', unitPrice: '10.00', vatRate: '20', vatCategory: 'S' }] });
     const vr = buildVatReturn(vatRecords([old], '2026-03', company()), { company: company() });
     expect(vr.problems.map(p => p.code)).toContain('RATE_NOT_ON_FORM');
+  });
+
+  it('leaves the supplies of a person registered under § 7 out of the VAT return', () => {
+    const c = company({ vatMode: 'REGISTERED_7' });
+    const records = vatRecords([doc({ lines: [{ id: 'l', name: 'X', qty: '1', unitPrice: '100.00', vatRate: null, vatCategory: 'E' }] })], '2026-03', c);
+    expect(buildVatReturn(records, { company: c }).amounts['exempt.base']).toBeUndefined();
+  });
+
+  it('reports a rate without a D.2 attribute instead of dropping it', () => {
+    const old = doc({ kind: 'CREDIT_NOTE', taxDate: null, buyer: { name: 'P', address: { country: 'SK' } }, lines: [{ id: 'l', name: 'X', qty: '1', unitPrice: '10.00', vatRate: '20', vatCategory: 'S' }] });
+    const kv = buildKv(vatRecords([old], '2026-03', company()), { company: company() });
+    expect(kv.problems.map(p => p.code)).toContain('RATE_NOT_ON_FORM');
   });
 
   it('marks the kontrolný výkaz as abolished from the date in legislation', () => {

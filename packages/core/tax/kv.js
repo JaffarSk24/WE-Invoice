@@ -101,6 +101,9 @@ export function buildKv(records, ctx = {}) {
   const d1 = rateTotals(domesticOut.filter(e => e.ekasa));
   const d2 = rateTotals(domesticOut.filter(e => !e.ekasa && !isSkPayer(e.partner)));
 
+  for (const row of [...d1, ...d2]) {
+    if (!form.rateTotals[row.rate]) problems.push(problem('RATE_NOT_ON_FORM', null, { severity: 'error', params: { rate: row.rate ?? '' } }));
+  }
   checkPartners(entries, problems);
   const sections = { A1: a1, A2: a2, B1: b1, B2: b2, B3: b3, C1: c1, C2: c2, D1: d1, D2: d2 };
   const result = { period: records.period, type, sections, problems, form: { name: form.form, xsd: form.xsdFile, verified: form.verified } };

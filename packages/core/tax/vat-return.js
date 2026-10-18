@@ -60,6 +60,9 @@ export function buildVatReturn(records, ctx = {}) {
 
   for (const e of records.entries) {
     if (e.direction === 'OUT') {
+      // A person registered under § 7 or § 7a reports only the tax it pays
+      // as a recipient, never its own supplies.
+      if (company.vatMode === 'REGISTERED_7') continue;
       if (e.treatment === 'DOMESTIC') byRate('supply', e);
       else if (EXEMPT_OUT.includes(e.treatment)) put('exempt.base', e.base);
       if (e.treatment === 'EU_GOODS') put('euGoods.base', e.base);
