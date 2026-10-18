@@ -135,4 +135,4 @@ export const longInvoice = {
 };
 
 // A 2x2 PNG with an alpha channel, for the logo, stamp and signature.
-export const PNG_ALPHA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQImWP4z8DwHwyBNBDCGUACALZcCe97W0t8AAAAAElFTkSuQmCC';
+export const PNG_ALPHA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEUlEQVR4nGOQ96v8zwADIA4AH2EDyyFCvfgAAAAASUVORK5CYII=';

@@ -23,6 +23,7 @@ import { totalsBlock } from './blocks/totals.js';
 import { paymentBlock } from './blocks/payment.js';
 import { introBlock, legalBlock, outroBlock, signatureBlock } from './blocks/texts.js';
 import { footerFunction } from './blocks/footer.js';
+import { toBase64 } from './fonts.js';
 
 export const FONT_NAME = 'Inter';
 const IMAGE_KEYS = ['logo', 'signature', 'stamp'];
@@ -75,8 +76,10 @@ function attachmentFiles(options) {
   const files = {};
   list.forEach((a, i) => {
     const name = a.name || `attachment-${i + 1}`;
-    const data = typeof a.data === 'string' ? new TextEncoder().encode(a.data) : a.data;
-    files[name] = { src: data, name, type: a.mime || 'application/octet-stream', description: a.description || name, relationship: a.relationship || 'Alternative' };
+    const bytes = typeof a.data === 'string' ? new TextEncoder().encode(a.data) : new Uint8Array(a.data);
+    const mime = a.mime || 'application/octet-stream';
+    // pdfmake resolves a string src only: a data URL carries the bytes.
+    files[name] = { src: `data:${mime};base64,${toBase64(bytes)}`, name, type: mime, description: a.description || name, relationship: a.relationship || 'Alternative' };
   });
   return files;
 }
