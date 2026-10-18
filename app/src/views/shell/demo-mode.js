@@ -43,6 +43,8 @@ export function enableDemo() {
 export function disableDemo() {
   setPref('demo', false);
   cache = null;
-  emit('demo:disabled');
+  // The shell forgets the demo company first; the store then announces the
+  // real one, if there is any (store/bridge.js listens to demo:disabled).
   emit('company:switched', { company: null, companies: [] });
+  emit('demo:disabled');
 }

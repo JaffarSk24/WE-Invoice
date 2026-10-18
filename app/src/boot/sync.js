@@ -3,6 +3,7 @@
 // encryption password, unlocking). Called once, in the order of
 // boot/index.js, after the language and the transport are ready.
 import { createStore } from '../store/index.js';
+import { connectStore, adoptLocalCompany } from '../store/bridge.js';
 import { SyncEngine } from '../sync/engine.js';
 import { Vault } from '../sync/vault.js';
 import { deviceKeyring } from '../sync/keyring.js';
@@ -33,6 +34,12 @@ export async function boot(ctx) {
 
   const store = createStore({ emitter: emit });
   await store.open();
+  connectStore(store, { on, emit, showError });
+  try {
+    await adoptLocalCompany(store);
+  } catch (e) {
+    console.error('The company kept on this device could not be moved to the store', e);
+  }
   const vault = new Vault(deviceKeyring(transport));
   if (transport.secrets && typeof transport.secrets.useKey === 'function') transport.secrets.useKey(() => vault.key);
   const engine = new SyncEngine({ store, transport, vault, emit, readme: t('sync.drive.readme') });

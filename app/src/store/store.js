@@ -132,6 +132,13 @@ export class Store {
     return this.data ? this.data.company : null;
   }
 
+  // What "company:switched" carries: the open company record (or null) and
+  // the list to switch between, the shape the shell reads.
+  switchedPayload() {
+    const company = this.company();
+    return { companyId: company ? company.id : null, company, companies: this.companies() };
+  }
+
   // A new company with its own data file; it becomes the active one.
   async createCompany(fields) {
     this.assertWritable();
@@ -143,7 +150,7 @@ export class Store {
     this.workspace = { ...this.workspace, companies: [...this.workspace.companies, entry], activeCompanyId: company.id, updatedAt: now };
     await this.saveWorkspace();
     this.data = data;
-    this.emit('company:switched', { companyId: company.id });
+    this.emit('company:switched', this.switchedPayload());
     this.emit('data:changed', { collection: 'company', id: company.id, source: 'local' });
     return company;
   }
@@ -155,7 +162,7 @@ export class Store {
     const data = await this.loadCompany(companyId);
     this.workspace = { ...this.workspace, activeCompanyId: companyId, updatedAt: this.now() };
     if (!this.damaged.has(KEYS.workspace)) await this.saveWorkspace();
-    this.emit('company:switched', { companyId });
+    this.emit('company:switched', this.switchedPayload());
     return data;
   }
 
@@ -169,7 +176,7 @@ export class Store {
     await this.saveWorkspace();
     if (this.data && this.data.companyId === companyId) {
       this.data = null;
-      this.emit('company:switched', { companyId: null });
+      this.emit('company:switched', this.switchedPayload());
     }
   }
 
@@ -270,7 +277,7 @@ export class Store {
     await this.writeRoot(KEYS.company(data.companyId), data);
     if (!this.data && this.workspace.activeCompanyId === data.companyId) {
       await this.loadCompany(data.companyId);
-      this.emit('company:switched', { companyId: data.companyId });
+      this.emit('company:switched', this.switchedPayload());
       this.emit('data:changed', { collection: null, id: null, source: 'sync' });
     }
   }

@@ -53,7 +53,9 @@ describe('store: workspace and companies', () => {
     await store.switchCompany(a.id);
     expect(store.list('contacts').map(c => c.name)).toEqual(['Contact of A']);
     expect(store.workspace.activeCompanyId).toBe(a.id);
-    expect(events[0]).toEqual({ name: 'company:switched', payload: { companyId: a.id } });
+    expect(events[0].name).toBe('company:switched');
+    expect(events[0].payload).toMatchObject({ companyId: a.id, company: { id: a.id, name: 'A' } });
+    expect(events[0].payload.companies.map(c => c.name)).toEqual(['A', 'B']);
     await store.switchCompany(b.id);
     expect(store.list('contacts').map(c => c.name)).toEqual(['Contact of B']);
     await expect(store.switchCompany('nope')).rejects.toMatchObject({ code: 'NOT_FOUND' });

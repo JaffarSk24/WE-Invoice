@@ -32,14 +32,14 @@ export async function boot(ctx) {
   ctx.registerRoute('settings', renderSettings);
   ctx.registerRoute('help', renderHelp);
 
-  // Until the store reports companies, the device remembers the one the
-  // wizard made (or the demo one).
+  // The demo company in sample mode, otherwise the store's open company
+  // (or the device copy of a wizard the store has not taken yet).
   if (isDemo()) {
     const demo = demoData();
     applySwitched({ company: demo.company, companies: [demo.company] });
   } else {
     const remembered = rememberedCompany();
-    if (remembered) applySwitched({ company: remembered, companies: [remembered] });
+    if (remembered) applySwitched(remembered);
   }
 
   // A first start is not redirected: the Overview greets the user with

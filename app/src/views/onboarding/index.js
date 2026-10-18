@@ -1,8 +1,8 @@
 // The "My company" wizard screen (03-features.md § 3.1): one step at a
 // time, progress on top, Back and Continue below, the draft saved after
 // every step so the wizard can be left and resumed. At the end the company
-// is handed to the sync package (onboarding:complete) and shown in the
-// shell (company:switched).
+// is handed to the store (onboarding:complete, store/bridge.js) and shown
+// in the shell (company:switched).
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang, setLanguage } from '../../i18n/index.js';
@@ -18,19 +18,29 @@ import { languageStep, signInStep, encryptionStep } from './steps-start.js';
 import { companyStep, vatStep, accountingStep } from './steps-company.js';
 import { bankStep, logoStep, peppolStep, doneStep } from './steps-finish.js';
 import { enableDemo, isDemo } from '../shell/demo-mode.js';
+import { hasStore, getStore } from '../../store/index.js';
 
 const RENDERERS = { language: languageStep, signin: signInStep, encryption: encryptionStep, company: companyStep, vat: vatStep, accounting: accountingStep, bank: bankStep, logo: logoStep, peppol: peppolStep, done: doneStep };
 
-export function needsOnboarding() {
-  const prefs = getPrefs();
-  return !prefs.onboardingDone && !isDemo() && !loadLocalCompany();
+function openStore() {
+  return hasStore() ? getStore() : null;
 }
 
-// The company the device remembers from a finished wizard, for the shell
-// until the store takes over.
+export function needsOnboarding() {
+  const prefs = getPrefs();
+  const store = openStore();
+  return !prefs.onboardingDone && !isDemo() && !loadLocalCompany() && !(store && store.companies().length);
+}
+
+// What the shell opens with, in the shape of "company:switched": the
+// store's open company, else the copy the device kept from a wizard the
+// store has not taken yet.
 export function rememberedCompany() {
   if (isDemo()) return null;
-  return loadLocalCompany();
+  const store = openStore();
+  if (store && store.company()) return store.switchedPayload();
+  const local = loadLocalCompany();
+  return local ? { company: local, companies: [local] } : null;
 }
 
 function finish(draft, target) {

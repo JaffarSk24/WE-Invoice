@@ -1,5 +1,6 @@
 // The "My company" wizard end to end with the gateway mocked: register
-// lookup fills the form, the wizard can be left and resumed, a lookup
+// lookup fills the form, the company lands in the store and survives a
+// reload, the wizard can be left and resumed, a lookup
 // failure allows manual entry, demo mode fills the dashboard. The whole
 // path to "Issue the first invoice" stays well under 60 seconds.
 import { test, expect } from '@playwright/test';
@@ -48,6 +49,10 @@ test('register lookup to the first invoice in under 60 seconds', async ({ page }
   await expect(page).toHaveURL(/#\/invoices/);
   await expect(page.locator('#company-switcher option:checked')).toHaveText('Alfa Stavby, s. r. o.');
   expect(Date.now() - started).toBeLessThan(60_000);
+  // The company lives in the store (synced to Drive), not only on the device.
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('we-invoice-local-company'))).toBe(null);
+  await page.reload();
+  await expect(page.locator('#company-switcher option:checked')).toHaveText('Alfa Stavby, s. r. o.');
 });
 
 test('the wizard can be left and resumed', async ({ page }) => {

@@ -117,8 +117,8 @@ export function clearDraft() {
   try { if (storage()) storage().removeItem(DRAFT_KEY); } catch (e) { console.warn('Onboarding draft could not be removed', e); }
 }
 
-// Until the store (WP-SYNC) keeps companies, the finished company stays on
-// the device so the menu shows it after a reload.
+// The finished company stays on the device until the store has taken it
+// (store/bridge.js), so nothing is lost if the store cannot write.
 export function loadLocalCompany() {
   try {
     const raw = storage() && storage().getItem(LOCAL_COMPANY_KEY);
@@ -127,6 +127,10 @@ export function loadLocalCompany() {
     console.warn('Local company could not be read', e);
     return null;
   }
+}
+
+export function clearLocalCompany() {
+  try { if (storage()) storage().removeItem(LOCAL_COMPANY_KEY); } catch (e) { console.warn('Local company could not be removed', e); }
 }
 
 export function saveLocalCompany(company) {
