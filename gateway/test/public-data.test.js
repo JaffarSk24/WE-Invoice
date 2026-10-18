@@ -41,9 +41,9 @@ describe('ECB rates', () => {
   it('falls back to the full history for old dates and answers 404 before the euro', async () => {
     ctx = await createTestApp();
     const pool = ctx.pool(ECB);
-    pool.intercept({ path: '/stats/eurofxref/eurofxref-hist.xml' }).reply(200, ECB_XML);
-    let res = await ctx.app.inject({ method: 'GET', url: '/v1/rates/ecb?date=2026-10-16' });
-    expect(res.json().date).toBe('2026-10-16');
+    pool.intercept({ path: '/stats/eurofxref/eurofxref-hist.xml' }).reply(200, ECB_XML.replace('2026-10-16', '2025-06-30'));
+    let res = await ctx.app.inject({ method: 'GET', url: '/v1/rates/ecb?date=2025-07-01' });
+    expect(res.json().date).toBe('2025-06-30');
     pool.intercept({ path: '/stats/eurofxref/eurofxref-hist-90d.xml' }).reply(200, '<Cube></Cube>');
     pool.intercept({ path: '/stats/eurofxref/eurofxref-hist.xml' }).reply(200, ECB_XML);
     res = await ctx.app.inject({ method: 'GET', url: `/v1/rates/ecb?date=${localDate()}` });

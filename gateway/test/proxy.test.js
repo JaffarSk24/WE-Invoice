@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
+import { text } from 'node:stream/consumers';
 import { createTestApp, captureLogs, privateLookup, PUBLIC_IP } from './helpers.js';
 import { upstreamHeaders, upstreamPath, limitStream } from '../src/routes/proxy.js';
 
@@ -34,11 +35,14 @@ describe('proxy helpers', () => {
 describe('ANY /v1/proxy/peppol/{providerId}/{path}', () => {
   it('streams the request and answer, moves the authorization header and never caches', async () => {
     ctx = await createTestApp({ env: ENV });
+    let upstreamRequest;
     ctx.pool('https://api.verteco.test').intercept({
       path: '/v1/document/send?x=1', method: 'POST',
-      headers: { authorization: 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068' },
-      body: (b) => b === '{"payload":"<Invoice/>"}'
-    }).reply(201, '{"id":"doc-1","token":"RESPONSE-SECRET"}', { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600', 'set-cookie': 'sid=1' } });
+      headers: { authorization: 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068' }
+    }).reply((options) => {
+      upstreamRequest = options;
+      return { statusCode: 201, data: '{"id":"doc-1","token":"RESPONSE-SECRET"}', responseOptions: { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600', 'set-cookie': 'sid=1' } } };
+    });
     const res = await ctx.app.inject({
       method: 'POST', url: '/v1/proxy/peppol/verteco/document/send?x=1',
       headers: { 'content-type': 'application/json', 'x-upstream-authorization': 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068', cookie: 'a=b' },
@@ -46,6 +50,9 @@ describe('ANY /v1/proxy/peppol/{providerId}/{path}', () => {
     });
     expect(res.statusCode).toBe(201);
     expect(res.json()).toEqual({ id: 'doc-1', token: 'RESPONSE-SECRET' });
+    expect(await text(upstreamRequest.body)).toBe('{"payload":"<Invoice/>"}');
+    expect(upstreamRequest.headers.cookie).toBeUndefined();
+    expect(upstreamRequest.headers['x-upstream-authorization']).toBeUndefined();
     expect(res.headers['content-type']).toBe('application/json');
     expect(res.headers['cache-control']).toBe('no-store');
     expect(res.headers['pragma']).toBe('no-cache');
@@ -113,8 +120,9 @@ describe('ANY /v1/proxy/peppol/{providerId}/{path}', () => {
     expect(res.json().error.code).toBe('HOST_NOT_ALLOWED');
     res = await ctx.app.inject({ method: 'GET', url: '/v1/proxy/peppol/sapi-sk/x' });
     expect(res.json().error.code).toBe('BAD_REQUEST');
+    // The router normalises ".." away before the handler; nothing is proxied.
     res = await ctx.app.inject({ method: 'GET', url: '/v1/proxy/peppol/verteco/../x' });
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(404);
   });
 
   it('refuses a provider host that resolves to a private address', async () => {

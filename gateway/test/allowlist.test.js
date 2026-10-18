@@ -54,7 +54,8 @@ describe('provider allow-list', () => {
   });
 
   it('rejects an invalid configured address', () => {
-    const list = buildAllowlist([{ id: 'a', baseUrl: { prod: 'ftp:/bad' } }]);
+    const list = buildAllowlist([{ id: 'a', baseUrl: { prod: 'not a url' } }, { id: 'b', baseUrl: { prod: 'ftp://b.test' } }]);
     expect(() => resolveUpstreamBase('a', {}, list)).toThrow(expect.objectContaining({ code: 'PROVIDER_NOT_CONFIGURED' }));
+    expect(() => resolveUpstreamBase('b', {}, list)).toThrow(expect.objectContaining({ code: 'HOST_NOT_ALLOWED' }));
   });
 });

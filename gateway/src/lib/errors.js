@@ -20,7 +20,7 @@ export function errorBody(code, message) {
 const PUBLIC_CODE = /^[A-Z][A-Z_]*$/;
 
 export function publicCode(error, status) {
-  if (error.code && PUBLIC_CODE.test(error.code) && !error.code.startsWith('FST_')) return error.code;
+  if (error instanceof HttpError && PUBLIC_CODE.test(error.code)) return error.code;
   if (status === 429) return 'RATE_LIMITED';
   if (status === 413) return 'BODY_TOO_LARGE';
   if (status === 415) return 'UNSUPPORTED_MEDIA_TYPE';

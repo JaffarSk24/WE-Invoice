@@ -48,7 +48,7 @@ export async function createTestApp({ env = {}, resolver, lookup = publicLookup,
   return { app, agent, sent, pool: (origin) => agent.get(origin) };
 }
 
-export const json = (body) => ({ headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+export const json = { headers: { 'content-type': 'application/json' } };
 
 export function captureLogs() {
   const lines = [];

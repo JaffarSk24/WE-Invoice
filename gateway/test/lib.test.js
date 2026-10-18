@@ -45,7 +45,8 @@ describe('errors', () => {
     expect(publicCode({ code: 'FST_ERR_CTP_BODY_TOO_LARGE' }, 413)).toBe('BODY_TOO_LARGE');
     expect(publicCode({}, 415)).toBe('UNSUPPORTED_MEDIA_TYPE');
     expect(publicCode({ code: 'ECONNRESET' }, 500)).toBe('INTERNAL');
-    expect(publicCode({ code: 'HOST_NOT_ALLOWED' }, 400)).toBe('HOST_NOT_ALLOWED');
+    expect(publicCode({ code: 'HOST_NOT_ALLOWED' }, 400)).toBe('BAD_REQUEST');
+    expect(publicCode(new HttpError(400, 'HOST_NOT_ALLOWED'), 400)).toBe('HOST_NOT_ALLOWED');
   });
 });
 

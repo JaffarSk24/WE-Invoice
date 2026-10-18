@@ -12,7 +12,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "vitest run"
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "invites": "node scripts/send-invites.mjs"
   },
   "dependencies": {
     "@fastify/cors": "^11.3.1",

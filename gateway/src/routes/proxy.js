@@ -62,7 +62,8 @@ export default async function proxyRoutes(app, { config, dispatcher, lookup, all
       if (length > config.proxy.maxBodyBytes) throw new HttpError(413, 'BODY_TOO_LARGE', 'Body too large');
       const { base } = resolveUpstreamBase(request.params.providerId, request.headers, allowlist);
       await resolvePublicHost(base.hostname, lookup);
-      const url = `${base.origin}${base.pathname}/${upstreamPath(request.raw.url, request.params.providerId)}`;
+      const prefix = base.pathname === '/' ? '' : base.pathname;
+      const url = `${base.origin}${prefix}/${upstreamPath(request.raw.url, request.params.providerId)}`;
       const hasBody = !['GET', 'DELETE'].includes(request.method) && request.body;
       const body = hasBody ? request.body.pipe(limitStream(config.proxy.maxBodyBytes)) : undefined;
       const response = await forward(url, request.method, upstreamHeaders(request.headers), body, { dispatcher, config, lookup });
