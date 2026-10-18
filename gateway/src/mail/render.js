@@ -11,13 +11,13 @@ export function fill(template, params = {}) {
 
 export function renderMail(kind, lang, params = {}) {
   const dict = texts[lang] || texts.en;
-  const t = dict[kind];
+  const t = dict[kind] || texts.en[kind];
   if (!t) throw new Error(`Unknown mail kind: ${kind}`);
   const paragraphs = t.paragraphs.map(p => fill(p, params));
   const footer = fill(t.footer, params);
   const text = `${paragraphs.join('\n\n')}\n\n${t.signature}\n\n${footer}\n`;
   const html = `<!doctype html><html lang="${lang}"><body style="font-family:sans-serif;line-height:1.5;color:#1b1b1f">${
-    paragraphs.map(p => `<p>${linkify(escapeHtml(p))}</p>`).join('')
+    paragraphs.map(p => `<p>${linkify(escapeHtml(p)).replace(/\n/g, '<br>')}</p>`).join('')
   }<p>${escapeHtml(t.signature).replace(/\n/g, '<br>')}</p><p style="font-size:0.85em;color:#555">${linkify(escapeHtml(footer))}</p></body></html>`;
   const headers = {};
   if (params.unsubscribeUrl) {

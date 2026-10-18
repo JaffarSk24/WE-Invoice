@@ -19,6 +19,9 @@ const API = [
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
+  'searchQuery', 'profitability', 'averagePurchasePrices', 'paymentDelays', 'recurringRuns', 'agingBucket', 'periodKey', 'periodKeys',
+  'eurAmounts', 'partyOf', 'trashEntries', 'restoredRecord', 'purgedRecord', 'auditEntryFor', 'filterAudit', 'changedFields',
+  'collectLabels', 'collectProjects', 'normalizeLabels', 'toCsv', 'decimalComma', 'fold',
   'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
 ];
 

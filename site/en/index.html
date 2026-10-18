@@ -108,7 +108,7 @@
         <p class="help">WE Invoice helps you both receive and send e-invoices. A received invoice is imported in full, every line included, and a sent one is kept in its original XML for 10 years, as the law requires.</p>
         <p class="buttons"><a class="btn primary" href="#waitlist">Join the e-invoicing beta</a></p>
         <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Sending..." data-msg-success="Done. Check your inbox and confirm your e-mail using the link we&#39;ve sent you." data-msg-invalid-email="Enter a valid e-mail address." data-msg-consent="We can&#39;t add you to the list without your consent." data-msg-rate-limited="Too many attempts. Try again in a minute." data-msg-bad-request="The server rejected the sign-up. Check your e-mail address and try again." data-msg-network="Couldn&#39;t reach the server. Check your connection and try again.">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Sending..." data-msg-success="Done. You&#39;re on the list, and when we open the next wave, we&#39;ll write to you personally." data-msg-invalid-email="Enter a valid e-mail address." data-msg-consent="We can&#39;t add you to the list without your consent." data-msg-rate-limited="Too many attempts. Try again in a minute." data-msg-bad-request="The server rejected the sign-up. Check your e-mail address and try again." data-msg-network="Couldn&#39;t reach the server. Check your connection and try again.">
             <h3 id="waitlist-title">Join the e-invoicing beta</h3>
             <p>We open the beta in waves. Everyone on the list gets an invitation code and a guide to choosing an e-invoicing provider (digitálny poštár). No spam, one-click unsubscribe.</p>
             <input type="hidden" name="lang" value="en">
@@ -137,7 +137,7 @@
             <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>I agree to my e-mail being processed for the waiting list, as described in the <a href="./privacy.html">privacy policy</a>.</span></label>
             <button type="submit" class="btn primary">Sign me up</button>
             <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">We&#39;ll send you an e-mail with a confirmation link. Without confirmation you won&#39;t be added to the list.</p>
+            <p class="note">No automatic e-mails: when we open the next wave of the beta, we&#39;ll write to you personally.</p>
           </form>
         </div>
       </div>

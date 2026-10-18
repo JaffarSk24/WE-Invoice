@@ -1,0 +1,87 @@
+/* Reports, the search screen, the recycle bin and the change log
+   (WP-REPORTS). Colours only through the tokens of ui/tokens.css. */
+
+.reports-body { display: flex; flex-direction: column; gap: 16px; }
+.report-bar .filter-row { flex-wrap: wrap; }
+.report-tabs .tabs { overflow-x: auto; scrollbar-width: thin; }
+.report-tabs .tab-panel { display: flex; flex-direction: column; gap: 18px; padding-top: 16px; }
+.report-tabs .tab-panel[hidden] { display: none; }
+.report-note { margin: 0; font-size: 13px; }
+.report-section-title { font-size: 17px; margin: 8px 0 0; }
+
+.report-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.report-card { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.report-card-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+.report-card-value { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.report-card-note { font-size: 12px; }
+.report-card.tone-warn .report-card-value { color: var(--warning); }
+
+.report-block { display: flex; flex-direction: column; gap: 8px; }
+.report-table-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.report-table-head h3 { font-size: 15px; margin: 0; }
+.report-scroll { max-height: 480px; overflow: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.report-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.report-table th, .report-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); text-align: left; white-space: nowrap; }
+.report-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.report-table thead th { position: sticky; top: 0; background: var(--bg-secondary); font-weight: 600; color: var(--text-secondary); }
+.report-table tfoot td { font-weight: 700; background: var(--bg-secondary); }
+.report-table tr.is-link { cursor: pointer; }
+.report-table tr.is-link:hover, .report-table tr.is-link:focus { background: var(--overlay-hover); outline: none; }
+.report-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+.chart { margin: 0; padding: 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-grid { stroke: var(--border-color); stroke-width: 1; }
+.chart-zero { stroke: var(--border-strong); stroke-width: 1; }
+.chart-tick { fill: var(--text-muted); font-size: 11px; font-family: var(--font-body); }
+.chart-bar.series-1, .chart-key.series-1 { fill: var(--series-1); background: var(--series-1); }
+.chart-bar.series-2, .chart-key.series-2 { fill: var(--series-2); background: var(--series-2); }
+.chart-bar.series-in, .chart-key.series-in { fill: var(--success); background: var(--success); }
+.chart-bar.series-out, .chart-key.series-out { fill: var(--danger); background: var(--danger); }
+.chart-line.series-1 { stroke: var(--series-1); stroke-width: 2.5; }
+.chart-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 14px; margin: 8px 0 0; padding: 0; font-size: 13px; color: var(--text-secondary); }
+.chart-legend li { display: flex; align-items: center; gap: 6px; }
+.chart-key { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+
+/* Search: the Ctrl/Cmd+K dialog and the screen share the result rows. */
+.search-group { margin-top: 10px; }
+.search-group-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin: 0 0 4px; }
+.search-hits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.search-hit-button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; min-height: var(--touch-target); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text-primary); text-align: left; cursor: pointer; font: inherit; }
+.search-hit-button:hover, .search-hit-button:focus-visible { background: var(--overlay-hover); outline: none; box-shadow: var(--focus-ring); }
+.search-hit-button svg { flex: none; width: 18px; height: 18px; color: var(--text-secondary); }
+.search-hit-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.search-hit-title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-hit-meta { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-hit-amount { flex: none; font-variant-numeric: tabular-nums; }
+.search-more { margin-top: 10px; font-size: 13px; }
+.search-page { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+.search-page .segmented { flex-wrap: wrap; }
+
+/* Recycle bin */
+.view-intro { margin: -8px 0 16px; }
+.trash-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.trash-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; flex-wrap: wrap; }
+.trash-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.trash-when { font-size: 12px; }
+.trash-actions { display: flex; gap: 8px; }
+
+.audit-results { margin-top: 12px; }
+
+@media (max-width: 767px) {
+  .report-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .report-card-value { font-size: 17px; }
+  .trash-actions { width: 100%; }
+  .trash-actions .btn { flex: 1; }
+}
+
+/* Printing a report: only the report, without the frame of the app. */
+@media print {
+  #app[data-route="reports"] .sidebar, #app[data-route="reports"] .bottom-bar, #app[data-route="reports"] .skip-link,
+  #app[data-route="reports"] .promo-footer, #app[data-route="reports"] .view-actions, #app[data-route="reports"] .report-csv,
+  #app[data-route="reports"] .tabs, #app[data-route="reports"] .report-bar, #toast-container { display: none !important; }
+  #app[data-route="reports"] .main { margin: 0; padding: 0; }
+  .report-scroll { max-height: none; overflow: visible; border: 0; }
+  .report-table thead th { position: static; }
+  .report-block, .chart { break-inside: avoid; }
+}

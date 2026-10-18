@@ -144,6 +144,20 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Changed
 - `site/index.html` is now the language chooser instead of a one-page placeholder.
+- Waitlist without e-mails to applicants by default: a sign-up is stored at once and the owner gets a notice (Mailgun HTTP API or SMTP) with Reply-To set to the applicant, to answer personally; the double opt-in stays available with `WAITLIST_CONFIRM_EMAIL=true`. The form, the success message and the privacy policy say so in all six languages and name Mailgun (EU servers) as the processor of the notice.
+- The privacy policy now says the desktop app looks for updates at start-up and once a day.
+
+### Reports, search, recycle bin and change log
+
+#### Added
+
+- Report functions in the core (`packages/core/reports`), pure and on decimal strings: sales and purchases by period, client or supplier, item, label and project with the same periods of last year (`salesReport`); receivables and payables by age in the 1-15, 16-30, 31-60 and 60+ day buckets on the local date (`agingReport`); the cash flow forecast from open invoices, recurring templates and received invoices, shifted by how late each client usually pays (`cashflowForecast`); profitability by item, client and project from average purchase prices (`profitability`). Credit notes lower every total, foreign currency documents are converted by their stored ECB rate. 10 000 documents take well under 200 ms per report (performance tests).
+- Global search (`searchIndex`, `searchQuery`): documents, received documents, contacts and price list items by number, variable symbol, client, IČO, label and amount in any usual format, without regard to case and diacritics. The Ctrl/Cmd+K dialog of the shell lists the best hits (Enter opens the first one); the new search screen `#/search?q=...` lists all of them by type. Results open the list route of their kind (`#/invoices/<id>`, `#/contacts/<id>`...).
+- Reports screen: period presets or custom dates, chart step by month, quarter or year, label and project filters; tabs for sales, purchases, receivables and payables, cash flow and profitability with SVG charts drawn without a library, tables, CSV export (semicolons, decimal commas, byte order mark) and printing. The screen loads on first use, so the start of the app stays light.
+- Recycle bin `#/trash`: deleted drafts, contacts, price list items and recurring templates can be restored under their own id for 30 days and removed for good (a bare tombstone stays so the removal syncs); deleted issued or received documents stay restorable and are never removed for good.
+- Change log `#/audit` (and `#/audit/<record id>` for one record): every local change of a document, contact, item or recurring template is written to `auditLog` with the time, the signed-in account, the device, the kind of change and the changed field names; values are kept only for status, number and dates, never amounts. Filters by dates, change, record type and text.
+- Label and project helpers (`collectLabels`, `collectProjects`, `normalizeLabels`) and a CSV writer (`toCsv`).
+- End-to-end tests: the search finds an invoice by its variable symbol and opens it; the reports draw every tab; axe checks of the new screens.
 
 ### Interface translations
 
