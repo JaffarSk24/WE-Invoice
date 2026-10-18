@@ -1,23 +1,45 @@
 // Electron main process of WE Invoice: one window, the app:// scheme, the
-// application menu and the bridges for the preload script. Ported from
-// WE Budget; the tray, scheduler, Drive, network and SMTP bridges arrive
-// with WP-DESKTOP and WP-SYNC.
-const { app, BrowserWindow, ipcMain, protocol, shell, Menu, nativeImage } = require('electron');
+// application menu and the modules behind the preload bridges (storage,
+// secrets, network, mail, tray, scheduler, updates, deep links). Ported
+// from WE Budget. Google sign-in and Drive (weCloud) come with WP-SYNC in
+// desktop/cloud.cjs, picked up by loadCloud() below when the file exists.
+const { app, BrowserWindow, ipcMain, protocol, shell, screen, Menu, nativeImage, Tray, Notification, safeStorage, powerMonitor } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { spawn } = require('child_process');
 const { registerAppProtocol } = require('./app-protocol.cjs');
+const { createStorage, initStorageIpc } = require('./storage.cjs');
+const { createSecrets, initSecretsIpc } = require('./secrets.cjs');
+const { createNet, initNetIpc } = require('./net.cjs');
+const { createMail, initMailIpc } = require('./mail.cjs');
+const { createTray } = require('./tray.cjs');
+const { createScheduler, initSchedulerIpc } = require('./scheduler.cjs');
+const { createMainWindow } = require('./window.cjs');
+const { initAppIpc } = require('./app-ipc.cjs');
+const { registerDeepLinks } = require('./deep-link.cjs');
+const updater = require('./updater.cjs');
 
 const APP_NAME = 'WE Invoice';
 const APP_ID = 'com.whiteeagles.weinvoice';
 const DEV_PORT = 5173;
 const ROOT = path.join(__dirname, '..');
+const ICON = path.join(ROOT, 'icon.png');
+const ASSETS = path.join(__dirname, 'assets');
 
-let mainWindow = null;
 let viteProcess = null;
-let lastUrl = null;
+let windows = null;
+let tray = null;
+let scheduler = null;
+let cloud = null;
+let pendingLink = null;
 
-// One data folder for every way of starting the app (dev run and installed).
-app.setPath('userData', process.env.WE_INVOICE_USER_DATA || path.join(app.getPath('appData'), APP_NAME));
+// One data folder for every way of starting the app (dev run and installed):
+// appData/we-invoice-data, as in WE Budget.
+app.setPath('userData', process.env.WE_INVOICE_USER_DATA || path.join(app.getPath('appData'), 'we-invoice-data'));
+
+// A second start (a weinvoice:// link on Windows, a double click on the
+// icon) only brings the running window back.
+if (!app.requestSingleInstanceLock()) app.quit();
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true } }
@@ -31,49 +53,78 @@ function buildAppMenu() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-function isExternal(url) {
+// Started by the login item (--hidden) or opened as hidden by macOS: no
+// window, only the tray and the scheduler.
+function startsHidden() {
+  if (process.argv.includes('--hidden')) return true;
   try {
-    const parsed = new URL(url);
-    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') && !url.startsWith(`http://localhost:${DEV_PORT}`);
+    return process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden === true;
   } catch (e) {
     return false;
   }
 }
 
-function createWindow(url) {
-  lastUrl = url;
-  mainWindow = new BrowserWindow({
-    width: 1360,
-    height: 880,
-    minWidth: 1024,
-    minHeight: 700,
-    title: APP_NAME,
-    icon: path.join(ROOT, 'icon.png'),
-    backgroundColor: '#090b11',
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: true,
-      preload: path.join(__dirname, 'preload.cjs')
-    }
-  });
-  // External links open in the default browser, never inside the app.
-  mainWindow.webContents.on('will-navigate', (event, target) => {
-    if (isExternal(target)) {
-      event.preventDefault();
-      shell.openExternal(target);
-    }
-  });
-  mainWindow.webContents.setWindowOpenHandler(({ url: target }) => {
-    if (isExternal(target)) shell.openExternal(target);
-    return { action: 'deny' };
-  });
-  mainWindow.loadURL(url);
-  mainWindow.on('closed', () => { mainWindow = null; });
+function readProviders() {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(ROOT, 'packages', 'core', 'peppol', 'providers.json'), 'utf8'));
+  } catch (e) {
+    console.warn('[net] providers list not read', e.message);
+    return null;
+  }
 }
 
-function initIpc() {
-  ipcMain.handle('app:info', () => ({ version: app.getVersion(), name: APP_NAME, platform: process.platform, packaged: app.isPackaged }));
+// WP-SYNC ships desktop/cloud.cjs (Google sign-in, Drive). It is optional
+// here so the app runs before and without it.
+function loadCloud() {
+  try {
+    require.resolve('./cloud.cjs');
+  } catch (e) {
+    return null;
+  }
+  return require('./cloud.cjs');
+}
+
+function initModules() {
+  const userData = app.getPath('userData');
+  const storage = createStorage(userData);
+  initStorageIpc(ipcMain, shell, storage);
+  const secrets = createSecrets({ safeStorage, dir: path.join(userData, 'secrets') });
+  initSecretsIpc(ipcMain, secrets);
+  initNetIpc(ipcMain, createNet({ providers: readProviders(), userAgent: `WE-Invoice/${app.getVersion()}` }));
+  initMailIpc(ipcMain, createMail({ secrets }));
+
+  windows = createMainWindow({
+    BrowserWindow, screen, shell, ipcMain, userData, devPort: DEV_PORT, icon: ICON,
+    preload: path.join(__dirname, 'preload.cjs'),
+    hooks: {
+      hideOnClose: () => tray.isShown(),
+      needsFlush: () => !(cloud && typeof cloud.isLoggedIn === 'function') || cloud.isLoggedIn()
+    }
+  });
+  tray = createTray({
+    Tray, Menu, nativeImage, assetsDir: ASSETS, iconPath: ICON,
+    handlers: {
+      action: (id) => { windows.show(); windows.send('tray:action', id); },
+      open: () => windows.show(),
+      quit: () => app.quit()
+    }
+  });
+  scheduler = createScheduler({ userData, send: (kind, at) => windows.send('scheduler:tick', { kind, at }) });
+  initSchedulerIpc(ipcMain, scheduler);
+  initAppIpc(ipcMain, { app, shell, Notification, windows, tray, updater });
+  updater.cleanup();
+
+  cloud = loadCloud();
+  if (cloud && typeof cloud.init === 'function') {
+    cloud.init({ app, ipcMain, secrets, windows });
+  }
+
+  pendingLink = registerDeepLinks(app, (link) => {
+    windows.show();
+    if (!windows.send('app:deep-link', link)) pendingLink = link;
+  });
+  // The page asks for the link it was started with once it is ready.
+  ipcMain.handle('app:pending-link', () => { const link = pendingLink; pendingLink = null; return link; });
 }
 
 // Waits for the Vite dev server instead of guessing how long it needs.
@@ -88,38 +139,47 @@ function waitForDevServer(url, attempts = 80) {
   });
 }
 
+async function startUrl() {
+  if (process.env.NODE_ENV !== 'development') {
+    registerAppProtocol(protocol, path.join(ROOT, 'dist'));
+    return 'app://bundle/index.html';
+  }
+  const devUrl = `http://localhost:${DEV_PORT}`;
+  if (!await waitForDevServer(devUrl, 2)) {
+    viteProcess = spawn('npx', ['vite', '--config', 'app/vite.config.js'], { cwd: ROOT, shell: true, stdio: 'inherit' });
+    await waitForDevServer(devUrl);
+  }
+  return devUrl;
+}
+
 app.whenReady().then(async () => {
   app.setName(APP_NAME);
+  // Windows shows notifications only for an app with an identity.
   if (process.platform === 'win32') app.setAppUserModelId(APP_ID);
-  initIpc();
+  initModules();
   buildAppMenu();
-  if (process.platform === 'darwin' && !app.isPackaged && app.dock) {
-    app.dock.setIcon(nativeImage.createFromPath(path.join(ROOT, 'icon.png')));
-  }
-  if (process.env.NODE_ENV === 'development') {
-    const devUrl = `http://localhost:${DEV_PORT}`;
-    const ready = await waitForDevServer(devUrl, 2);
-    if (!ready) {
-      viteProcess = spawn('npx', ['vite', '--config', 'app/vite.config.js'], { cwd: ROOT, shell: true, stdio: 'inherit' });
-      await waitForDevServer(devUrl);
-    }
-    createWindow(devUrl);
-  } else {
-    registerAppProtocol(protocol, path.join(ROOT, 'dist'));
-    createWindow('app://bundle/index.html');
-  }
+  if (process.platform === 'darwin' && !app.isPackaged && app.dock) app.dock.setIcon(nativeImage.createFromPath(ICON));
+  windows.create(await startUrl(), { show: !startsHidden() });
+  scheduler.start();
+  powerMonitor.on('resume', () => scheduler.resume());
 });
 
-app.on('activate', () => {
-  if (!mainWindow && lastUrl) createWindow(lastUrl);
-});
+app.on('second-instance', () => { if (windows) windows.show(); });
+app.on('activate', () => { if (windows) windows.show(); });
+app.on('before-quit', () => { if (windows) windows.setQuitting(true); });
 
+// Without a tray there is nothing to do once the window is gone, on every
+// platform; with the tray the scheduler keeps working.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (!tray || !tray.isShown() || (windows && windows.isQuitting())) app.quit();
 });
 
 app.on('will-quit', () => {
+  if (scheduler) scheduler.stop();
   if (viteProcess) {
     try { viteProcess.kill(); } catch (e) { console.warn('Dev server did not stop', e); }
   }
 });
+
+// By now the window is closed and unsent changes have gone up.
+app.on('quit', () => updater.launchPendingInstaller());
