@@ -1,15 +1,16 @@
-# Dependencies
-node_modules/
-node_modules.nosync/
+# Dependencies (node_modules may be a symlink to node_modules.nosync, which
+# keeps it out of iCloud sync)
+node_modules
+*.nosync
 
 # Build outputs
-dist/
-dist-web/
+dist
+dist-web
 /build/
 release/
 release.nosync/
-test-results/
-playwright-report/
+test-results
+playwright-report
 coverage/
 
 # Logs

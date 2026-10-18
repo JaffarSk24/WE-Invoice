@@ -2,7 +2,7 @@
   "name": "we-invoice",
   "private": true,
   "version": "0.1.0",
-  "description": "Free invoicing, eFaktura (Peppol) and simple bookkeeping for Slovak and Czech small businesses. Data stays encrypted in the user's own Google Drive.",
+  "description": "Free invoicing and eFaktura (Peppol) for Slovak sole traders and small companies, with VAT reports and simple bookkeeping. Data stays encrypted in the user's own Google Drive.",
   "author": {
     "name": "White Eagles & Co. s.r.o.",
     "url": "https://whiteeagles.sk/"

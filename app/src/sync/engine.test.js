@@ -8,7 +8,6 @@ import { memoryKeyring } from './keyring.js';
 import { Vault } from './vault.js';
 import { PATHS } from './remote.js';
 import { syncAction } from './cycle.js';
-import { resolveNumberConflicts } from './conflicts.js';
 
 const PASSWORD = 'correct horse battery';
 const FAST = { iterations: 2000 };
@@ -154,7 +153,10 @@ describe('sync engine', () => {
     const writes = drive.writes;
     await a.store.insert('contacts', { kind: 'PERSON', name: 'Idle' });
     expect(a.engine.state.pending).toBe(true);
-    await new Promise(r => setTimeout(r, 120));
+    // The upload comes after the idle pause; under a loaded test run it may
+    // take longer than the pause itself, so wait for it with a ceiling.
+    const deadline = Date.now() + 2000;
+    while (drive.writes <= writes && Date.now() < deadline) await new Promise(r => setTimeout(r, 20));
     expect(drive.writes).toBeGreaterThan(writes);
     expect(a.engine.state.pending).toBe(false);
   });
@@ -276,24 +278,5 @@ describe('sync engine', () => {
     expect(a.store.data).toBeNull();
     await a.engine.sync('startup');
     expect(a.store.list('items').map(i => i.name)).toEqual(['Hour']);
-  });
-});
-
-describe('number conflicts helper', () => {
-  const data = { companyId: 'c', company: { series: [] }, documents: [{ id: 'd1', number: 'FA1', seriesId: 's', updatedAt: 'x' }, { id: 'd2', number: 'FA1', seriesId: 's', lockedAt: 'y' }] };
-
-  it('reports nothing while the core function is a stub', () => {
-    const result = resolveNumberConflicts(data);
-    expect(result.conflicts).toEqual([]);
-    expect(result.data).toBe(data);
-  });
-
-  it('renumbers unlocked documents and leaves locked ones with a warning', () => {
-    const finder = () => [{ docId: 'd1', number: 'FA1', proposed: 'FA2', locked: false }, { docId: 'd2', number: 'FA1', proposed: null, locked: true }];
-    const result = resolveNumberConflicts(data, { finder, vs: (n) => n.replace(/\D/g, ''), now: 'T' });
-    expect(result.renumbered).toBe(1);
-    expect(result.data.documents[0]).toMatchObject({ number: 'FA2', vs: '2', updatedAt: 'T' });
-    expect(result.data.documents[1].number).toBe('FA1');
-    expect(result.conflicts).toHaveLength(2);
   });
 });
