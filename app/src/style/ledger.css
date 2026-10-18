@@ -2,11 +2,15 @@
    the print page of the statements. Colours only through tokens.css. */
 
 .ledger-header .view-actions { flex-wrap: wrap; }
-.ledger-year { min-height: var(--touch-target); padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); }
+
+.ledger-year { width: auto; min-width: 96px; min-height: var(--touch-target); padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); }
 .ledger-stats { margin-bottom: 16px; }
 .ledger-stats .stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; }
 .ledger-stats .stat-danger .stat-value { color: var(--danger); }
 .ledger-tabs { margin-top: 8px; }
+.ledger-tabs [role="tablist"] { overflow-x: auto; scrollbar-width: thin; }
+.ledger-tabs [role="tab"] { white-space: nowrap; }
+.ledger-card > h2 { margin: 0 0 12px; font-size: 18px; }
 .ledger-tabs .tab-panel { padding-top: 16px; }
 .ledger-tabs .callout, .ledger-header + .callout, .ledger-stats + .callout { margin-bottom: 12px; }
 
@@ -49,13 +53,15 @@
 @media print {
   @page ledger { size: A4 landscape; margin: 12mm; }
   html.ledger-printing body > *:not(.ledger-print) { display: none !important; }
-  html.ledger-printing .ledger-print { display: block; page: ledger; color: CanvasText; background: Canvas; font-size: 9pt; }
+  html.ledger-printing body { page: ledger; }
+  html.ledger-printing .ledger-print { display: block; color: CanvasText; background: Canvas; font-size: 9pt; }
   .ledger-print h1 { font-size: 14pt; margin: 0 0 4pt; }
-  .ledger-print-table { width: 100%; border-collapse: collapse; margin: 10pt 0; page-break-inside: auto; }
-  .ledger-print-table caption { text-align: left; font-weight: 700; padding: 4pt 0; }
-  .ledger-print-table th, .ledger-print-table td { border: 0.5pt solid GrayText; padding: 2pt 4pt; text-align: left; vertical-align: top; }
-  .ledger-print-table .num { text-align: right; white-space: nowrap; }
-  .ledger-print-table tfoot td { font-weight: 700; }
-  .ledger-print-table tr { page-break-inside: avoid; }
+  .ledger-print-block { margin: 10pt 0; }
+  .ledger-print-block h2 { font-size: 10pt; margin: 0 0 4pt; break-after: avoid; }
+  .ledger-print-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 7pt; }
+  .ledger-print-table th, .ledger-print-table td { border: 0.5pt solid GrayText; padding: 2pt 3pt; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+  .ledger-print-table .num { text-align: right; }
+  .ledger-print-table .is-total td { font-weight: 700; }
+  .ledger-print-table tr { break-inside: avoid; }
   .ledger-print-foot { margin-top: 12pt; font-size: 8pt; }
 }

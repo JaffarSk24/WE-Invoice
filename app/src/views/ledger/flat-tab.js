@@ -50,7 +50,7 @@ export function renderFlatSummaryTab(panel, ctx) {
       { label: t('ledger.flat.base'), value: money(s.base) }
     ]),
     s.groups.some(g => g.capped) ? callout('warning', t('ledger.flat.capped', { cap: money(s.groups.find(g => g.capped).cap) })) : null,
-    h('section', { class: 'card' },
+    h('section', { class: 'card ledger-card' },
       h('h2', {}, t('ledger.flat.table1')),
       s.rows.length ? h('table', { class: 'table ledger-simple-table' },
         h('thead', {}, h('tr', {}, h('th', {}, t('ledger.col.paragraph')), h('th', { class: 'num' }, t('ledger.flat.col.income')), h('th', { class: 'num' }, t('ledger.flat.col.expenses')))),

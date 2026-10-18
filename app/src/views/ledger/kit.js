@@ -35,7 +35,7 @@ export function viewHeader({ title, years = null, year = null, onYear = null, ac
   const header = h('header', { class: 'view-header ledger-header' },
     h('h1', {}, title),
     h('div', { class: 'view-actions' }, picker, actions.map(a => h('button', {
-      type: 'button', class: `btn ${a.primary ? 'btn-primary' : ''}`.trim(), onclick: a.onClick, disabled: a.disabled || false, dataset: a.id ? { action: a.id } : null
+      type: 'button', class: `btn ${a.primary ? 'btn-primary' : ''}`.trim(), onclick: a.onClick, 'aria-label': a.label, title: a.label, disabled: a.disabled || false, dataset: a.id ? { action: a.id } : null
     }, a.icon ? icon(a.icon) : null, h('span', { class: 'btn-label' }, a.label)))));
   refreshIcons(header);
   return header;

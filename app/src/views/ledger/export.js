@@ -48,12 +48,12 @@ function display(value, numeric) {
 }
 
 function printTable(tb, format) {
-  const cell = (tag, v, i) => h(tag, { class: tb.numeric[i] ? 'num' : null }, format(v, i));
-  return h('table', { class: 'ledger-print-table' },
-    h('caption', {}, tb.caption),
-    h('thead', {}, h('tr', {}, tb.header.map(label => h('th', {}, label)))),
-    h('tbody', {}, tb.rows.map(r => h('tr', {}, r.map((v, i) => cell('td', v, i))))),
-    tb.foot ? h('tfoot', {}, h('tr', {}, tb.foot.map((v, i) => cell('td', v, i)))) : null);
+  const cell = (v, i) => h('td', { class: tb.numeric[i] ? 'num' : null }, format(v, i));
+  return h('div', { class: 'ledger-print-block' },
+    h('h2', {}, tb.caption),
+    h('table', { class: 'ledger-print-table' },
+      h('thead', {}, h('tr', {}, tb.header.map(label => h('th', {}, label)))),
+      h('tbody', {}, tb.rows.map(r => h('tr', {}, r.map(cell))), tb.foot ? h('tr', { class: 'is-total' }, tb.foot.map(cell)) : null)));
 }
 
 /**

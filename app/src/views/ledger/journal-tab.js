@@ -40,7 +40,7 @@ function warnings(journal, extra) {
 function columnTotals(journal) {
   const rows = JOURNAL_COLUMNS.filter(c => !isZero(journal.totals[c]));
   if (!rows.length) return null;
-  return h('section', { class: 'card ledger-column-totals' },
+  return h('section', { class: 'card ledger-card ledger-column-totals' },
     h('h2', {}, t('ledger.journal.columnTotals')),
     h('dl', { class: 'ledger-dl' }, rows.flatMap(c => [h('dt', {}, t(`ledger.column.${c}`)), h('dd', { class: 'num' }, money(journal.totals[c]))])));
 }
@@ -66,13 +66,18 @@ export function renderJournalTab(panel, ctx) {
   panel.append(table.el, columnTotals(journal));
 }
 
-/** The wide peňažný denník and the opening and closing state for CSV and print. */
-export function journalTables(journal) {
+/**
+ * The wide peňažný denník and the opening and closing state for CSV and
+ * print. The print leaves out money columns that stay empty all year, so
+ * the page stays readable; the CSV keeps every column of the form.
+ */
+export function journalTables(journal, { print = false } = {}) {
+  const used = JOURNAL_COLUMNS.filter(c => !print || !isZero(journal.totals[c]));
   const cols = [
     { label: t('ledger.col.date'), value: r => r.date, foot: () => t('ledger.journal.total') },
     { label: t('ledger.col.number'), value: r => r.number },
     { label: t('ledger.col.text'), value: r => r.text },
-    ...JOURNAL_COLUMNS.map(c => ({ label: t(`ledger.column.${c}`), value: r => r.cols[c] || null, foot: totals => totals[c], num: true }))
+    ...used.map(c => ({ label: t(`ledger.column.${c}`), value: r => r.cols[c] || null, foot: totals => totals[c], num: true }))
   ];
   const state = [
     { label: t('ledger.col.item'), value: r => r.label },

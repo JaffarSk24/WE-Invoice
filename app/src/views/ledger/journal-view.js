@@ -41,7 +41,7 @@ function tabsFor(mode, ctx) {
     ];
   }
   return [
-    { id: 'journal', label: t('ledger.tab.journal'), render: (p) => renderJournalTab(p, ctx), tables: () => journalTables(ctx.journal) },
+    { id: 'journal', label: t('ledger.tab.journal'), render: (p) => renderJournalTab(p, ctx), tables: (opts) => journalTables(ctx.journal, opts) },
     { id: 'books', label: t('ledger.tab.books'), render: (p) => renderBooksTab(p, ctx), tables: () => booksTables(ctx.documents, ctx.date) },
     { id: 'trips', label: t('ledger.tab.trips'), render: (p) => renderTripsTab(p, ctx), tables: () => [tripsTable(ctx.trips, ctx.year)] }
   ];
@@ -84,7 +84,7 @@ function draw(root) {
     actions: [
       { id: 'add', icon: 'plus', label: activeTab === 'trips' ? t('ledger.trip.add') : t('ledger.entry.add'), primary: true, disabled: readOnly, onClick: () => (activeTab === 'trips' ? openTripForm(null, data.assets) : openEntryForm()) },
       { id: 'csv', icon: 'file-spreadsheet', label: t('ledger.export.csv'), onClick: () => saveCsv(fileName('csv'), current().tables()) },
-      { id: 'print', icon: 'file-text', label: t('ledger.export.print'), onClick: () => printTables({ title: `${current().label} ${year}`, tables: current().tables() }) }
+      { id: 'print', icon: 'file-text', label: t('ledger.export.print'), onClick: () => printTables({ title: `${current().label} ${year}`, tables: current().tables({ print: true }) }) }
     ]
   }));
   if (isDemo()) root.append(callout('info', t('ledger.demo.notice')));

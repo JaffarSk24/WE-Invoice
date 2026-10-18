@@ -34,7 +34,7 @@ function statementTables(r) {
 }
 
 function statementCard(spec, rows) {
-  return h('section', { class: 'card ledger-statement' }, h('h2', {}, spec.caption),
+  return h('section', { class: 'card ledger-card ledger-statement' }, h('h2', {}, spec.caption),
     h('table', { class: 'table ledger-simple-table' }, h('tbody', {}, rows.map((row, i) => h('tr', { class: row.total ? 'is-total' : null },
       h('td', { class: 'muted' }, spec.rows[i][0]), h('td', {}, spec.rows[i][1]), h('td', { class: 'num' }, money(row.amount)))))));
 }
@@ -76,7 +76,7 @@ function inputsCard(root, companyId, year, state, readOnly) {
     });
     return f.el;
   });
-  return h('section', { class: 'card' }, h('h2', {}, t('ledger.closing.inputs')), h('div', { class: 'form-grid ledger-form' }, fields));
+  return h('section', { class: 'card ledger-card' }, h('h2', {}, t('ledger.closing.inputs')), h('div', { class: 'form-grid ledger-form' }, fields));
 }
 
 function drawSimple(root, data, year, readOnly) {
@@ -103,9 +103,9 @@ function drawSimple(root, data, year, readOnly) {
   root.append(inputsCard(root, companyId, year, state, readOnly));
   const list = h('ul', { class: 'ledger-checklist' }, result.checklist.map(checkItem));
   result.disposals.forEach(d => list.append(h('li', { class: 'ledger-check is-bad' }, icon('info'), h('span', {}, t('ledger.closing.disposal', { name: d.name, amount: money(d.residual) })))));
-  root.append(h('section', { class: 'card' }, h('h2', {}, t('ledger.closing.checks')), list));
+  root.append(h('section', { class: 'card ledger-card' }, h('h2', {}, t('ledger.closing.checks')), list));
   root.append(h('div', { class: 'ledger-statements' }, statementCard(specs[0], result.incomeExpense.rows), statementCard(specs[1], result.assetsLiabilities.rows)));
-  root.append(h('section', { class: 'card ledger-carry' },
+  root.append(h('section', { class: 'card ledger-card ledger-carry' },
     h('h2', {}, t('ledger.closing.carryTitle', { year: result.carryForward.year })),
     h('p', {}, t('ledger.closing.carryText', { cash: money(result.carryForward.cash), bank: money(result.carryForward.bank) })),
     result.ready ? null : h('p', { class: 'muted' }, t('ledger.closing.notReady')),

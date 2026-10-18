@@ -2,7 +2,7 @@
 // or the sample company in demo mode. In demo mode the automatic entries
 // are computed in memory and nothing is written; the screens then show
 // the bookkeeping as a SIMPLE company would see it.
-import { planEntrySync, sum } from '@we-invoice/core';
+import { planEntrySync, sum, isZero } from '@we-invoice/core';
 import { getStore, hasStore } from '../../store/index.js';
 import { isDemo, demoData } from '../shell/demo-mode.js';
 import { currentCompany } from '../shell/company-state.js';
@@ -40,12 +40,26 @@ function list(name) {
   return store ? store.list(name) : [];
 }
 
+// The sample documents carry only their totals; the books need lines and
+// payments, so each becomes one line at 23 % paid on its due date.
+function demoDocument(d) {
+  if (d.lines) return d;
+  const party = { name: d.contactName || '' };
+  const payments = d.paidAmount && !isZero(d.paidAmount)
+    ? [{ id: `${d.id}-pay`, date: d.dueDate && d.dueDate < todayLocal() ? d.dueDate : d.issueDate, amount: d.paidAmount, method: 'TRANSFER', source: 'MANUAL' }]
+    : [];
+  return {
+    ...d, buyer: party, seller: party, payments,
+    lines: [{ id: `${d.id}-l`, name: '', qty: '1', unitPrice: d.totalNet, vatCategory: 'S', vatRate: '23', accountingCategory: d.kind === 'RECEIVED_INVOICE' ? 'EXPENSE_TAX_SERVICES' : null }]
+  };
+}
+
 /** Everything the screens compute from, in one snapshot. */
 export function ledgerData() {
   const company = ledgerCompany();
   if (isDemo()) {
     const demo = demoData();
-    const documents = demo.documents || [];
+    const documents = (demo.documents || []).map(demoDocument);
     const entries = planEntrySync({ documents, entries: [], company: demo.company }).insert;
     return { company, documents, entries, assets: [], trips: [], bankTransactions: [], cashBooks: [] };
   }
