@@ -1,0 +1,26 @@
+{
+  "$comment": "Fixed assets: straight and accelerated tax depreciation booked at 31 December, a low-value item, an intangible asset from the previous year and a disposal in the year.",
+  "name": "assets and depreciation",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "documents": [],
+  "entries": [
+    { "id": "i", "date": "2026-01-31", "direction": "INCOME", "medium": "BANK", "amount": "10000", "category": "INCOME_TAX_SERVICES", "auto": false }
+  ],
+  "assets": [
+    { "id": "a1", "name": "Stroj", "kind": "TANGIBLE", "acquiredOn": "2026-03-20", "inUseFrom": "2026-04-01", "cost": "4800", "depreciationGroup": 1, "method": "STRAIGHT" },
+    { "id": "a2", "name": "Dodávka", "kind": "TANGIBLE", "acquiredOn": "2026-01-15", "cost": "6000", "depreciationGroup": 2, "method": "ACCELERATED" },
+    { "id": "a3", "name": "Tlačiareň", "kind": "TANGIBLE", "acquiredOn": "2026-02-01", "cost": "800", "depreciationGroup": 1, "method": "STRAIGHT" },
+    { "id": "a4", "name": "Softvér", "kind": "INTANGIBLE", "acquiredOn": "2025-07-01", "cost": "3000", "depreciationGroup": 1, "method": "STRAIGHT" },
+    { "id": "a5", "name": "Notebook", "kind": "TANGIBLE", "acquiredOn": "2024-01-01", "cost": "2400", "depreciationGroup": 1, "method": "STRAIGHT", "disposedOn": "2026-05-10" }
+  ],
+  "expected": {
+    "totals": { "bankIn": "10000.00", "INCOME_TAX_SERVICES": "10000.00", "EXPENSE_TAX_OTHER": "2850.00" },
+    "closing": { "cash": "0.00", "bank": "10000.00" },
+    "incomeExpense": { "r02": "10000.00", "r11": "2850.00", "r12": "2850.00", "r13": "7150.00" },
+    "assetsLiabilities": { "m01": "1875.00", "m02": "8900.00", "m05": "10000.00", "m08": "20775.00", "d01": "20775.00" },
+    "disposals": [ { "assetId": "a5", "residual": "1000.00" } ],
+    "checklist": { "disposals": false }
+  }
+}

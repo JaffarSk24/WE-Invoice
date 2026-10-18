@@ -13,7 +13,7 @@
     { "amount": "50000", "immediate": "62500", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
   ],
   "flatExpenses": [
-    { "pct": "60", "maxAnnual": "20000", "validFrom": "2023-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2003/595/", "verified": false, "verifiedAt": null }
+    { "pct": "60", "maxAnnual": "20000", "prorateByMonths": false, "separateCapParagraphs": ["6_4"], "law": "§ 6 ods. 10 zákona č. 595/2003 Z. z.; zaplatené poistné sa uplatní popri paušálnych výdavkoch", "validFrom": "2023-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2003/595/", "verified": false, "verifiedAt": null }
   ],
   "latePaymentInterest": [
     { "b2bMarginPp": "9", "b2cMarginPp": "5", "basis": "ECB_MRO", "law": "nariadenie vlády č. 21/2013 Z. z.; nariadenie vlády č. 87/1995 Z. z.", "validFrom": "2013-02-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2013/21/", "verified": false, "verifiedAt": null }
@@ -41,14 +41,20 @@
   ],
   "depreciation": [
     {
-      "groups": [ { "g": 0, "years": 2 }, { "g": 1, "years": 4 }, { "g": 2, "years": 6 }, { "g": 3, "years": 8 }, { "g": 4, "years": 12 }, { "g": 5, "years": 20 }, { "g": 6, "years": 40 } ],
+      "groups": [ { "g": 0, "years": 2 }, { "g": 1, "years": 4 }, { "g": 2, "years": 6, "accelerated": { "first": 6, "next": 7 } }, { "g": 3, "years": 8, "accelerated": { "first": 8, "next": 9 } }, { "g": 4, "years": 12 }, { "g": 5, "years": 20 }, { "g": 6, "years": 40 } ],
       "tangibleThreshold": "1700",
       "intangibleThreshold": "2400",
-      "validFrom": "2020-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2003/595/", "verified": false, "verifiedAt": null
+      "roundUpToWholeEuro": true,
+      "acceleratedFirstYearProrata": true,
+      "law": "§ 26 až § 28 a § 22 ods. 12 zákona č. 595/2003 Z. z.; zrýchlené odpisovanie len skupiny 2 a 3 od 2015",
+      "validFrom": "2020-01-01", "validTo": null, "source": "https://podpora.financnasprava.sk/144478-V%C3%BDpo%C4%8Det-zr%C3%BDchlen%C3%BDch-odpisov-", "verified": false, "verifiedAt": null
     }
   ],
   "travel": [
-    { "kmRate": null, "mealAllowance": [], "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null }
+    { "kmRate": "0.281", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-04-01", "validTo": "2025-05-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
+    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-06-01", "validTo": "2025-11-30", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
+    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-12-01", "validTo": "2025-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
+    { "kmRate": "0.313", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null }
   ],
   "texts": [
     {
