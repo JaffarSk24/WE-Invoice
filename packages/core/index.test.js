@@ -18,7 +18,13 @@ const API = [
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
-  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
+  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
+  'detectStatementFormat', 'withImportKeys', 'splitDuplicates', 'parseSymbols', 'ibanFromDomestic', 'matchStatement',
+  'makePayment', 'addPayment', 'removePayments', 'applyMatch', 'unapplyMatch', 'statusAfterPayments', 'validatePain001',
+  'sepaText', 'paymentsForReceived', 'creditorIbanOf', 'defaultCashSeries', 'bookVouchers', 'cashBalance', 'cashBookRows',
+  'checkCashOut', 'cashKindForPayment', 'buildCashVoucher', 'cashDifference', 'cashLimitCheck', 'isBusinessParty',
+  'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded', 'ekasaManualEntry',
+  'listPayments', 'bankTxDirection'
 ];
 
 describe('core public API', () => {

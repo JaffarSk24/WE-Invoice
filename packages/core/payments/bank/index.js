@@ -9,3 +9,8 @@ export { matchBankTx, matchStatement, PRESELECT_FROM, CONFIDENCE as MATCH_CONFID
 export { makePayment, addPayment, removePayments, applyMatch, unapplyMatch, statusAfterPayments } from './apply.js';
 export { buildPain001, validatePain001, sepaText, PAIN001_NAMESPACE } from './pain001.js';
 export { paymentsForReceived, creditorIbanOf } from './payables.js';
+export { CASH_KINDS, defaultCashSeries, bookVouchers, cashBalance, cashBookRows, checkCashOut, cashKindForPayment, buildCashVoucher, cashDifference } from './cash.js';
+export { cashLimitCheck, isBusinessParty, cashBookCsv } from './cash-rules.js';
+export { offsetCandidates, planOffset, buildOffset, cancelOffset } from './offset.js';
+export { EKASA_METHODS, ekasaNeeded, ekasaManualEntry } from './ekasa-manual.js';
+export { listPayments } from './listing.js';
