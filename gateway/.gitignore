@@ -1,0 +1,3 @@
+# Copy of packages/core/peppol/providers.json placed by the Docker build only
+src/providers/providers.json
+coverage/

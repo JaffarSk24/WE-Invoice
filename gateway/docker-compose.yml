@@ -1,17 +1,32 @@
 # Gateway behind nginx on the same host: listens on 127.0.0.1:8787 only.
+# Run from the gateway folder: docker compose up -d --build
 services:
   gateway:
-    build: .
+    build:
+      context: ..
+      dockerfile: gateway/Dockerfile
+    image: we-invoice-gateway:local
     container_name: we-invoice-gateway
     restart: unless-stopped
     env_file: .env
     environment:
       HOST: 0.0.0.0
       PORT: 8787
+      DATABASE_PATH: /data/gateway.sqlite
     ports:
       - "127.0.0.1:8787:8787"
     volumes:
       - gateway-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8787/v1/health"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
 
 volumes:
   gateway-data:
