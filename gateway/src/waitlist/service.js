@@ -1,7 +1,10 @@
-// Waitlist with double opt-in (09-site-waitlist-marketing.md § 9.2): a
-// record is pending until the e-mail link is opened, the token expires,
-// a second confirmation is harmless, and unsubscribing deletes the record.
-// Records without activity are deleted after the retention period (GDPR).
+// Waitlist (09-site-waitlist-marketing.md § 9.2) in one of two modes.
+// Double opt-in: a record is pending until the e-mail link is opened, the
+// token expires, a second confirmation is harmless. Direct (the default,
+// the owner's choice): a sign-up is "received" at once, no e-mail goes to
+// the applicant and the owner writes to people personally. Unsubscribing
+// deletes the record; records without activity are deleted after the
+// retention period (GDPR).
 import { randomToken } from './tokens.js';
 
 export const LANGS = ['sk', 'cs', 'en', 'de', 'ru', 'uk'];
@@ -17,6 +20,10 @@ export function createWaitlist(db, config, { now = () => new Date() } = {}) {
     VALUES (@email, @lang, 'pending', @source, @interests, @vatPayer, @at, @confirmToken, @confirmExpiresAt, @unsubscribeToken, @at)`);
   const renew = db.prepare(`UPDATE waitlist SET lang = @lang, source = @source, interests = @interests, vat_payer = @vatPayer, consent_at = @at,
     confirm_token = @confirmToken, confirm_expires_at = @confirmExpiresAt, last_activity_at = @at WHERE email = @email`);
+  const insertReceived = db.prepare(`INSERT INTO waitlist (email, lang, status, source, interests, vat_payer, consent_at, unsubscribe_token, last_activity_at)
+    VALUES (@email, @lang, 'received', @source, @interests, @vatPayer, @at, @unsubscribeToken, @at)`);
+  const renewReceived = db.prepare(`UPDATE waitlist SET lang = @lang, source = @source, interests = @interests, vat_payer = @vatPayer, consent_at = @at,
+    status = CASE status WHEN 'confirmed' THEN 'confirmed' ELSE 'received' END, confirm_token = NULL, confirm_expires_at = NULL, last_activity_at = @at WHERE email = @email`);
   const confirmStmt = db.prepare("UPDATE waitlist SET status = 'confirmed', confirmed_at = @at, confirm_token = NULL, confirm_expires_at = NULL, last_activity_at = @at WHERE id = @id");
   const remove = db.prepare('DELETE FROM waitlist WHERE id = ?');
   const purgePending = db.prepare("DELETE FROM waitlist WHERE status = 'pending' AND confirm_expires_at < ?");
@@ -26,7 +33,23 @@ export function createWaitlist(db, config, { now = () => new Date() } = {}) {
 
   const ttlMs = config.waitlist.confirmTtlHours * 60 * 60 * 1000;
 
+  // Direct mode: action "notify" for a new address (the owner gets a
+  // notice), "none" when the address was already on the list.
+  function receive({ email, lang, source, interests, vatPayer }) {
+    const at = now().toISOString();
+    const existing = byEmail.get(email);
+    const fields = {
+      email, lang, source: source || null, interests: JSON.stringify(interests || []),
+      vatPayer: vatPayer === true ? 1 : vatPayer === false ? 0 : null, at,
+      unsubscribeToken: existing ? existing.unsubscribe_token : randomToken()
+    };
+    if (existing) renewReceived.run(fields);
+    else insertReceived.run(fields);
+    return { record: byEmail.get(email), action: existing ? 'none' : 'notify' };
+  }
+
   return {
+    receive,
     // Creates or renews a pending record. Returns {record, action}: action
     // "mail" when a confirmation e-mail is due, "none" for an address that
     // is already confirmed (nothing is revealed to the caller either way).

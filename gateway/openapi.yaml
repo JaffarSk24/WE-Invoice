@@ -184,7 +184,7 @@ paths:
   /v1/waitlist:
     post:
       tags: [waitlist]
-      summary: Join the waitlist (double opt-in e-mail follows)
+      summary: Join the waitlist (direct sign-up with a notice to the owner, or a double opt-in e-mail when WAITLIST_CONFIRM_EMAIL is on)
       x-rate-limit: 5/min per IP; honeypot and fill-time check
       requestBody:
         required: true
@@ -203,7 +203,7 @@ paths:
                 website: { type: string, description: Honeypot; must be empty }
                 startedAt: { type: integer, description: Form open time in ms, for the fill-time check }
       responses:
-        '202': { description: Accepted; confirmation e-mail sent, content: { application/json: { schema: { type: object, properties: { status: { type: string, const: pending } } } } } }
+        '202': { description: Accepted; received at once, or pending until the e-mail is confirmed, content: { application/json: { schema: { type: object, properties: { status: { type: string, enum: [received, pending] } } } } } }
         '400': { $ref: '#/components/responses/Error' }
         '429': { $ref: '#/components/responses/Error' }
   /v1/waitlist/confirm:

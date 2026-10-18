@@ -55,9 +55,9 @@
     "consent": "I agree to my e-mail being processed for the waiting list, as described in the [privacy policy](./privacy.html).",
     "submit": "Sign me up",
     "sending": "Sending...",
-    "note": "We'll send you an e-mail with a confirmation link. Without confirmation you won't be added to the list.",
+    "note": "No automatic e-mails: when we open the next wave of the beta, we'll write to you personally.",
     "msg": {
-      "success": "Done. Check your inbox and confirm your e-mail using the link we've sent you.",
+      "success": "Done. You're on the list, and when we open the next wave, we'll write to you personally.",
       "invalidEmail": "Enter a valid e-mail address.",
       "consent": "We can't add you to the list without your consent.",
       "rateLimited": "Too many attempts. Try again in a minute.",

@@ -4,7 +4,7 @@
     "description": "Jaké údaje WE Invoice zpracovává, kde jsou uložené, co prochází přes naši bránu bez ukládání a jaká máte práva podle GDPR."
   },
   "h1": "Ochrana osobních údajů",
-  "effective": "Webová a desktopová aplikace WE Invoice a tato stránka. Platné od 18. října 2026.",
+  "effective": "Webová a desktopová aplikace WE Invoice a tato stránka. Platné od 19. října 2026.",
   "intro": "WE Invoice vyvíjí White Eagles & Co. s. r. o. (dále „my“). Tento dokument vysvětluje, jaké údaje aplikace a stránka zpracovávají, kde jsou uložené a jak je odstranit. Píšeme ho tak, abyste ho přečetli, ne přeskočili.",
   "sections": [
     {
@@ -46,7 +46,7 @@
       "h2": "Co se ukládá na našem serveru",
       "blocks": [
         { "ul": [
-          "Seznam čekatelů na betu eFaktur: e-mail, jazyk, vaše zájmy, údaj, zda jste plátce DPH, čas souhlasu a IP adresa při zápisu. Právním základem je váš souhlas. Údaje uchováváme do odhlášení, nejdéle 24 měsíců od zápisu. Nepotvrzený zápis mažeme po 7 dnech.",
+          "Seznam čekatelů na betu eFaktur: e-mail, jazyk, vaše zájmy, údaj, zda jste plátce DPH, čas souhlasu a IP adresa při zápisu. Právním základem je váš souhlas. Údaje uchováváme do odvolání souhlasu, nejdéle 24 měsíců od zápisu. O novém zápisu nám s těmito údaji přijde upozornění do naší schránky; e-mail doručuje Mailgun (Sinch, servery v EU) jako náš zpracovatel.",
           "Kódy pozvánek do bety a informace, zda byly použity.",
           "Mezipaměť odpovědí veřejných rejstříků (údaje o firmách, které jsou veřejné), abychom rejstříky nezatěžovali. Nejdéle 24 hodin.",
           "Pokud v budoucnu zapnete volitelné funkce, jako sdílení dokladu zašifrovaným odkazem nebo serverového pomocníka pro opakované faktury, uchováme jen zašifrovaná data, která bez vašeho klíče neumíme přečíst, a to pouze po dobu, kterou funkce potřebuje. Před zapnutím každé takové funkce vám to aplikace vysvětlí a vyžádá si souhlas."
@@ -70,13 +70,13 @@
     {
       "h2": "Desktopová aplikace a aktualizace",
       "blocks": [
-        { "p": "Desktopová aplikace pro macOS a Windows se při startu a potom každých šest hodin ptá GitHubu (api.github.com) na novou verzi a stahuje ji z GitHubu. Požadavek obsahuje jen technické údaje, nic o vás ani o vašich dokladech." }
+        { "p": "Desktopová aplikace pro macOS a Windows se při startu a potom jednou denně ptá GitHubu (api.github.com) na novou verzi a stahuje ji z GitHubu. Požadavek obsahuje jen technické údaje, nic o vás ani o vašich dokladech." }
       ]
     },
     {
       "h2": "Vaše práva",
       "blocks": [
-        { "p": "Podle nařízení GDPR máte právo na přístup k údajům, jejich opravu, výmaz, omezení zpracování, přenositelnost a právo vznést námitku. Souhlas se seznamem čekatelů můžete kdykoli odvolat odkazem v každém našem e-mailu nebo zprávou na náš kontakt; záznam vymažeme bez zbytečného odkladu. Máte také právo podat stížnost u [Úřadu na ochranu osobních údajů Slovenské republiky](https://dataprotection.gov.sk/), případně u dozorového úřadu ve vaší zemi." },
+        { "p": "Podle nařízení GDPR máte právo na přístup k údajům, jejich opravu, výmaz, omezení zpracování, přenositelnost a právo vznést námitku. Souhlas se seznamem čekatelů můžete kdykoli odvolat odpovědí na náš e-mail nebo zprávou na náš kontakt; záznam vymažeme bez zbytečného odkladu. Máte také právo podat stížnost u [Úřadu na ochranu osobních údajů Slovenské republiky](https://dataprotection.gov.sk/), případně u dozorového úřadu ve vaší zemi." },
         { "p": "Obchodní data v aplikaci máte výhradně vy. Vymažete je odstraněním souborů aplikace z Google Drive (Google Drive, Nastavení, Spravovat aplikace) a vymazáním dat prohlížeče nebo datové složky desktopové aplikace. Přístup aplikace k vašemu účtu Google zrušíte na [myaccount.google.com/permissions](https://myaccount.google.com/permissions)." }
       ]
     },

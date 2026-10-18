@@ -55,9 +55,9 @@
     "consent": "Ich bin mit der Verarbeitung meiner E-Mail-Adresse für die Warteliste gemäß der [Datenschutzerklärung](./privacy.html) einverstanden.",
     "submit": "Eintragen",
     "sending": "Wird gesendet...",
-    "note": "Nach dem Absenden erhalten Sie eine E-Mail mit einem Bestätigungslink. Ohne Bestätigung nehmen wir Sie nicht auf die Liste.",
+    "note": "Keine automatischen E-Mails: Wenn wir die nächste Welle der Beta öffnen, schreiben wir Ihnen persönlich.",
     "msg": {
-      "success": "Fertig. Prüfen Sie Ihr Postfach und bestätigen Sie Ihre E-Mail-Adresse über den Link, den wir Ihnen geschickt haben.",
+      "success": "Fertig. Sie stehen auf der Liste, und wenn wir die nächste Welle öffnen, schreiben wir Ihnen persönlich.",
       "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
       "consent": "Ohne Ihre Zustimmung können wir Sie nicht auf die Liste setzen.",
       "rateLimited": "Zu viele Versuche. Probieren Sie es in einer Minute noch einmal.",
