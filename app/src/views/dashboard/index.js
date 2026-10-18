@@ -12,6 +12,7 @@ import { todayLocal } from '../../components/dates.js';
 import { emptyState } from '../../components/empty-state.js';
 import { currentCompany } from '../shell/company-state.js';
 import { promoFooter } from '../shell/promo.js';
+import { loadDraft } from '../onboarding/state.js';
 import { WIDGETS, normalizeLayout, visibleWidgets, moveWidget, placeWidget, hideWidget, showWidget } from './layout.js';
 import { dashboardData } from './data.js';
 import { issuedWidget, unpaidWidget, topClientsWidget, topDebtorsWidget, balanceWidget, accountsWidget } from './widgets-money.js';
@@ -95,7 +96,7 @@ export function renderDashboard(root) {
     if (data.empty && !currentCompany()) {
       grid.append(emptyState({
         title: t('dashboard.empty.title'), text: t('dashboard.empty.text'), iconName: 'layout-dashboard',
-        actionLabel: t('dashboard.empty.action'), onAction: () => navigate('onboarding'), brand: true
+        actionLabel: loadDraft() ? t('dashboard.empty.resume') : t('dashboard.empty.action'), onAction: () => navigate('onboarding'), brand: true
       }));
     } else {
       visibleWidgets(layout).forEach(id => grid.append(widgetCard(id, ctx, { layout, onLayout })));

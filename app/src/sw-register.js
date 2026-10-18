@@ -14,8 +14,10 @@ export function showUpdateNotice(reload = () => location.reload()) {
   showToast(t('pwa.newVersion'), { type: 'info', actionLabel: t('pwa.reload'), onAction: reload, duration: 60 * 60 * 1000 });
 }
 
-// Watches a registration: an installing worker that finishes while a
-// controller already exists is an update of a running app.
+// Watches a registration: an installing worker that finishes while the
+// page was already controlled at start is an update of a running app.
+// The first install also takes control (clients.claim), so the check uses
+// the controller seen before registering, not the one seen later.
 export function watchForUpdates(registration, hadController) {
   const watch = (worker) => {
     if (!worker) return;
@@ -30,7 +32,8 @@ export function watchForUpdates(registration, hadController) {
 export function registerServiceWorker() {
   if (!IS_WEB_BUILD || typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return;
   if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
-  const hadController = () => Boolean(navigator.serviceWorker.controller);
+  const controlledAtStart = Boolean(navigator.serviceWorker.controller);
+  const hadController = () => controlledAtStart;
   navigator.serviceWorker.register('./sw.js')
     .then(registration => watchForUpdates(registration, hadController))
     .catch(e => console.warn('Service worker not registered', e));

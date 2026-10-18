@@ -104,7 +104,7 @@ export function renderOnboarding(root) {
       h('h1', { id: 'wizard-title', tabindex: '-1' }, t(`onboarding.step.${name}`)));
     step = RENDERERS[name]({
       draft, update, transport, currentLang: currentLang(),
-      onLanguage: async (code) => { setPref('language', code); await setLanguage(code); emit('language:changed', code); draw(); },
+      onLanguage: async (code) => { setPref('language', code); await setLanguage(code); emit('language:changed', code); navigate('onboarding'); },
       onFinish: (target) => finish(draft, target)
     });
     while (body.firstChild) body.removeChild(body.firstChild);

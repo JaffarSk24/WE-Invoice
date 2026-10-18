@@ -8,6 +8,7 @@ export default {
   "dashboard.none": "none",
   "dashboard.empty.title": "No company yet",
   "dashboard.empty.text": "Set up your company and issue the first invoice in a minute.",
+  "dashboard.empty.resume": "Continue the company setup",
   "dashboard.empty.action": "Set up a company",
   "dashboard.widget.quickActions": "Quick actions",
   "dashboard.widget.issued": "Issued",

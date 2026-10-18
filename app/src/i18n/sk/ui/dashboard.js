@@ -8,6 +8,7 @@ export default {
   "dashboard.none": "nič",
   "dashboard.empty.title": "Zatiaľ žiadna firma",
   "dashboard.empty.text": "Nastavte firmu a vystavte prvú faktúru za minútu.",
+  "dashboard.empty.resume": "Pokračovať v nastavení firmy",
   "dashboard.empty.action": "Nastaviť firmu",
   "dashboard.widget.quickActions": "Rýchle akcie",
   "dashboard.widget.issued": "Vystavené",

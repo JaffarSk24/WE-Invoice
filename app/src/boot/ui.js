@@ -15,7 +15,7 @@ import { openSearch } from '../views/shell/search.js';
 import { initQuickLink } from '../views/shell/quicklink.js';
 import { isDemo, demoData } from '../views/shell/demo-mode.js';
 import { currentRoute } from '../router.js';
-import { renderOnboarding, needsOnboarding, rememberedCompany } from '../views/onboarding/index.js';
+import { renderOnboarding, rememberedCompany } from '../views/onboarding/index.js';
 import { renderDashboard } from '../views/dashboard/index.js';
 import { renderSettings } from '../views/settings/index.js';
 import { renderHelp } from '../views/help/index.js';
@@ -42,6 +42,7 @@ export async function boot(ctx) {
     if (remembered) applySwitched({ company: remembered, companies: [remembered] });
   }
 
-  const quick = initQuickLink({ navigate: ctx.navigate, emit: ctx.emit });
-  if (!quick && needsOnboarding() && !window.location.hash) window.location.hash = '#/onboarding';
+  // A first start is not redirected: the Overview greets the user with
+  // one main action that opens the wizard, and the menu stays usable.
+  initQuickLink({ navigate: ctx.navigate, emit: ctx.emit });
 }
