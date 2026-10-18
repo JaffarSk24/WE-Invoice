@@ -7,6 +7,5 @@ export { withImportKeys, splitDuplicates } from './normalize.js';
 export { parseSymbols, ibanFromDomestic } from './text.js';
 export { matchBankTx, matchStatement, PRESELECT_FROM, CONFIDENCE as MATCH_CONFIDENCE, directionOf as bankTxDirection } from './match/index.js';
 export { makePayment, addPayment, removePayments, applyMatch, unapplyMatch, statusAfterPayments } from './apply.js';
-import { NotImplementedError } from '../../errors.js';
-
-export function buildPain001(payments, debtor) { throw new NotImplementedError('buildPain001'); }
+export { buildPain001, validatePain001, sepaText, PAIN001_NAMESPACE } from './pain001.js';
+export { paymentsForReceived, creditorIbanOf } from './payables.js';
