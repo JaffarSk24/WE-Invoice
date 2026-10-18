@@ -4,7 +4,7 @@
 // images. Saved with one button after the identifiers pass their checks;
 // issued documents keep their own snapshot, so nothing issued changes.
 import { schema } from '@we-invoice/core';
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { textField, selectField, checkboxField } from '../../components/fields.js';
@@ -62,7 +62,7 @@ export function companySection(root, { redraw }) {
     }
   };
 
-  root.append(
+  append(root, [
     h('p', { class: 'muted' }, t('settings.section.company.text')),
     h('div', { class: 'form-grid company-form' }, TEXT_FIELDS.map(k => fields[k].el), vatMode.el),
     ekasaExempt.el,
@@ -70,5 +70,5 @@ export function companySection(root, { redraw }) {
     h('div', { class: 'form-actions' }, h('button', { type: 'button', class: 'btn btn-primary', id: 'company-save', disabled: demo, onclick: save }, icon('check'), t('common.save'))),
     accountsBlock(company, { demo, redraw }),
     imagesBlock(company, { demo, redraw }),
-    demo ? h('p', { class: 'muted small' }, t('pdf.settings.demoHint')) : null);
+    demo ? h('p', { class: 'muted small' }, t('pdf.settings.demoHint')) : null]);
 }

@@ -126,6 +126,8 @@ export default {
   "documents.preview.title": "PDF preview of the document",
   "documents.preview.loading": "Preparing the PDF preview…",
   "documents.preview.failed": "The PDF preview could not be prepared.",
+  "documents.preview.inTab": "Open the document preview in a new tab.",
+  "documents.preview.open": "Open the PDF preview",
   "errors.DOCUMENT_NOT_DRAFT": "Only a draft can be deleted. Correct an issued document with a credit note.",
   "errors.FX_RATE_UNKNOWN": "No ECB rate for this currency and date. Enter it by hand."
 };

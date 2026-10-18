@@ -126,6 +126,8 @@ export default {
   "documents.preview.title": "Náhľad dokladu v PDF",
   "documents.preview.loading": "Pripravujeme náhľad PDF…",
   "documents.preview.failed": "Náhľad PDF sa nepodarilo pripraviť.",
+  "documents.preview.inTab": "Náhľad dokladu otvoríte v novej karte.",
+  "documents.preview.open": "Otvoriť náhľad PDF",
   "errors.DOCUMENT_NOT_DRAFT": "Zmazať sa dá len koncept. Vystavený doklad opravte dobropisom.",
   "errors.FX_RATE_UNKNOWN": "Kurz ECB pre túto menu a dátum nie je k dispozícii. Zadajte ho ručne."
 };

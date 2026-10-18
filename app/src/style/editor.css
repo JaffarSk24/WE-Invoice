@@ -3,6 +3,8 @@
    their cells, the totals sticky at the bottom of the form. */
 
 .editor-header { flex-wrap: wrap; gap: 12px; }
+.editor-header .view-actions { flex-wrap: wrap; min-width: 0; }
+.editor-layout > * { min-width: 0; }
 .editor-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .editor-title h1 { margin: 0; }
 
@@ -66,6 +68,8 @@
 
 @media (max-width: 767px) {
   .line-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); flex-basis: 100%; }
+  .line, .editor-form .card { min-width: 0; }
+  .doc-discount input, .doc-discount select { max-width: 100%; flex: 1 1 100%; }
   .line-name { grid-column: 1 / -1; }
   .line-drag { display: none; }
   .editor-totals { bottom: var(--bottom-bar-height); }

@@ -14,6 +14,7 @@ import { SALES_ROUTES, isSalesKind, routeForKind, salesHash, LIST_ROUTES } from 
 import { salesRoute } from '../views/documents/route-view.js';
 import { dashboardSource } from '../views/documents/dashboard-source.js';
 import { allContacts } from '../views/documents/source.js';
+import { hasStore, getStore } from '../store/index.js';
 import { fold } from '../views/documents/rows.js';
 import { setPriceProvider } from '../views/editor/pricing.js';
 import { documentsSettings } from '../views/settings/documents-section.js';
@@ -36,6 +37,8 @@ function contactFromQuick(text) {
   return byName ? byName.id : null;
 }
 
+const hasOpenCompany = () => hasStore() && Boolean(getStore().company());
+
 const click = (id) => { const el = typeof document !== 'undefined' ? document.getElementById(id) : null; if (el && !el.disabled) el.click(); };
 
 export async function boot(ctx) {
@@ -52,5 +55,10 @@ export async function boot(ctx) {
 
   registerSettingsSection('documents', documentsSettings);
   registerSettingsSection('company', companySection);
-  setDashboardSource(dashboardSource);
+  // Registered only while a company is open, so the dashboard keeps its
+  // own empty state (with the way to the wizard) until there is one.
+  const syncDashboard = () => setDashboardSource(hasOpenCompany() ? dashboardSource : null);
+  syncDashboard();
+  ['company:switched', 'demo:enabled', 'demo:disabled'].forEach(ev => ctx.on(ev, syncDashboard));
+  ctx.on('data:changed', (e) => { if (!e || e.collection === 'company') syncDashboard(); });
 }

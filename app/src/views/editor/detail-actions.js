@@ -17,7 +17,8 @@ import { salesHash, routeForKind } from '../documents/kinds.js';
 import { salesStore, guardWrite, allContacts } from '../documents/source.js';
 import { downloadPdf } from '../documents/bulk.js';
 import { pdfOptions } from '../documents/pdf-options.js';
-import { buildPdf } from '../../pdf/index.js';
+import { buildPdf, pdfFileNameFor } from '../../pdf/index.js';
+import { canFrameBlobs, openPdf } from '../documents/pdf-frame.js';
 import { isDemo } from '../shell/demo-mode.js';
 import { createDraft, addPayment, removePayment, updatePayment, setStatus, unlockDocument } from './actions.js';
 import { availableConversions, convertForEditor, needsReason } from './convert.js';
@@ -41,6 +42,7 @@ function askText({ title, label, okLabel }) {
 async function printPdf(doc, company, documents) {
   try {
     const blob = await buildPdf(doc, company, pdfOptions(doc, company, documents));
+    if (!canFrameBlobs()) { openPdf(blob, pdfFileNameFor(doc, company)); return; }
     const url = URL.createObjectURL(blob);
     const frame = h('iframe', { class: 'print-frame', title: t('documents.action.print'), src: url });
     frame.addEventListener('load', () => {

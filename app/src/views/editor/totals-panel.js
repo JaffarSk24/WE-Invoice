@@ -2,7 +2,7 @@
 // the VAT breakdown by rate, net, VAT, total, advances deducted, cash
 // rounding and the amount to pay, all from computeTotals(). A draft that
 // cannot be computed yet says why instead of showing wrong numbers.
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { formatAmount } from '../../components/decimal.js';
 import { cmp } from '@we-invoice/core';
@@ -26,7 +26,7 @@ export function createTotalsPanel({ payer }) {
         return;
       }
       const money = (v) => formatAmount(v, currency);
-      if (payer) totals.breakdown.forEach(b => el.append(row(breakdownLabel(b), money(b.base), 'totals-sub'), b.category === 'S' ? row(t('documents.totals.vatAt', { rate: b.rate }), money(b.vat), 'totals-sub') : null));
+      if (payer) totals.breakdown.forEach(b => append(el, [row(breakdownLabel(b), money(b.base), 'totals-sub'), b.category === 'S' ? row(t('documents.totals.vatAt', { rate: b.rate }), money(b.vat), 'totals-sub') : null]));
       if (cmp(totals.allowances, '0') !== 0) el.append(row(t('documents.totals.discount'), money(`-${totals.allowances}`)));
       el.append(row(t('documents.totals.net'), money(totals.net)));
       if (payer) el.append(row(t('documents.totals.vat'), money(totals.vat)));

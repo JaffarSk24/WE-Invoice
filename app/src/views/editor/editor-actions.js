@@ -26,7 +26,12 @@ export function editorActions({ route, state, company, save, showMissing, onCont
   const listRoute = () => route || routeForKind(state.draft.kind);
 
   async function persist(store, { force = false } = {}) {
+    if (state.closed) return null;
     if (!state.stored && !force && !hasContent(state.draft)) return null;
+    // Never write a draft over a document that was issued meanwhile (on
+    // another screen or device): the issued one wins.
+    const current = store.get('documents', state.draft.id);
+    if (current && current.status !== 'DRAFT') return current;
     const stored = await saveDocument(store, state.draft);
     if (!state.stored) {
       state.stored = true;
@@ -56,6 +61,8 @@ export function editorActions({ route, state, company, save, showMissing, onCont
     try {
       await save();
       const doc = await issueDraft(salesStore(), state.draft);
+      state.draft = doc;
+      state.closed = true;
       showMissing([]);
       showToast(t('documents.toast.issued', { number: doc.number }), { type: 'success' });
       window.location.hash = salesHash(listRoute(), { id: doc.id });
@@ -73,8 +80,9 @@ export function editorActions({ route, state, company, save, showMissing, onCont
   function remove() {
     const id = state.draft.id;
     clearTimeout(state.timer);
-    if (!state.stored) { window.location.hash = salesHash(listRoute()); return; }
+    if (!state.stored) { state.closed = true; window.location.hash = salesHash(listRoute()); return; }
     if (!guardWrite()) return;
+    state.closed = true;
     markPending(id);
     window.location.hash = salesHash(listRoute());
     showUndoToast(t('documents.toast.deleted'), {

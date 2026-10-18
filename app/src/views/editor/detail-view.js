@@ -3,7 +3,7 @@
 // log and the PDF. Redrawn when the document changes (a payment, a status
 // from the Peppol package). Demo documents show their summary only.
 import { canEdit } from '@we-invoice/core';
-import { h, icon, clear } from '../../ui/dom.js';
+import { h, icon, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
@@ -14,6 +14,7 @@ import { statusCell } from '../documents/list-columns.js';
 import { salesHash, routeForKind } from '../documents/kinds.js';
 import { findDocument, companyNow, contactsById, allDocuments } from '../documents/source.js';
 import { pdfOptions } from '../documents/pdf-options.js';
+import { canFrameBlobs } from '../documents/pdf-frame.js';
 import { buildPdf } from '../../pdf/index.js';
 import { ribbonSteps } from './ribbon.js';
 import { paymentsCard } from './payments.js';
@@ -72,6 +73,7 @@ function sendLogCard(doc) {
 }
 
 function pdfCard(doc, company, onUrl) {
+  if (!canFrameBlobs()) return null;
   const frame = h('iframe', { class: 'pdf-frame', title: t('documents.preview.title') });
   const status = h('p', { class: 'muted small' }, t('documents.preview.loading'));
   buildPdf(doc, company, { ...pdfOptions(doc, company, allDocuments()), allowIncomplete: true })
@@ -102,7 +104,7 @@ export function renderDetail(root, { route, id }) {
     const documents = allDocuments();
     const full = Array.isArray(doc.lines);
     const actions = full ? detailActions({ doc, row, company, route, documents, redraw: draw }) : null;
-    body.append(
+    append(body, [
       h('header', { class: 'view-header editor-header' },
         h('div', { class: 'editor-title' },
           h('a', { href: salesHash(route), class: 'btn btn-ghost btn-icon', 'aria-label': t('documents.editor.back') }, icon('arrow-left')),
@@ -113,7 +115,7 @@ export function renderDetail(root, { route, id }) {
       full && actions ? paymentsCard({ doc, company, readOnly: !actions.canWrite(), onRemove: actions.removePayment, onReceipt: actions.saveReceipt }) : null,
       linksCard(doc, documents),
       sendLogCard(doc),
-      full ? pdfCard(doc, company, keepUrl) : null);
+      full ? pdfCard(doc, company, keepUrl) : null]);
     if (full && !canEdit(doc).editable && canEdit(doc).reason === 'DOCUMENT_PEPPOL_SENT') body.append(h('p', { class: 'muted small' }, t('errors.DOCUMENT_PEPPOL_SENT')));
     refreshIcons(body);
   };

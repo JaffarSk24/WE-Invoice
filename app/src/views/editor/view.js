@@ -145,7 +145,7 @@ export function renderEditor(root, { route, kind, doc = null, params = {}, trans
       itemById: (id) => allItems().find(i => i.id === id) || null,
       itemPrice: (item) => clientPrice(item, { contact: contact(), date: state.draft.issueDate })
     });
-    form.append(party.el, head.el, lines.el, advancesPanel(ctx), payment.el, totalsPanel.el);
+    form.append(...[party.el, head.el, lines.el, advancesPanel(ctx), payment.el, totalsPanel.el].filter(Boolean));
     refreshIcons(form);
     if (state.missing.length) showMissing(state.missing);
   }
