@@ -1,0 +1,21 @@
+{
+  "$comment": "Travel compensation of the owner booked without money (km rate and stravné of 2026, a business car, a stored amount) and an invoice in CZK booked in EUR by its rate.",
+  "name": "trips and foreign currency",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "documents": [
+    { "id": "czk", "kind": "INVOICE", "currency": "CZK", "fxRate": "25", "issueDate": "2026-02-20", "lines": [ { "unitPrice": "25000", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-03-01", "amount": "25000", "currency": "CZK" } ] }
+  ],
+  "trips": [
+    { "id": "t1", "date": "2026-04-01", "vehicle": "BA123AB", "from": "Bratislava", "to": "Nitra", "km": "200", "hours": 10 },
+    { "id": "t2", "date": "2026-04-02", "vehicle": "BA999XX", "from": "Nitra", "to": "Trnava", "km": "60", "assetId": "car" },
+    { "id": "t3", "date": "2026-05-01", "vehicle": "BA123AB", "from": "Bratislava", "to": "Senec", "km": "30", "allowance": "15" }
+  ],
+  "entries": [],
+  "expected": {
+    "totals": { "bankIn": "1000.00", "INCOME_TAX_SERVICES": "1000.00", "EXPENSE_TAX_OTHER": "86.90" },
+    "incomeExpense": { "r02": "1000.00", "r11": "86.90", "r13": "913.10" },
+    "closing": { "cash": "0.00", "bank": "1000.00" }
+  }
+}

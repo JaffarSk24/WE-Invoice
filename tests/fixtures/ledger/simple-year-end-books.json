@@ -1,0 +1,23 @@
+{
+  "$comment": "Receivables and payables open at 31 December: payments after the year do not count, drafts and next year documents are left out, inventory comes from the closing input.",
+  "name": "books at year end",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "inputs": { "inventory": "150" },
+  "documents": [
+    { "id": "inv1", "kind": "INVOICE", "issueDate": "2026-11-10", "dueDate": "2026-11-24", "lines": [ { "unitPrice": "1000", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-12-10", "amount": "400" }, { "date": "2027-01-15", "amount": "600" } ] },
+    { "id": "inv2", "kind": "INVOICE", "issueDate": "2026-12-20", "lines": [ { "unitPrice": "200", "vatCategory": "O", "vatRate": null } ] },
+    { "id": "inv3", "kind": "INVOICE", "issueDate": "2027-01-02", "lines": [ { "unitPrice": "999", "vatCategory": "O", "vatRate": null } ] },
+    { "id": "inv4", "kind": "INVOICE", "status": "DRAFT", "issueDate": "2026-12-01", "lines": [ { "unitPrice": "999", "vatCategory": "O", "vatRate": null } ] },
+    { "id": "r1", "kind": "RECEIVED_INVOICE", "status": "TO_PROCESS", "receivedDate": "2026-12-28", "lines": [ { "unitPrice": "300", "vatCategory": "O", "vatRate": null, "accountingCategory": "EXPENSE_TAX_SERVICES" } ] }
+  ],
+  "entries": [],
+  "expected": {
+    "totals": { "bankIn": "400.00", "INCOME_TAX_SERVICES": "400.00" },
+    "receivables": "800.00",
+    "payables": "300.00",
+    "assetsLiabilities": { "m03": "150.00", "m04": "800.00", "m05": "400.00", "m08": "1350.00", "z01": "300.00", "z04": "300.00", "d01": "1050.00" },
+    "checklist": { "inventory": true }
+  }
+}

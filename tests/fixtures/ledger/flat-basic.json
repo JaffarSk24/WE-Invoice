@@ -1,0 +1,23 @@
+{
+  "$comment": "Daňová evidencia with flat-rate expenses: income from paid invoices and one manual income of § 6 ods. 2 písm. a, the flat expenses split over the rows, insurance on top.",
+  "name": "flat expenses below the cap",
+  "mode": "TAX_RECORDS_FLAT",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "documents": [
+    { "id": "inv1", "kind": "INVOICE", "issueDate": "2026-01-10", "lines": [ { "unitPrice": "3000", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-01-15", "amount": "3000" } ] },
+    { "id": "inv2", "kind": "INVOICE", "issueDate": "2026-06-01", "lines": [ { "unitPrice": "2000", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-06-30", "amount": "2000", "method": "CASH" } ] }
+  ],
+  "entries": [
+    { "id": "s1", "date": "2026-02-08", "direction": "EXPENSE", "medium": "BANK", "amount": "400", "category": "EXPENSE_TAX_INSURANCE", "auto": false },
+    { "id": "s2", "date": "2026-08-08", "direction": "EXPENSE", "medium": "BANK", "amount": "400", "category": "EXPENSE_TAX_INSURANCE", "auto": false },
+    { "id": "x", "date": "2026-09-01", "direction": "INCOME", "medium": "BANK", "amount": "1000", "category": "INCOME_TAX_OTHER", "incomeParagraph": "6_2_A", "auto": false }
+  ],
+  "expected": {
+    "flat": {
+      "rows": [ { "paragraph": "6_1_AB", "income": "5000.00", "expenses": "3000.00" }, { "paragraph": "6_2_A", "income": "1000.00", "expenses": "600.00" } ],
+      "insurance": "800.00", "income": "6000.00", "expenses": "4400.00", "base": "1600.00"
+    },
+    "incomeRecordsTotal": "6000.00"
+  }
+}

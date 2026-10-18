@@ -1,0 +1,20 @@
+{
+  "$comment": "VAT payer: VAT stays in its own columns, income and expenses are net.",
+  "name": "VAT payer",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "PAYER" },
+  "initial": { "cash": "50", "bank": "0" },
+  "documents": [
+    { "id": "inv1", "kind": "INVOICE", "number": "1", "issueDate": "2026-01-10", "lines": [ { "unitPrice": "1000", "vatCategory": "S", "vatRate": "23" } ], "payments": [ { "date": "2026-01-20", "amount": "1230" } ] },
+    { "id": "r1", "kind": "RECEIVED_INVOICE", "status": "PROCESSED", "receivedDate": "2026-01-25", "lines": [ { "unitPrice": "200", "vatCategory": "S", "vatRate": "23", "accountingCategory": "EXPENSE_TAX_SERVICES" } ], "payments": [ { "date": "2026-02-01", "amount": "246" } ] },
+    { "id": "e1", "kind": "EXPENSE_RECEIPT", "status": "PROCESSED", "receivedDate": "2026-02-03", "lines": [ { "unitPrice": "10", "vatCategory": "S", "vatRate": "23", "accountingCategory": "EXPENSE_TAX_OVERHEAD" } ], "payments": [ { "date": "2026-02-03", "amount": "12.30", "method": "CASH" } ] }
+  ],
+  "entries": [],
+  "expected": {
+    "totals": { "bankIn": "1230.00", "bankOut": "246.00", "cashOut": "12.30", "INCOME_TAX_SERVICES": "1000.00", "vatIn": "230.00", "EXPENSE_TAX_SERVICES": "200.00", "EXPENSE_TAX_OVERHEAD": "10.00", "vatOut": "48.30" },
+    "closing": { "cash": "37.70", "bank": "984.00" },
+    "incomeExpense": { "r02": "1000.00", "r12": "210.00", "r13": "790.00" },
+    "ready": false
+  }
+}

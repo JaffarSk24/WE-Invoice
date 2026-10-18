@@ -1,0 +1,21 @@
+{
+  "$comment": "What blocks the closing: a receipt without a category (left out of the statement), a bank line without a document, cash below zero and a set-off that moves no money.",
+  "name": "closing warnings",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "inputs": { "cashCount": "-20", "bankStatement": "0", "inventory": "0" },
+  "documents": [
+    { "id": "e1", "kind": "EXPENSE_RECEIPT", "status": "PROCESSED", "receivedDate": "2026-02-01", "lines": [ { "unitPrice": "20", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-02-01", "amount": "20", "method": "CASH" } ] },
+    { "id": "inv1", "kind": "INVOICE", "issueDate": "2026-02-05", "lines": [ { "unitPrice": "80", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-02-06", "amount": "80", "method": "OFFSET" } ] }
+  ],
+  "bankTransactions": [ { "id": "t1", "accountId": "acc", "date": "2026-03-03", "amount": "-75", "currency": "EUR", "importKey": "k1", "matched": null } ],
+  "entries": [],
+  "expected": {
+    "totals": { "cashOut": "20.00", "EXPENSE_UNCATEGORIZED": "20.00" },
+    "incomeExpense": { "r12": "0.00", "r13": "0.00" },
+    "uncategorized": "20.00",
+    "checklist": { "cash": true, "bank": true, "uncategorized": false, "withoutDocument": false, "cashNegative": false, "autoEntries": true },
+    "ready": false
+  }
+}

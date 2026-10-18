@@ -1,0 +1,24 @@
+{
+  "$comment": "Transfer from cash to bank (priebežné položky), non-tax items and opening balances carried over from the previous year.",
+  "name": "transfers and carried balances",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "initial": { "cash": "0", "bank": "500" },
+  "documents": [],
+  "entries": [
+    { "id": "a", "date": "2025-06-01", "direction": "INCOME", "medium": "CASH", "amount": "300", "category": "INCOME_TAX_SERVICES", "auto": false },
+    { "id": "b", "date": "2025-07-01", "direction": "EXPENSE", "medium": "BANK", "amount": "100", "category": "EXPENSE_TAX_OTHER", "auto": false },
+    { "id": "c", "date": "2026-01-10", "direction": "TRANSFER", "medium": "CASH", "amount": "250", "category": "TRANSFER", "auto": false },
+    { "id": "d", "date": "2026-02-01", "direction": "INCOME", "medium": "BANK", "amount": "1000", "category": "INCOME_NONTAX", "auto": false },
+    { "id": "e", "date": "2026-03-01", "direction": "EXPENSE", "medium": "CASH", "amount": "30", "category": "EXPENSE_NONTAX", "auto": false }
+  ],
+  "expected": {
+    "opening": { "cash": "300.00", "bank": "400.00" },
+    "totals": { "cashIn": "0.00", "cashOut": "280.00", "bankIn": "1250.00", "bankOut": "0.00", "transferIn": "250.00", "transferOut": "250.00", "INCOME_NONTAX": "1000.00", "EXPENSE_NONTAX": "30.00" },
+    "closing": { "cash": "20.00", "bank": "1650.00" },
+    "incomeExpense": { "r04": "0.00", "r12": "0.00", "r13": "0.00" },
+    "nonTaxIncome": "1000.00",
+    "carryForward": { "year": 2027, "cash": "20.00", "bank": "1650.00" }
+  }
+}
