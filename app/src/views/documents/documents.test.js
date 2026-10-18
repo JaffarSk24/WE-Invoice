@@ -138,3 +138,22 @@ describe('series', () => {
     expect(previewNumber({ ...s, counters: { 2026: 12 } }, '2027-01-02')).toBe('FA20270001');
   });
 });
+
+describe('dashboard source', async () => {
+  const { dashboardSource, accountsWithTurnover } = await import('./dashboard-source.js');
+  const { memoryStore } = await import('./fixtures.js');
+
+  it('gives flat documents, contacts, accounts with turnover and the inbox count', async () => {
+    const { store } = await memoryStore();
+    const c = await store.insert('contacts', structuredClone(CONTACT));
+    await store.insert('documents', { ...issued(), id: undefined, contactId: c.id });
+    await store.insert('documents', { kind: 'RECEIVED_INVOICE', status: 'TO_PROCESS', currency: 'EUR', lines: [] });
+    const data = dashboardSource(store);
+    expect(data.documents.find(d => d.kind === 'INVOICE')).toMatchObject({ totalGross: '246.00', contactName: 'Beta a. s.' });
+    expect(data.contacts).toHaveLength(1);
+    expect(data.inboxCount).toBe(1);
+    expect(data.accounts).toEqual([{ id: 'bank-1', name: 'Main', iban: 'SK3112000000198742637541', currency: 'EUR', balance: '0.00' }]);
+    expect(accountsWithTurnover(COMPANY, [{ accountId: 'bank-1', amount: '10.5', currency: 'EUR' }, { accountId: 'x', amount: '1' }])[0].balance).toBe('10.50');
+    expect(dashboardSource(null)).toEqual({ documents: [], contacts: [], accounts: [], inboxCount: 0 });
+  });
+});
