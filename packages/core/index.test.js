@@ -18,12 +18,15 @@ const API = [
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
+  'searchQuery', 'profitability', 'averagePurchasePrices', 'paymentDelays', 'recurringRuns', 'agingBucket', 'periodKey', 'periodKeys',
+  'eurAmounts', 'partyOf', 'trashEntries', 'restoredRecord', 'purgedRecord', 'auditEntryFor', 'filterAudit', 'changedFields',
+  'collectLabels', 'collectProjects', 'normalizeLabels', 'toCsv', 'decimalComma', 'fold',
   'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
   // WP-EXIM
   'protectCell', 'weBudgetRows', 'selectExportDocuments', 'registerRows', 'lineRows', 'exportState', 'exportFingerprint', 'exportedPatch',
   'accountantFiles', 'accountantSummary', 'exportFileName', 'buildBackup', 'serializeBackup', 'backupChecksum', 'buildZip', 'buildXlsx',
   'encodeWindows1250', 'decodeWindows1250', 'pohodaAddressbook', 'documentUuid', 'importOmegaText', 'importRows', 'readTimeTracker',
-  'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan', 'contactKey', 'documentKey', 'itemKey', 'continueSeries',
+  'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan', 'importContactKey', 'importDocumentKey', 'importItemKey', 'continueSeries',
   'guessMapping', 'guessEntity', 'importFields', 'readCsv', 'decodeText', 'detectDelimiter', 'readXlsx', 'readZip', 'isZip',
   'parseBackup', 'planRestore', 'createReport', 'mergeReports'
 ];

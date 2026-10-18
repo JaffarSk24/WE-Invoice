@@ -7,7 +7,7 @@ export { importPohoda } from './pohoda.js';
 export { importOmegaText } from './omega.js';
 export { importRows } from './table.js';
 export { importTimeTracker, readTimeTracker, timeTrackerClients, timeTrackerStatus, TT_GROUPINGS, TT_STATUS_FORMAT } from './timetracker.js';
-export { buildImportPlan, applyImportPlan, contactKey, documentKey, itemKey } from './plan.js';
+export { buildImportPlan, applyImportPlan, contactKey as importContactKey, documentKey as importDocumentKey, itemKey as importItemKey } from './plan.js';
 export { continueSeries } from './series.js';
 export { guessMapping, guessEntity, fieldsOf as importFields, FIELDS as IMPORT_FIELDS } from './mapping.js';
 export { readCsv, decodeText, detectDelimiter } from './csv.js';
