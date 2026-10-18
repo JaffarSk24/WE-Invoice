@@ -31,6 +31,6 @@ export function reportTable({ title, columns, rows, fileName, empty = null, onRo
     }, columns.map(c => cell(c, row))))),
     totals.some(v => v !== null) ? h('tfoot', {}, h('tr', {}, columns.map((c, i) => h('td', { class: c.align === 'num' ? 'num' : null }, totals[i] ?? (i === 0 ? t('table.total') : ''))))) : null);
   return h('section', { class: 'report-block' }, head,
-    h('div', { class: 'table-scroll report-scroll' }, table),
+    h('div', { class: 'table-scroll report-scroll', tabindex: '0', role: 'region', 'aria-label': title }, table),
     rows.length > MAX_ROWS ? h('p', { class: 'muted' }, t('reports.moreRows', { shown: MAX_ROWS, total: rows.length })) : null);
 }

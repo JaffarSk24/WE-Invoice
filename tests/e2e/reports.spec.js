@@ -16,7 +16,7 @@ test('the reports draw every tab from the sample data', async ({ page }) => {
   await expect(tabs).toHaveCount(5);
   for (let i = 0; i < 5; i++) {
     await tabs.nth(i).click();
-    await expect(page.locator('.report-tabs [role="tabpanel"]:not([hidden]) .report-cards')).toBeVisible();
+    await expect(page.locator('.report-tabs [role="tabpanel"]:not([hidden]) .report-cards').first()).toBeVisible();
   }
   await tabs.first().click();
   await expect(page.locator('.report-tabs [role="tabpanel"]:not([hidden]) svg.chart-svg')).toBeVisible();
