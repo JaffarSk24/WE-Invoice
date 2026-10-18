@@ -1,5 +1,5 @@
-// Slovak interface texts. The reference dictionary: every other language has exactly these keys.
-export const sk = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Fakturácia a eFaktúra zadarmo",
   "nav.dashboard": "Prehľad",

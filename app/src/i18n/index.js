@@ -2,8 +2,8 @@
 // English, then the key itself is shown: a missing key is visible, not
 // silent. {name} placeholders are filled from params. Ported from WE Budget;
 // keys are named by screen: "nav.invoices", "invoice.editor.addLine".
-import { sk } from './sk.js';
-import { en } from './en.js';
+import { sk } from './sk/index.js';
+import { en } from './en/index.js';
 import { LANGUAGES, FALLBACK_LANGUAGE, resolveLanguage } from './languages.js';
 
 export const translations = { sk, en };

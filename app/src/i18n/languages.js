@@ -10,11 +10,11 @@
 //            (the reference) and English (the fallback) are bundled.
 export const LANGUAGES = [
   { code: 'sk', name: 'Slovenčina', english: 'Slovak', locale: 'sk-SK', decimal: ',' },
-  { code: 'cs', name: 'Čeština', english: 'Czech', locale: 'cs-CZ', decimal: ',', load: () => import('./cs.js') },
+  { code: 'cs', name: 'Čeština', english: 'Czech', locale: 'cs-CZ', decimal: ',', load: () => import('./cs/index.js') },
   { code: 'en', name: 'English', english: 'English', locale: 'en-GB', decimal: '.' },
-  { code: 'de', name: 'Deutsch', english: 'German', locale: 'de-DE', decimal: ',', load: () => import('./de.js') },
-  { code: 'ru', name: 'Русский', english: 'Russian', locale: 'ru-RU', decimal: ',', load: () => import('./ru.js') },
-  { code: 'uk', name: 'Українська', english: 'Ukrainian', locale: 'uk-UA', decimal: ',', load: () => import('./uk.js') }
+  { code: 'de', name: 'Deutsch', english: 'German', locale: 'de-DE', decimal: ',', load: () => import('./de/index.js') },
+  { code: 'ru', name: 'Русский', english: 'Russian', locale: 'ru-RU', decimal: ',', load: () => import('./ru/index.js') },
+  { code: 'uk', name: 'Українська', english: 'Ukrainian', locale: 'uk-UA', decimal: ',', load: () => import('./uk/index.js') }
 ];
 
 export const DEFAULT_LANGUAGE = 'sk';

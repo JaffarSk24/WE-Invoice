@@ -4,7 +4,7 @@ import { resolveLanguage, matchBrowserLanguage, LANGUAGES } from './i18n/languag
 import { resolveTheme } from './ui/theme.js';
 import { routeFromHash } from './router.js';
 import { ALL_ROUTES, NAV, BOTTOM_BAR } from './views/shell/nav.js';
-import { sk } from './i18n/sk.js';
+import { sk } from './i18n/sk/index.js';
 
 describe('languages', () => {
   it('has the six interface languages', () => {

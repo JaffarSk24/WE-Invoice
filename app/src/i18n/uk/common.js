@@ -1,5 +1,5 @@
-// Ukrainian interface texts.
-export const uk = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Безкоштовні рахунки та електронні рахунки",
   "nav.dashboard": "Огляд",

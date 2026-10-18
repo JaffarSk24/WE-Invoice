@@ -1,5 +1,5 @@
-// Russian interface texts.
-export const ru = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Бесплатные счета и электронные счета",
   "nav.dashboard": "Обзор",

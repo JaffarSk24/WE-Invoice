@@ -12,17 +12,19 @@ import './ui/tokens.css';
 import './style/base.css';
 import './style/shell.css';
 import './style/components.css';
-import { setLanguage, translatePage } from './i18n/index.js';
+import { setLanguage, translatePage, t } from './i18n/index.js';
 import { getPrefs, setPref } from './prefs.js';
 import { setTheme, setDensity } from './ui/theme.js';
 import { initModalKeys } from './ui/modal.js';
-import { showError } from './ui/toast.js';
-import { registerRoute, startRouter, currentRoute } from './router.js';
+import { showError, showToast } from './ui/toast.js';
+import { registerRoute, startRouter, currentRoute, navigate, routeRender } from './router.js';
 import { renderShell, renderMore } from './views/shell/shell.js';
 import { renderPlaceholder } from './views/shell/placeholder.js';
 import { ALL_ROUTES } from './views/shell/nav.js';
 import { getTransport } from './transport/index.js';
 import { registerServiceWorker } from './sw-register.js';
+import { bootModules } from './boot/index.js';
+import { on, emit } from './events.js';
 
 ALL_ROUTES.forEach(route => registerRoute(route, (root) => renderPlaceholder(root, route)));
 registerRoute('more', renderMore);
@@ -34,7 +36,7 @@ function draw(route, render) {
   const main = renderShell(app, {
     active: route,
     prefs,
-    onLanguage: async (code) => { setPref('language', code); await setLanguage(code); draw(currentRoute(), null); },
+    onLanguage: async (code) => { setPref('language', code); await setLanguage(code); emit('language:changed', code); draw(currentRoute(), routeRender(currentRoute())); },
     onTheme: (theme) => { setPref('theme', theme); setTheme(theme); }
   });
   try {
@@ -52,8 +54,10 @@ async function start() {
   setTheme(prefs.theme);
   setDensity(prefs.density);
   await setLanguage(prefs.language);
-  getTransport();
+  const transport = getTransport();
   initModalKeys();
+  await bootModules({ registerRoute, transport, t, showToast, showError, navigate, on, emit },
+    (name, e) => { console.error(`Module ${name} did not start`, e); showError(e); });
   window.addEventListener('unhandledrejection', (e) => showError(e.reason));
   startRouter({ defaultRoute: 'dashboard', onChange: draw });
   registerServiceWorker();

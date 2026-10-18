@@ -1,5 +1,5 @@
-// German interface texts.
-export const de = {
+// Common texts: shell, navigation, common words (WP-0 / WP-UI).
+export default {
   "app.name": "WE Invoice",
   "app.tagline": "Kostenlose Rechnungen und E-Rechnungen",
   "nav.dashboard": "Übersicht",

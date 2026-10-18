@@ -40,9 +40,7 @@ const MAX_LINES = 300;
 // Files allowed to be longer, with the reason.
 const LONG_FILES = {
   'gateway/openapi.yaml': 'the API contract is one document',
-  'packages/core/legislation/sk.json': 'legislation data',
-  'app/src/i18n/sk.js': 'dictionary', 'app/src/i18n/en.js': 'dictionary', 'app/src/i18n/cs.js': 'dictionary',
-  'app/src/i18n/de.js': 'dictionary', 'app/src/i18n/ru.js': 'dictionary', 'app/src/i18n/uk.js': 'dictionary'
+  'packages/core/legislation/sk.json': 'legislation data'
 };
 const CODE_FILE = /\.(js|cjs|mjs|css)$/;
 
