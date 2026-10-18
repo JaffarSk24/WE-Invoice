@@ -1,7 +1,10 @@
-// Waitlist: POST /v1/waitlist (honeypot, fill-time check, double opt-in
-// e-mail), GET confirm and GET unsubscribe (redirects to the site). A
+// Waitlist: POST /v1/waitlist (honeypot, fill-time check, then either the
+// double opt-in e-mail or, by default, a direct sign-up with a notice to
+// the owner), GET confirm and GET unsubscribe (redirects to the site). A
 // bot-looking submission is answered like a real one and stored nowhere.
 import { HttpError } from '../lib/errors.js';
+import { localDateTime } from '../lib/time.js';
+import { texts } from '../mail/texts/index.js';
 import { LANGS, INTERESTS, normalizeEmail } from '../waitlist/service.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -28,6 +31,24 @@ export function looksLikeBot(body, { now = Date.now(), minFillMs }) {
 }
 
 export default async function waitlistRoutes(app, { config, waitlist, mailer }) {
+  // The owner learns about a sign-up by e-mail and can answer it directly
+  // (Reply-To is the applicant). A failed notice never fails the sign-up.
+  async function notifyOwner(request, fields) {
+    if (!config.waitlist.ownerEmail) return;
+    const counts = waitlist.counts();
+    const words = (texts[config.waitlist.ownerLang] || texts.en).ownerNew || texts.en.ownerNew;
+    const params = {
+      email: fields.email, lang: fields.lang, interests: (fields.interests || []).join(', ') || '-',
+      vatPayer: fields.vatPayer === true ? words.yes : fields.vatPayer === false ? words.no : '-',
+      source: fields.source || '-', time: localDateTime(), total: Object.values(counts).reduce((a, b) => a + b, 0)
+    };
+    try {
+      await mailer.send('ownerNew', config.waitlist.ownerLang, config.waitlist.ownerEmail, params, { replyTo: fields.email });
+    } catch (e) {
+      request.log.error({ reason: e.code || e.message }, 'owner notice failed');
+    }
+  }
+
   const redirect = (reply, page, lang, status) => reply.redirect(`${config.siteUrl}/waitlist/${page}.html?lang=${encodeURIComponent(lang)}&status=${status}`, 302);
 
   app.post('/v1/waitlist', {
@@ -39,11 +60,19 @@ export default async function waitlistRoutes(app, { config, waitlist, mailer }) 
     if (!EMAIL.test(email)) throw new HttpError(400, 'INVALID_EMAIL', 'Invalid e-mail address');
     if (body.consent !== true) throw new HttpError(400, 'CONSENT_REQUIRED', 'Consent is required');
     const bot = looksLikeBot(body, { minFillMs: config.waitlist.minFillSeconds * 1000 });
+    const direct = !config.waitlist.confirmByEmail;
+    const accepted = { status: direct ? 'received' : 'pending' };
     if (bot) {
       request.log.warn({ reason: bot }, 'waitlist submission dropped');
-      return reply.code(202).send({ status: 'pending' });
+      return reply.code(202).send(accepted);
     }
-    const { record, action } = waitlist.subscribe({ email, lang: body.lang, source: body.source, interests: body.interests, vatPayer: body.vatPayer });
+    const fields = { email, lang: body.lang, source: body.source, interests: body.interests, vatPayer: body.vatPayer };
+    if (direct) {
+      const { action } = waitlist.receive(fields);
+      if (action === 'notify') await notifyOwner(request, fields);
+      return reply.code(202).send(accepted);
+    }
+    const { record, action } = waitlist.subscribe(fields);
     if (action === 'mail') {
       try {
         await mailer.send('confirm', record.lang, record.email, {
