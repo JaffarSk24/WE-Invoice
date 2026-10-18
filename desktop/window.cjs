@@ -1,5 +1,5 @@
 // The main window: created with the remembered bounds (never off screen,
-// never under 1024 x 700), external links sent to the browser, and a close
+// never under 1024 x 700), and a close
 // that waits for the page to push unsent changes to the cloud. With the
 // tray switched on, closing the window only hides it: the scheduler keeps
 // working until the user quits from the tray or the app menu.
@@ -77,17 +77,8 @@ function createMainWindow({ BrowserWindow, screen, shell, ipcMain, userData, pre
     });
     if (bounds.maximized) win.maximize();
     trackWindow(win, userData);
-    // External links open in the default browser, never inside the app.
-    win.webContents.on('will-navigate', (event, target) => {
-      if (isExternal(target, devPort)) {
-        event.preventDefault();
-        shell.openExternal(target);
-      }
-    });
-    win.webContents.setWindowOpenHandler(({ url: target }) => {
-      if (isExternal(target, devPort)) shell.openExternal(target);
-      return { action: 'deny' };
-    });
+    // Navigation, new windows and webviews are guarded for every page by
+    // security.cjs: the window shows only the app, links open outside.
     win.on('close', onClose);
     win.on('closed', () => {
       win = null;

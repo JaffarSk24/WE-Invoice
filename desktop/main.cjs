@@ -2,11 +2,12 @@
 // application menu and the modules behind the preload bridges (storage,
 // secrets, network, mail, tray, scheduler, updates, deep links, Google
 // sign-in and Drive). Ported from WE Budget.
-const { app, BrowserWindow, ipcMain, protocol, shell, screen, Menu, nativeImage, Tray, Notification, safeStorage, powerMonitor } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, shell, screen, Menu, nativeImage, Tray, Notification, safeStorage, powerMonitor, session } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
 const { registerAppProtocol } = require('./app-protocol.cjs');
+const { hardenApp } = require('./security.cjs');
 const { createStorage, initStorageIpc } = require('./storage.cjs');
 const { Cloud, registerCloudIpc } = require('./cloud.cjs');
 const { createSecrets, initSecretsIpc } = require('./secrets.cjs');
@@ -144,6 +145,8 @@ app.whenReady().then(async () => {
   app.setName(APP_NAME);
   // Windows shows notifications only for an app with an identity.
   if (process.platform === 'win32') app.setAppUserModelId(APP_ID);
+  // Before any window: navigation, new windows, webviews and permissions.
+  hardenApp({ app, session, shell, devPort: process.env.NODE_ENV === 'development' ? DEV_PORT : null });
   initModules();
   buildAppMenu();
   if (process.platform === 'darwin' && !app.isPackaged && app.dock) app.dock.setIcon(nativeImage.createFromPath(ICON));

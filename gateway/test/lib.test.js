@@ -12,6 +12,7 @@ describe('config', () => {
     expect(c.host).toBe('127.0.0.1');
     expect(c.corsOrigins).toEqual(['https://jaffarsk24.github.io', 'http://localhost:5173']);
     expect(c.adminToken).toBe('');
+    expect(c.trustProxy).toBe('loopback,uniquelocal');
     expect(c.proxy.baseUrls).toEqual({});
     const d = loadConfig({ PORT: '9000', CORS_ORIGINS: 'https://a.test, https://b.test', TRUST_PROXY: 'false', SITE_URL: 'https://s.test/', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}', RATE_LIMIT_SCALE: '0' });
     expect(d.port).toBe(9000);

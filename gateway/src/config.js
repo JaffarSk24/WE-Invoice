@@ -11,7 +11,11 @@ export function loadConfig(env = process.env) {
     version: env.APP_VERSION || '0.1.0',
     logLevel: env.LOG_LEVEL || 'info',
     corsOrigins: list(env.CORS_ORIGINS, 'https://jaffarsk24.github.io,http://localhost:5173'),
-    trustProxy: env.TRUST_PROXY !== 'false',
+    // Trust only local proxies (nginx on loopback or on the Docker bridge):
+    // the client address is the first public one nginx saw. "true" would
+    // trust the whole X-Forwarded-For chain, which a client can fill in
+    // itself and so get around the rate limits by IP.
+    trustProxy: env.TRUST_PROXY === 'false' ? false : (env.TRUST_PROXY && env.TRUST_PROXY !== 'true' ? env.TRUST_PROXY : 'loopback,uniquelocal'),
     databasePath: env.DATABASE_PATH || ':memory:',
     siteUrl: (env.SITE_URL || 'https://jaffarsk24.github.io/WE-Invoice').replace(/\/+$/, ''),
     publicUrl: (env.PUBLIC_URL || 'https://invoice-api.whiteeagles.sk').replace(/\/+$/, ''),
