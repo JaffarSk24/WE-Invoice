@@ -19,6 +19,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Local calendar date helpers for Europe/Bratislava.
 - Slovak and English dictionary keys for core errors, document kinds and statuses, missing particulars, payment states, Peppol reasons and VAT categories.
 
+#### Changed
+
+- An issued document is printed in the language chosen on it, else the language on the client's card, else the company default, else Slovak (the client's language used to be ignored).
+
 ### Data, encryption and Google Drive
 
 #### Added
@@ -59,6 +63,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - The first start shows the Overview with a "Set up a company" action instead of an empty dashboard; an unfinished wizard is offered to be continued.
 - The Help item was added to the navigation.
+- Settings, Documents: the print language of the company's documents (Slovak by default) and an optional second language for bilingual documents, as drop-down lists. The interface language stays a separate setting of the device.
 
 #### Fixed
 
