@@ -10,8 +10,10 @@ import { emit } from '../../events.js';
 export function renderBottomBar(active) {
   const menu = h('div', { class: 'fab-menu', id: 'fab-menu', dataset: { open: 'false' }, role: 'menu', 'aria-label': t('fab.title') });
   let fab = null;
+  const backdrop = h('div', { class: 'fab-backdrop', dataset: { open: 'false' }, 'aria-hidden': 'true' });
   const setOpen = (open) => {
     menu.dataset.open = open ? 'true' : 'false';
+    backdrop.dataset.open = open ? 'true' : 'false';
     fab.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) {
       const first = menu.querySelector('[role="menuitem"]');
@@ -43,5 +45,6 @@ export function renderBottomBar(active) {
       }, icon(item.icon), h('span', {}, t(item.label))));
     }
   });
-  return [menu, bar];
+  backdrop.addEventListener('click', () => setOpen(false));
+  return [backdrop, menu, bar];
 }

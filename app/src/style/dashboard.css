@@ -7,10 +7,11 @@
 .widget.is-dragging { opacity: 0.5; }
 .widget.is-drop { border-color: var(--accent-blue); box-shadow: var(--shadow-glow); }
 .widget-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.widget-head h2 { font-size: 15px; }
+.widget-head h2 { font-size: 15px; flex: 1; min-width: 0; }
 .widget-tools { display: flex; gap: 2px; opacity: 0.55; }
 .widget:hover .widget-tools, .widget:focus-within .widget-tools { opacity: 1; }
 .widget-body { flex: 1; }
+@media (max-width: 767px) { .widget-tools .widget-move { display: none; } .widget-tools { opacity: 1; } }
 .view-actions { display: flex; align-items: center; gap: 10px; }
 .badge-demo { color: var(--warning); }
 .badge-new { color: var(--accent-blue); margin-left: 6px; }
@@ -36,7 +37,11 @@
 .calendar-row.is-soon .calendar-left { color: var(--warning); font-weight: 600; }
 
 .quick-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-@media (max-width: 767px) { .quick-actions .btn { flex: 1 1 calc(50% - 10px); } }
+@media (max-width: 767px) {
+  .quick-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quick-actions .btn { flex-direction: column; gap: 6px; min-height: 76px; padding: 10px 8px; text-align: center; line-height: 1.2; }
+  .quick-actions .btn svg { width: 22px; height: 22px; }
+}
 
 .threshold-bar { height: 10px; border-radius: 999px; background: var(--overlay-04); overflow: hidden; }
 .threshold-fill { height: 100%; background: var(--success); transition: width var(--transition-normal); }

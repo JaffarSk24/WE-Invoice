@@ -60,6 +60,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - The first start shows the Overview with a "Set up a company" action instead of an empty dashboard; an unfinished wizard is offered to be continued.
 - The Help item was added to the navigation.
 
+#### Fixed
+
+- Phone layout of the Overview: quick actions in a 2 by 2 grid with the icon above the label, badges no longer wrap, the page header wraps cleanly, widget titles take the free width and the move arrows are hidden on a phone (the order is changed in "Widgets"), and the create menu dims the page behind it and closes on a tap outside.
+
 ### PDF documents and QR payments
 
 #### Added
