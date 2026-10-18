@@ -3,7 +3,7 @@
 // a cell needs it, CRLF line ends and a byte order mark so Excel reads
 // UTF-8. Headers come from the caller already translated.
 
-const BOM = '﻿';
+const BOM = '\uFEFF';
 
 function cell(value, decimalComma) {
   if (value === null || value === undefined) return '';

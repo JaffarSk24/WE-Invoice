@@ -79,7 +79,7 @@ describe('cashJournal', () => {
 
 describe('ledger CSV', () => {
   it('uses semicolons, decimal commas and quotes', () => {
-    expect(toCsv(['a', 'b'], [['1.50', 'x;y'], [null, 'q"']])).toBe('﻿a;b\r\n1,50;"x;y"\r\n;"q"""\r\n');
+    expect(toCsv(['a', 'b'], [['1.50', 'x;y'], [null, 'q"']])).toBe('\uFEFFa;b\r\n1,50;"x;y"\r\n;"q"""\r\n');
     expect(toCsv(['a'], [['1.5']], { decimalComma: false, bom: false })).toBe('a\r\n1.5\r\n');
   });
 });
