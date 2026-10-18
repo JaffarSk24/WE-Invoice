@@ -38,7 +38,7 @@ export async function saveDocument(store, doc) {
 }
 
 /**
- * Issues a draft ("Vystaviť"). Missing particulars come back as
+ * Issues a draft (the Issue button). Missing particulars come back as
  * CoreError DOCUMENT_INCOMPLETE with details.missing, nothing is stored.
  * The buyer snapshot is taken again from the contact card so the issued
  * document carries the client as it is today.

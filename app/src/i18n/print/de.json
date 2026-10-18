@@ -112,5 +112,15 @@
   "note.lines": "Anmerkung",
   "footer.madeWith": "Erstellt mit WE Invoice",
   "footer.page": "Seite {page}/{pages}",
-  "footer.continues": "Fortsetzung auf der nächsten Seite"
+  "footer.continues": "Fortsetzung auf der nächsten Seite",
+  "unit.C62": "Stk.",
+  "unit.HUR": "Std.",
+  "unit.DAY": "Tag",
+  "unit.MON": "Monat",
+  "unit.KGM": "kg",
+  "unit.MTR": "m",
+  "unit.MTK": "m²",
+  "unit.LTR": "l",
+  "unit.KMT": "km",
+  "unit.SET": "Satz"
 }

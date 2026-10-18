@@ -117,11 +117,11 @@ export function filterRows(rows, filter = {}) {
   });
 }
 
-/** Sum of a row field per currency: [{ currency, amount }] in first-seen order. */
+/** Sum of a row field per currency, drafts and cancelled documents left out: [{ currency, amount }]. */
 export function sumByCurrency(rows, field) {
   const totals = new Map();
   rows.forEach(row => {
-    if (row.status === 'CANCELLED') return;
+    if (row.status === 'CANCELLED' || row.status === 'DRAFT') return;
     totals.set(row.currency, add(totals.get(row.currency) || '0', row[field] || '0'));
   });
   return [...totals.entries()].map(([currency, amount]) => ({ currency, amount: round(amount, 2) }));
