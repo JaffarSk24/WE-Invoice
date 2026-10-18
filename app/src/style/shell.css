@@ -111,7 +111,9 @@
 .promo-text a:hover, .promo-text a:focus-visible { border-color: var(--accent-blue); }
 .promo-text a svg { width: 14px; height: 14px; color: var(--accent-blue); }
 .promo-copyright { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-.promo-inline { position: static; width: auto; margin-top: 32px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+/* The inline copy (end of Overview and More) is for phones only; wide
+   screens have the fixed strip. */
+.promo-inline { display: none; position: static; width: auto; margin-top: 32px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
 #app[data-bare="true"] .promo-footer { display: none; }
 @media (max-width: 1100px) { .promo-copyright { display: none; } }
 @media (max-width: 767px) {

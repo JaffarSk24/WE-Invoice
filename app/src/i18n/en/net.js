@@ -14,7 +14,6 @@ export default {
   "errors.TOKEN_EXPIRED": "The link has expired. Sign up again.",
   "errors.INVALID_EMAIL": "Enter a valid e-mail address.",
   "errors.CONSENT_REQUIRED": "You cannot sign up without consent to data processing.",
-  "errors.MAIL_FAILED": "The confirmation e-mail could not be sent. Try again later.",
   "errors.INVALID_CODE": "The invite code is not valid.",
   "errors.CODE_USED": "The invite code has already been used.",
   "net.gateway.degraded": "Some public services are temporarily unavailable."

@@ -14,7 +14,6 @@ export default {
   "errors.TOKEN_EXPIRED": "Platnosť odkazu vypršala. Prihláste sa znova.",
   "errors.INVALID_EMAIL": "Zadajte platnú e-mailovú adresu.",
   "errors.CONSENT_REQUIRED": "Bez súhlasu so spracovaním údajov sa nedá prihlásiť.",
-  "errors.MAIL_FAILED": "Potvrdzovací e-mail sa nepodarilo odoslať. Skúste to neskôr.",
   "errors.INVALID_CODE": "Kód pozvánky je neplatný.",
   "errors.CODE_USED": "Kód pozvánky už bol použitý.",
   "net.gateway.degraded": "Niektoré verejné služby sú dočasne nedostupné."

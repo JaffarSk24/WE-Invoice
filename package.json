@@ -66,6 +66,9 @@
       "dist/**/*",
       "desktop/**/*.cjs",
       "!desktop/scripts/**",
+      "!desktop/**/*.test.js",
+      "desktop/assets/*.png",
+      "packages/core/peppol/providers.json",
       "oauth-credentials.json",
       "icon.png"
     ],
@@ -109,7 +112,8 @@
       "shortcutName": "WE Invoice"
     },
     "asarUnpack": [
-      "icon.png"
+      "icon.png",
+      "desktop/assets/*.png"
     ],
     "artifactName": "WE-Invoice-${version}-${os}-${arch}.${ext}",
     "publish": [
@@ -121,5 +125,8 @@
       }
     ],
     "copyright": "Copyright (c) 2026 White Eagles & Co. s.r.o."
+  },
+  "dependencies": {
+    "nodemailer": "^10.1.7"
   }
 }

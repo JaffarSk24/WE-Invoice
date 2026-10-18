@@ -12,8 +12,10 @@ test('desktop sidebar, search shortcut and the White Eagles strip', async ({ pag
   await expect(sidebar.locator('#sync-status')).toContainText('Len v tomto zariadení');
   await expect(sidebar.locator('.nav-item[href="#/kv"]')).toBeVisible();
 
-  const strip = page.locator('footer.promo-footer').first();
+  const strip = page.locator('footer.promo-footer:not(.promo-inline)');
   await expect(strip).toBeVisible();
+  // One strip on a wide screen: the inline copy is for phones only.
+  await expect(page.locator('footer.promo-inline')).toBeHidden();
   await expect(strip.locator('.promo-badge')).toHaveText('White Eagles');
   const link = strip.locator('a');
   await expect(link).toHaveAttribute('href', 'https://whiteeagles.sk/');
