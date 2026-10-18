@@ -9,6 +9,7 @@ RUN apk add --no-cache sqlite
 COPY gateway/package.json gateway/package-lock.json* ./
 RUN npm ci --omit=dev
 COPY gateway/src ./src
+COPY gateway/scripts ./scripts
 COPY gateway/openapi.yaml ./
 COPY packages/core/peppol/providers.json ./src/providers/providers.json
 RUN mkdir -p /data && chown node:node /data
