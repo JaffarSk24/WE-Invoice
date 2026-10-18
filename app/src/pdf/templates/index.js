@@ -18,14 +18,14 @@ export function templateById(id) {
 // The line table columns every template may use; a template lists the ones
 // it shows, "discount" appears only when a line has a discount.
 export const LINE_COLUMNS = Object.freeze({
-  n: { label: 'col.n', width: 20, align: 'right' },
+  n: { label: 'col.n', width: 16, align: 'right' },
   description: { label: 'col.description', width: '*', align: 'left' },
-  qty: { label: 'field.qty', width: 42, align: 'right' },
-  unit: { label: 'field.unit', width: 26, align: 'left' },
-  unitPrice: { label: 'field.unitPrice', width: 64, align: 'right' },
-  discount: { label: 'field.discount', width: 36, align: 'right' },
-  vatRate: { label: 'field.vatRate', width: 48, align: 'right' },
-  net: { label: 'field.lineNet', width: 64, align: 'right' },
-  vat: { label: 'field.vat', width: 54, align: 'right' },
-  gross: { label: 'field.lineGross', width: 66, align: 'right' }
+  qty: { label: 'field.qty', width: 40, align: 'right' },
+  unit: { label: 'field.unit', width: 22, align: 'left' },
+  unitPrice: { label: 'field.unitPrice', width: 56, align: 'right' },
+  discount: { label: 'field.discount', width: 32, align: 'right' },
+  vatRate: { label: 'field.vatRate', width: 40, align: 'right' },
+  net: { label: 'field.lineNet', width: 58, align: 'right' },
+  vat: { label: 'field.vat', width: 48, align: 'right' },
+  gross: { label: 'field.lineGross', width: 60, align: 'right' }
 });

@@ -76,7 +76,7 @@ function subtotalRow(ctx, line, columns) {
 function tableLayout(ctx) {
   const { theme, template } = ctx;
   const pad = template.id === 'COMPACT' ? 2.5 : 4;
-  const base = { paddingLeft: () => 4, paddingRight: () => 4, paddingTop: () => pad, paddingBottom: () => pad };
+  const base = { paddingLeft: () => 3, paddingRight: () => 3, paddingTop: () => pad, paddingBottom: () => pad };
   if (template.tableLines === 'grid') {
     return { ...base, hLineWidth: () => 0.5, vLineWidth: () => 0.5, hLineColor: () => theme.line, vLineColor: () => theme.line };
   }
