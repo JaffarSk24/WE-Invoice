@@ -6,7 +6,6 @@
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { emit } from '../../events.js';
 import { createTabs } from '../../components/tabs.js';
 import { statusBadge } from '../../components/status-badge.js';
@@ -19,7 +18,7 @@ import { languageInfo } from '../../i18n/languages.js';
 import { contactDocuments, contactBalance, documentAmounts } from './model.js';
 import { runVatChecks } from './checks.js';
 import { vatBadge, peppolBadge, balanceText } from './badges.js';
-import { getOf, listOf, write, onData } from './source.js';
+import { getOf, listOf, write, onData, go } from './source.js';
 
 const dl = (pairs) => h('dl', { class: 'contact-facts' }, pairs.filter(([, v]) => v !== null && v !== undefined && v !== '').map(([k, v]) => [h('dt', {}, k), h('dd', {}, v)]));
 
@@ -82,7 +81,7 @@ export function renderContactDetail(root, id, { transport }) {
     root.replaceChildren();
     const contact = getOf('contacts', id);
     if (!contact) {
-      root.append(emptyState({ title: t('contacts.notFound'), iconName: 'users', actionLabel: t('contacts.back'), onAction: () => navigate('contacts'), actionIcon: 'arrow-left' }));
+      root.append(emptyState({ title: t('contacts.notFound'), iconName: 'users', actionLabel: t('contacts.back'), onAction: () => go('contacts'), actionIcon: 'arrow-left' }));
       refreshIcons(root);
       return;
     }
@@ -98,7 +97,7 @@ export function renderContactDetail(root, id, { transport }) {
     const remove = async () => {
       if (!(await confirmDialog(t('contacts.deleteConfirm', { name: contact.name }), { danger: true, okLabel: t('common.delete') }))) return;
       const done = await write(store => store.remove('contacts', contact.id));
-      if (done) navigate('contacts');
+      if (done) go('contacts');
     };
     root.append(
       h('header', { class: 'view-header' },
@@ -108,7 +107,7 @@ export function renderContactDetail(root, id, { transport }) {
           h('div', { class: 'contact-badges' }, t(`contacts.kind.${contact.kind || 'COMPANY'}`), ' ', vatBadge(contact, { withDate: true }), ' ', peppolBadge(contact))),
         h('div', { class: 'view-actions' },
           h('button', { type: 'button', class: 'btn', onclick: checkVat, id: 'contact-check-vat' }, icon('shield-check'), t('contacts.vat.check')),
-          h('button', { type: 'button', class: 'btn', onclick: () => navigate(`contacts/${encodeURIComponent(contact.id)}/edit`), id: 'contact-edit' }, icon('pencil-line'), t('contacts.edit')),
+          h('button', { type: 'button', class: 'btn', onclick: () => go(`contacts/${encodeURIComponent(contact.id)}/edit`), id: 'contact-edit' }, icon('pencil-line'), t('contacts.edit')),
           h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove, id: 'contact-delete' }, icon('x'), t('common.delete')),
           h('button', { type: 'button', class: 'btn btn-primary', id: 'contact-new-invoice', onclick: () => emit('document:new', { kind: 'INVOICE', contactId: contact.id }) }, icon('file-plus-2'), t('contacts.newInvoice')))),
       createTabs({

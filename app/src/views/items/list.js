@@ -4,7 +4,6 @@
 import { h, icon, selectEl } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { createTable } from '../../components/table.js';
 import { emptyState } from '../../components/empty-state.js';
 import { formatAmount } from '../../components/decimal.js';
@@ -12,7 +11,7 @@ import { openModal } from '../../ui/modal.js';
 import { showToast } from '../../ui/toast.js';
 import { searchItems, categoriesOf, bothPrices } from './model.js';
 import { importItems } from './csv.js';
-import { listOf, onData, write, companyOf } from '../contacts/source.js';
+import { listOf, onData, write, companyOf, go } from '../contacts/source.js';
 
 export function unitLabel(unit) {
   if (!unit) return '';
@@ -81,7 +80,7 @@ export function renderItemList(root, { transport }) {
   root.append(
     h('header', { class: 'view-header' }, h('h1', {}, t('nav.items')),
       h('div', { class: 'view-actions' }, importBtn,
-        h('button', { type: 'button', class: 'btn btn-primary', id: 'items-new', onclick: () => navigate('items/new') }, icon('plus'), t('items.new')))),
+        h('button', { type: 'button', class: 'btn btn-primary', id: 'items-new', onclick: () => go('items/new') }, icon('plus'), t('items.new')))),
     h('div', { class: 'items-tools' }, h('div', { class: 'search-field' }, icon('search'), search), category),
     body);
 
@@ -92,11 +91,11 @@ export function renderItemList(root, { transport }) {
     category.value = chosen;
     category.hidden = categoriesOf(all).length === 0;
     if (!all.length) {
-      body.replaceChildren(emptyState({ title: t('items.empty.title'), text: t('items.empty.text'), iconName: 'boxes', actionLabel: t('items.new'), onAction: () => navigate('items/new') }));
+      body.replaceChildren(emptyState({ title: t('items.empty.title'), text: t('items.empty.text'), iconName: 'boxes', actionLabel: t('items.new'), onAction: () => go('items/new') }));
     } else {
       const table = createTable({
         key: 'items', columns: columns(), rows: searchItems(all, search.value, category.value),
-        onRowClick: (i) => navigate(`items/${encodeURIComponent(i.id)}`), empty: h('p', { class: 'muted' }, t('items.search.none'))
+        onRowClick: (i) => go(`items/${encodeURIComponent(i.id)}`), empty: h('p', { class: 'muted' }, t('items.search.none'))
       });
       body.replaceChildren(table.el);
     }

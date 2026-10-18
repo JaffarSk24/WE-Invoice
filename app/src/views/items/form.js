@@ -5,7 +5,6 @@
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { schema, vatRatesOn } from '@we-invoice/core';
 import { textField, textArea, selectField, numberField } from '../../components/fields.js';
 import { formatAmount } from '../../components/decimal.js';
@@ -15,7 +14,7 @@ import { showToast } from '../../ui/toast.js';
 import { blankItem, normalizeItem, bothPrices, UNIT_CODES } from './model.js';
 import { renderItemSections } from './sections.js';
 import { CURRENCIES } from '../contacts/form.js';
-import { getOf, write, canWrite, companyOf } from '../contacts/source.js';
+import { getOf, write, canWrite, companyOf, go } from '../contacts/source.js';
 
 function rateOptions() {
   try {
@@ -28,7 +27,7 @@ function rateOptions() {
 
 export function renderItemForm(root, id) {
   const existing = id ? getOf('items', id) : null;
-  if (id && !existing) { navigate('items'); return; }
+  if (id && !existing) { go('items'); return; }
   const company = companyOf();
   const nonPayer = company && company.vatMode === 'NONPAYER';
   const item = existing || blankItem({ currency: company?.defaults?.currency || 'EUR', ...(nonPayer ? { vatCategory: 'O', vatRate: null } : {}) });
@@ -72,11 +71,11 @@ export function renderItemForm(root, id) {
     const saved = await write(store => (existing ? store.update('items', existing.id, clean) : store.insert('items', clean)));
     if (!saved) return;
     showToast(t('items.saved'), { type: 'success' });
-    navigate(existing ? 'items' : `items/${encodeURIComponent(saved.id)}`);
+    go(existing ? 'items' : `items/${encodeURIComponent(saved.id)}`);
   };
   const remove = async () => {
     if (!(await confirmDialog(t('items.deleteConfirm', { name: existing.name }), { danger: true, okLabel: t('common.delete') }))) return;
-    if (await write(store => store.remove('items', existing.id))) navigate('items');
+    if (await write(store => store.remove('items', existing.id))) go('items');
   };
 
   const extra = h('div', { class: 'item-sections' });
@@ -90,7 +89,7 @@ export function renderItemForm(root, id) {
       preview, f.description.el,
       h('div', { class: 'form-actions' },
         existing ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove }, icon('x'), t('common.delete')) : null,
-        h('button', { type: 'button', class: 'btn', onclick: () => navigate('items') }, t('common.cancel')),
+        h('button', { type: 'button', class: 'btn', onclick: () => go('items') }, t('common.cancel')),
         h('button', { type: 'submit', class: 'btn btn-primary', id: 'item-save' }, icon('check'), t('common.save')))),
     extra);
   refresh();

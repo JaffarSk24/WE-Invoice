@@ -6,6 +6,7 @@
 // silently.
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
+import { navigate } from '../../router.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { hasStore, getStore } from '../../store/index.js';
 import { isDemo, demoData } from '../shell/demo-mode.js';
@@ -81,4 +82,13 @@ export function onData(root, collections, redraw) {
 export function subPath() {
   const hash = typeof window !== 'undefined' ? window.location.hash : '';
   return String(hash).replace(/^#\/?/, '').split('?')[0].split('/').slice(1).filter(Boolean).map(decodeURIComponent);
+}
+
+// Opens a route with its sub-path. navigate() of the router compares only
+// the first segment, so going from "#/contacts/abc" to "#/contacts" with it
+// would draw the card again; the hash is set here instead.
+export function go(path) {
+  const target = `#/${path}`;
+  if (window.location.hash !== target) window.location.hash = target;
+  else navigate(path.split('/')[0]);
 }

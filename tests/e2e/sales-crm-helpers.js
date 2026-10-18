@@ -50,3 +50,16 @@ export async function setUpCompany(page) {
   await page.locator('#ob-first-invoice').click();
   await expect(page.locator('#company-switcher option:checked')).toHaveText(COMPANY.name);
 }
+
+// Adds the client from the register through the contacts screen.
+export async function addClient(page) {
+  await page.goto('./#/contacts');
+  await page.locator('#contacts-lookup').click();
+  await page.fill('#lookup-query', CLIENT.ico);
+  await page.locator('#lookup-search').click();
+  await page.locator('.lookup-result', { hasText: CLIENT.name }).click();
+  await expect(page.locator('#contact-title')).toHaveText(CLIENT.name);
+}
+
+// The first row of a list, a table row on the desktop or a card on a phone.
+export const firstRow = (page) => page.locator('.data-table tr.row, .data-table .list-card').first();

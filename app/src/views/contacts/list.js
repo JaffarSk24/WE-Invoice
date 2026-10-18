@@ -5,13 +5,12 @@
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { createTable } from '../../components/table.js';
 import { emptyState } from '../../components/empty-state.js';
 import { todayLocal } from '../../components/dates.js';
 import { searchContacts, contactBalance, findDuplicates, emailsFor } from './model.js';
 import { vatBadge, balanceText } from './badges.js';
-import { listOf, onData } from './source.js';
+import { listOf, onData, go } from './source.js';
 
 let lastQuery = '';
 
@@ -32,7 +31,7 @@ export function renderContactList(root, { openLookup, openMerge }) {
     h('div', { class: 'view-actions' },
       h('button', { type: 'button', class: 'btn', id: 'contacts-merge', onclick: () => openMerge() }, icon('files'), t('contacts.merge.open')),
       h('button', { type: 'button', class: 'btn', id: 'contacts-lookup', onclick: () => openLookup() }, icon('search'), t('contacts.lookup.open')),
-      h('button', { type: 'button', class: 'btn btn-primary', id: 'contacts-new', onclick: () => navigate('contacts/new') }, icon('plus'), t('contacts.new'))));
+      h('button', { type: 'button', class: 'btn btn-primary', id: 'contacts-new', onclick: () => go('contacts/new') }, icon('plus'), t('contacts.new'))));
   const search = h('input', { type: 'search', id: 'contacts-search', value: lastQuery, placeholder: t('contacts.search'), 'aria-label': t('contacts.search') });
   const body = h('div', { class: 'contacts-body' });
   root.append(header, h('div', { class: 'search-field contacts-search' }, icon('search'), search), body);
@@ -54,7 +53,7 @@ export function renderContactList(root, { openLookup, openMerge }) {
     } else if (!table) {
       table = createTable({
         key: 'contacts', columns: columns(balances), rows,
-        onRowClick: (c) => navigate(`contacts/${encodeURIComponent(c.id)}`),
+        onRowClick: (c) => go(`contacts/${encodeURIComponent(c.id)}`),
         empty: h('p', { class: 'muted' }, t('contacts.search.none'))
       });
       body.replaceChildren(table.el);

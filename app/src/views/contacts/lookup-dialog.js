@@ -6,12 +6,11 @@
 import { h, icon, selectEl } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { openModal } from '../../ui/modal.js';
 import { showToast } from '../../ui/toast.js';
 import { lookupToContact, normalizeContact } from './model.js';
 import { lookupByIco, searchByName, runVatChecks } from './checks.js';
-import { listOf, write } from './source.js';
+import { listOf, write, go } from './source.js';
 
 // Creates (or finds) the contact for a register answer; returns its id.
 export async function createFromLookup(lookup, { transport }) {
@@ -42,7 +41,7 @@ export function openLookupDialog({ transport }) {
     const id = await createFromLookup(lookup, { transport });
     if (!id) return;
     modal.close();
-    navigate(`contacts/${encodeURIComponent(id)}`);
+    go(`contacts/${encodeURIComponent(id)}`);
   };
 
   const show = (list) => {
@@ -80,7 +79,7 @@ export function openLookupDialog({ transport }) {
       h('p', { class: 'muted' }, t('contacts.lookup.text')),
       h('div', { class: 'lookup-row' }, country, query, h('button', { type: 'button', class: 'btn btn-primary', id: 'lookup-search', onclick: search }, icon('search'), t('contacts.lookup.search'))),
       status, results,
-      h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { modal.close(); navigate('contacts/new'); } }, icon('pencil-line'), t('contacts.lookup.manual')))
+      h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { modal.close(); go('contacts/new'); } }, icon('pencil-line'), t('contacts.lookup.manual')))
   });
   return modal;
 }

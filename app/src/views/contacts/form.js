@@ -7,7 +7,6 @@
 import { h, icon } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang } from '../../i18n/index.js';
-import { navigate } from '../../router.js';
 import { schema } from '@we-invoice/core';
 import { textField, textArea, selectField, checkboxField, numberField } from '../../components/fields.js';
 import { languageInfo } from '../../i18n/languages.js';
@@ -15,7 +14,7 @@ import { showToast, showError } from '../../ui/toast.js';
 import { blankContact, normalizeContact, lookupToContact } from './model.js';
 import { lookupByIco, runVatChecks } from './checks.js';
 import { emailEditor, personEditor, deliveryEditor } from './form-lists.js';
-import { getOf, listOf, write } from './source.js';
+import { getOf, listOf, write, go } from './source.js';
 
 export const COUNTRIES = Object.freeze(['SK', 'CZ', 'AT', 'DE', 'HU', 'PL', 'BE', 'BG', 'CY', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PT', 'RO', 'SE', 'SI', 'CH', 'GB', 'UA', 'US']);
 export const CURRENCIES = Object.freeze(['EUR', 'CZK', 'USD', 'GBP', 'HUF', 'PLN', 'CHF']);
@@ -32,7 +31,7 @@ export function printLanguageChoices() {
 
 export function renderContactForm(root, id, { transport }) {
   const existing = id ? getOf('contacts', id) : null;
-  if (id && !existing) { navigate('contacts'); return; }
+  if (id && !existing) { go('contacts'); return; }
   const c = existing || blankContact();
   const f = {
     kind: selectField({ label: t('contacts.field.kind'), options: schema.CONTACT_KINDS.map(k => ({ value: k, label: t(`contacts.kind.${k}`) })), value: c.kind, attrs: { id: 'contact-kind' } }),
@@ -100,7 +99,7 @@ export function renderContactForm(root, id, { transport }) {
     const saved = await write(store => (existing ? store.update('contacts', existing.id, contact) : store.insert('contacts', contact)));
     if (!saved) return;
     showToast(t('contacts.saved'), { type: 'success' });
-    navigate(`contacts/${encodeURIComponent(saved.id)}`);
+    go(`contacts/${encodeURIComponent(saved.id)}`);
     if (idChanged && saved.icDph) {
       runVatChecks(transport, saved)
         .then(patch => write(store => store.update('contacts', saved.id, patch)))
