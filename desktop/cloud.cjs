@@ -86,7 +86,7 @@ class Cloud {
   // ---------- OAuth ----------
 
   signIn(texts = {}) {
-    if (!this.isConfigured()) return Promise.resolve({ ok: false, code: 'NOT_CONFIGURED', message: 'No OAuth client' });
+    if (!this.isConfigured()) return Promise.resolve({ ok: false, code: 'GOOGLE_NOT_CONFIGURED', message: 'No OAuth client' });
     this.cancelSignIn();
     const t = { okTitle: 'Signed in', ok: 'You can close this tab and return to WE Invoice.', failTitle: 'Sign-in failed', fail: 'Close this tab and try again from the app.', ...texts };
     const verifier = crypto.randomBytes(32).toString('base64url');

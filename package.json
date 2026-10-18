@@ -29,6 +29,7 @@
     "preview:web": "vite preview --config app/vite.config.js --mode web",
     "test": "vitest run",
     "test:gateway": "npm --prefix gateway test",
+    "test:perf": "vitest run --config vitest.perf.config.js",
     "test:e2e": "playwright test",
     "lint": "eslint .",
     "check:bundle": "node scripts/check-bundle-size.mjs",

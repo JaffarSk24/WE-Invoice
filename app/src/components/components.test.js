@@ -1,7 +1,6 @@
 // Pure logic of the components: decimals, dates, virtual scrolling,
 // column choice, row sorting, undo, status styles, filters.
 import { describe, it, expect, beforeEach } from 'vitest';
-import { performance } from 'node:perf_hooks';
 import { parseDecimal, sum, round, cmp, toInputText } from './decimal.js';
 import { todayLocal, addDays, daysBetween, periodRange, inRange, daysInMonth } from './dates.js';
 import { visibleRange } from './virtual-list.js';
@@ -66,11 +65,6 @@ describe('virtual scrolling', () => {
     expect(mid).toEqual({ start: 4995, end: 5016 });
     expect(visibleRange({ scrollTop: 48 * 9999, viewportHeight: 480, rowHeight: 48, total: 10000 }).end).toBe(10000);
     expect(visibleRange({ scrollTop: 0, viewportHeight: 480, rowHeight: 48, total: 0 })).toEqual({ start: 0, end: 0 });
-  });
-  it('computes the range for 10 000 rows fast', () => {
-    const t0 = performance.now();
-    for (let i = 0; i < 10000; i++) visibleRange({ scrollTop: i * 48, viewportHeight: 800, rowHeight: 48, total: 10000 });
-    expect(performance.now() - t0).toBeLessThan(200);
   });
 });
 

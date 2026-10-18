@@ -2,7 +2,6 @@
 // answers {error: {code}}; the client shows errors.<code>.
 export default {
   "errors.BAD_REQUEST": "Invalid request. Check the entered data.",
-  "errors.NOT_FOUND": "Record not found.",
   "errors.RATE_LIMITED": "Too many requests. Try again in a moment.",
   "errors.HOST_NOT_ALLOWED": "The provider address is not allowed.",
   "errors.PROVIDER_NOT_CONFIGURED": "This provider has not published its API address yet.",

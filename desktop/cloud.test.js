@@ -113,7 +113,7 @@ describe('desktop cloud', () => {
     expect(google.revoked).toEqual(['rt']);
     expect(await cloud.getAccessToken()).toMatchObject({ ok: false, code: 'NOT_SIGNED_IN' });
     const bare = new Cloud({ userData: tempDir(), bundledDir: tempDir() });
-    expect(await bare.signIn()).toMatchObject({ ok: false, code: 'NOT_CONFIGURED' });
+    expect(await bare.signIn()).toMatchObject({ ok: false, code: 'GOOGLE_NOT_CONFIGURED' });
   });
 
   it('the drive client maps network failures to OFFLINE', async () => {

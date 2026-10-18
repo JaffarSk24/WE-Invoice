@@ -79,7 +79,7 @@ export default {
   "errors.DRIVE_SCOPE_MISSING": "Access to Google Drive was not allowed on the Google page. Sign in again and allow it.",
   "errors.NOT_SIGNED_IN": "You are not signed in with Google.",
   "errors.RENEW_NEEDED": "Access to Google Drive has expired. Renew it.",
-  "errors.NOT_CONFIGURED": "Google sign-in is not set up in this build.",
+  "errors.GOOGLE_NOT_CONFIGURED": "Google sign-in is not set up in this build.",
   "errors.SYNC_FAILED": "Sync failed. Please try again.",
   "errors.DRIVE_ERROR": "Google Drive answered with an error.",
   "errors.READ_ONLY": "The data is open read-only.",

@@ -79,7 +79,7 @@ export default {
   "errors.DRIVE_SCOPE_MISSING": "Na stránke Google nebol povolený prístup ku Google Disku. Prihláste sa znova a povoľte ho.",
   "errors.NOT_SIGNED_IN": "Nie ste prihlásený cez Google.",
   "errors.RENEW_NEEDED": "Prístup ku Google Disku vypršal. Obnovte ho.",
-  "errors.NOT_CONFIGURED": "Prihlásenie cez Google nie je v tejto zostave nastavené.",
+  "errors.GOOGLE_NOT_CONFIGURED": "Prihlásenie cez Google nie je v tejto zostave nastavené.",
   "errors.SYNC_FAILED": "Synchronizácia sa nepodarila. Skúste to znova.",
   "errors.DRIVE_ERROR": "Google Disk odpovedal chybou.",
   "errors.READ_ONLY": "Dáta sú otvorené iba na čítanie.",

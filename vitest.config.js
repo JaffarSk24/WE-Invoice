@@ -12,7 +12,7 @@ export default defineConfig({
   },
   test: {
     include: ['packages/**/*.test.js', 'app/**/*.test.js', 'desktop/**/*.test.js', 'tests/**/*.test.js'],
-    exclude: ['**/node_modules/**', 'tests/e2e/**', 'gateway/**'],
+    exclude: ['**/node_modules/**', 'tests/e2e/**', 'gateway/**', '**/*.perf.test.js'],
     setupFiles: ['./tests/setup.js']
   }
 });

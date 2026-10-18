@@ -28,6 +28,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - name: Performance tests
+        run: npm run test:perf
       - run: npm run build:web
       - name: Initial bundle size
         run: npm run check:bundle

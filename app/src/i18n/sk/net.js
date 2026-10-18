@@ -2,7 +2,6 @@
 // answers {error: {code}}; the client shows errors.<code>.
 export default {
   "errors.BAD_REQUEST": "Neplatná požiadavka. Skontrolujte zadané údaje.",
-  "errors.NOT_FOUND": "Záznam sa nenašiel.",
   "errors.RATE_LIMITED": "Príliš veľa požiadaviek. Skúste to o chvíľu.",
   "errors.HOST_NOT_ALLOWED": "Adresa poskytovateľa nie je povolená.",
   "errors.PROVIDER_NOT_CONFIGURED": "Tento poskytovateľ ešte nemá zverejnenú adresu API.",

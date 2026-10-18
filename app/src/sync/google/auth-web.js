@@ -183,7 +183,7 @@ export function createWebAuth({ fetchImpl = (...a) => fetch(...a) } = {}) {
       return { signedIn: Boolean(account && account.email), email: (account && account.email) || '', tokenValid: Boolean(validToken()), configured: Boolean(GOOGLE_CLIENT_ID) };
     },
     async signIn() {
-      if (!GOOGLE_CLIENT_ID) throw authError('NOT_CONFIGURED');
+      if (!GOOGLE_CLIENT_ID) throw authError('GOOGLE_NOT_CONFIGURED');
       const result = await signInWindow();
       if (!result.ok) throw authError(result.error || 'SIGN_IN_FAILED');
       const email = await fetchEmail(fetchImpl).catch(() => (read(ACCOUNT_KEY) || {}).email || '');

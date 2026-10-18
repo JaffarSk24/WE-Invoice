@@ -3,7 +3,6 @@
 // keeps only a window of them in the page; fields, tabs and the
 // irreversible confirmation behave for the keyboard.
 import { describe, it, expect, beforeEach } from 'vitest';
-import { performance } from 'node:perf_hooks';
 import { createTable } from './table.js';
 import { amountField, textField } from './fields.js';
 import { createTabs } from './tabs.js';
@@ -23,12 +22,9 @@ const columns = [
 ];
 
 describe('table', () => {
-  it('shows 10 000 rows in under 200 ms with only a window in the page', () => {
-    const t0 = performance.now();
+  it('shows 10 000 rows with only a window in the page (timing in components.perf.test.js)', () => {
     const table = createTable({ key: 'test', columns, rows, selectable: true });
     document.body.append(table.el);
-    const ms = performance.now() - t0;
-    expect(ms).toBeLessThan(200);
     const drawn = table.el.querySelectorAll('tbody tr.row').length;
     expect(drawn).toBeGreaterThan(0);
     expect(drawn).toBeLessThan(100);
