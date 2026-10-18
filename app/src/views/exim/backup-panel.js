@@ -12,7 +12,7 @@ import { planRestore, SCHEMA_VERSION, exportFileName } from './core-bridge.js';
 import { eximSource } from './source.js';
 import { backupText, readBackup, isEncryptedBackup, MIN_PASSWORD } from './backup-file.js';
 import { saveFile, pickFiles } from './files.js';
-import { replaceCompanyData } from './store-bulk.js';
+import { replaceCompanyData, withAudit } from './store-bulk.js';
 import { errorText } from './labels.js';
 
 function askPassword() {
@@ -103,8 +103,9 @@ export function renderBackupPanel(panel, deps = {}) {
         const current = eximSource();
         if (keep.checked && current.company) await downloadBackup(current, null, deps.transport);
         if (!current.store.data) await createCompanyFor(current.store, backup);
-        const plan = planRestore(current.store.data, backup, { now: new Date().toISOString(), schemaVersion: SCHEMA_VERSION });
-        await replaceCompanyData(current.store, plan.data);
+        const now = new Date().toISOString();
+        const plan = planRestore(current.store.data, backup, { now, schemaVersion: SCHEMA_VERSION });
+        await replaceCompanyData(current.store, withAudit(current.store.data, plan.data, { now, reason: 'restore' }));
         clear(restoreInfo);
         showToast(t('exim.backup.restored', { restored: plan.restored, removed: plan.removed }), { type: 'success' });
       } catch (e) {

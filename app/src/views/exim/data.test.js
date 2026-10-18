@@ -8,7 +8,7 @@ import { Store, memoryAdapter } from '../../store/index.js';
 import { company, contacts, documents } from '../../../../tests/fixtures/exports/period.js';
 import { demoDocument } from './source.js';
 import { buildAccountantZip, markExported, summaryText, localStamp } from './export-run.js';
-import { replaceCompanyData } from './store-bulk.js';
+import { replaceCompanyData, withAudit } from './store-bulk.js';
 import { backupText, readBackup, isEncryptedBackup } from './backup-file.js';
 import { parseSources } from './import-read.js';
 import { applyImport } from './import-apply.js';
@@ -94,6 +94,9 @@ describe('writing through the store', () => {
     expect(result.added.documents).toHaveLength(3);
     expect(store.list('contacts').map(c => c.name)).toEqual(['Odběratel Praha s.r.o.', 'Malý zákazník']);
     expect(store.company().series[0].counters).toEqual({ 2025: 4 });
+    const log = store.list('auditLog');
+    expect(log.filter(e => e.entity === 'Document' && e.action === 'CREATE' && e.reason === 'import')).toHaveLength(3);
+    expect(log.filter(e => e.entity === 'Contact')).toHaveLength(2);
     const again = buildImportPlan(parseSources('idoklad', [{ name: 'f.csv', rows }], { company, direction: 'OUT' }), { contacts: store.list('contacts'), items: [], documents: store.list('documents') });
     expect(again.report.added).toEqual({ contacts: 0, items: 0, documents: 0 });
   });
@@ -155,5 +158,14 @@ describe('restore on a new device', () => {
     expect(store.company()).toMatchObject({ name: 'Biela Hora s. r. o.', ico: '12345679' });
     expect(store.company().id).not.toBe('old-id');
     expect(store.list('documents')).toHaveLength(documents.length);
+  });
+});
+
+describe('change log of bulk writes', () => {
+  it('logs what a restore adds, changes and deletes, and nothing for unchanged records', () => {
+    const before = { contacts: [contacts[0], contacts[1]], documents: [documents[0]], auditLog: [] };
+    const after = { contacts: [contacts[0], { ...contacts[1], deleted: true }], documents: [{ ...documents[0], dueDate: '2026-12-31' }, documents[1]], auditLog: [] };
+    const log = withAudit(before, after, { now: '2026-10-18T10:00:00.000Z', reason: 'restore' }).auditLog;
+    expect(log.map(e => [e.entity, e.action, e.reason])).toEqual([['Document', 'UPDATE', 'restore'], ['Document', 'CREATE', 'restore'], ['Contact', 'DELETE', 'restore']]);
   });
 });
