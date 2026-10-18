@@ -1,0 +1,28 @@
+{
+  "$comment": "Expense categories of received documents (03-features.md § 3.11, 05-accounting-tax.md). journalColumn is the expense column of the peňažný denník; taxDeductible says whether the expense lowers the income tax base (NO for representation and fines, PARTIAL for mixed private use); vatDeductible says whether the input VAT may be deducted (§ 49 ods. 7 zákona o DPH excludes representation). Labels come from the dictionaries: purchase.category.<id>.",
+  "categories": [
+    { "id": "GOODS", "journalColumn": "MATERIAL", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "MATERIAL", "journalColumn": "MATERIAL", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "SERVICES", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "ENERGY", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "RENT", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "TELECOM", "journalColumn": "SERVICES", "taxDeductible": "PARTIAL", "vatDeductible": true },
+    { "id": "SOFTWARE", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "FUEL", "journalColumn": "MATERIAL", "taxDeductible": "PARTIAL", "vatDeductible": true },
+    { "id": "CAR", "journalColumn": "SERVICES", "taxDeductible": "PARTIAL", "vatDeductible": true },
+    { "id": "TRAVEL", "journalColumn": "OTHER", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "OFFICE", "journalColumn": "MATERIAL", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "ADVERTISING", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "TRAINING", "journalColumn": "SERVICES", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "ASSET", "journalColumn": "OTHER", "taxDeductible": "YES", "vatDeductible": true },
+    { "id": "WAGES", "journalColumn": "WAGES", "taxDeductible": "YES", "vatDeductible": false },
+    { "id": "INSURANCE", "journalColumn": "INSURANCE", "taxDeductible": "YES", "vatDeductible": false },
+    { "id": "TAXES", "journalColumn": "OTHER", "taxDeductible": "YES", "vatDeductible": false },
+    { "id": "BANK_FEES", "journalColumn": "OTHER", "taxDeductible": "YES", "vatDeductible": false },
+    { "id": "REPRESENTATION", "journalColumn": "OTHER", "taxDeductible": "NO", "vatDeductible": false },
+    { "id": "FINES", "journalColumn": "OTHER", "taxDeductible": "NO", "vatDeductible": false },
+    { "id": "PRIVATE", "journalColumn": "OTHER", "taxDeductible": "NO", "vatDeductible": false },
+    { "id": "OTHER", "journalColumn": "OTHER", "taxDeductible": "YES", "vatDeductible": true }
+  ],
+  "journalColumns": ["MATERIAL", "SERVICES", "WAGES", "INSURANCE", "OTHER"]
+}

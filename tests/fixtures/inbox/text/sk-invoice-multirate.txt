@@ -1,0 +1,17 @@
+Faktúra číslo: FV-2026/0877
+Dodávateľ: Veľkoobchod Tatry, s.r.o.
+Priemyselná 22, 058 01 Poprad
+IČO 44445555   DIČ 2044556602   IČ DPH SK2044556602
+Odberateľ: Biela Orlica s.r.o., IČO: 36123455
+Dátum vystavenia: 12. 10. 2026
+Dátum dodania tovaru alebo služby: 12. 10. 2026
+Splatnosť: 26. 10. 2026
+VS: 20260877
+IBAN: SK11 7500 0000 0040 1234 5678   SWIFT: CEKOSKBX
+Sadzba   Základ    DPH
+23 %     1 250,00  287,50
+19 %       400,00   76,00
+5 %         80,00    4,00
+Spolu bez DPH: 1 730,00 €
+DPH spolu: 367,50 €
+Suma k úhrade: 2 097,50 €

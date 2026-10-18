@@ -1,0 +1,18 @@
+Faktura - daňový doklad č. 260455
+Dodavatel:
+Kancelářské potřeby Praha s.r.o.
+Vinohradská 15, 120 00 Praha 2
+IČ: 45551235
+DIČ: CZ45551235
+Odběratel:
+Biela Orlica s.r.o.
+IČO: 36123455
+Datum vystavení: 06.10.2026
+Datum uskutečnění zdanitelného plnění: 06.10.2026
+Datum splatnosti: 20.10.2026
+Variabilní symbol: 260455
+Číslo účtu: 1234567890/0800
+IBAN: CZ07 0800 0000 0012 3456 7890
+Základ    Sazba   DPH
+1 500,00  21 %    315,00
+Celkem k úhradě: 1 815,00 Kč

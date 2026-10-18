@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns="http://isdoc.cz/namespace/2013" version="6.0.2">
+  <DocumentType>1</DocumentType>
+  <ID>VF-2026-3301</ID>
+  <UUID>0A1B2C3D-4E5F-4061-8293-A4B5C6D7E8F9</UUID>
+  <IssueDate>2026-10-02</IssueDate>
+  <TaxPointDate>2026-10-01</TaxPointDate>
+  <VATApplicable>true</VATApplicable>
+  <LocalCurrencyCode>CZK</LocalCurrencyCode>
+  <CurrRate>1</CurrRate>
+  <RefCurrRate>1</RefCurrRate>
+  <AccountingSupplierParty><Party>
+    <PartyIdentification><ID>50778811</ID></PartyIdentification>
+    <PartyName><Name>Webhosting Brno s.r.o.</Name></PartyName>
+    <PostalAddress><StreetName>Kounicova</StreetName><BuildingNumber>45</BuildingNumber><CityName>Brno</CityName><PostalZone>60200</PostalZone><Country><IdentificationCode>CZ</IdentificationCode></Country></PostalAddress>
+    <PartyTaxScheme><CompanyID>CZ50778811</CompanyID><TaxScheme>VAT</TaxScheme></PartyTaxScheme>
+  </Party></AccountingSupplierParty>
+  <InvoiceLines>
+    <InvoiceLine><ID>1</ID><InvoicedQuantity unitCode="MON">12</InvoicedQuantity><LineExtensionAmount>2400.00</LineExtensionAmount><LineExtensionAmountTaxInclusive>2904.00</LineExtensionAmountTaxInclusive><UnitPrice>200.00</UnitPrice>
+      <ClassifiedTaxCategory><Percent>21</Percent><VATCalculationMethod>0</VATCalculationMethod></ClassifiedTaxCategory><Item><Description>Webhosting Profi, 12 mesiacov</Description></Item></InvoiceLine>
+  </InvoiceLines>
+  <TaxTotal>
+    <TaxSubTotal><TaxableAmount>2400.00</TaxableAmount><TaxAmount>504.00</TaxAmount><TaxInclusiveAmount>2904.00</TaxInclusiveAmount><TaxCategory><Percent>21</Percent></TaxCategory></TaxSubTotal>
+    <TaxAmount>504.00</TaxAmount>
+  </TaxTotal>
+  <LegalMonetaryTotal><TaxExclusiveAmount>2400.00</TaxExclusiveAmount><TaxInclusiveAmount>2904.00</TaxInclusiveAmount><PayableAmount>2904.00</PayableAmount></LegalMonetaryTotal>
+  <PaymentMeans><Payment><PaidAmount>2904.00</PaidAmount><PaymentMeansCode>42</PaymentMeansCode>
+    <Details><PaymentDueDate>2026-10-16</PaymentDueDate><ID>1234567890</ID><BankCode>0800</BankCode><IBAN>CZ0708000000001234567890</IBAN><BIC>GIBACZPX</BIC><VariableSymbol>20263301</VariableSymbol><ConstantSymbol>0308</ConstantSymbol></Details>
+  </Payment></PaymentMeans>
+</Invoice>

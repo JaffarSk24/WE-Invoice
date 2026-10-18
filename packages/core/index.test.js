@@ -18,7 +18,11 @@ const API = [
   'importIdoklad', 'importSuperfaktura', 'importKros', 'importPohoda', 'importCsv', 'importTimeTracker',
   'extractInvoiceFields', 'parseEkasaQr', 'stockLevels', 'movesForDocument', 'averageCost',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
-  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
+  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
+  'recognizeXml', 'detectXmlFormat', 'registerInboxParser', 'recognizeQr', 'detectQrFormat', 'recognizeEkasaReceipt',
+  'recognizeFound', 'detectInboxFile', 'mergeRecognitions', 'draftFromRecognition', 'pickFieldValue', 'applyUserValue',
+  'learnTemplate', 'applyTemplateRegions', 'findSupplierContact', 'expenseCategory', 'expenseCategoryOf', 'withExpenseCategory',
+  'vatPeriodKey', 'vatDeductionPeriodOf', 'deductibleVat', 'receivedKvSections'
 ];
 
 describe('core public API', () => {
