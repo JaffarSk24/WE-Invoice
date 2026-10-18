@@ -30,15 +30,16 @@ export function crc32(bytes) {
 
 const NO_DEFLATE = /\.(pdf|png|jpe?g|gif|webp|zip|gz|xlsx|docx|enc)$/i;
 
-// Web streams are globals in browsers, Electron and Node 18+.
-const { Blob, Response, CompressionStream, DecompressionStream } = globalThis;
-
+// Web streams are globals in browsers, Electron and Node 18+; they are
+// looked up when used, so loading this module has no side effects.
 async function streamBytes(bytes, stream) {
+  const { Blob, Response } = globalThis;
   const piped = new Blob([bytes]).stream().pipeThrough(stream);
   return new Uint8Array(await new Response(piped).arrayBuffer());
 }
 
 export async function deflateRaw(bytes) {
+  const { CompressionStream } = globalThis;
   if (typeof CompressionStream === 'undefined') return null;
   try {
     return await streamBytes(bytes, new CompressionStream('deflate-raw'));
@@ -49,6 +50,7 @@ export async function deflateRaw(bytes) {
 }
 
 export async function inflateRaw(bytes) {
+  const { DecompressionStream } = globalThis;
   if (typeof DecompressionStream === 'undefined') throw new Error('DecompressionStream is not available');
   return streamBytes(bytes, new DecompressionStream('deflate-raw'));
 }

@@ -61,7 +61,9 @@ function importFiles(files, ctx, extraNames) {
     contacts: results.flatMap(r => r.contacts),
     items: results.flatMap(r => r.items),
     documents: results.flatMap(r => r.documents),
-    report: mergeReports(results.map(r => r.report))
+    report: mergeReports(results.map(r => r.report)),
+    // The mapping used for each table, for the preview to show and correct.
+    tables: results.map((r, i) => (r.header ? { name: list[i].name, entity: r.entity, mapping: r.mapping, header: r.header } : null)).filter(Boolean)
   };
 }
 
@@ -84,5 +86,6 @@ export function importKros(files, ctx = {}) {
  */
 export function importCsv(text, mapping, ctx = {}) {
   const rows = typeof text === 'string' ? readCsv(text, ctx.delimiter || null) : text;
-  return importRows(rows, { ...ctx, mapping: mapping || undefined });
+  const result = importRows(rows, { ...ctx, mapping: mapping || undefined });
+  return { ...result, tables: [{ name: ctx.name || '', entity: result.entity, mapping: result.mapping, header: result.header }] };
 }

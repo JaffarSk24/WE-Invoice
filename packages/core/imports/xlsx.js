@@ -8,11 +8,10 @@ import { readZip } from './zip.js';
 import { parseXml, child, children, descendants } from './xml.js';
 
 const BUILTIN_DATE_FORMATS = new Set([14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 46, 47]);
-const decoder = new TextDecoder('utf-8');
 
 function xmlOf(files, name) {
   const bytes = files.get(name);
-  return bytes ? parseXml(decoder.decode(bytes)) : null;
+  return bytes ? parseXml(new TextDecoder('utf-8').decode(bytes)) : null;
 }
 
 function textOf(node) {
