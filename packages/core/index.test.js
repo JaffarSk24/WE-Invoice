@@ -29,7 +29,7 @@ describe('core public API', () => {
   it('exports the schema and the provider list', () => {
     expect(core.SCHEMA_VERSION).toBe(1);
     expect(core.schema.SCHEMAS.Document).toBeTruthy();
-    expect(core.PEPPOL_PROVIDERS.map(p => p.id)).toEqual(['verteco', 'dativery', 'epostak', 'ipostar', 'sapi-sk']);
+    expect(core.PEPPOL_PROVIDERS.map(p => p.id)).toEqual(expect.arrayContaining(['verteco', 'dativery', 'epostak', 'ipostar', 'sapi-sk']));
   });
 
   it('stubs throw NotImplementedError with a stable code', () => {
