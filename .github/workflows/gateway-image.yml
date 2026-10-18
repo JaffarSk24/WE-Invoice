@@ -1,0 +1,28 @@
+name: Gateway image
+
+# Builds the gateway Docker image and pushes it to GitHub Container
+# Registry. It does not deploy anything. Run by hand only.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    name: Build and push the gateway image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: gateway
+          push: true
+          tags: ghcr.io/jaffarsk24/we-invoice-gateway:${{ github.sha }},ghcr.io/jaffarsk24/we-invoice-gateway:latest

@@ -1,0 +1,17 @@
+# Gateway behind nginx on the same host: listens on 127.0.0.1:8787 only.
+services:
+  gateway:
+    build: .
+    container_name: we-invoice-gateway
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8787
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - gateway-data:/data
+
+volumes:
+  gateway-data:
