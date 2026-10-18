@@ -2,5 +2,6 @@
 // (WP-CRM), one file per screen in crm/, merged here.
 import contacts from './crm/contacts.js';
 import items from './crm/items.js';
+import mail from './crm/mail.js';
 
-export default { ...contacts, ...items };
+export default { ...contacts, ...items, ...mail };

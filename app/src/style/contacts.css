@@ -55,3 +55,16 @@
   .view-actions .btn { flex: 1; justify-content: center; }
   .contact-docs { display: block; overflow-x: auto; }
 }
+
+/* The e-mail window and the e-mail and reminder settings. */
+.mail-dialog textarea, .template-editor textarea { width: 100%; font-family: var(--font-body); line-height: 1.5; }
+.mail-dialog .callout, .mail-way .callout { margin-top: 0; }
+.mail-status { min-height: 24px; font-size: 14px; color: var(--text-secondary); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.mail-dialog .muted svg { width: 14px; height: 14px; vertical-align: -2px; }
+.settings-subtitle { font-size: 15px; margin: 22px 0 10px; }
+.templates-table { width: 100%; margin-bottom: 12px; }
+.templates-table td { vertical-align: top; }
+.template-default { margin-left: 6px; color: var(--text-muted); }
+.template-actions { white-space: nowrap; text-align: right; }
+.smtp-host .desktop-section { padding: 0; border: 0; background: none; }
+@media (max-width: 767px) { .templates-table { display: block; overflow-x: auto; } }
