@@ -3,7 +3,7 @@
 // were imported before, a preview) and may switch the CSV profile or
 // assign columns by hand. Only new movements are stored, so importing the
 // same statement twice changes nothing; the new ones go to matching.
-import { h, clear } from '../../../ui/dom.js';
+import { h, clear, append } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast, showError } from '../../../ui/toast.js';
@@ -93,7 +93,7 @@ export async function openImportDialog(ctx, { accountId = '' } = {}) {
     const keyed = account ? withImportKeys(account.id, result.transactions) : [];
     const split = splitDuplicates(keyed, moneyState().bankTransactions);
     fresh = split.fresh;
-    body.append(
+    append(body, [
       h('p', { class: 'muted' }, t('bank.import.file', { name: fileName }), ' ', t('bank.import.format', { format: result.format })),
       result.format === 'CSV' ? h('label', { class: 'field' }, h('span', {}, t('bank.import.profile')), h('select', {
         onchange: (e) => { options.profile = e.target.value; options.mapping = {}; render(); }
@@ -109,7 +109,7 @@ export async function openImportDialog(ctx, { accountId = '' } = {}) {
         opening: money(result.openingBalance.amount, result.account?.currency), closing: money(result.closingBalance.amount, result.account?.currency)
       })) : null,
       preview(split.fresh)
-    );
+    ]);
     if (confirm) {
       confirm.disabled = !fresh.length;
       confirm.textContent = t('bank.import.confirm', { n: fresh.length });

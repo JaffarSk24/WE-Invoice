@@ -2,7 +2,7 @@
 // with their matching state, the statement import, matching of the
 // unmatched movements and the SEPA order for received invoices. A phone
 // gets the same list as cards (components/table).
-import { h, icon, clear } from '../../../ui/dom.js';
+import { h, icon, clear, append } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
 import { t } from '../../../i18n/index.js';
 import { createTable } from '../../../components/table.js';
@@ -25,8 +25,8 @@ function columns() {
       id: 'counterparty', label: t('bank.col.counterparty'), sortValue: r => r.counterpartyName || '',
       render: r => h('span', { class: 'bank-party' }, r.counterpartyName || '', r.counterpartyIban ? h('small', { class: 'muted' }, r.counterpartyIban) : null)
     },
-    { id: 'vs', label: t('bank.col.vs'), render: r => r.vs || '' },
-    { id: 'message', label: t('bank.col.message'), render: r => r.message || '' },
+    { id: 'vs', label: t('bank.col.vs'), render: r => r.vs || '', cardHidden: true },
+    { id: 'message', label: t('bank.col.message'), render: r => r.message || '', cardHidden: true },
     { id: 'amount', label: t('bank.col.amount'), align: 'num', primary: true, render: r => amountCell(r.amount, r.currency), sortValue: r => Number(r.amount) },
     {
       id: 'match', label: t('bank.col.match'),
@@ -78,7 +78,7 @@ export function renderBank(root, ctx) {
       root.append(h('p', { class: 'callout callout-warning' }, t('bank.noAccounts'), ' ',
         h('button', { type: 'button', class: 'btn btn-ghost btn-sm', onclick: () => navigate('settings') }, t('bank.openSettings'))));
     }
-    root.append(toolbar(ctx, state, draw));
+    append(root, [toolbar(ctx, state, draw)]);
     const rows = visibleTransactions(state, view);
     const empty = emptyState({
       title: t('bank.empty.title'), text: t('bank.empty.text'), iconName: 'landmark',

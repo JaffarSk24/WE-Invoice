@@ -160,6 +160,7 @@ export default {
   'cash.col.balance': 'Zostatok',
   'cash.opening': 'Počiatočný stav',
   'cash.closing': 'Spolu a konečný stav',
+  'cash.closingBalance': 'Konečný stav',
   'cash.csv': 'Export CSV',
   'cash.print': 'Tlačiť',
   'cash.printTitle': 'Pokladničná kniha: {name}',

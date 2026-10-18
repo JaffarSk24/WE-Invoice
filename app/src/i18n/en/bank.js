@@ -160,6 +160,7 @@ export default {
   'cash.col.balance': 'Balance',
   'cash.opening': 'Opening balance',
   'cash.closing': 'Totals and closing balance',
+  'cash.closingBalance': 'Closing balance',
   'cash.csv': 'Export CSV',
   'cash.print': 'Print',
   'cash.printTitle': 'Cash book: {name}',

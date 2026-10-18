@@ -1,7 +1,7 @@
 // The Cash desk screen (route "cash"): the cash books, the pokladničná
 // kniha of the chosen book for a period with the running balance,
 // receipts and expenses, export to CSV and printing.
-import { h, icon, clear } from '../../../ui/dom.js';
+import { h, icon, clear, append } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
 import { t } from '../../../i18n/index.js';
 import { createTable } from '../../../components/table.js';
@@ -70,7 +70,7 @@ export function renderCash(root, ctx) {
       return;
     }
     const book = currentBook(state);
-    root.append(header(ctx, state, book));
+    append(root, [header(ctx, state, book)]);
     if (!book) {
       root.append(emptyState({ title: t('cash.empty.title'), text: t('cash.empty.text'), iconName: 'wallet', actionLabel: t('cash.newBook'), onAction: () => openBookDialog() }));
       refreshIcons(root);
@@ -78,8 +78,11 @@ export function renderCash(root, ctx) {
     }
     const period = currentPeriod();
     const data = cashBookRows(book, state.documents, period);
-    root.append(controls(state, book, draw),
-      h('p', { class: 'muted cash-summary' }, `${t('cash.opening')}: ${money(data.opening, book.currency)} / ${t('cash.closing')}: ${money(data.income, book.currency)}, ${money(data.expense, book.currency)}, ${money(data.closing, book.currency)}`));
+    append(root, [controls(state, book, draw),
+      h('p', { class: 'muted cash-summary' }, [
+        `${t('cash.opening')}: ${money(data.opening, book.currency)}`, `${t('cash.col.income')}: ${money(data.income, book.currency)}`,
+        `${t('cash.col.expense')}: ${money(data.expense, book.currency)}`, `${t('cash.closingBalance')}: ${money(data.closing, book.currency)}`
+      ].join(' / '))]);
     const table = createTable({
       key: 'cash-book', columns: columns(book.currency), rows: data.rows,
       onRowClick: (row) => openVoucherActions(row.id),

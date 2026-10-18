@@ -2,7 +2,7 @@
 // currency, the amount (the largest possible by default) and the date.
 // Confirming stores the protocol and the OFFSET payments; the agreement
 // prints through the browser's print window.
-import { h, clear } from '../../../ui/dom.js';
+import { h, clear, append } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast } from '../../../ui/toast.js';
@@ -56,9 +56,9 @@ export function openOffsetDialog() {
     clear(details);
     const c = current.candidates;
     amount.input.value = toInputText(c.possible);
-    details.append(h('h4', {}, t('offset.receivables')), sideTable(c.receivables, current.currency),
+    append(details, [h('h4', {}, t('offset.receivables')), sideTable(c.receivables, current.currency),
       h('h4', {}, t('offset.payables')), sideTable(c.payables, current.currency),
-      h('p', { class: 'field-hint' }, t('offset.max', { amount: money(c.possible, current.currency) })));
+      h('p', { class: 'field-hint' }, t('offset.max', { amount: money(c.possible, current.currency) }))]);
   };
   const select = h('select', { 'aria-label': t('offset.contact'), onchange: (e) => { current = partners[Number(e.target.value)]; draw(); } },
     partners.map((p, i) => h('option', { value: String(i) }, `${p.contact.name} (${p.currency})`)));
