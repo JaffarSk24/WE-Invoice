@@ -1,0 +1,90 @@
+/* Lists (components/table.js): toolbar, the scrolling table with virtual
+   rows, totals, selection, the phone cards, the status badge. */
+
+.data-table { display: flex; flex-direction: column; gap: 10px; }
+.table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.table-tools { display: flex; align-items: center; gap: 8px; }
+.table-count { font-size: 13px; color: var(--text-secondary); }
+
+.bulk-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; border-radius: var(--radius-sm);
+  background: var(--overlay-04); border: 1px solid var(--border-strong);
+}
+.bulk-bar[hidden] { display: none; }
+.bulk-count { font-weight: 600; margin-right: 8px; }
+
+.table-scroll {
+  max-height: calc(100vh - 260px); min-height: 200px; overflow: auto; border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); background: var(--bg-card);
+}
+.table-scroll[hidden], .table-empty[hidden] { display: none; }
+
+.table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+.table th, .table td { padding: 0 var(--row-padding-x); text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.table th { position: sticky; top: 0; z-index: 2; background: var(--bg-elevated); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); height: 40px; }
+.table th.num, .table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table tr.row { height: 48px; }
+.table.density-compact tr.row { height: 36px; }
+.table tr.row:hover { background: var(--overlay-hover); }
+.table tr.row.is-selected { background: var(--overlay-04); }
+.table tr.row[tabindex]:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent-blue); }
+.table tr.vspacer td { border: 0; padding: 0; }
+.table tfoot td { position: sticky; bottom: 0; z-index: 2; background: var(--bg-elevated); font-weight: 600; height: 42px; border-top: 1px solid var(--border-strong); border-bottom: 0; }
+.col-select { width: 40px; }
+.col-select input { width: 18px; height: 18px; min-height: 0; margin: 0; accent-color: var(--accent-indigo); }
+.th-sort { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; color: inherit; font: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; padding: 0; min-height: 32px; }
+.th-sort svg { width: 14px; height: 14px; }
+
+.column-picker { display: grid; gap: 4px; }
+
+.card-list { padding: 8px; }
+.list-card {
+  display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; margin-bottom: 8px; border-radius: var(--radius-sm);
+  background: var(--bg-elevated); border: 1px solid var(--border-color); cursor: pointer; box-sizing: border-box;
+}
+.list-card.is-selected { border-color: var(--accent-blue); }
+.list-card:focus-visible { box-shadow: var(--focus-ring); outline: none; }
+.card-check { width: 20px; height: 20px; min-height: 0; margin-top: 2px; accent-color: var(--accent-indigo); flex: none; }
+.list-card-body { flex: 1; min-width: 0; }
+.list-card-top { display: flex; justify-content: space-between; gap: 8px; }
+.list-card-title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-card-primary { font-weight: 600; flex: none; }
+.list-card-line { font-size: 13px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px 2px 6px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  border: 1px solid currentColor; background: color-mix(in srgb, currentColor 12%, transparent); white-space: nowrap;
+}
+.status-badge svg { width: 13px; height: 13px; }
+.status-badge.status-strike span { text-decoration: line-through; }
+.status-draft { color: var(--status-draft); }
+.status-issued { color: var(--status-issued); }
+.status-sent { color: var(--status-sent); }
+.status-paid { color: var(--status-paid); }
+.status-partial { color: var(--status-partial); }
+.status-overdue { color: var(--status-overdue); }
+.status-cancelled { color: var(--status-cancelled); }
+.status-delivered { color: var(--status-delivered); }
+.status-rejected { color: var(--status-rejected); }
+
+.filter-bar { margin-bottom: 14px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filter-row > select, .filter-row > .field { width: auto; min-width: 150px; margin: 0; }
+.filter-row > .field input { min-width: 150px; }
+.filter-custom { display: flex; gap: 12px; margin-top: 8px; }
+.filter-custom[hidden] { display: none; }
+@media (max-width: 767px) {
+  .filter-row > select, .filter-row > .field, .filter-row > .btn { width: 100%; }
+  .filter-custom { flex-direction: column; gap: 0; }
+}
+
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; overflow-x: auto; }
+.tab {
+  min-height: var(--touch-target); padding: 0 14px; border: 0; background: none; color: var(--text-secondary); font: inherit; font-weight: 600;
+  cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap;
+}
+.tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--accent-blue); }
+.tab:focus-visible { box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+.tab-panel[hidden] { display: none; }
+
+.irreversible-list { margin: 10px 0 14px 20px; color: var(--text-secondary); }
