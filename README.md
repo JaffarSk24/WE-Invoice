@@ -52,7 +52,7 @@ WE Invoice is the third free app of the WE line by [White Eagles](https://whitee
 | **Accountant** | Exports for Pohoda, Money S3, Omega, ISDOC, UBL, XLSX and a ZIP for the accountant; migration from iDoklad, SuperFaktúra and KROS | Planned |
 | **Sync** | End-to-end encryption with a password and a 24-word recovery key, Google Drive sync between devices, several companies | Ready |
 | **Platforms** | Web app that installs on iPhone and Android (PWA, works offline), desktop app for macOS (Intel and Apple silicon) and Windows with a tray icon | Ready |
-| **Languages** | Interface in Slovak, Czech, English, German, Russian and Ukrainian | Slovak and English ready, others in progress |
+| **Languages** | Interface in Slovak, Czech, English, German, Russian and Ukrainian, chosen per device; documents print in their own language (Slovak by default, the client's language when set on their card) | Ready |
 
 ## Screenshots
 
