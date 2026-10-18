@@ -132,15 +132,23 @@ export function parseAmount(input) {
   const [, sign, body] = m;
   const commas = (body.match(/,/g) || []).length;
   const dots = (body.match(/\./g) || []).length;
+  // A thousands separator is accepted only between groups of exactly three
+  // digits: "1.234.567,50" and "1,234,567.50" are amounts, a typo such as
+  // "1,2,3" is refused instead of silently becoming 123.
+  const grouped = (integer, sep) => new RegExp(`^\\d{1,3}(\\${sep}\\d{3})+$`).test(integer);
   let normalized;
   if (commas && dots) {
     const decimal = body.lastIndexOf(',') > body.lastIndexOf('.') ? ',' : '.';
     const grouping = decimal === ',' ? '.' : ',';
     if ((decimal === ',' ? commas : dots) > 1) return null;
+    const integer = body.slice(0, body.lastIndexOf(decimal));
+    if (!grouped(integer, grouping)) return null;
     normalized = body.split(grouping).join('').replace(decimal, '.');
   } else if (commas > 1) {
+    if (!grouped(body, ',')) return null;
     normalized = body.replace(/,/g, '');
   } else if (dots > 1) {
+    if (!grouped(body, '.')) return null;
     normalized = body.replace(/\./g, '');
   } else {
     normalized = body.replace(',', '.');

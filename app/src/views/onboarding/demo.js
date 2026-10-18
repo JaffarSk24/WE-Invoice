@@ -25,7 +25,7 @@ export function demoCompany(names) {
   const now = '2026-01-01T00:00:00.000Z';
   return {
     id: DEMO_COMPANY_ID, createdAt: now, updatedAt: now, deleted: false,
-    name: names.company, legalForm: 'SRO', taxpayerType: 'PO', ico: '12345678', dic: '2020000001', icDph: 'SK2020000001',
+    name: names.company, legalForm: 'SRO', taxpayerType: 'PO', ico: '12345679', dic: '2020000004', icDph: 'SK2020000004',
     vatMode: 'PAYER', vatPeriod: 'MONTH', cashBasis: false, oss: false, usesEkasa: false, registerEntry: null,
     address: { street: 'Hlavna 1', city: 'Bratislava', zip: '811 01', country: 'SK' },
     bankAccounts: [{ id: 'demo-bank', name: '', iban: 'SK3112000000198742637541', bic: 'UNCRSKBX', currency: 'EUR', isDefault: true }],

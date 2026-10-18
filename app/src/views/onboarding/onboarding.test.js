@@ -85,19 +85,19 @@ function fakeTransport(status, body, { fail = false } = {}) {
 
 describe('register lookup', () => {
   const answer = {
-    name: 'Alfa, s. r. o.', ico: '12345678', dic: '2020000001', icDph: 'SK2020000001', legalForm: null, legalFormText: 'Spoločnosť s ručením obmedzeným',
+    name: 'Alfa, s. r. o.', ico: '12345679', dic: '2020000004', icDph: 'SK2020000004', legalForm: null, legalFormText: 'Spoločnosť s ručením obmedzeným',
     registerEntry: 'OR OS BA I, Sro 1/B', country: 'SK', address: { street: 'Hlavná 1', city: 'Bratislava', zip: '81101', country: 'SK' }, source: 'RPO'
   };
   it('calls the gateway and maps the answer', async () => {
     const tr = fakeTransport(200, answer);
-    const d = await lookupCompany(tr, '12345678');
-    expect(tr.calls[0].url).toBe('https://gw.test/v1/company/sk/12345678');
+    const d = await lookupCompany(tr, '12345679');
+    expect(tr.calls[0].url).toBe('https://gw.test/v1/company/sk/12345679');
     expect(d).toMatchObject({ name: 'Alfa, s. r. o.', legalForm: 'SRO', vatMode: 'PAYER', address: { city: 'Bratislava' } });
   });
   it('reports not found, upstream errors and a bad IČO by code', async () => {
-    await expect(lookupCompany(fakeTransport(404, {}), '12345678')).rejects.toMatchObject({ code: 'COMPANY_NOT_FOUND' });
-    await expect(lookupCompany(fakeTransport(502, {}), '12345678')).rejects.toMatchObject({ code: 'UPSTREAM_UNAVAILABLE' });
-    await expect(lookupCompany(fakeTransport(200, {}, { fail: true }), '12345678')).rejects.toMatchObject({ code: expect.stringMatching(/UPSTREAM_UNAVAILABLE|OFFLINE/) });
+    await expect(lookupCompany(fakeTransport(404, {}), '12345679')).rejects.toMatchObject({ code: 'COMPANY_NOT_FOUND' });
+    await expect(lookupCompany(fakeTransport(502, {}), '12345679')).rejects.toMatchObject({ code: 'UPSTREAM_UNAVAILABLE' });
+    await expect(lookupCompany(fakeTransport(200, {}, { fail: true }), '12345679')).rejects.toMatchObject({ code: expect.stringMatching(/UPSTREAM_UNAVAILABLE|OFFLINE/) });
     await expect(lookupCompany(fakeTransport(200, answer), '12')).rejects.toMatchObject({ code: 'ICO_FORMAT' });
   });
   it('guesses the legal form from its text', () => {
@@ -113,7 +113,7 @@ describe('register lookup', () => {
 describe('validators waiting for the core', () => {
   it('rejects a wrong shape and answers unknown or a result for the rest', () => {
     expect(checkIco('12')).toBe(false);
-    expect([null, true, false]).toContain(checkIco('12345678'));
+    expect([null, true, false]).toContain(checkIco('12345679'));
     expect(checkIban('SK31')).toBe(false);
     expect([null, true, false]).toContain(checkIban('SK3112000000198742637541'));
     const bic = suggestBic('SK3112000000198742637541');

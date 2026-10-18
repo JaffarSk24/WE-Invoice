@@ -185,7 +185,7 @@ describe('parseAmount', () => {
     expect(parseAmount(input)).toBe(expected);
   });
 
-  it.each(['', '   ', 'abc', '1,2.3,4', '1.2,3.4', '--1', '1-2', ',', '.', '€', null, undefined, '1e5'])('rejects "%s"', (input) => {
+  it.each(['', '   ', 'abc', '1,2.3,4', '1.2,3.4', '--1', '1-2', ',', '.', '€', null, undefined, '1e5', '1,2,3', '1.23.4', '1.2,50', '12,34.5'])('rejects "%s"', (input) => {
     expect(parseAmount(input)).toBeNull();
   });
 
