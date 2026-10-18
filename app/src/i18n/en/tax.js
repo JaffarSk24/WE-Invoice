@@ -125,6 +125,7 @@ export default {
   "tax.filing.changed": "Filed {at} ({type}); the documents have changed since: consider a corrective or supplementary filing.",
 
   "tax.preview.title": "Preview",
+  "tax.preview.table": "Table",
   "tax.preview.empty": "No data.",
   "tax.preview.xml": "Show XML",
   "tax.kv.A1": "A.1 Invoices issued to VAT payers",

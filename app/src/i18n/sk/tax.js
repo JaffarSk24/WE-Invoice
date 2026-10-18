@@ -125,6 +125,7 @@ export default {
   "tax.filing.changed": "Podané {at} ({type}), odvtedy sa doklady zmenili: zvážte opravné alebo dodatočné podanie.",
 
   "tax.preview.title": "Náhľad",
+  "tax.preview.table": "Tabuľka",
   "tax.preview.empty": "Žiadne údaje.",
   "tax.preview.xml": "Zobraziť XML",
   "tax.kv.A1": "A.1 Vystavené faktúry platiteľom",

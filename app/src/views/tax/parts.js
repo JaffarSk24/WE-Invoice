@@ -89,7 +89,8 @@ export function filingLine(status) {
 
 /** A simple table: columns [{ label, value(row), num? }]. */
 export function simpleTable(columns, rows, { caption = null, foot = null } = {}) {
-  return h('div', { class: 'table-scroll tax-table-wrap' },
+  // A scrolling region must be reachable by the keyboard (WCAG 2.1.1).
+  return h('div', { class: 'table-scroll tax-table-wrap', tabindex: '0', role: 'region', 'aria-label': caption || t('tax.preview.table') },
     h('table', { class: 'tax-table' },
       caption ? h('caption', {}, caption) : null,
       h('thead', {}, h('tr', {}, columns.map(c => h('th', { scope: 'col', class: c.num ? 'num' : null }, c.label)))),
