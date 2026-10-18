@@ -85,8 +85,8 @@ export function convertDocument(document, targetKind, ctx = {}) {
   if (targetKind === 'ADVANCE_TAX_DOC') advanceTaxDocument(draft, document, ctx);
   if (targetKind === 'INVOICE' && (document.kind === 'PROFORMA' || document.kind === 'ADVANCE_TAX_DOC')) {
     const amount = ctx.amount ?? (document.kind === 'PROFORMA' ? paidAmount(document) : totalsOf(document).gross);
-    if (!isZero(amount)) draft.links.push({ kind: 'ADVANCE_DEDUCTION', docId: document.id, amount: round(amount, 2) });
-    if (document.kind === 'ADVANCE_TAX_DOC') draft.links = draft.links.filter(l => l.kind !== 'FROM_PROFORMA');
+    if (document.kind === 'ADVANCE_TAX_DOC') draft.links[0].amount = round(amount, 2);
+    else if (!isZero(amount)) draft.links.push({ kind: 'ADVANCE_DEDUCTION', docId: document.id, amount: round(amount, 2) });
   }
   if (targetKind === 'DELIVERY_NOTE') {
     draft.lines = draft.lines.filter(l => !l.kind || l.kind !== 'SUBTOTAL');
