@@ -22,5 +22,17 @@ export default {
     ],
     signature: 'Kind regards\nthe WE Invoice team\nWhite Eagles & Co. s. r. o.',
     footer: 'Unsubscribe and delete your data: {unsubscribeUrl}'
+  },
+  ownerNew: {
+    subject: 'WE Invoice waitlist: {email}',
+    paragraphs: [
+      'New sign-up for the e-invoicing beta waiting list.',
+      'E-mail: {email}\nLanguage: {lang}\nInterests: {interests}\nVAT payer: {vatPayer}\nSource: {source}\nTime: {time}',
+      'Reply to this e-mail to write to the applicant directly.'
+    ],
+    signature: 'WE Invoice gateway',
+    footer: 'Waiting list: {total} people.',
+    yes: 'yes',
+    no: 'no'
   }
 };

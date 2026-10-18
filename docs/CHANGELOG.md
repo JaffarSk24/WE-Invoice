@@ -144,6 +144,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Changed
 - `site/index.html` is now the language chooser instead of a one-page placeholder.
+- Waitlist without e-mails to applicants by default: a sign-up is stored at once and the owner gets a notice (Mailgun HTTP API or SMTP) with Reply-To set to the applicant, to answer personally; the double opt-in stays available with `WAITLIST_CONFIRM_EMAIL=true`. The form, the success message and the privacy policy say so in all six languages and name Mailgun (EU servers) as the processor of the notice.
+- The privacy policy now says the desktop app looks for updates at start-up and once a day.
 
 ### Interface translations
 
