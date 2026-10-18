@@ -1,0 +1,34 @@
+{
+  "$comment": "Daňové priznanie k DPH (§ 78 zákona o DPH): XML layout and the map from the amounts of the VAT records to the rows of the form, by validity date. The DPHv25 form applies to periods starting on 2025-07-01 or later. Rows 01 to 08 and 17 to 19 follow the published form; the other row numbers were taken from the filling instructions of the previous form versions and must be checked against the poučenie k DPHv25 and its XSD before release. verified=false until an accountant confirms the map.",
+  "versions": [
+    {
+      "validFrom": "2025-07-01",
+      "validTo": null,
+      "form": "DPHv25",
+      "rootElement": "dokument",
+      "namespace": null,
+      "xsdFile": "dphv25.xsd",
+      "rows": {
+        "supply.REDUCED_1.base": "r01", "supply.REDUCED_1.vat": "r02",
+        "supply.REDUCED_2.base": "r01a", "supply.REDUCED_2.vat": "r02a",
+        "supply.STANDARD.base": "r03", "supply.STANDARD.vat": "r04",
+        "acquisition.REDUCED_1.base": "r05", "acquisition.REDUCED_1.vat": "r06",
+        "acquisition.REDUCED_2.base": "r05a", "acquisition.REDUCED_2.vat": "r06a",
+        "acquisition.STANDARD.base": "r07", "acquisition.STANDARD.vat": "r08",
+        "recipient.REDUCED_1.base": "r09", "recipient.REDUCED_2.base": "r09a", "recipient.STANDARD.base": "r09b",
+        "recipient.REDUCED_1.vat": "r10", "recipient.REDUCED_2.vat": "r10a", "recipient.STANDARD.vat": "r10b",
+        "services693.base": "r11", "services693.vat": "r12",
+        "importSelf.base": "r13", "importSelf.vat": "r14",
+        "exempt.base": "r15", "euGoods.base": "r15a", "reverseChargeIssued.base": "r16",
+        "outputTotal": "r17",
+        "deduction.REDUCED_1": "r18", "deduction.REDUCED_2": "r18a", "deduction.STANDARD": "r19",
+        "ownLiability": "r32", "excessDeduction": "r33", "toPay": "r35"
+      },
+      "rowOrder": ["r01", "r01a", "r02", "r02a", "r03", "r04", "r05", "r05a", "r06", "r06a", "r07", "r08", "r09", "r09a", "r09b", "r10", "r10a", "r10b", "r11", "r12", "r13", "r14", "r15", "r15a", "r16", "r17", "r18", "r18a", "r19", "r32", "r33", "r35"],
+      "filingTypes": ["R", "O", "D"],
+      "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/danove-priznanie",
+      "verified": false,
+      "verifiedAt": null
+    }
+  ]
+}

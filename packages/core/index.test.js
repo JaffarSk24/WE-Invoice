@@ -13,6 +13,8 @@ const API = [
   'getLegislation', 'unverifiedLegislation', 'peppolRequirement', 'participantId',
   'buildUbl', 'parseUbl', 'validateUblLocal', 'buildIsdoc', 'parseIsdoc', 'payBySquare', 'decodePayBySquare', 'qrPlatba',
   'vatRecords', 'buildKv', 'buildSv', 'buildVatReturn', 'registrationTurnover',
+  'exportChecks', 'canExport', 'mergeProblems', 'closePeriod', 'openPeriod', 'canChangeInPeriod', 'isPeriodClosed', 'documentTaxPoint',
+  'recordsDigest', 'filingEntry', 'filingStatus', 'suggestedFilingType', 'ossData', 'ossCsv', 'parseTaxPeriod', 'taxPeriodOf', 'filingDueDate',
   'entriesForPayment', 'cashJournal', 'depreciationPlan', 'flatExpenses', 'planEntrySync', 'yearClosing', 'flatSummary',
   'receivablesBook', 'payablesBook', 'tripAllowance', 'incomeExpenseStatement', 'assetsLiabilitiesStatement', 'ledgerCsv',
   'exportPohoda', 'exportMoneyS3', 'exportOmega', 'exportCsv', 'exportWeBudgetCsv',
