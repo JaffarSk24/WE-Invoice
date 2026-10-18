@@ -11,7 +11,7 @@ const API = [
   'ublTypeCode', 'allowedStatuses', 'documentStatus', 'canEdit', 'convertDocument', 'missingParticulars', 'issueDocument',
   'paymentState', 'amountDue', 'lateInterest', 'parseBankStatement', 'matchBankTx', 'buildPain001',
   'getLegislation', 'unverifiedLegislation', 'peppolRequirement', 'participantId',
-  'buildUbl', 'parseUbl', 'validateUblLocal', 'buildIsdoc', 'parseIsdoc', 'payBySquare', 'decodePayBySquare', 'qrPlatba',
+  'buildUbl', 'parseUbl', 'validateUblLocal', 'hasBlockingIssues', 'buildIsdoc', 'parseIsdoc', 'payBySquare', 'decodePayBySquare', 'qrPlatba',
   'vatRecords', 'buildKv', 'buildSv', 'buildVatReturn', 'registrationTurnover',
   'entriesForPayment', 'cashJournal', 'depreciationPlan', 'flatExpenses',
   'exportPohoda', 'exportMoneyS3', 'exportOmega', 'exportCsv', 'exportWeBudgetCsv',

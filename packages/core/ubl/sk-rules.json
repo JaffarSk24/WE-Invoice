@@ -1,0 +1,35 @@
+{
+  "$comment": "Slovak rules for Peppol BIS Billing 3.0 from the table of the Financial Administration (FS) 'Transpozícia Peppol BIS3', column 'UBL+SK'. Each rule has a test in validate.test.js. severity: error blocks sending, warning is shown. verified: false until the rules are compared line by line with the official table (see source).",
+  "version": "1.12",
+  "versionDate": "2026-10-14",
+  "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/efaktura",
+  "verified": false,
+  "typeCodes": {
+    "$comment": "UNCL1001 code per document kind. The tax document to a received payment uses 388 (tax invoice) as the FS questions and answers on eFaktúra show, not 386 (prepayment invoice) of packages/core/documents ublTypeCode.",
+    "byKind": { "INVOICE": "380", "CREDIT_NOTE": "381", "DEBIT_NOTE": "383", "ADVANCE_TAX_DOC": "388", "SELF_BILLING": "389" },
+    "allowed": ["380", "381", "383", "386", "388", "389"]
+  },
+  "exemptionReasonRequired": ["E", "AE", "K", "G", "O"],
+  "exemptionReasonForbidden": ["S", "Z"],
+  "rules": [
+    { "id": "SK-01", "bt": "BT-1", "severity": "error", "code": "NUMBER_MISSING", "text": "The invoice number is required." },
+    { "id": "SK-02", "bt": "BT-2", "severity": "error", "code": "ISSUE_DATE_MISSING", "text": "The issue date is required." },
+    { "id": "SK-03", "bt": "BT-3", "severity": "error", "code": "TYPE_CODE_NOT_ALLOWED", "text": "Only tax documents with an allowed UNCL1001 code go through Peppol." },
+    { "id": "SK-04", "bt": "BT-34", "severity": "error", "code": "SELLER_DIC_MISSING", "text": "The seller's electronic address is the DIČ (10 digits) with scheme 0245." },
+    { "id": "SK-05", "bt": "BT-49", "severity": "error", "code": "BUYER_ENDPOINT_MISSING", "text": "The buyer's electronic address is the DIČ with scheme 0245, or the buyer's own Peppol id." },
+    { "id": "SK-06", "bt": "BT-120", "severity": "warning", "code": "EXEMPTION_REASON_FORBIDDEN", "text": "An exemption reason is not allowed for categories S and Z; it is left out of the XML." },
+    { "id": "SK-07", "bt": "BT-121", "severity": "warning", "code": "EXEMPTION_REASON_DEFAULTED", "text": "Categories E, AE, K, G and O need an exemption reason; the general reason of the category from legislation is used when the line has none." },
+    { "id": "SK-08", "bt": "BT-22", "severity": "error", "code": "REVERSE_CHARGE_NOTE", "text": "A document with category AE carries the reverse charge text 'prenesenie daňovej povinnosti' in the note." },
+    { "id": "SK-09", "bt": "BT-22", "severity": "error", "code": "CASH_BASIS_NOTE", "text": "A seller using the cash accounting scheme (§ 68d) carries the text 'uplatňovanie DPH na základe prijatia platby' in the note." },
+    { "id": "SK-10", "bt": "BT-33", "severity": "warning", "code": "SELLER_REGISTER_ENTRY_MISSING", "text": "The seller's legal information (entry in the Commercial or Trade Register) should be filled." },
+    { "id": "SK-11", "bt": "BT-25", "severity": "error", "code": "PRECEDING_INVOICE_MISSING", "text": "A credit or debit note refers to the invoice it corrects (number and issue date BT-26)." },
+    { "id": "SK-12", "bt": "BT-111", "severity": "error", "code": "FX_RATE_MISSING", "text": "A document not in EUR states the VAT in EUR (BT-6 = EUR, BT-111) at the rate of the document." },
+    { "id": "SK-13", "bt": "BT-31", "severity": "error", "code": "SELLER_VAT_ID_MISSING", "text": "A standard rated, reverse charge or intra-community supply needs the seller's IČ DPH." },
+    { "id": "SK-14", "bt": "BT-48", "severity": "error", "code": "BUYER_VAT_ID_MISSING", "text": "Reverse charge (AE) and intra-community supply (K) need the buyer's VAT id." },
+    { "id": "SK-15", "bt": "BT-151", "severity": "error", "code": "NOT_SUBJECT_MIXED", "text": "Category O (not subject to VAT) cannot be combined with other categories on one document." },
+    { "id": "SK-16", "bt": "BT-9", "severity": "error", "code": "DUE_DATE_MISSING", "text": "A document with an amount due needs the due date." },
+    { "id": "SK-17", "bt": "-", "severity": "error", "code": "CLASSIFIED_SUPPLY", "text": "A classified supply must not be sent as an e-invoice." },
+    { "id": "SK-18", "bt": "BT-125", "severity": "warning", "code": "ATTACHMENT_TOO_LARGE", "text": "The PDF attachment is optional; it is left out when larger than the provider allows." },
+    { "id": "SK-19", "bt": "BT-129", "severity": "error", "code": "NO_LINES", "text": "A document has at least one line." }
+  ]
+}
