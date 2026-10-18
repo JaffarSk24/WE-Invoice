@@ -144,6 +144,37 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Changed
 - `site/index.html` is now the language chooser instead of a one-page placeholder.
+- Waitlist without e-mails to applicants by default: a sign-up is stored at once and the owner gets a notice (Mailgun HTTP API or SMTP) with Reply-To set to the applicant, to answer personally; the double opt-in stays available with `WAITLIST_CONFIRM_EMAIL=true`. The form, the success message and the privacy policy say so in all six languages and name Mailgun (EU servers) as the processor of the notice.
+- The privacy policy now says the desktop app looks for updates at start-up and once a day.
+
+### Reports, search, recycle bin and change log
+
+#### Added
+
+- Report functions in the core (`packages/core/reports`), pure and on decimal strings: sales and purchases by period, client or supplier, item, label and project with the same periods of last year (`salesReport`); receivables and payables by age in the 1-15, 16-30, 31-60 and 60+ day buckets on the local date (`agingReport`); the cash flow forecast from open invoices, recurring templates and received invoices, shifted by how late each client usually pays (`cashflowForecast`); profitability by item, client and project from average purchase prices (`profitability`). Credit notes lower every total, foreign currency documents are converted by their stored ECB rate. 10 000 documents take well under 200 ms per report (performance tests).
+- Global search (`searchIndex`, `searchQuery`): documents, received documents, contacts and price list items by number, variable symbol, client, IČO, label and amount in any usual format, without regard to case and diacritics. The Ctrl/Cmd+K dialog of the shell lists the best hits (Enter opens the first one); the new search screen `#/search?q=...` lists all of them by type. Results open the list route of their kind (`#/invoices/<id>`, `#/contacts/<id>`...).
+- Reports screen: period presets or custom dates, chart step by month, quarter or year, label and project filters; tabs for sales, purchases, receivables and payables, cash flow and profitability with SVG charts drawn without a library, tables, CSV export (semicolons, decimal commas, byte order mark) and printing. The screen loads on first use, so the start of the app stays light.
+- Recycle bin `#/trash`: deleted drafts, contacts, price list items and recurring templates can be restored under their own id for 30 days and removed for good (a bare tombstone stays so the removal syncs); deleted issued or received documents stay restorable and are never removed for good.
+- Change log `#/audit` (and `#/audit/<record id>` for one record): every local change of a document, contact, item or recurring template is written to `auditLog` with the time, the signed-in account, the device, the kind of change and the changed field names; values are kept only for status, number and dates, never amounts. Filters by dates, change, record type and text.
+- Label and project helpers (`collectLabels`, `collectProjects`, `normalizeLabels`) and a CSV writer (`toCsv`).
+- End-to-end tests: the search finds an invoice by its variable symbol and opens it; the reports draw every tab; axe checks of the new screens.
+
+### Stock, price levels and the quick sale
+
+#### Added
+
+- Stock core in `packages/core/stock`: validation of stock moves (receipt, issue, transfer, stocktaking difference), levels per item and warehouse on any date, warnings for balances below zero (checked at the end of each day, so backdated sales warn too) and for items under their minimum.
+- Stock valuation by weighted average cost or FIFO per item across warehouses, with the cost of every move and the balance after it; a shortfall is costed at the last known cost and covered by the next receipt.
+- Moves caused by documents (`movesForDocument`): issued invoices, delivery notes and sales receipts take goods out, received invoices bring them in at the net cost in EUR (with VAT for companies that cannot deduct it), credit notes marked with `stockReturn` bring goods back. An invoice whose goods left on a delivery note moves nothing. `reconcileDocumentMoves` and `documentMoveIds` keep the stored moves idempotent and identical on every device.
+- Reservations by open received orders and the quantity free to sell.
+- Prices for a client (`priceFor`): price levels with their own item prices or a discount, optional validity, the client's own prices and quantity discounts given as a line discount.
+- Stocktaking differences as inventory adjustments, and a CSV writer (semicolon separated, decimal comma, BOM, formula cells neutralised).
+- Quick sale (predajka): `issueSalesReceipt` issues a paid sales receipt without a client from a cart, cash rounded to the legal step, card not, partial payment possible; `vrpSummary` gives the data to type into the virtual cash register (VRP2).
+- Stock screen (`#/stock`) with tabs for levels (reserved, available, unit cost, value, below minimum), the movement report for a period, stocktaking, warehouses with the valuation method, and price levels with item prices; CSV export of levels and moves.
+- Receipt, issue and transfer dialogs with a quick way to add a stock item and a confirmation before a balance goes below zero.
+- Quick sale screen (`#/quick-sale`) with search, barcode scanner input, cart, cash or card, partial payment and the VRP2 summary after the sale.
+- Stock moves follow documents on the `stock:document-issued` event and on every local change of a document, so cancelling or deleting a document takes its moves back. The quick sale emits `stock:sales-receipt-issued`.
+- Unit, DOM and end-to-end tests (receipt, quick sale, level drops) and a performance test of levels and valuation over 10 000 moves.
 
 ### Interface translations
 

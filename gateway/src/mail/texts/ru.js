@@ -22,5 +22,17 @@ export default {
     ],
     signature: 'С уважением,\nкоманда WE Invoice\nWhite Eagles & Co. s. r. o.',
     footer: 'Отписаться и удалить данные: {unsubscribeUrl}'
+  },
+  ownerNew: {
+    subject: 'Лист ожидания WE Invoice: {email}',
+    paragraphs: [
+      'Новая заявка в лист ожидания беты э-счетов.',
+      'E-mail: {email}\nЯзык: {lang}\nИнтересы: {interests}\nПлательщик НДС: {vatPayer}\nИсточник: {source}\nВремя: {time}',
+      'Ответьте на это письмо, чтобы написать заявителю напрямую.'
+    ],
+    signature: 'Шлюз WE Invoice',
+    footer: 'В листе ожидания: {total} чел.',
+    yes: 'да',
+    no: 'нет'
   }
 };
