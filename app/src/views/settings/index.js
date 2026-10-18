@@ -7,8 +7,9 @@ import { t } from '../../i18n/index.js';
 import { routeFromHash } from '../../router.js';
 import { SETTINGS_SECTIONS, settingsRenderer, isSettingsSection } from './registry.js';
 import { interfaceSection, aboutSection } from './sections.js';
+import { documentsSection } from './documents-section.js';
 
-const OWN = { interface: interfaceSection, about: aboutSection };
+const OWN = { interface: interfaceSection, about: aboutSection, documents: documentsSection };
 
 // The section named after "settings/" in the hash, or the first one.
 export function sectionFromHash(hash) {

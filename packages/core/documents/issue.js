@@ -2,7 +2,9 @@
 // and variable symbol are assigned from the series, the seller and buyer
 // details are frozen as snapshots, the totals are computed and stored,
 // and the status moves from DRAFT to ISSUED. The series counter to store
-// comes back with the document; nothing is mutated.
+// comes back with the document; nothing is mutated. The print language is
+// the one chosen on the document, else the client's, else the company's
+// default, else Slovak.
 import { CoreError } from '../errors.js';
 import { nextNumber } from '../numbering/index.js';
 import { computeTotals } from '../vat/index.js';
@@ -49,7 +51,7 @@ export function issueDocument(document, ctx) {
   if (contact && (!issued.buyer || !issued.buyer.name)) issued.buyer = contactSnapshot(contact);
   if (contact && !issued.contactId) issued.contactId = contact.id ?? null;
   if (!issued.currency) issued.currency = company.defaults?.currency || 'EUR';
-  if (!issued.language) issued.language = company.defaults?.language || 'sk';
+  if (!issued.language) issued.language = contact?.language || company.defaults?.language || 'sk';
 
   const missing = missingParticulars(issued, company, issued.issueDate);
   if (missing.length && (isTaxDocument(issued.kind) || !ctx.force)) {

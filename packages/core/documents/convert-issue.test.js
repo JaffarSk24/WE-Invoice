@@ -139,6 +139,12 @@ describe('issueDocument', () => {
     expect(fallback.language).toBe('sk');
   });
 
+  it('prints in the language of the document, else the client, else the company', () => {
+    expect(issueDocument(draft(), ctx({ contact: contact({ language: 'de' }) })).document.language).toBe('de');
+    expect(issueDocument(draft({ language: 'en' }), ctx({ contact: contact({ language: 'de' }) })).document.language).toBe('en');
+    expect(issueDocument(draft(), ctx({ contact: contact({ language: null }), company: company({ defaults: { language: 'cs' } }) })).document.language).toBe('cs');
+  });
+
   it('skips taken numbers and defaults the issue date to today', () => {
     const { document } = issueDocument(draft({ issueDate: null }), ctx({ taken: ['FA20260007'], today: '2026-10-19' }));
     expect(document.number).toBe('FA20260008');
