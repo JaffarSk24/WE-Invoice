@@ -1,0 +1,92 @@
+{
+  "$comment": "Plain documents: rates, line rounding, base quantity, ignored heading lines, grouping of equal rates (EN 16931 BG-23, BT-106..BT-115). Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "one line, standard rate",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "100.00", "allowances": "0.00", "charges": "0.00", "net": "100.00", "vat": "23.00", "gross": "123.00", "prepaid": "0.00", "rounding": "0.00", "payable": "123.00", "vatEur": null,
+        "breakdown": [ { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" } ] }
+    },
+    {
+      "name": "quantity times price with VAT rounding",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "3", "unitPrice": "19.99", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "59.97", "net": "59.97", "vat": "13.79", "gross": "73.76", "payable": "73.76",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "59.97", "vat": "13.79" } ] }
+    },
+    {
+      "name": "two rates",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "50", "vatCategory": "S", "vatRate": "19" } ] },
+      "expected": { "lineNet": "150.00", "net": "150.00", "vat": "32.50", "gross": "182.50", "payable": "182.50",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" }, { "category": "S", "rate": "19", "base": "50.00", "vat": "9.50" } ] }
+    },
+    {
+      "name": "three Slovak rates",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "19" },
+        { "id": "l3", "name": "c", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "5" } ] },
+      "expected": { "lineNet": "300.00", "net": "300.00", "vat": "47.00", "gross": "347.00",
+        "breakdown": [ { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" }, { "category": "S", "rate": "19", "base": "100.00", "vat": "19.00" }, { "category": "S", "rate": "5", "base": "100.00", "vat": "5.00" } ] }
+    },
+    {
+      "name": "line net rounded half-up",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "3", "unitPrice": "0.333", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "1.00", "net": "1.00", "vat": "0.23", "gross": "1.23", "lines": [ { "id": "l1", "net": "1.00" } ] }
+    },
+    {
+      "name": "quantity with four decimals",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1.2345", "unitPrice": "10", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "12.35", "vat": "2.84", "gross": "15.19" }
+    },
+    {
+      "name": "unit price with four decimals",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "100", "unitPrice": "0.1234", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "12.34", "vat": "2.84", "gross": "15.18" }
+    },
+    {
+      "name": "price per base quantity",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "10", "unitPrice": "25", "baseQty": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "2.50", "vat": "0.58", "gross": "3.08", "lines": [ { "id": "l1", "net": "2.50", "unitNet": "25" } ] }
+    },
+    {
+      "name": "empty document",
+      "document": { "currency": "EUR", "lines": [] },
+      "expected": { "lineNet": "0.00", "allowances": "0.00", "charges": "0.00", "net": "0.00", "vat": "0.00", "gross": "0.00", "prepaid": "0.00", "rounding": "0.00", "payable": "0.00", "breakdown": [] }
+    },
+    {
+      "name": "heading and subtotal lines carry no amounts",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "h", "kind": "TEXT", "name": "Section", "qty": "0", "unitPrice": "0", "vatCategory": "S" },
+        { "id": "l1", "kind": "ITEM", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "s", "kind": "SUBTOTAL", "name": "Subtotal", "qty": "0", "unitPrice": "0", "vatCategory": "S" } ] },
+      "expected": { "lineNet": "100.00", "vat": "23.00", "gross": "123.00", "breakdown": [ { "category": "S", "rate": "23", "base": "100.00", "vat": "23.00" } ] }
+    },
+    {
+      "name": "VAT is computed on the group base, not summed per line",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "0.11", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "0.11", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l3", "name": "c", "qty": "1", "unitPrice": "0.11", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "0.33", "vat": "0.08", "gross": "0.41", "breakdown": [ { "category": "S", "rate": "23", "base": "0.33", "vat": "0.08" } ] }
+    },
+    {
+      "name": "negative correction line",
+      "document": { "currency": "EUR", "lines": [
+        { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+        { "id": "l2", "name": "b", "qty": "1", "unitPrice": "-20", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "80.00", "vat": "18.40", "gross": "98.40", "breakdown": [ { "category": "S", "rate": "23", "base": "80.00", "vat": "18.40" } ] }
+    },
+    {
+      "name": "zero rated line",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "Z" } ] },
+      "expected": { "net": "100.00", "vat": "0.00", "gross": "100.00", "breakdown": [ { "category": "Z", "rate": "0", "base": "100.00", "vat": "0.00" } ] }
+    },
+    {
+      "name": "large amounts keep every digit",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1000000", "unitPrice": "999.99", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "lineNet": "999990000.00", "vat": "229997700.00", "gross": "1229987700.00", "payable": "1229987700.00" }
+    }
+  ]
+}

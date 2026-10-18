@@ -1,0 +1,103 @@
+{
+  "$comment": "Foreign currency with VAT in EUR (BT-111, fxRate is units of document currency per 1 EUR), advance deductions (BT-113) from options or links, cash rounding (BT-114) by the legal step and manual rounding. Expected values were computed by hand.",
+  "cases": [
+    {
+      "name": "CZK document reports VAT in EUR by the rate",
+      "document": { "currency": "CZK", "fxRate": "25.2", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "2520", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "net": "2520.00", "vat": "579.60", "vatEur": "23.00", "gross": "3099.60" }
+    },
+    {
+      "name": "foreign currency without a rate has no EUR figure",
+      "document": { "currency": "CZK", "fxRate": null, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "2520", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "vat": "579.60", "vatEur": null }
+    },
+    {
+      "name": "EUR document never has a separate EUR figure",
+      "document": { "currency": "EUR", "fxRate": "1", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "vat": "23.00", "vatEur": null }
+    },
+    {
+      "name": "USD document with a four decimal rate",
+      "document": { "currency": "USD", "fxRate": "1.0850", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "vat": "23.00", "vatEur": "21.20" }
+    },
+    {
+      "name": "advance deducted from the option",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "prepaid": "50" },
+      "expected": { "gross": "123.00", "prepaid": "50.00", "rounding": "0.00", "payable": "73.00" }
+    },
+    {
+      "name": "advance deducted from the links",
+      "document": { "currency": "EUR", "links": [ { "kind": "ADVANCE_DEDUCTION", "docId": "p1", "amount": "20" }, { "kind": "ADVANCE_DEDUCTION", "docId": "p2", "amount": "30" }, { "kind": "FROM_PROFORMA", "docId": "p1" } ],
+        "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "prepaid": "50.00", "payable": "73.00" }
+    },
+    {
+      "name": "the option overrides the links",
+      "document": { "currency": "EUR", "links": [ { "kind": "ADVANCE_DEDUCTION", "docId": "p1", "amount": "20" } ],
+        "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "prepaid": "10" },
+      "expected": { "prepaid": "10.00", "payable": "113.00" }
+    },
+    {
+      "name": "advance equal to the total leaves nothing to pay",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "prepaid": "123" },
+      "expected": { "payable": "0.00" }
+    },
+    {
+      "name": "advance above the total gives a negative payable",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "prepaid": "130" },
+      "expected": { "payable": "-7.00" }
+    },
+    {
+      "name": "cash rounding down",
+      "document": { "currency": "EUR", "issueDate": "2026-10-18", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.01", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true },
+      "expected": { "gross": "12.31", "rounding": "-0.01", "payable": "12.30" }
+    },
+    {
+      "name": "cash rounding up",
+      "document": { "currency": "EUR", "issueDate": "2026-10-18", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.03", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true },
+      "expected": { "gross": "12.34", "rounding": "0.01", "payable": "12.35" }
+    },
+    {
+      "name": "cash rounding applies after the advance",
+      "document": { "currency": "EUR", "taxDate": "2026-10-18", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.03", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true, "prepaid": "2" },
+      "expected": { "gross": "12.34", "prepaid": "2.00", "rounding": "0.01", "payable": "10.35" }
+    },
+    {
+      "name": "manual rounding on the document wins",
+      "document": { "currency": "EUR", "rounding": "-0.04", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.03", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true },
+      "expected": { "gross": "12.34", "rounding": "-0.04", "payable": "12.30" }
+    },
+    {
+      "name": "manual zero rounding disables cash rounding",
+      "document": { "currency": "EUR", "rounding": "0", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.03", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true },
+      "expected": { "rounding": "0.00", "payable": "12.34" }
+    },
+    {
+      "name": "cash rounding with the legislation date from the options",
+      "document": { "currency": "EUR", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.01", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true, "date": "2026-01-01" },
+      "expected": { "rounding": "-0.01", "payable": "12.30" }
+    },
+    {
+      "name": "no cash rounding without the option",
+      "document": { "currency": "EUR", "paymentMethod": "CASH", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "10.01", "vatCategory": "S", "vatRate": "23" } ] },
+      "expected": { "rounding": "0.00", "payable": "12.31" }
+    },
+    {
+      "name": "cash rounding on a foreign currency document uses the same step",
+      "document": { "currency": "CZK", "fxRate": "25", "issueDate": "2026-10-18", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "100.02", "vatCategory": "S", "vatRate": "23" } ] },
+      "options": { "cashRounding": true },
+      "expected": { "vat": "23.00", "vatEur": "0.92", "gross": "123.02", "rounding": "-0.02", "payable": "123.00" }
+    }
+  ]
+}
