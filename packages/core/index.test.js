@@ -25,7 +25,14 @@ const API = [
   'searchQuery', 'profitability', 'averagePurchasePrices', 'paymentDelays', 'recurringRuns', 'agingBucket', 'periodKey', 'periodKeys',
   'eurAmounts', 'partyOf', 'trashEntries', 'restoredRecord', 'purgedRecord', 'auditEntryFor', 'filterAudit', 'changedFields',
   'collectLabels', 'collectProjects', 'normalizeLabels', 'toCsv', 'decimalComma', 'fold',
-  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban'
+  'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
+  // WP-EXIM
+  'protectCell', 'weBudgetRows', 'selectExportDocuments', 'registerRows', 'lineRows', 'exportState', 'exportFingerprint', 'exportedPatch',
+  'accountantFiles', 'accountantSummary', 'exportFileName', 'buildBackup', 'serializeBackup', 'backupChecksum', 'buildZip', 'buildXlsx',
+  'encodeWindows1250', 'decodeWindows1250', 'pohodaAddressbook', 'documentUuid', 'importOmegaText', 'importRows', 'readTimeTracker',
+  'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan', 'importContactKey', 'importDocumentKey', 'importItemKey', 'continueSeries',
+  'guessMapping', 'guessEntity', 'importFields', 'readCsv', 'decodeText', 'detectDelimiter', 'readXlsx', 'readZip', 'isZip',
+  'parseBackup', 'planRestore', 'createReport', 'mergeReports'
 ];
 
 describe('core public API', () => {

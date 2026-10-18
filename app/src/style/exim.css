@@ -1,0 +1,52 @@
+/* Export a import (WP-EXIM): the accountant package, import preview,
+   WE Time Tracker lines and the backup. Colours only from tokens.css. */
+
+.exim-intro { margin-bottom: 14px; }
+.exim-card { padding: 20px 22px; margin-bottom: 16px; }
+.exim-card h2 { font-size: 18px; margin-bottom: 6px; }
+.exim-card > .muted { margin-bottom: 14px; }
+.exim-label { display: block; font-weight: 600; margin-bottom: 6px; }
+.exim-period { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; }
+.exim-period .exim-label { margin: 0; }
+.exim-period select, .exim-dates input { min-height: var(--touch-target); }
+.exim-dates { display: flex; align-items: center; gap: 8px; }
+.exim-dates[hidden] { display: none; }
+.exim-info { color: var(--text-secondary); margin: 6px 0 14px; }
+.exim-formats { border: 0; padding: 0; margin: 0 0 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.exim-format {
+  display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; min-height: var(--touch-target);
+  border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer;
+}
+.exim-format:hover { background: var(--bg-card-hover); }
+.exim-format input { margin-top: 3px; }
+.exim-format-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.exim-format-name { font-weight: 600; }
+.exim-format-hint { font-size: 13px; color: var(--text-secondary); }
+.exim-mark { margin: 4px 0 12px; }
+.exim-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.exim-result ul, .exim-issues ul { margin: 6px 0 0 20px; }
+.exim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.exim-preview { margin-top: 12px; }
+.exim-map { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 12px; }
+.exim-map summary { cursor: pointer; font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+.exim-map-entity { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.exim-map-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 12px; }
+.exim-map-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.exim-counts { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 8px 0 12px; }
+.exim-counts li { color: var(--text-secondary); }
+.exim-table-wrap { overflow-x: auto; margin-bottom: 10px; }
+.exim-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.exim-table th, .exim-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border-color); }
+.exim-table th { color: var(--text-muted); font-weight: 600; font-size: 13px; }
+.exim-table td.num { text-align: right; }
+.exim-issues summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; }
+.exim-skip { color: var(--text-primary); }
+.exim-warn { color: var(--text-secondary); }
+.exim-restore { margin-top: 10px; }
+
+@media (max-width: 767px) {
+  .exim-card { padding: 16px; }
+  .exim-period { flex-direction: column; align-items: stretch; }
+  .exim-dates { flex-wrap: wrap; }
+  .exim-actions .btn { flex: 1 1 auto; }
+}
