@@ -250,14 +250,28 @@ export class Store {
     this.emit('data:changed', { collection: 'workspace', id: null, source: 'sync' });
   }
 
+  // The encryption header (keys.js) lives in the workspace.
+  async updateKeys(header) {
+    this.workspace = { ...this.workspace, keys: header, updatedAt: this.now() };
+    await this.saveWorkspace();
+  }
+
   // Data of any company for the engine (the active one from memory).
   async companyData(companyId) {
     if (this.data && this.data.companyId === companyId) return this.data;
     return this.readRoot(KEYS.company(companyId), 'company');
   }
 
+  // Data arriving for a company: the open one is replaced in memory, a
+  // listed one that has no local file yet is opened, any other is only
+  // written to disk.
   async storeCompanyData(data) {
     if (this.data && this.data.companyId === data.companyId) return this.applySynced(data);
     await this.writeRoot(KEYS.company(data.companyId), data);
+    if (!this.data && this.workspace.activeCompanyId === data.companyId) {
+      await this.loadCompany(data.companyId);
+      this.emit('company:switched', { companyId: data.companyId });
+      this.emit('data:changed', { collection: null, id: null, source: 'sync' });
+    }
   }
 }
