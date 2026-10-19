@@ -25,7 +25,14 @@ function partnerOf(d) {
   return (isPurchase(d) ? d.seller : d.buyer) || {};
 }
 
+// A draft has no number yet; an order reference (an e-shop order code)
+// tells it apart instead.
+export function orderKey(d) {
+  return d && d.orderReference && !isPurchase(d) ? `order:${normalizeKey(d.orderReference)}` : null;
+}
+
 export function documentKey(d) {
+  if (!d.number && orderKey(d)) return orderKey(d);
   const direction = isPurchase(d) ? 'IN' : 'OUT';
   const supplier = direction === 'IN' ? contactKey(partnerOf(d)) : '';
   return `${direction}|${normalizeKey(d.number)}|${supplier}`;
@@ -67,6 +74,7 @@ export function buildImportPlan(parsed, existing = {}) {
   }
 
   const knownDocs = new Set(live(existing.documents).filter(d => d.number).map(documentKey));
+  const knownOrders = new Set(live(existing.documents).map(orderKey).filter(Boolean));
   const documents = [];
   for (const draft of parsed.documents || []) {
     const key = documentKey(draft);
@@ -75,7 +83,11 @@ export function buildImportPlan(parsed, existing = {}) {
       continue;
     }
     if (knownDocs.has(key)) {
-      skip(report, 'documents', draft.number, 'DUPLICATE_NUMBER');
+      skip(report, 'documents', draft.number || draft.orderReference, draft.number ? 'DUPLICATE_NUMBER' : 'DUPLICATE_ORDER');
+      continue;
+    }
+    if (orderKey(draft) && knownOrders.has(orderKey(draft))) {
+      skip(report, 'documents', draft.number || draft.orderReference, 'DUPLICATE_ORDER');
       continue;
     }
     try {
@@ -86,6 +98,7 @@ export function buildImportPlan(parsed, existing = {}) {
     }
     if (!draft.lines.length) warn(report, 'documents', draft.number, 'NO_LINES');
     knownDocs.add(key);
+    if (orderKey(draft)) knownOrders.add(orderKey(draft));
     documents.push({ draft, key, action: 'add', contactKey: partnerOf(draft).name ? contactKey(partnerOf(draft)) : null });
   }
   report.added = { contacts: contacts.filter(c => c.action === 'add').length, items: items.length, documents: documents.length };
@@ -115,6 +128,13 @@ export function applyImportPlan(data, plan, ctx) {
     return record;
   });
   const items = plan.items.map(i => stamp(i.draft));
+  // Lines that carry a product code link to the price list item of that code.
+  const byCode = new Map([...live(data.items), ...items].filter(i => i.code).map(i => [normalizeKey(i.code), i.id]));
+  const linkLine = (line) => {
+    if (!('itemCode' in line)) return line;
+    const { itemCode, ...rest } = line;
+    return { ...rest, itemId: rest.itemId || (itemCode && byCode.get(normalizeKey(itemCode))) || null };
+  };
   const documents = plan.documents.map(p => {
     const record = stamp(p.draft);
     const contactId = (p.contactKey && ids.get(p.contactKey)) || null;
@@ -122,6 +142,7 @@ export function applyImportPlan(data, plan, ctx) {
     record.contactId = contactId;
     record[side] = { ...(record[side] || {}), contactId };
     record.payments = (record.payments || []).map(pay => ({ ...pay, id: newId() }));
+    record.lines = (record.lines || []).map(linkLine);
     record.totals = stored(computeTotals(record));
     return record;
   });

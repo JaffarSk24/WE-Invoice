@@ -1,0 +1,4 @@
+code;date;statusName;currencyCode;exchangeRate;email;phone;billFullName;billCompany;billStreet;billHouseNumber;billCity;billZip;billCountryCode;companyId;taxId;vatId;itemType;itemName;itemVariantName;itemCode;itemEan;itemAmount;itemUnit;itemUnitPriceWithVat;itemUnitPriceWithoutVat;itemVatRate;totalPriceWithVat;paymentMethodName
+2026000201;2026-09-10 08:30:00;Vybavená;EUR;1;objednavky@example.sk;;Martin Kováč;Kníhkupectvo Pod Hradom;Mlynská;5;Košice;040 01;SK;35757442;2021000011;SK2021000011;product;Kniha o káve;;KNIHA-01;;3;ks;21,00;20,00;5;67,92;Dobierka
+2026000201;2026-09-10 08:30:00;Vybavená;EUR;1;objednavky@example.sk;;Martin Kováč;Kníhkupectvo Pod Hradom;Mlynská;5;Košice;040 01;SK;35757442;2021000011;SK2021000011;shipping;Slovenská pošta;;;;1;;4,92;4,00;23;67,92;Dobierka
+2026000202;2026-09-11 14:00:00;Stornovaná;EUR;1;;;Ján Zrušený;;;;;;SK;;;;product;Káva zrnková;1 kg;KAVA-1KG;;1;ks;22,14;18,00;23;22,14;
