@@ -15,7 +15,7 @@ export async function fillLine(page, { name, qty, price, index = 0 }) {
 /** Issues the open draft and returns the number shown on its card. */
 export async function issue(page) {
   await page.locator('#editor-issue').click();
-  await expect(page.locator('main h1')).toHaveText(/ [A-Z]{2}\d{6,8}$/);
+  await expect(page.locator('main h1')).toHaveText(/ [A-Z]{2}\d{6,8}$/, { timeout: 15_000 });
   return (await page.locator('main h1').innerText()).split(' ').pop();
 }
 

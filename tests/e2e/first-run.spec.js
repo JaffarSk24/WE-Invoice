@@ -51,6 +51,7 @@ test('first run: sample data, the wizard, the first invoice and its PDF in a min
   await modal.getByLabel('Mesto').fill('Košice');
   await modal.getByLabel('PSČ').fill('040 01');
   await modal.getByRole('button', { name: 'Vytvoriť a použiť' }).click();
+  await expect(page.locator('.party-summary strong')).toHaveText('Prvý klient s. r. o.');
   await fillLine(page, { name: 'Konzultácie', qty: '2', price: '60' });
   const number = await issue(page);
   const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#detail-pdf').click()]);
