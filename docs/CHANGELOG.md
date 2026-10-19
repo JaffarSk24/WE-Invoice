@@ -131,6 +131,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - README: installing on macOS (`xattr -cr`) and Windows (SmartScreen).
 - Tests for every pure part of the main process (backups, data checks, window bounds, network policy and requests, update utils, tray menu, scheduler, deep links, mail, secrets, packaging check) and the app side (transport, close handshake, tray state, updates, boot).
 
+#### Fixed (19 October)
+
+- The universal macOS build failed: the ad-hoc signing ran on the x64 and arm64 halves before they were merged, so their signature files differed. Only the merged app is signed now; the dmg and zip build, carry both architectures and start.
+
 ### Website, waitlist, privacy and terms
 
 #### Added
