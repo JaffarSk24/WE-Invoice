@@ -5,4 +5,4 @@
 
 ## Changed
 
-- German texts keep the Slovak names of forms and books in their basic form: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 33 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names instead of E-Rechnung, Kontrollmeldung, Zusammenfassende Meldung, USt-Voranmeldung and Kassenbuch.
+- German texts keep the Slovak names of forms and books in their basic form: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 33 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names instead of E-Rechnung, Kontrollmeldung, Zusammenfassende Meldung, USt-Voranmeldung and Kassenbuch. Kassenbuch now names only the printed book of a cash desk (pokladničná kniha).

@@ -163,7 +163,7 @@ export default {
   "cash.closingBalance": "Endbestand",
   "cash.csv": "CSV-Export",
   "cash.print": "Drucken",
-  "cash.printTitle": "Kassenjournal: {name}",
+  "cash.printTitle": "Kassenbuch: {name}",
   "cash.printPeriod": "Zeitraum: {from} bis {to}",
   "cash.printBlocked": "Der Browser hat das Druckfenster blockiert. Erlauben Sie Pop-ups für diese Seite.",
   "payments.title": "Zahlungen",
