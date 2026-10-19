@@ -3,7 +3,7 @@
 // {N:4}), the reset (yearly, monthly, never), the variable symbol mask,
 // the default per kind and the next counter, which refuses a number that
 // is already used. A series in use by a document cannot be removed.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { openModal, confirmDialog } from '../../ui/modal.js';
@@ -77,7 +77,7 @@ export function numberingSection(root, { redraw, company, demo }) {
     shown.forEach(series => {
       const isNew = !list.length;
       const next = previewNumber(series, today, takenNumbers(documents, series.id));
-      box.append(h('div', { class: 'setting-row series-row', dataset: { kind, seriesId: series.id } },
+      append(box, [h('div', { class: 'setting-row series-row', dataset: { kind, seriesId: series.id } },
         h('div', { class: 'setting-text' },
           h('span', { class: 'setting-label' }, `${t(`document.kind.${kind}`)}${series.name ? ` · ${series.name}` : ''}`),
           h('span', { class: 'setting-hint' }, t('documents.series.summary', { mask: series.mask, next: next || '', reset: t(`documents.series.reset.${series.reset}`) }))),
@@ -88,7 +88,7 @@ export function numberingSection(root, { redraw, company, demo }) {
             if (!rest) { showToast(t('documents.series.inUse'), { type: 'error' }); return; }
             if (!(await confirmDialog(t('documents.series.removeConfirm'), { danger: true }))) return;
             try { if (await saveCompanyPatch({ series: rest })) redraw(); } catch (e) { showError(e); }
-          } }, icon('trash-2'), t('common.delete')))));
+          } }, icon('trash-2'), t('common.delete'))))]);
     });
   });
   const add = selectField({ label: null, value: '', attrs: { 'aria-label': t('documents.series.add'), disabled: demo }, options: [{ value: '', label: t('documents.series.add') }, ...NUMBERED_KINDS.map(k => ({ value: k, label: t(`document.kind.${k}`) }))] });

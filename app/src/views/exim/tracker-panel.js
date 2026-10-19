@@ -3,7 +3,7 @@
 // only, grouped by project, task or day; the preview shows the lines and
 // the sum before anything is written. The status file lists the entries
 // that went on the invoice, for Time Tracker to mark them invoiced.
-import { h, clear, selectEl } from '../../ui/dom.js';
+import { h, clear, selectEl, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { navigate } from '../../router.js';
@@ -72,14 +72,14 @@ export function renderTrackerPanel(panel, deps = {}) {
     });
     const status = h('button', { type: 'button', class: 'btn', id: 'exim-tracker-status', disabled: !r.logIds.length }, t('exim.tracker.statusFile'));
     status.addEventListener('click', () => saveFile('we-time-tracker-invoiced.json', JSON.stringify(timeTrackerStatus({ logIds: r.logIds, invoicedAt: new Date().toISOString() }), null, 1), 'application/json', deps.transport).catch(e => showError(e)));
-    area.append(
+    append(area, [
       r.lines.length ? h('div', { class: 'exim-table-wrap' }, h('table', { class: 'exim-table', id: 'exim-tracker-lines' },
         h('thead', {}, h('tr', {}, [t('exim.lineColumn.name'), t('exim.lineColumn.qty'), t('exim.lineColumn.unitPrice'), t('exim.lineColumn.net')].map(x => h('th', { scope: 'col' }, x)))),
         h('tbody', {}, r.lines.map(l => h('tr', {}, h('td', {}, l.name), h('td', { class: 'num' }, l.qty), h('td', { class: 'num' }, formatAmount(l.unitPrice)), h('td', { class: 'num' }, formatAmount(round(mul(l.qty, l.unitPrice), 2)))))))) : h('p', { class: 'muted' }, t('exim.tracker.none')),
       h('p', {}, t('exim.tracker.total', { hours: round(div(String(r.minutes), '60'), 2), amount: formatAmount(r.amount) })),
       source.demo ? h('p', { class: 'callout' }, t('exim.demoReadOnly')) : null,
       h('div', { class: 'field' }, h('label', { for: 'exim-tracker-contact' }, t('exim.tracker.contact')), contact),
-      h('div', { class: 'exim-actions' }, create, status));
+      h('div', { class: 'exim-actions' }, create, status)]);
   }
 
   const clientSelect = h('div', { class: 'field', id: 'exim-tracker-client-field' });

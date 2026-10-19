@@ -2,7 +2,7 @@
 // one, remove an empty one) and the valuation method of the stock
 // (weighted average cost or FIFO).
 import { stockLevels, levelsByItem, VALUATION_METHODS } from '@we-invoice/core';
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { openModal, confirmDialog } from '../../ui/modal.js';
@@ -63,13 +63,13 @@ export function renderWarehousesTab(panel, data) {
     for (const w of data.warehouses) {
       const levels = stockLevels(data.moves, { warehouseId: w.id });
       const items = levelsByItem(levels).size;
-      list.append(h('article', { class: 'card stock-warehouse', dataset: { warehouse: w.id } },
+      append(list, [h('article', { class: 'card stock-warehouse', dataset: { warehouse: w.id } },
         h('div', { class: 'stock-warehouse-text' },
           h('h3', {}, w.name, w.isDefault ? h('span', { class: 'badge' }, t('stock.warehouse.default')) : null),
           h('p', { class: 'muted' }, [w.code, t('stock.warehouse.itemCount', { n: qtyText(String(items)) })].filter(Boolean).join(' · '))),
         h('div', { class: 'stock-warehouse-actions' },
           h('button', { type: 'button', class: 'btn btn-ghost btn-sm', onclick: () => openWarehouseForm(w) }, icon('pencil-line'), t('stock.warehouse.edit')),
-          h('button', { type: 'button', class: 'btn btn-ghost btn-sm', disabled: items > 0, title: items > 0 ? t('errors.STOCK_WAREHOUSE_NOT_EMPTY') : null, onclick: () => askRemove(w) }, icon('x'), t('stock.warehouse.remove')))));
+          h('button', { type: 'button', class: 'btn btn-ghost btn-sm', disabled: items > 0, title: items > 0 ? t('errors.STOCK_WAREHOUSE_NOT_EMPTY') : null, onclick: () => askRemove(w) }, icon('x'), t('stock.warehouse.remove'))))]);
     }
     refreshIcons(list);
   }

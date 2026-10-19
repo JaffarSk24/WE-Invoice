@@ -1,7 +1,7 @@
 // The phone bottom bar: Overview, Documents, + (FAB with a menu), Purchases,
 // More. The FAB menu is a real menu for the keyboard: arrows move, Escape
 // closes, focus returns to the button.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { BOTTOM_BAR, FAB_ACTIONS } from './nav.js';
 import { navigate } from '../../router.js';
@@ -40,9 +40,9 @@ export function renderBottomBar(active) {
       }, icon('plus'));
       bar.append(fab);
     } else {
-      bar.append(h('a', {
+      append(bar, [h('a', {
         class: 'bottom-item', href: `#/${item.route}`, 'aria-current': item.route === active ? 'page' : null
-      }, icon(item.icon), h('span', {}, t(item.label))));
+      }, icon(item.icon), h('span', {}, t(item.label)))]);
     }
   });
   backdrop.addEventListener('click', () => setOpen(false));

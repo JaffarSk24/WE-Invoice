@@ -69,6 +69,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Fixed
 
+- Screens no longer show the word "null" where an optional part is missing (reports, VAT reports, quick sale and others): elements are added through the helper that skips empty parts. An end-to-end test opens every menu screen with sample data and fails on "null", "undefined", "NaN" or an untranslated dictionary key.
 - The company made in the "My company" wizard is saved in the store and synced to Google Drive; it used to stay only on the device. A company kept on the device by an earlier version moves into the store at start, the device copy is dropped only after the store has written it, and the company switcher and the end of sample mode work through the store.
 - Phone layout of the Overview: quick actions in a 2 by 2 grid with the icon above the label, badges no longer wrap, the page header wraps cleanly, widget titles take the free width and the move arrows are hidden on a phone (the order is changed in "Widgets"), and the create menu dims the page behind it and closes on a tap outside.
 

@@ -2,7 +2,7 @@
 // of one record): who changed what and when, newest first, filtered by
 // dates, kind of change, kind of record and text. Field values are shown
 // only where the log keeps them (status, number, dates).
-import { h, selectEl, clear } from '../../ui/dom.js';
+import { h, selectEl, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
@@ -101,13 +101,13 @@ export function renderAudit(root) {
   let timer = null;
   text.input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => { filter.text = text.value(); draw(); }, 150); });
 
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('h1', {}, t('reports.audit.title')),
       filter.entityId ? h('div', { class: 'view-actions' }, h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => navigate('audit') }, t('reports.audit.showAll'))) : null),
     h('p', { class: 'muted view-intro' }, t('reports.audit.intro')),
     h('div', { class: 'filter-bar', role: 'search', 'aria-label': t('reports.audit.filters') },
       h('div', { class: 'filter-row' }, action, entity, text.el), h('div', { class: 'filter-custom' }, from.el, to.el)),
-    out);
+    out]);
   draw();
   ['data:changed', 'company:switched', 'demo:enabled', 'demo:disabled'].forEach(ev => offs.push(on(ev, () => { if (out.isConnected) draw(); })));
 }

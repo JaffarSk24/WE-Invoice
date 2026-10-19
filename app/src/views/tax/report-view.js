@@ -4,7 +4,7 @@
 // report module gives its route, title, how to build it and how to show
 // its preview; everything else is shared. Errors block the download; in
 // demo mode nothing is written and the actions say so.
-import { h, icon, clear, selectEl } from '../../ui/dom.js';
+import { h, icon, clear, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { vatRecords, exportChecks, mergeProblems, canExport, recordsDigest, filingStatus, suggestedFilingType, filingDueDate, parseTaxPeriod } from '@we-invoice/core';
@@ -30,7 +30,7 @@ export function renderReport(root, ctx, def, view) {
     return;
   }
   const body = h('div', { class: 'tax-body' });
-  root.append(disclaimer(), h('div', { class: 'tax-toolbar' }, periodBar(view.period, view.onPeriod), def.periodKinds ? periodKindSelect(view) : null), body);
+  append(root, [disclaimer(), h('div', { class: 'tax-toolbar' }, periodBar(view.period, view.onPeriod), def.periodKinds ? periodKindSelect(view) : null), body]);
   draw(body, ctx, def, { ...view, src });
 }
 
@@ -88,7 +88,7 @@ async function drawReport(body, ctx, def, view) {
     }
   };
   const blocked = !canExport(problems);
-  body.append(
+  append(body, [
     h('div', { class: 'tax-toolbar' },
       filingTypeSelect(def.types, type, (next) => { state.type = next; redraw(); }),
       h('p', { class: 'muted tax-deadline' }, t('tax.deadline', { date: formatDate(filingDueDate(period, def.report)) })),
@@ -102,7 +102,7 @@ async function drawReport(body, ctx, def, view) {
     h('section', { class: 'tax-preview', 'aria-labelledby': 'tax-preview-title' },
       h('h2', { id: 'tax-preview-title' }, t('tax.preview.title')),
       def.preview(report, { ctx, src, records, state, redraw })),
-    xmlDetails(report.xml));
+    xmlDetails(report.xml)]);
   refreshIcons(body);
 }
 

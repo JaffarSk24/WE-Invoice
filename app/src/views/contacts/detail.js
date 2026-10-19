@@ -3,7 +3,7 @@
 // own terms, the balance, all documents of the client and the history of
 // e-mails sent to them. "Nová faktúra" asks the sales package for a new
 // invoice for this client (event document:new).
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { emit } from '../../events.js';
@@ -109,7 +109,7 @@ export function renderContactDetail(root, id, { transport }) {
       if (await write(store => store.update('contacts', contact.id, anonymizePatch(contact)))) showToast(t('contacts.anonymized'));
     };
     const canAnonymize = contact.kind === 'PERSON' && !contact.anonymizedAt;
-    root.append(
+    append(root, [
       h('header', { class: 'view-header' },
         h('div', {},
           h('a', { href: '#/contacts', class: 'back-link' }, icon('arrow-left'), t('contacts.back')),
@@ -127,7 +127,7 @@ export function renderContactDetail(root, id, { transport }) {
           { id: 'documents', label: t('contacts.tab.documents'), render: (p) => p.append(documentList(contact, documents)) },
           { id: 'history', label: t('contacts.tab.history'), render: (p) => p.append(mailHistory(contact, documents)) }
         ]
-      }).el);
+      }).el]);
     refreshIcons(root);
   }
   draw();
