@@ -1,7 +1,7 @@
 // German texts: shell, navigation, common words (WP-0 / WP-UI).
 export default {
   "app.name": "WE Invoice",
-  "app.tagline": "Rechnungen und E-Rechnungen kostenlos",
+  "app.tagline": "Rechnungen und eFaktúra kostenlos",
   "nav.dashboard": "Übersicht",
   "nav.group.sales": "Verkauf",
   "nav.invoices": "Rechnungen",
@@ -15,7 +15,7 @@ export default {
   "nav.received": "Eingangsrechnungen",
   "nav.expenses": "Ausgaben und Belege",
   "nav.inbox": "Posteingang",
-  "nav.group.efaktury": "E-Rechnungen",
+  "nav.group.efaktury": "eFaktúra",
   "nav.efakturyIn": "Empfangen",
   "nav.efakturyOut": "Gesendet",
   "nav.group.money": "Geld",
@@ -30,12 +30,17 @@ export default {
   "nav.trash": "Papierkorb",
   "nav.audit": "Änderungsprotokoll",
   "nav.group.tax": "Steuern und Buchhaltung",
-  "nav.vatRecords": "USt-Aufzeichnungen",
-  "nav.kv": "Kontrollmeldung",
-  "nav.sv": "EU-Meldung (ZM)",
-  "nav.vatReturn": "USt-Voranmeldung",
-  "nav.cashJournal": "Kassenbuch",
+  "nav.vatRecords": "Evidencia DPH",
+  "nav.kv": "Kontrolný výkaz",
+  "nav.sv": "Súhrnný výkaz",
+  "nav.vatReturn": "Priznanie k DPH",
+  "nav.cashJournal": "Peňažný denník",
   "nav.assets": "Anlagevermögen",
+  "screen.kv.title": "Kontrolný výkaz",
+  "screen.sv.title": "Súhrnný výkaz",
+  "screen.vatReturn.title": "Priznanie k DPH",
+  "screen.vatRecords.title": "Evidencia DPH",
+  "screen.cashJournal.title": "Peňažný denník",
   "nav.closing": "Abschluss",
   "nav.reports": "Auswertungen",
   "nav.settings": "Einstellungen",
@@ -89,5 +94,5 @@ export default {
   "search.hint": "Geben Sie eine Belegnummer, einen Kontaktnamen oder einen Betrag ein.",
   "pwa.newVersion": "Eine neue Version der App ist verfügbar.",
   "pwa.reload": "Neu laden",
-  "legislation.einvoice.note": "Ab 1. 1. 2027 stellen umsatzsteuerpflichtige Unternehmer in der Slowakei inländische B2B-Rechnungen als E-Rechnungen über Peppol aus, und alle Unternehmer müssen sie empfangen können."
+  "legislation.einvoice.note": "Ab 1. 1. 2027 stellen umsatzsteuerpflichtige Unternehmer in der Slowakei inländische B2B-Rechnungen als eFaktúra über Peppol aus, und alle Unternehmer müssen sie empfangen können."
 };

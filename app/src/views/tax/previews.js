@@ -49,7 +49,7 @@ function sectionBlock(section, table, titleKey = null) {
 
 export const KV_REPORT = {
   report: 'kv',
-  title: 'nav.kv',
+  title: 'screen.kv.title',
   types: FILING_TYPES,
   build: buildKv,
   preview: (kv) => h('div', { class: 'tax-sections' }, KV_SECTIONS.map(s => kvSection(kv, s)))
@@ -57,7 +57,7 @@ export const KV_REPORT = {
 
 export const SV_REPORT = {
   report: 'sv',
-  title: 'nav.sv',
+  title: 'screen.sv.title',
   types: ['R', 'O'],
   periodKinds: true,
   build: buildSv,
@@ -99,7 +99,7 @@ function rowMeaning(key, period) {
 
 export const VAT_RETURN_REPORT = {
   report: 'vatReturn',
-  title: 'nav.vatReturn',
+  title: 'screen.vatReturn.title',
   types: FILING_TYPES,
   build: buildVatReturn,
   preview: (vr) => h('div', {},

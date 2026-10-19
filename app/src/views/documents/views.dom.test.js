@@ -3,6 +3,7 @@
 // and rows, the editor refusing an incomplete invoice at its fields,
 // issuing without the autosave overwriting the issued document, the card
 // with its actions, and the start-up events.
+import { on } from '../../events.js';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createStore, memoryAdapter } from '../../store/index.js';
 import { renderDocumentList } from './list-view.js';
@@ -102,6 +103,11 @@ describe('route and card', () => {
     render(b, 'invoices');
     await vi.waitFor(() => expect(b.querySelector('#detail-add-payment')).not.toBeNull());
     expect(b.querySelector('h1').textContent).toContain('FA20260009');
+    const asked = [];
+    const stop = on('recurring:from-document', (p) => asked.push(p.documentId));
+    b.querySelector('#detail-recurring').click();
+    stop();
+    expect(asked).toEqual([issued.id]);
     const c = document.createElement('main');
     document.body.append(c);
     window.location.hash = '#/invoices/missing';

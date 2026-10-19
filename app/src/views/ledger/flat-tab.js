@@ -3,7 +3,7 @@
 // and the insurance paid. The disclaimer says what the summary is: help
 // for filling in the return, not the return itself.
 import { incomeRecords, flatSummary, sum, round } from '@we-invoice/core';
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { createTable } from '../../components/table.js';
 import { emptyState } from '../../components/empty-state.js';
@@ -41,7 +41,7 @@ function summaryOf(ctx) {
 
 export function renderFlatSummaryTab(panel, ctx) {
   const s = summaryOf(ctx);
-  panel.append(
+  append(panel, [
     callout('info', t('ledger.flat.disclaimer')),
     stats([
       { label: t('ledger.flat.income'), value: money(s.income) },
@@ -57,7 +57,7 @@ export function renderFlatSummaryTab(panel, ctx) {
         h('tbody', {}, s.rows.map(r => h('tr', {}, h('td', {}, t(`ledger.paragraph.${r.paragraph}`)), h('td', { class: 'num' }, money(r.income)), h('td', { class: 'num' }, money(r.expenses))))),
         h('tfoot', {}, h('tr', {}, h('td', {}, t('ledger.flat.insuranceRow')), h('td', {}), h('td', { class: 'num' }, money(s.insurance))),
           h('tr', {}, h('td', {}, t('ledger.journal.total')), h('td', { class: 'num' }, money(s.income)), h('td', { class: 'num' }, money(s.expenses)))))
-        : h('p', { class: 'muted' }, t('ledger.flat.noIncome'))));
+        : h('p', { class: 'muted' }, t('ledger.flat.noIncome')))]);
 }
 
 export function flatTables(ctx) {

@@ -144,6 +144,7 @@ export function detailActions({ doc, row, company, route, documents }) {
       btn(t('documents.action.print'), 'printer', () => printPdf(doc, company, documents)),
       isTaxDocument(doc.kind) ? btn(t('documents.action.peppol'), 'send', () => emit('peppol:send', { documentId: doc.id }), { id: 'detail-peppol' }) : null,
       btn(t('documents.action.copy'), 'copy', copy, { id: 'detail-copy' }),
+      doc.kind === 'INVOICE' ? btn(t('documents.action.recurring'), 'repeat', () => emit('recurring:from-document', { documentId: doc.id }), { id: 'detail-recurring' }) : null,
       ...availableConversions(doc, documents).map(target => btn(t(`documents.convert.${target}`), 'file-plus-2', () => convert(target), { dataset: { convert: target } })),
       ...manual.map(s => btn(t(`documents.status.set.${s}`), 'check', () => status(s), { dataset: { setStatus: s } }))
     ].filter(Boolean);

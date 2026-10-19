@@ -8,7 +8,7 @@ export default {
   "settings.section.email": "E-mail",
   "settings.section.email.text": "Odesílání přes Gmail nebo SMTP a šablony zpráv.",
   "settings.section.peppol": "Peppol",
-  "settings.section.peppol.text": "Poskytovatel e-faktur, API klíč, test spojení a stav účastníka.",
+  "settings.section.peppol.text": "Poskytovatel eFaktúr, API klíč, test spojení a stav účastníka.",
   "settings.section.reminders": "Upomínky",
   "settings.section.reminders.text": "Kdy a jak se posílají upomínky.",
   "settings.section.sync": "Synchronizace a šifrování",

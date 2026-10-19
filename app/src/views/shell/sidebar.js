@@ -1,7 +1,7 @@
 // The 260 px sidebar of wide screens: logo, the brand "New invoice" button,
 // the navigation groups (tax items filtered by the company's modes), and at
 // the bottom the company switcher, the sync status, language and theme.
-import { h, icon, selectEl } from '../../ui/dom.js';
+import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang } from '../../i18n/index.js';
 import { languageOptions } from '../../i18n/languages.js';
@@ -26,8 +26,8 @@ export function navList(active, { withBadges = true } = {}) {
   const nav = h('nav', { class: 'nav', 'aria-label': t('nav.main') });
   visibleNav(currentCompany()).forEach(group => {
     if (group.title) {
-      nav.append(h('div', { class: 'nav-group-title' }, t(group.title),
-        withBadges && group.beta ? h('span', { class: 'nav-badge' }, t('common.beta')) : null));
+      append(nav, [h('div', { class: 'nav-group-title' }, t(group.title),
+        withBadges && group.beta ? h('span', { class: 'nav-badge' }, t('common.beta')) : null)]);
     }
     group.items.forEach(item => nav.append(navLink(item, active)));
   });

@@ -51,7 +51,7 @@ function draw(root) {
   clear(root);
   const notice = modeNotice();
   if (notice) {
-    root.append(viewHeader({ title: t('nav.cashJournal') }), notice);
+    root.append(viewHeader({ title: t('screen.cashJournal.title') }), notice);
     return;
   }
   const data = ledgerData();
@@ -72,12 +72,12 @@ function draw(root) {
     tabs = tabsFor(mode, ctx);
   } catch (e) {
     showError(e);
-    root.append(viewHeader({ title: t('nav.cashJournal') }), callout('danger', t('ledger.error.compute')));
+    root.append(viewHeader({ title: t('screen.cashJournal.title') }), callout('danger', t('ledger.error.compute')));
     return;
   }
   if (!tabs.some(tb => tb.id === activeTab)) activeTab = tabs[0].id;
   const current = () => tabs.find(tb => tb.id === activeTab);
-  const title = mode === 'TAX_RECORDS_FLAT' ? t('ledger.title.flat') : t('nav.cashJournal');
+  const title = mode === 'TAX_RECORDS_FLAT' ? t('ledger.title.flat') : t('screen.cashJournal.title');
   const fileName = (ext) => `${t(`ledger.file.${activeTab}`)}-${year}.${ext}`;
   root.append(viewHeader({
     title, years: ledgerYears(data), year, onYear: () => draw(root),

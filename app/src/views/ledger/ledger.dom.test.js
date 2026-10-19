@@ -69,7 +69,7 @@ describe('screens', () => {
     await store.insert('documents', invoice);
     await syncAutoEntries(store);
     const root = mount(renderCashJournal);
-    expect(root.querySelector('h1').textContent).toBe('Cash journal');
+    expect(root.querySelector('h1').textContent).toBe('Cash book (Peňažný denník)');
     expect(root.textContent).toContain('Odberateľ');
     expect(root.querySelectorAll('[role="tab"]').length).toBe(3);
   });

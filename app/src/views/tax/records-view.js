@@ -133,7 +133,7 @@ export function renderRecordsBody(body, { src, period, ctx, redraw }) {
 
 export function renderVatRecords(root, ctx, { period, onPeriod }) {
   const src = taxSource();
-  root.append(h('header', { class: 'view-header' }, h('h1', {}, t('nav.vatRecords'))));
+  root.append(h('header', { class: 'view-header' }, h('h1', {}, t('screen.vatRecords.title'))));
   if (!src.company) {
     root.append(emptyState({ title: t('tax.empty.title'), text: t('tax.empty.text'), iconName: 'calculator' }));
     return;

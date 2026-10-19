@@ -2,7 +2,7 @@
 // or issued, automatic e-mail, how many were made, pause and resume, and
 // "run now" for the due ones. Drafts made by the schedule wait in the
 // invoice list of the sales package.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { createTable } from '../../components/table.js';
@@ -44,7 +44,7 @@ function columns() {
 
 export function renderTemplateList(root, { transport }) {
   const body = h('div', {});
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('h1', {}, t('nav.recurring')),
       h('div', { class: 'view-actions' },
         h('button', { type: 'button', class: 'btn', id: 'recurring-run', onclick: async () => {
@@ -53,7 +53,7 @@ export function renderTemplateList(root, { transport }) {
         } }, icon('refresh-cw'), t('recurring.runNow')),
         h('button', { type: 'button', class: 'btn btn-primary', id: 'recurring-new', onclick: () => go('recurring/new') }, icon('plus'), t('recurring.new')))),
     h('p', { class: 'muted recurring-intro' }, t('recurring.intro')),
-    body);
+    body]);
   const draw = () => {
     const all = listOf('recurringTemplates');
     if (!all.length) {

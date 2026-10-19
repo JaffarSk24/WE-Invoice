@@ -8,7 +8,9 @@ import { showRecoveryWords } from './recovery-view.js';
 import { setupEncryption, confirmSetup } from '../account.js';
 import { MIN_PASSWORD } from '../crypto.js';
 
-export function openSetupModal({ engine, transport, showToast, showError }) {
+// onFinish(ok): called once with true when the words are confirmed and the
+// keys are in place, false when the person chose Later or did not confirm.
+export function openSetupModal({ engine, transport, showToast, showError, onFinish = () => {} }) {
   const pass = passwordField('sync.password.label', { autocomplete: 'new-password', autofocus: true });
   const again = passwordField('sync.password.confirmLabel', { autocomplete: 'new-password' });
   const error = errorLine();
@@ -17,7 +19,7 @@ export function openSetupModal({ engine, transport, showToast, showError }) {
     title: t('sync.password.title'),
     body: h('div', {}, paragraph('sync.password.text'), pass.wrap, strengthHint(pass.input), again.wrap, error.el),
     actions: [
-      { label: t('sync.signIn.later'), onClick: (m) => m.close() },
+      { label: t('sync.signIn.later'), onClick: (m) => { m.close(); onFinish(false); } },
       {
         label: t('sync.password.create'), kind: 'primary',
         onClick: async (m) => {
@@ -31,9 +33,10 @@ export function openSetupModal({ engine, transport, showToast, showError }) {
             m.close();
             if (!engine.vault.keyStored) showToast(t('sync.keyNotStored'), { type: 'info', duration: 10000 });
             const confirmed = await showRecoveryWords({ words, positions: confirm, transport, showToast });
-            if (!confirmed) return;
+            if (!confirmed) { onFinish(false); return; }
             const result = await confirmSetup(engine);
             if (result.ok || result.outcome === 'off') showToast(t('sync.recovery.done'), { type: 'success' });
+            onFinish(true);
           } catch (e) {
             error.show(e);
             showError(e);
