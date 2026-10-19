@@ -127,5 +127,15 @@
   "note.lines": "Poznámka",
   "footer.madeWith": "Vystavené vo WE Invoice",
   "footer.page": "Strana {page}/{pages}",
-  "footer.continues": "Pokračovanie na ďalšej strane"
+  "footer.continues": "Pokračovanie na ďalšej strane",
+  "unit.C62": "ks",
+  "unit.HUR": "hod.",
+  "unit.DAY": "deň",
+  "unit.MON": "mes.",
+  "unit.KGM": "kg",
+  "unit.MTR": "m",
+  "unit.MTK": "m²",
+  "unit.LTR": "l",
+  "unit.KMT": "km",
+  "unit.SET": "súbor"
 }

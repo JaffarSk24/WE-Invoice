@@ -1,0 +1,61 @@
+/* Sales lists and the document card (WP-SALES): tools above the table,
+   the status cell with the eFaktura badge, the status ribbon, payments,
+   related documents and the PDF of an issued document. */
+
+.documents-tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+.documents-search { flex: 1 1 260px; max-width: 420px; }
+.documents-payment { flex: 0 1 220px; }
+.documents-list[hidden], .documents-empty[hidden] { display: none; }
+.doc-number { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.status-cell { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.badge-efaktura { color: var(--warning); }
+.badge-peppol { color: var(--status-sent); }
+.badge-peppol[data-peppol="DELIVERED"], .badge-peppol[data-peppol="ACCEPTED"] { color: var(--status-delivered); }
+.badge-peppol[data-peppol="REJECTED"], .badge-peppol[data-peppol="FAILED"], .badge-peppol[data-peppol="INVALID"] { color: var(--status-rejected); }
+
+.detail { display: flex; flex-direction: column; gap: 16px; }
+.detail-actions { flex-wrap: wrap; }
+.more-actions { position: relative; }
+.more-actions > summary { list-style: none; cursor: pointer; }
+.more-actions > summary::-webkit-details-marker { display: none; }
+.more-menu {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; display: flex; flex-direction: column; gap: 6px; min-width: 240px; padding: 10px;
+  background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
+}
+.more-menu .btn { justify-content: flex-start; }
+
+.status-ribbon { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; margin: 0; padding: 0; color: var(--text-muted); }
+.status-ribbon li { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
+.status-ribbon li.is-done { color: var(--status-paid); font-weight: 600; }
+.status-ribbon svg { width: 18px; height: 18px; }
+
+.detail-grid, .detail-amounts { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px 20px; }
+.detail-amounts { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+.detail-field { display: flex; flex-direction: column; gap: 2px; }
+.detail-note { margin-top: 12px; }
+.detail-links ul, .detail-sendlog ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.payment-list { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.payment-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 8px 0; border-bottom: 1px solid var(--border-color); }
+.payment-tools { margin-left: auto; display: inline-flex; gap: 4px; }
+.payment-due { font-weight: 600; }
+
+.pdf-frame { width: 100%; min-height: 720px; border: 0; border-radius: var(--radius-sm); background: var(--bg-secondary); }
+.print-frame { position: fixed; right: 0; bottom: 0; width: 1px; height: 1px; border: 0; opacity: 0; }
+
+.ekasa-screen { display: flex; flex-direction: column; gap: 12px; }
+.ekasa-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--overlay-02); }
+.ekasa-label { flex: 1 1 160px; color: var(--text-secondary); }
+.ekasa-value { font-size: 20px; font-weight: 700; }
+
+.settings-subtitle { margin: 24px 0 8px; font-size: 16px; }
+.series-row .setting-control, .company-accounts .setting-control { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.form-actions { display: flex; gap: 12px; margin: 8px 0 16px; }
+label.btn.is-disabled { opacity: 0.5; pointer-events: none; }
+
+@media (max-width: 767px) {
+  .documents-search, .documents-payment { max-width: none; flex-basis: 100%; }
+  .more-menu { right: auto; left: 0; }
+  .pdf-frame { min-height: 480px; }
+}

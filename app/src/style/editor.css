@@ -1,0 +1,77 @@
+/* The document editor (WP-SALES): form on the left and the live PDF on
+   the right from 1280 px, a preview toggle below; the lines as rows with
+   their cells, the totals sticky at the bottom of the form. */
+
+.editor-header { flex-wrap: wrap; gap: 12px; }
+.editor-header .view-actions { flex-wrap: wrap; min-width: 0; }
+.editor-layout > * { min-width: 0; }
+.editor-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.editor-title h1 { margin: 0; }
+
+.editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.editor-preview { display: none; }
+.editor-layout.show-preview .editor-form { display: none; }
+.editor-layout.show-preview .editor-preview { display: block; }
+@media (min-width: 1280px) {
+  .editor-layout { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; }
+  .editor-layout .editor-form, .editor-layout.show-preview .editor-form { display: flex; }
+  .editor-preview, .editor-layout.show-preview .editor-preview { display: block; position: sticky; top: 16px; }
+  .editor-preview-toggle { display: none; }
+}
+
+.editor-form { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.editor-form h2 { font-size: 16px; margin: 0 0 12px; }
+.editor-section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.editor-missing-box:empty { display: none; }
+.editor-missing { margin-bottom: 16px; }
+.editor-missing ul { margin: 8px 0; padding-left: 20px; }
+
+.party-pick { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.party-pick .ac-field { flex: 1 1 280px; margin-bottom: 0; }
+.party-summary { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+.editor-party.field-invalid { border-color: var(--danger); }
+.number-field .field-label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+.number-preview { font-weight: 600; }
+
+.lines-list { display: flex; flex-direction: column; gap: 8px; }
+.line { display: flex; gap: 8px; align-items: flex-start; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--overlay-02); flex-wrap: wrap; }
+.line-grid { flex: 1 1 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; min-width: 0; }
+.line-name { grid-column: 1 / -1; }
+.line-cell { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.line-cell .field { margin: 0; }
+.line-label { font-size: 12px; color: var(--text-muted); }
+.line-error { font-size: 12px; color: var(--danger); }
+.line-error[hidden] { display: none; }
+.line-cell.field-invalid input, .line-cell.field-invalid select { border-color: var(--danger); }
+.line-amount { align-items: flex-end; justify-content: flex-end; }
+.line-total { font-weight: 600; padding-top: 10px; }
+.line-description { margin-top: 6px; }
+.line-desc-toggle { align-self: flex-start; }
+.line-exemption { flex: 1 1 100%; }
+.line-tools { display: flex; flex-direction: column; gap: 2px; }
+.line-drag { cursor: grab; color: var(--text-muted); padding-top: 26px; }
+.line-text-input { flex: 1 1 300px; font-weight: 600; }
+.line-subtotal { align-items: center; }
+.line-subtotal-label { flex: 1; font-weight: 600; color: var(--text-secondary); }
+.lines-add { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.doc-discount { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.doc-discount input, .doc-discount select { max-width: 200px; }
+
+.advance-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.advance-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.advance-row input { max-width: 140px; }
+
+.editor-totals { position: sticky; bottom: 0; z-index: 5; display: flex; flex-direction: column; gap: 4px; background: var(--bg-elevated); box-shadow: var(--shadow-md); }
+.totals-row { display: flex; justify-content: space-between; gap: 16px; }
+.totals-sub { font-size: 13px; color: var(--text-secondary); }
+.totals-strong { font-weight: 600; }
+.totals-payable { font-size: 18px; font-weight: 700; border-top: 1px solid var(--border-color); padding-top: 6px; margin-top: 4px; }
+
+@media (max-width: 767px) {
+  .line-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); flex-basis: 100%; }
+  .line, .editor-form .card { min-width: 0; }
+  .doc-discount input, .doc-discount select { max-width: 100%; flex: 1 1 100%; }
+  .line-drag { display: none; }
+  .line-tools { flex-direction: row; margin-left: auto; }
+  .editor-totals { bottom: var(--bottom-bar-height); }
+}

@@ -127,5 +127,15 @@
   "note.lines": "Note",
   "footer.madeWith": "Issued with WE Invoice",
   "footer.page": "Page {page}/{pages}",
-  "footer.continues": "Continued on the next page"
+  "footer.continues": "Continued on the next page",
+  "unit.C62": "pcs",
+  "unit.HUR": "h",
+  "unit.DAY": "day",
+  "unit.MON": "month",
+  "unit.KGM": "kg",
+  "unit.MTR": "m",
+  "unit.MTK": "m²",
+  "unit.LTR": "l",
+  "unit.KMT": "km",
+  "unit.SET": "set"
 }
