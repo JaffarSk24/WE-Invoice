@@ -98,7 +98,8 @@ describe('review', () => {
     await flush(); await flush();
     const saved = store.get('documents', doc.id);
     expect(saved.status).not.toBe('TO_PROCESS');
-    expect(saved.lines[0].accountingCategory).toBe('SERVICES');
+    expect(saved.expenseCategory).toBe('SERVICES');
+    expect(saved.lines[0].accountingCategory).toBe('EXPENSE_TAX_SERVICES');
     expect(window.location.hash).toBe('#/received');
   });
 
@@ -131,7 +132,7 @@ describe('lists', () => {
     expect(root.querySelector('h1').textContent).toBe('Prijaté faktúry');
     expect(root.textContent).toContain('Účtovníctvo Pro s.r.o.');
     const receipt = await inboxDoc(read('text/sk-receipt-shop.txt'));
-    await store.update('documents', receipt.id, { status: 'PROCESSED', lines: receipt.lines.map(l => ({ ...l, accountingCategory: 'OFFICE' })) });
+    await store.update('documents', receipt.id, { status: 'PROCESSED', expenseCategory: 'OFFICE' });
     root.replaceChildren();
     renderList(root, LISTS.expenses);
     expect(root.querySelector('.expense-summary').textContent).toContain('Kancelárske potreby');

@@ -13,8 +13,9 @@
 //
 // Every failure reaches the user as a toast (errors.<CODE>) and the
 // console as the technical cause; fail() is called when given. The same
-// API is importable directly from app/src/pdf/index.js.
-import { buildPdf, pdfFileNameFor, missingRequisites } from '../pdf/index.js';
+// API is importable directly from app/src/pdf/index.js. The module (with
+// the payment QR library) loads on the first request, not at start.
+const pdfModule = () => import('../pdf/index.js');
 
 function run(ctx, request, work) {
   const done = typeof request.done === 'function' ? request.done : () => {};
@@ -29,10 +30,11 @@ function run(ctx, request, work) {
 }
 
 export async function boot(ctx) {
-  ctx.on('pdf:build', (request) => run(ctx, request, () => buildPdf(request.document, request.company, request.options || {})));
+  ctx.on('pdf:build', (request) => run(ctx, request, async () => (await pdfModule()).buildPdf(request.document, request.company, request.options || {})));
 
   ctx.on('pdf:download', (request) => run(ctx, request, async () => {
     const options = request.options || {};
+    const { buildPdf, pdfFileNameFor } = await pdfModule();
     const blob = await buildPdf(request.document, request.company, options);
     const name = pdfFileNameFor(request.document, request.company, options);
     await ctx.transport.files.saveAs(name, blob);
@@ -41,11 +43,14 @@ export async function boot(ctx) {
   }));
 
   ctx.on('pdf:preview', (request) => run(ctx, request, async () => {
+    const { buildPdf } = await pdfModule();
     const blob = await buildPdf(request.document, request.company, { allowIncomplete: true, ...(request.options || {}) });
     return URL.createObjectURL(blob);
   }));
 
   ctx.on('pdf:check', (request) => {
-    if (typeof request.done === 'function') request.done(missingRequisites(request.document, request.company));
+    if (typeof request.done !== 'function') return;
+    pdfModule().then(m => request.done(m.missingRequisites(request.document, request.company)))
+      .catch(e => { console.error('PDF check failed', e); ctx.showError(e, 'errors.PDF_RENDER_FAILED'); });
   });
 }

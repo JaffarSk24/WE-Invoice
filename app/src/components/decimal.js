@@ -4,13 +4,16 @@
 // the arithmetic, never floats. The core money module (WP-CORE) is used
 // when it is implemented; until then the same rules run here.
 import Big from 'big.js';
-import * as money from '@we-invoice/core';
+// Named imports: a namespace looked up by name would pull the whole core
+// into the start-up bundle.
+import { add as coreAdd, cmp as coreCmp, formatAmount as coreFormatAmount, parseAmount as coreParseAmount, round as coreRound } from '@we-invoice/core';
 import { currentLang } from '../i18n/index.js';
 import { localeOf } from '../i18n/languages.js';
 
 // A stub is detected once per function, so totals over 10 000 rows do not
 // throw and catch 10 000 times.
 const stubs = new Set();
+const money = { add: coreAdd, cmp: coreCmp, formatAmount: coreFormatAmount, parseAmount: coreParseAmount, round: coreRound };
 
 function viaCore(name, args, fallback) {
   if (stubs.has(name)) return fallback();

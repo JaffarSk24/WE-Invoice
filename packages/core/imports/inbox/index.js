@@ -10,5 +10,5 @@ export { recognizeFound, detectInboxFile } from './recognize.js';
 export { mergeRecognitions, emptyRecognition, FIELDS as INBOX_FIELDS, KEY_FIELDS as INBOX_KEY_FIELDS } from './result.js';
 export { draftFromRecognition, draftLines, receivedTotals, supplierSnapshot } from './draft.js';
 export { pickFieldValue, applyUserValue, learnTemplate, applyTemplateRegions, findSupplierContact } from './templates.js';
-export { EXPENSE_CATEGORIES, JOURNAL_COLUMNS, expenseCategory, documentCategory as expenseCategoryOf, withCategory as withExpenseCategory } from './categories.js';
+export { PURCHASE_CATEGORIES, expenseCategory, documentCategory as expenseCategoryOf, withCategory as withExpenseCategory } from './categories.js';
 export { periodOf as vatPeriodKey, deductionPeriod as vatDeductionPeriodOf, deductibleVat, kvSections as receivedKvSections } from './vat-deduction.js';

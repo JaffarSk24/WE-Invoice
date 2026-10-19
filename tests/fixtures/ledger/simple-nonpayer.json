@@ -1,0 +1,25 @@
+{
+  "$comment": "Jednoduché účtovníctvo of a non-payer: paid invoices by bank and cash, received invoice and a receipt with categories, insurance by hand. Expected values computed by hand.",
+  "name": "non-payer, services and goods",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "initial": { "cash": "100", "bank": "1000" },
+  "inputs": { "cashCount": "560", "bankStatement": "1492.50", "inventory": "0" },
+  "documents": [
+    { "id": "inv1", "kind": "INVOICE", "number": "2026001", "issueDate": "2026-02-01", "lines": [ { "unitPrice": "1000", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-02-10", "amount": "1000" } ] },
+    { "id": "inv2", "kind": "INVOICE", "number": "2026002", "issueDate": "2026-03-05", "lines": [ { "unitPrice": "500", "vatCategory": "O", "vatRate": null, "accountingCategory": "INCOME_TAX_GOODS" } ], "payments": [ { "date": "2026-03-05", "amount": "500", "method": "CASH" } ] },
+    { "id": "r1", "kind": "RECEIVED_INVOICE", "status": "PROCESSED", "number": "D-77", "receivedDate": "2026-03-20", "lines": [ { "unitPrice": "250", "vatCategory": "S", "vatRate": "23", "accountingCategory": "EXPENSE_TAX_MATERIAL" } ], "payments": [ { "date": "2026-04-01", "amount": "307.50" } ] },
+    { "id": "e1", "kind": "EXPENSE_RECEIPT", "status": "PROCESSED", "receivedDate": "2026-04-02", "lines": [ { "unitPrice": "40", "vatCategory": "O", "vatRate": null, "accountingCategory": "EXPENSE_TAX_OVERHEAD" } ], "payments": [ { "date": "2026-04-02", "amount": "40", "method": "CASH" } ] }
+  ],
+  "entries": [
+    { "id": "m1", "date": "2026-05-01", "direction": "EXPENSE", "medium": "BANK", "amount": "200", "category": "EXPENSE_TAX_INSURANCE", "auto": false }
+  ],
+  "expected": {
+    "totals": { "cashIn": "500.00", "cashOut": "40.00", "bankIn": "1000.00", "bankOut": "507.50", "INCOME_TAX_SERVICES": "1000.00", "INCOME_TAX_GOODS": "500.00", "EXPENSE_TAX_MATERIAL": "307.50", "EXPENSE_TAX_OVERHEAD": "40.00", "EXPENSE_TAX_INSURANCE": "200.00", "vatIn": "0.00" },
+    "closing": { "cash": "560.00", "bank": "1492.50" },
+    "incomeExpense": { "r01": "500.00", "r02": "1000.00", "r04": "1500.00", "r05": "307.50", "r09": "200.00", "r10": "40.00", "r12": "547.50", "r13": "952.50" },
+    "assetsLiabilities": { "m04": "0.00", "m05": "2052.50", "m08": "2052.50", "z04": "0.00", "d01": "2052.50" },
+    "ready": true
+  }
+}

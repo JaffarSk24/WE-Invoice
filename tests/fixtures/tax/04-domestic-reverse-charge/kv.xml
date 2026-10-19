@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<KVDPH xmlns="https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd">
+  <Identifikacia>
+    <IcDphPlatitela>SK2020123457</IcDphPlatitela>
+    <Druh>R</Druh>
+    <Obdobie>
+      <Rok>2026</Rok>
+      <Mesiac>3</Mesiac>
+    </Obdobie>
+    <Nazov>Biela Orlica s. r. o.</Nazov>
+    <Stat>Slovenská republika</Stat>
+    <Obec>Bratislava</Obec>
+    <PSC>81101</PSC>
+    <Ulica>Hlavná</Ulica>
+    <Cislo>12</Cislo>
+    <Tel>+421 2 1234 5678</Tel>
+    <Email>uctaren@example.sk</Email>
+  </Identifikacia>
+  <Transakcie>
+    <A2 Odb="SK2022345688" F="FA-2026-020" Den="2026-03-04" Z="5000.00"/>
+    <B1 Dod="SK2023456798" F="ST-31" Den="2026-03-08" Z="2000.00" D="460.00" S="23" O="460.00"/>
+    <B1 Dod="SK2024567897" F="MOB-9" Den="2026-03-12" Z="4000.00" D="920.00" S="23" O="920.00"/>
+  </Transakcie>
+</KVDPH>

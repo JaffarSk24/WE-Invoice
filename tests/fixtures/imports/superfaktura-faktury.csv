@@ -1,0 +1,4 @@
+Faktúra č.;Dátum vystavenia;Dátum dodania;Dátum splatnosti;Klient;IČO;DIČ;IČ DPH;Ulica;Mesto;PSČ;Krajina;Položka;Množstvo;MJ;Jednotková cena;Sadzba DPH;Uhradené
+2025-0101;10.12.2025;10.12.2025;24.12.2025;Kaviareň u Moniky;44556677;2022000018;SK2022000018;Štúrova 1;Žilina;010 01;SK;Káva zrnková 1 kg;3;ks;18,50;23;
+2025-0101;10.12.2025;10.12.2025;24.12.2025;Kaviareň u Moniky;44556677;2022000018;SK2022000018;Štúrova 1;Žilina;010 01;SK;Školenie baristov;2;hod;40,00;23;
+2025-0102;12.12.2025;12.12.2025;26.12.2025;Kníhkupectvo Pod Hradom;35757442;2021000011;SK2021000011;Mlynská 5;Košice;040 01;SK;Kniha;10;ks;12,00;5;

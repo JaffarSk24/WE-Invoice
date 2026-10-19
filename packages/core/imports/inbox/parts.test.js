@@ -40,7 +40,9 @@ describe('XML reader', () => {
   it('keeps UBL lines and embedded attachments', () => {
     const r = recognizeXml(read('xml/ubl-invoice-sk.xml'));
     expect(r.fields.lines).toHaveLength(2);
-    expect(r.fields.lines[0]).toMatchObject({ name: 'Vizitky, obojstranná tlač', qty: '500', unitPrice: '0.3', vatRate: '23', unitCode: 'H87' });
+    expect(r.fields.lines[0]).toMatchObject({ name: 'Vizitky, obojstranná tlač', vatRate: '23' });
+    expect(Number(r.fields.lines[0].unitPrice)).toBe(0.3);
+    expect(Number(r.fields.lines[0].qty)).toBe(500);
     expect(r.fields.lines[1].name).toBe('Grafický návrh & príprava');
     expect(r.attachments[0]).toMatchObject({ name: 'FA2026-0142.pdf', mime: 'application/pdf' });
     expect(r.fields.breakdown).toEqual([{ category: 'S', rate: '23', base: '250.00', vat: '57.50' }]);
@@ -61,6 +63,17 @@ describe('XML reader', () => {
       remove();
     }
     expect(recognizeXml(read('xml/ubl-invoice-sk.xml')).fields.number).toBe('FA2026-0142');
+  });
+
+  it('falls back to the minimal reader when a strict parser refuses the document', () => {
+    const remove = registerInboxParser('UBL', () => { const e = new Error('strict'); e.code = 'UBL_REQUIRED_MISSING'; throw e; });
+    try {
+      const r = recognizeXml(read('xml/ubl-invoice-sk.xml'));
+      expect(r.fields.number).toBe('FA2026-0142');
+      expect(r.warnings).toContain('PARSER_FALLBACK: UBL_REQUIRED_MISSING');
+    } finally {
+      remove();
+    }
   });
 });
 

@@ -1,0 +1,68 @@
+{
+  "totals": {
+    "outputVat": "110.40",
+    "deductibleVat": "23.00",
+    "balance": "87.40",
+    "outBase": "1480.00",
+    "inBase": "100.00",
+    "count": 8
+  },
+  "kv": {
+    "sections": {
+      "A1": 5,
+      "A2": 1,
+      "B1": 0,
+      "B2": 1,
+      "B3": {
+        "perSupplier": false,
+        "total": null,
+        "suppliers": []
+      },
+      "C1": 1,
+      "C2": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "problems": [
+      "error:CORRECTION_ORIGINAL_MISSING:DOB-9",
+      "error:TAX_DATE_MISSING:FA-2026-080",
+      "error:PARTNER_VAT_ID_MISSING:FA-2026-081",
+      "error:PARTNER_VAT_ID_INVALID:FA-2026-082",
+      "error:ADVANCE_LINK_BROKEN:FA-2026-083",
+      "error:TOTALS_MISMATCH:FA-2026-085",
+      "error:RECEIVED_DATE_MISSING:X-1",
+      "warning:CHANGED_AFTER_EXPORT:FA-2026-084"
+    ]
+  },
+  "sv": {
+    "rows": [],
+    "problems": [
+      "error:CORRECTION_ORIGINAL_MISSING:DOB-9",
+      "error:TAX_DATE_MISSING:FA-2026-080",
+      "error:ADVANCE_LINK_BROKEN:FA-2026-083",
+      "error:TOTALS_MISMATCH:FA-2026-085",
+      "error:RECEIVED_DATE_MISSING:X-1",
+      "warning:CHANGED_AFTER_EXPORT:FA-2026-084"
+    ]
+  },
+  "dph": {
+    "rows": {
+      "r03": "480.00",
+      "r04": "110.40",
+      "r16": "1000.00",
+      "r17": "110.40",
+      "r19": "23.00",
+      "r32": "87.40",
+      "r33": "0.00",
+      "r35": "87.40"
+    },
+    "problems": [
+      "error:CORRECTION_ORIGINAL_MISSING:DOB-9",
+      "error:TAX_DATE_MISSING:FA-2026-080",
+      "error:ADVANCE_LINK_BROKEN:FA-2026-083",
+      "error:TOTALS_MISMATCH:FA-2026-085",
+      "error:RECEIVED_DATE_MISSING:X-1",
+      "warning:CHANGED_AFTER_EXPORT:FA-2026-084"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$comment": "Kontrolný výkaz DPH (§ 78a zákona o DPH): XML layout and filling rules by validity date. The layout follows the published XSD of Finančná správa as known to the authors; it could not be checked against the official schema file when this was written, so every version stays verified=false until an accountant and the XSD confirm it. Thresholds come from the filling instructions (poučenie) and the methodical guideline (metodický pokyn).",
+  "versions": [
+    {
+      "validFrom": "2025-01-01",
+      "validTo": null,
+      "form": "KVDPHv25",
+      "rootElement": "KVDPH",
+      "namespace": "https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd",
+      "xsdFile": "kv_dph_2025.xsd",
+      "rateTotals": { "23": ["ZZ", "DZ"], "19": ["ZN", "DN"], "5": ["ZN2", "DN2"] },
+      "simplifiedPerSupplierFrom": "3000",
+      "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/kontrolny-vykaz-dph",
+      "verified": false,
+      "verifiedAt": null
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "$comment": "UBL fixtures (04-peppol.md § 4.3, § 4.8). Each case is a company (by key), a buyer (by key) and a document merged over 'defaults'; the expected XML is expected/<id>.xml. 'invalid' cases list the issue codes validateUblLocal must report. All ids are synthetic with valid checksums.",
+  "companies": {
+    "payer": {
+      "name": "Alfa Softvér s.r.o.", "legalForm": "SRO", "taxpayerType": "PO", "vatMode": "PAYER",
+      "ico": "35000007", "dic": "2020000004", "icDph": "SK2020000004",
+      "registerEntry": "Obchodný register Mestského súdu Bratislava III, oddiel Sro, vložka 12345/B",
+      "address": { "street": "Hlavná 1", "city": "Bratislava", "zip": "81101", "country": "SK" },
+      "email": "fakturacia@alfa.example", "phone": "+421 900 000 000",
+      "bankAccounts": [
+        { "id": "acc-eur", "name": "Hlavný účet", "iban": "SK3112000000198742637541", "bic": "SUBASKBX", "currency": "EUR", "isDefault": true },
+        { "id": "acc-usd", "iban": "SK3112000000198742637541", "bic": "SUBASKBX", "currency": "USD", "isDefault": false }
+      ],
+      "defaults": { "attachPdfToEInvoice": true }
+    },
+    "cashBasis": {
+      "name": "Beta Remeslo s.r.o.", "legalForm": "SRO", "taxpayerType": "PO", "vatMode": "PAYER", "cashBasis": true,
+      "ico": "35000015", "dic": "2020000015", "icDph": "SK2020000015",
+      "registerEntry": "Obchodný register Okresného súdu Žilina, oddiel Sro, vložka 777/L",
+      "address": { "street": "Námestie 5", "city": "Žilina", "zip": "01001", "country": "SK" },
+      "bankAccounts": [ { "id": "acc", "iban": "SK3112000000198742637541", "currency": "EUR", "isDefault": true } ]
+    },
+    "nonPayer": {
+      "name": "Ján Malý", "legalForm": "FO_ZIVNOST", "taxpayerType": "FO", "vatMode": "NONPAYER",
+      "ico": "35000023", "dic": "1080000009", "icDph": null,
+      "registerEntry": "Živnostenský register Okresného úradu Nitra, č. 430-12345",
+      "address": { "street": "Krátka 3", "city": "Nitra", "zip": "94901", "country": "SK" },
+      "bankAccounts": [ { "id": "acc", "iban": "SK3112000000198742637541", "currency": "EUR", "isDefault": true } ]
+    }
+  },
+  "buyers": {
+    "sk": { "name": "Gama Obchod a.s.", "ico": "35000031", "dic": "2020000026", "icDph": "SK2020000026", "address": { "street": "Dlhá 22", "city": "Košice", "zip": "04001", "country": "SK" }, "email": "uctaren@gama.example" },
+    "skNonPayer": { "name": "Delta Služby s.r.o.", "ico": "35000015", "dic": "2020000037", "icDph": null, "address": { "street": "Pekná 7", "city": "Trnava", "zip": "91701", "country": "SK" } },
+    "at": { "name": "Epsilon GmbH", "ico": null, "dic": null, "icDph": "ATU12345675", "peppolId": "9914:ATU12345675", "address": { "street": "Ringstraße 1", "city": "Wien", "zip": "1010", "country": "AT" } },
+    "cz": { "name": "Zeta s.r.o.", "ico": "12345679", "dic": null, "icDph": "CZ12345679", "peppolId": "9929:CZ12345679", "address": { "street": "Václavské náměstí 1", "city": "Praha", "zip": "11000", "country": "CZ" } },
+    "us": { "name": "Eta Inc.", "ico": null, "dic": null, "icDph": null, "peppolId": "0088:0614141000012", "address": { "street": "1 Main Street", "city": "Boston", "zip": "02108", "country": "US" } }
+  },
+  "defaults": {
+    "kind": "INVOICE", "status": "ISSUED", "currency": "EUR", "issueDate": "2027-01-15", "taxDate": "2027-01-15", "dueDate": "2027-01-29",
+    "paymentMethod": "TRANSFER", "bankAccountId": "acc-eur", "language": "sk"
+  },
+  "cases": [
+    { "id": "01-basic-23", "company": "payer", "buyer": "sk", "document": { "number": "FA2027001", "vs": "2027001", "lines": [ { "id": "l1", "name": "Vývoj softvéru", "qty": "10", "unit": { "code": "HUR" }, "unitPrice": "45", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "02-three-rates", "company": "payer", "buyer": "sk", "document": { "number": "FA2027002", "vs": "2027002", "lines": [
+      { "id": "l1", "name": "Služba", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Potraviny", "qty": "3", "unit": { "code": "KGM" }, "unitPrice": "2.35", "vatCategory": "S", "vatRate": "19" },
+      { "id": "l3", "name": "Kniha", "qty": "2", "unitPrice": "14.99", "vatCategory": "S", "vatRate": "5" } ] } },
+    { "id": "03-line-discount", "company": "payer", "buyer": "sk", "document": { "number": "FA2027003", "lines": [
+      { "id": "l1", "name": "Monitor", "qty": "3", "unitPrice": "199.90", "discountPct": "15", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Kábel", "qty": "7", "unitPrice": "3.33", "discountPct": "2.5", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "04-doc-discount-amount", "company": "payer", "buyer": "sk", "document": { "number": "FA2027004", "docDiscount": { "amount": "10", "reason": "Vernostná zľava" }, "lines": [
+      { "id": "l1", "name": "Služba", "qty": "1", "unitPrice": "120", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Kniha", "qty": "1", "unitPrice": "30", "vatCategory": "S", "vatRate": "5" } ] } },
+    { "id": "05-doc-discount-pct-and-line", "company": "payer", "buyer": "sk", "document": { "number": "FA2027005", "docDiscount": { "pct": "3" }, "lines": [
+      { "id": "l1", "name": "Tovar A", "qty": "4", "unitPrice": "25.49", "discountPct": "10", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Tovar B", "qty": "1", "unitPrice": "8.10", "vatCategory": "S", "vatRate": "19" } ] } },
+    { "id": "06-doc-charge", "company": "payer", "buyer": "sk", "document": { "number": "FA2027006", "docDiscount": { "amount": "-15", "reason": "Expresné doručenie" }, "lines": [
+      { "id": "l1", "name": "Tovar", "qty": "2", "unitPrice": "50", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "07-reverse-charge-ae", "company": "payer", "buyer": "sk", "document": { "number": "FA2027007", "lines": [
+      { "id": "l1", "name": "Stavebné práce", "qty": "1", "unitPrice": "5000", "vatCategory": "AE", "exemptionReasonCode": "VATEX-EU-AE", "exemptionReasonText": "§ 69 ods. 12 písm. j) zákona o DPH" } ] } },
+    { "id": "08-exempt-e", "company": "payer", "buyer": "sk", "document": { "number": "FA2027008", "lines": [
+      { "id": "l1", "name": "Nájom bytu", "qty": "1", "unitPrice": "650", "vatCategory": "E", "exemptionReasonCode": "VATEX-EU-132", "exemptionReasonText": "§ 38 zákona o DPH" } ] } },
+    { "id": "09-intra-community-k", "company": "payer", "buyer": "at", "document": { "number": "FA2027009", "lines": [
+      { "id": "l1", "name": "Elektronické súčiastky", "qty": "500", "unitPrice": "1.20", "vatCategory": "K", "exemptionReasonCode": "VATEX-EU-IC" } ] } },
+    { "id": "10-export-g", "company": "payer", "buyer": "us", "document": { "number": "FA2027010", "lines": [
+      { "id": "l1", "name": "Strojné zariadenie", "qty": "1", "unitPrice": "12000", "vatCategory": "G" } ] } },
+    { "id": "11-not-subject-o", "company": "nonPayer", "buyer": "sk", "document": { "number": "2027001", "lines": [
+      { "id": "l1", "name": "Oprava zariadenia", "qty": "3", "unit": { "code": "HUR" }, "unitPrice": "25", "vatCategory": "O" } ] } },
+    { "id": "12-zero-rated-z", "company": "payer", "buyer": "sk", "document": { "number": "FA2027012", "lines": [
+      { "id": "l1", "name": "Tovar s nulovou sadzbou", "qty": "1", "unitPrice": "80", "vatCategory": "Z", "vatRate": "0" } ] } },
+    { "id": "13-currency-usd", "company": "payer", "buyer": "us", "document": { "number": "FA2027013", "currency": "USD", "fxRate": "1.0865", "fxRateDate": "2027-01-14", "bankAccountId": "acc-usd", "lines": [
+      { "id": "l1", "name": "Licencia", "qty": "1", "unitPrice": "999", "vatCategory": "G" } ] } },
+    { "id": "14-currency-czk-standard", "company": "payer", "buyer": "sk", "document": { "number": "FA2027014", "currency": "CZK", "fxRate": "25.115", "docDiscount": { "amount": "100" }, "lines": [
+      { "id": "l1", "name": "Konzultácia", "qty": "4", "unit": { "code": "HUR" }, "unitPrice": "1500", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "15-advance-tax-document", "company": "payer", "buyer": "sk", "options": { "prepaid": "615.00" }, "document": { "kind": "ADVANCE_TAX_DOC", "number": "ZF2027001", "taxDate": "2027-01-10", "dueDate": null, "lines": [
+      { "id": "l1", "name": "Záloha na dodávku tovaru", "qty": "1", "unitPrice": "500", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "16-final-with-advance", "company": "payer", "buyer": "sk", "document": { "number": "FA2027016", "links": [ { "kind": "ADVANCE_DEDUCTION", "docId": "adv-1", "amount": "615.00" } ], "lines": [
+      { "id": "l1", "name": "Dodávka tovaru", "qty": "1", "unitPrice": "1500", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "17-credit-note", "company": "payer", "buyer": "sk", "options": { "preceding": [ { "number": "FA2027001", "issueDate": "2027-01-15" } ] }, "document": { "kind": "CREDIT_NOTE", "number": "DB2027001", "issueDate": "2027-01-20", "taxDate": "2027-01-20", "dueDate": "2027-02-03", "correctionReason": "Vrátenie časti tovaru", "links": [ { "kind": "CORRECTS", "docId": "inv-1" } ], "lines": [
+      { "id": "l1", "name": "Vývoj softvéru (oprava)", "qty": "2", "unit": { "code": "HUR" }, "unitPrice": "45", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "18-credit-note-negative", "company": "payer", "buyer": "sk", "options": { "preceding": [ { "number": "FA2027002", "issueDate": "2027-01-15" } ] }, "document": { "kind": "CREDIT_NOTE", "number": "DB2027002", "issueDate": "2027-01-21", "taxDate": "2027-01-21", "dueDate": "2027-02-04", "correctionReason": "Zľava za oneskorenie", "links": [ { "kind": "CORRECTS", "docId": "inv-2" } ], "lines": [
+      { "id": "l1", "name": "Služba", "qty": "-1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Kniha", "qty": "-1", "unitPrice": "14.99", "vatCategory": "S", "vatRate": "5" } ] } },
+    { "id": "19-debit-note", "company": "payer", "buyer": "sk", "options": { "preceding": [ { "number": "FA2027003", "issueDate": "2027-01-15" } ] }, "document": { "kind": "DEBIT_NOTE", "number": "TV2027001", "correctionReason": "Doúčtovanie dopravy", "links": [ { "kind": "CORRECTS", "docId": "inv-3" } ], "lines": [
+      { "id": "l1", "name": "Doprava", "qty": "1", "unitPrice": "35", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "20-gross-prices", "company": "payer", "buyer": "sk", "document": { "number": "FA2027020", "lines": [
+      { "id": "l1", "name": "Predplatné", "qty": "3", "unitPrice": "12.30", "priceType": "GROSS", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Časopis", "qty": "1", "unitPrice": "4.99", "priceType": "GROSS", "vatCategory": "S", "vatRate": "5" } ] } },
+    { "id": "21-base-quantity", "company": "payer", "buyer": "sk", "document": { "number": "FA2027021", "lines": [
+      { "id": "l1", "name": "Skrutky", "qty": "2500", "unitPrice": "3.40", "baseQty": "100", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "22-cash-rounding", "company": "payer", "buyer": "sk", "options": { "cashRounding": true }, "document": { "number": "FA2027022", "paymentMethod": "CASH", "lines": [
+      { "id": "l1", "name": "Drobný tovar", "qty": "1", "unitPrice": "10.01", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "23-cash-basis-note", "company": "cashBasis", "buyer": "sk", "document": { "number": "FA2027023", "lines": [
+      { "id": "l1", "name": "Remeselné práce", "qty": "8", "unit": { "code": "HUR" }, "unitPrice": "30", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "24-pdf-attachment", "company": "payer", "buyer": "sk", "options": { "pdf": { "base64": "JVBERi0xLjQKJSBXRSBJbnZvaWNlIGZpeHR1cmUKJSVFT0YK", "name": "FA2027024.pdf" } }, "document": { "number": "FA2027024", "lines": [
+      { "id": "l1", "name": "Služba", "qty": "1", "unitPrice": "100", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "25-negative-line", "company": "payer", "buyer": "sk", "document": { "number": "FA2027025", "lines": [
+      { "id": "l1", "name": "Tovar", "qty": "1", "unitPrice": "200", "vatCategory": "S", "vatRate": "23" },
+      { "id": "l2", "name": "Vrátený obal", "qty": "4", "unitPrice": "-0.15", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "26-references-and-period", "company": "payer", "buyer": "sk", "document": { "number": "FA2027026", "buyerReference": "OBJ-77", "orderReference": "PO-2027-15", "contractReference": "ZML-2026/4", "periodFrom": "2026-12-01", "periodTo": "2026-12-31", "taxDate": "2026-12-31", "issueDate": "2027-01-05", "dueDate": "2027-01-19", "lines": [
+      { "id": "l1", "name": "Mesačná podpora", "description": "Podpora a údržba za december 2026", "qty": "1", "unitPrice": "300", "vatCategory": "S", "vatRate": "23" },
+      { "id": "nadpis", "kind": "TEXT", "name": "Poznámka k dodávke", "qty": "0", "unitPrice": "0", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "27-mixed-s-and-e", "company": "payer", "buyer": "sk", "document": { "number": "FA2027027", "lines": [
+      { "id": "l1", "name": "Poistenie", "qty": "1", "unitPrice": "40", "vatCategory": "E" },
+      { "id": "l2", "name": "Servis", "qty": "1", "unitPrice": "60", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "28-buyer-non-payer", "company": "payer", "buyer": "skNonPayer", "document": { "number": "FA2027028", "lines": [
+      { "id": "l1", "name": "Školenie", "qty": "2", "unit": { "code": "DAY" }, "unitPrice": "380", "vatCategory": "S", "vatRate": "23" } ] } }
+  ],
+  "invalid": [
+    { "id": "x-buyer-without-dic", "company": "payer", "buyer": { "name": "Bez DIČ s.r.o.", "address": { "country": "SK" } }, "document": { "number": "X1", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["BUYER_ENDPOINT_MISSING"] },
+    { "id": "x-seller-without-dic", "company": { "name": "Bez DIČ", "address": { "country": "SK" } }, "buyer": "sk", "document": { "number": "X2", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "O" } ] }, "expect": ["SELLER_DIC_MISSING", "SELLER_REGISTER_ENTRY_MISSING"] },
+    { "id": "x-classified", "company": "payer", "buyer": "sk", "document": { "number": "X3", "classified": true, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["CLASSIFIED_SUPPLY"] },
+    { "id": "x-credit-note-without-reference", "company": "payer", "buyer": "sk", "document": { "kind": "CREDIT_NOTE", "number": "X4", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["PRECEDING_INVOICE_MISSING"] },
+    { "id": "x-currency-without-rate", "company": "payer", "buyer": "sk", "document": { "number": "X5", "currency": "USD", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["FX_RATE_MISSING"] },
+    { "id": "x-standard-without-seller-vat-id", "company": "nonPayer", "buyer": "sk", "document": { "number": "X6", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["SELLER_VAT_ID_MISSING"] },
+    { "id": "x-reverse-charge-without-buyer-vat-id", "company": "payer", "buyer": "skNonPayer", "document": { "number": "X7", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "AE" } ] }, "expect": ["BUYER_VAT_ID_MISSING"] },
+    { "id": "x-not-subject-mixed", "company": "payer", "buyer": "sk", "document": { "number": "X8", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "O" }, { "id": "l2", "name": "b", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["NOT_SUBJECT_MIXED"] },
+    { "id": "x-missing-due-date", "company": "payer", "buyer": "sk", "document": { "number": "X9", "dueDate": null, "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["DUE_DATE_MISSING"] },
+    { "id": "x-proforma", "company": "payer", "buyer": "sk", "document": { "kind": "PROFORMA", "number": "X10", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["TYPE_CODE_NOT_ALLOWED"] },
+    { "id": "x-no-number-no-lines", "company": "payer", "buyer": "sk", "document": { "number": null, "issueDate": null, "lines": [] }, "expect": ["NUMBER_MISSING", "ISSUE_DATE_MISSING", "NO_LINES"] }
+  ]
+}

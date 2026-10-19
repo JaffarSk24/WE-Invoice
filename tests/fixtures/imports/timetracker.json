@@ -1,0 +1,9 @@
+[
+  { "id": "log_1", "description": "Analýza požiadaviek", "clientId": "client_a", "projectId": "proj_web", "startTime": "2026-09-01T07:00:00.000Z", "endTime": "2026-09-01T09:30:00.000Z", "billable": true, "paid": false, "rateAtTime": 40, "tagIds": [] },
+  { "id": "log_2", "description": "Programovanie", "clientId": "client_a", "projectId": "proj_web", "startTime": "2026-09-02T07:00:00.000Z", "endTime": "2026-09-02T11:00:00.000Z", "durationMs": 13500000, "billable": true, "paid": false, "rateAtTime": 40, "tagIds": [] },
+  { "id": "log_3", "description": "Programovanie", "clientId": "client_a", "projectId": "proj_app", "startTime": "2026-09-03T07:00:00.000Z", "endTime": "2026-09-03T08:20:00.000Z", "billable": true, "paid": false, "rateAtTime": 37.5, "tagIds": [] },
+  { "id": "log_4", "description": "Už zaplatené", "clientId": "client_a", "projectId": "proj_web", "startTime": "2026-09-04T07:00:00.000Z", "endTime": "2026-09-04T08:00:00.000Z", "billable": true, "paid": true, "rateAtTime": 40, "tagIds": [] },
+  { "id": "log_5", "description": "Interná porada", "clientId": "client_a", "projectId": "proj_web", "startTime": "2026-09-05T07:00:00.000Z", "endTime": "2026-09-05T08:00:00.000Z", "billable": false, "paid": false, "rateAtTime": 40, "tagIds": [] },
+  { "id": "log_6", "description": "Iný klient", "clientId": "client_b", "projectId": null, "startTime": "2026-09-06T07:00:00.000Z", "endTime": "2026-09-06T08:00:00.000Z", "billable": true, "paid": false, "rateAtTime": 50, "tagIds": [] },
+  { "id": "log_7", "description": "Programovanie", "clientId": "client_a", "projectId": "proj_web", "startTime": "2026-10-01T07:00:00.000Z", "endTime": "2026-10-01T08:00:00.000Z", "billable": true, "paid": false, "rateAtTime": 40, "tagIds": [] }
+]

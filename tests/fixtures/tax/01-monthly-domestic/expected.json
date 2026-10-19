@@ -1,0 +1,60 @@
+{
+  "totals": {
+    "outputVat": "384.20",
+    "deductibleVat": "251.90",
+    "balance": "132.30",
+    "outBase": "1780.00",
+    "inBase": "1110.00",
+    "count": 7
+  },
+  "kv": {
+    "sections": {
+      "A1": 4,
+      "A2": 0,
+      "B1": 0,
+      "B2": 3,
+      "B3": {
+        "perSupplier": false,
+        "total": {
+          "base": "60.00",
+          "vat": "13.80",
+          "deductible": "13.80"
+        },
+        "suppliers": []
+      },
+      "C1": 0,
+      "C2": 0,
+      "D1": 0,
+      "D2": 2
+    },
+    "problems": [
+      "warning:DRAFT_IN_PERIOD:FA2026006"
+    ]
+  },
+  "sv": {
+    "rows": [],
+    "problems": [
+      "warning:DRAFT_IN_PERIOD:FA2026006"
+    ]
+  },
+  "dph": {
+    "rows": {
+      "r01": "180.00",
+      "r01a": "100.00",
+      "r02": "34.20",
+      "r02a": "5.00",
+      "r03": "1500.00",
+      "r04": "345.00",
+      "r17": "384.20",
+      "r18": "7.60",
+      "r18a": "0.50",
+      "r19": "243.80",
+      "r32": "132.30",
+      "r33": "0.00",
+      "r35": "132.30"
+    },
+    "problems": [
+      "warning:DRAFT_IN_PERIOD:FA2026006"
+    ]
+  }
+}

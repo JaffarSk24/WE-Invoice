@@ -1,0 +1,49 @@
+{
+  "totals": {
+    "outputVat": "69.00",
+    "deductibleVat": "0.00",
+    "balance": "69.00",
+    "outBase": "800.00",
+    "inBase": "300.00",
+    "count": 3
+  },
+  "kv": {
+    "sections": {
+      "A1": 0,
+      "A2": 0,
+      "B1": 1,
+      "B2": 0,
+      "B3": {
+        "perSupplier": false,
+        "total": null,
+        "suppliers": []
+      },
+      "C1": 0,
+      "C2": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "problems": [
+      "error:KV_NOT_PAYER:-"
+    ]
+  },
+  "sv": {
+    "rows": [
+      "DE123456789|2|600.00"
+    ],
+    "problems": []
+  },
+  "dph": {
+    "rows": {
+      "r09b": "300.00",
+      "r10b": "69.00",
+      "r11": "300.00",
+      "r12": "69.00",
+      "r17": "69.00",
+      "r32": "69.00",
+      "r33": "0.00",
+      "r35": "69.00"
+    },
+    "problems": []
+  }
+}

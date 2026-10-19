@@ -8,6 +8,7 @@ import { computeTotals } from '../../vat/index.js';
 import { companySnapshot } from '../../documents/snapshots.js';
 import { round } from '../../money/index.js';
 import { deductionPeriod } from './vat-deduction.js';
+import { withCategory } from './categories.js';
 
 const digits = (value, max) => (value && new RegExp(`^\\d{1,${max}}$`).test(String(value)) ? String(value) : null);
 const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
@@ -43,26 +44,26 @@ function itemLine(base) {
 }
 
 /** Lines of the draft: the supplier's own lines, else one per VAT rate, else one for the total. */
-export function draftLines(fields, { lineName = '', category = null, vatPayer = true } = {}) {
+export function draftLines(fields, { lineName = '', vatPayer = true } = {}) {
   const name = lineName || fields.supplierName || fields.number || '';
   if (fields.lines && fields.lines.length) {
     return fields.lines.map(l => itemLine({
       name: l.name || name, qty: l.qty || '1', unit: { code: l.unitCode || 'H87', label: '' }, unitPrice: l.unitPrice || '0',
       priceType: l.priceType === 'GROSS' ? 'GROSS' : 'NET', vatCategory: l.vatCategory || 'S',
-      vatRate: (l.vatCategory || 'S') === 'S' ? (l.vatRate ?? null) : null, accountingCategory: category
+      vatRate: (l.vatCategory || 'S') === 'S' ? (l.vatRate ?? null) : null, accountingCategory: null
     }));
   }
   if (fields.breakdown && fields.breakdown.length) {
     return fields.breakdown.map(b => itemLine({
       name, qty: '1', unit: { code: 'H87', label: '' }, unitPrice: b.base, priceType: 'NET',
-      vatCategory: b.category || 'S', vatRate: (b.category || 'S') === 'S' ? b.rate : null, accountingCategory: category
+      vatCategory: b.category || 'S', vatRate: (b.category || 'S') === 'S' ? b.rate : null, accountingCategory: null
     }));
   }
   if (fields.total) {
     const vatKnown = vatPayer && fields.net && fields.vat;
     return [itemLine({
       name, qty: '1', unit: { code: 'H87', label: '' }, unitPrice: vatKnown ? fields.net : fields.total, priceType: 'NET',
-      vatCategory: vatKnown ? 'S' : 'O', vatRate: null, accountingCategory: category
+      vatCategory: vatKnown ? 'S' : 'O', vatRate: null, accountingCategory: null
     })];
   }
   return [];
@@ -103,7 +104,6 @@ export function draftFromRecognition(recognition, ctx) {
   const template = ctx.template || {};
   const kind = RECEIVED.includes(f.kind) ? f.kind : 'RECEIVED_INVOICE';
   const seller = supplierSnapshot(f, ctx.contact);
-  const category = template.category || null;
   const doc = {
     kind,
     status: 'TO_PROCESS',
@@ -121,7 +121,7 @@ export function draftFromRecognition(recognition, ctx) {
     seller,
     buyer: ctx.company ? companySnapshot(ctx.company) : { name: '' },
     contactId: seller.contactId,
-    lines: draftLines(f, { lineName: template.lineName || ctx.lineName, category, vatPayer: seller.vatPayer }),
+    lines: draftLines(f, { lineName: template.lineName || ctx.lineName, vatPayer: seller.vatPayer }),
     docDiscount: null,
     rounding: null,
     language: 'sk',
@@ -147,5 +147,5 @@ export function draftFromRecognition(recognition, ctx) {
   if (method) doc.paymentMethod = method;
   doc.totals = receivedTotals(doc, f);
   doc.vatDeductionPeriod = deductionPeriod(doc, ctx.company);
-  return doc;
+  return template.category ? withCategory(doc, template.category) : doc;
 }

@@ -5,7 +5,7 @@ import { h, icon } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { textField, dateField, selectField, textArea } from '../../components/fields.js';
 import { amountText } from './amount-text.js';
-import { EXPENSE_CATEGORIES, schema } from '@we-invoice/core';
+import { PURCHASE_CATEGORIES, schema } from '@we-invoice/core';
 import { valuesOf, AMOUNT_FIELDS } from './review-values.js';
 
 const LOW = 0.7;
@@ -24,7 +24,7 @@ function control(name, value) {
   const label = t(`purchase.field.${name}`);
   if (name === 'kind') return selectField({ label, value, options: KINDS.map(k => ({ value: k, label: t(`document.kind.${k}`) })) });
   if (name === 'category') {
-    return selectField({ label, value, options: [{ value: '', label: t('purchase.category.none') }, ...EXPENSE_CATEGORIES.map(c => ({ value: c.id, label: t(`purchase.category.${c.id}`) }))] });
+    return selectField({ label, value, options: [{ value: '', label: t('purchase.category.none') }, ...PURCHASE_CATEGORIES.map(c => ({ value: c.id, label: t(`purchase.category.${c.id}`) }))] });
   }
   if (name === 'paymentMethod') {
     return selectField({ label, value, options: [{ value: '', label: t('purchase.paymentMethod.none') }, ...schema.PAYMENT_METHODS.map(m => ({ value: m, label: t(`purchase.paymentMethod.${m}`) }))] });

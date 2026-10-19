@@ -1,0 +1,328 @@
+{
+  "title": "Services: to a German business (SV code 2), from Austria and from the USA (§ 69 ods. 3)",
+  "period": "2026-03",
+  "today": "2026-04-10",
+  "company": {
+    "id": "company-1",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "name": "Biela Orlica s. r. o.",
+    "legalForm": "SRO",
+    "taxpayerType": "PO",
+    "ico": "36835587",
+    "dic": "2020123457",
+    "icDph": "SK2020123457",
+    "vatMode": "PAYER",
+    "vatPeriod": "MONTH",
+    "cashBasis": false,
+    "oss": false,
+    "accountingMode": "EXTERNAL",
+    "address": {
+      "street": "Hlavná 12",
+      "city": "Bratislava",
+      "zip": "811 01",
+      "country": "SK"
+    },
+    "email": "uctaren@example.sk",
+    "phone": "+421 2 1234 5678",
+    "closedPeriods": []
+  },
+  "documents": [
+    {
+      "id": "sv-fa1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA-2026-040",
+      "issueDate": "2026-03-31",
+      "taxDate": "2026-03-31",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Nord GmbH",
+        "icDph": "DE123456789",
+        "address": {
+          "city": "Berlin",
+          "country": "DE"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l34",
+          "kind": "ITEM",
+          "name": "Vývoj softvéru",
+          "qty": "40",
+          "unitPrice": "50.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "sv-fa2",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA-2026-041",
+      "issueDate": "2026-03-15",
+      "taxDate": "2026-03-15",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Nord GmbH",
+        "icDph": "DE123456789",
+        "address": {
+          "city": "Berlin",
+          "country": "DE"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l35",
+          "kind": "ITEM",
+          "name": "Podpora",
+          "qty": "1",
+          "unitPrice": "250.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "sv-fa3",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA-2026-042",
+      "issueDate": "2026-03-15",
+      "taxDate": "2026-03-15",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Cloud Inc.",
+        "address": {
+          "city": "Seattle",
+          "country": "US"
+        },
+        "vatPayer": false
+      },
+      "lines": [
+        {
+          "id": "l36",
+          "kind": "ITEM",
+          "name": "Konzultácie",
+          "qty": "1",
+          "unitPrice": "700.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "O",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "sv-df1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "RECEIVED_INVOICE",
+      "status": "PROCESSED",
+      "number": "AS-1001",
+      "issueDate": "2026-03-01",
+      "taxDate": "2026-03-01",
+      "dueDate": null,
+      "receivedDate": "2026-03-02",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Alpen Software GmbH",
+        "icDph": "ATU12345678",
+        "address": {
+          "city": "Wien",
+          "country": "AT"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l37",
+          "kind": "ITEM",
+          "name": "Licencia",
+          "qty": "1",
+          "unitPrice": "120.00",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "sv-df2",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "RECEIVED_INVOICE",
+      "status": "PROCESSED",
+      "number": "INV-55",
+      "issueDate": "2026-03-05",
+      "taxDate": "2026-03-05",
+      "dueDate": null,
+      "receivedDate": "2026-03-05",
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Cloud Inc.",
+        "address": {
+          "city": "Seattle",
+          "country": "US"
+        },
+        "vatPayer": false
+      },
+      "buyer": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l38",
+          "kind": "ITEM",
+          "name": "Cloud",
+          "qty": "1",
+          "unitPrice": "89.99",
+          "priceType": "NET",
+          "vatRate": null,
+          "vatCategory": "AE",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    }
+  ],
+  "vies": {
+    "DE123456789": "VALID"
+  }
+}

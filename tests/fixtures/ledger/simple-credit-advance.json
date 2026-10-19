@@ -1,0 +1,19 @@
+{
+  "$comment": "Cash principle with advances and corrections: a paid proforma is income when paid, the tax document to it is not booked again, a refunded credit note lowers income and a supplier refund lowers expenses.",
+  "name": "advances and credit notes",
+  "mode": "SIMPLE",
+  "year": 2026,
+  "company": { "vatMode": "NONPAYER" },
+  "documents": [
+    { "id": "pf", "kind": "PROFORMA", "issueDate": "2026-02-20", "lines": [ { "unitPrice": "500", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-03-01", "amount": "500" } ] },
+    { "id": "atd", "kind": "ADVANCE_TAX_DOC", "issueDate": "2026-03-01", "links": [ { "kind": "FROM_PROFORMA", "docId": "pf" } ], "lines": [ { "unitPrice": "500", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-03-01", "amount": "500" } ] },
+    { "id": "cn", "kind": "CREDIT_NOTE", "issueDate": "2026-03-25", "lines": [ { "unitPrice": "100", "vatCategory": "O", "vatRate": null } ], "payments": [ { "date": "2026-04-01", "amount": "100" } ] },
+    { "id": "rcn", "kind": "RECEIVED_CREDIT_NOTE", "status": "PROCESSED", "receivedDate": "2026-04-10", "lines": [ { "unitPrice": "50", "vatCategory": "O", "vatRate": null, "accountingCategory": "EXPENSE_TAX_GOODS" } ], "payments": [ { "date": "2026-04-12", "amount": "50", "method": "CASH" } ] }
+  ],
+  "entries": [],
+  "expected": {
+    "totals": { "bankIn": "500.00", "bankOut": "100.00", "cashIn": "50.00", "cashOut": "0.00", "INCOME_TAX_SERVICES": "400.00", "EXPENSE_TAX_GOODS": "-50.00" },
+    "incomeExpense": { "r02": "400.00", "r06": "-50.00", "r12": "-50.00", "r13": "450.00" },
+    "closing": { "cash": "50.00", "bank": "400.00" }
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "title": "Advance tax document taxed on payment, final invoice taxes only the rest",
+  "period": "2026-03",
+  "today": "2026-04-10",
+  "company": {
+    "id": "company-1",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "name": "Biela Orlica s. r. o.",
+    "legalForm": "SRO",
+    "taxpayerType": "PO",
+    "ico": "36835587",
+    "dic": "2020123457",
+    "icDph": "SK2020123457",
+    "vatMode": "PAYER",
+    "vatPeriod": "MONTH",
+    "cashBasis": false,
+    "oss": false,
+    "accountingMode": "EXTERNAL",
+    "address": {
+      "street": "Hlavná 12",
+      "city": "Bratislava",
+      "zip": "811 01",
+      "country": "SK"
+    },
+    "email": "uctaren@example.sk",
+    "phone": "+421 2 1234 5678",
+    "closedPeriods": []
+  },
+  "documents": [
+    {
+      "id": "ad-pf1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "PROFORMA",
+      "status": "ISSUED",
+      "number": "ZF-2026-001",
+      "issueDate": "2026-02-01",
+      "taxDate": null,
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l45",
+          "kind": "ITEM",
+          "name": "Projekt",
+          "qty": "1",
+          "unitPrice": "2000.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "ad-dd1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "ADVANCE_TAX_DOC",
+      "status": "ISSUED",
+      "number": "DD-2026-001",
+      "issueDate": "2026-02-12",
+      "taxDate": "2026-02-10",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l46",
+          "kind": "ITEM",
+          "name": "Projekt",
+          "qty": "1",
+          "unitPrice": "1230.00",
+          "priceType": "GROSS",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [
+        {
+          "kind": "FROM_PROFORMA",
+          "docId": "ad-pf1",
+          "amount": "1230.00"
+        }
+      ],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "ad-fa1",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "INVOICE",
+      "status": "ISSUED",
+      "number": "FA-2026-060",
+      "issueDate": "2026-03-15",
+      "taxDate": "2026-03-15",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Alfa s. r. o.",
+        "ico": "11111111",
+        "dic": "2021234567",
+        "icDph": "SK2021234567",
+        "address": {
+          "city": "Košice",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l47",
+          "kind": "ITEM",
+          "name": "Projekt",
+          "qty": "1",
+          "unitPrice": "2000.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [
+        {
+          "kind": "FROM_PROFORMA",
+          "docId": "ad-pf1"
+        },
+        {
+          "kind": "ADVANCE_DEDUCTION",
+          "docId": "ad-pf1",
+          "amount": "1230.00"
+        }
+      ],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    },
+    {
+      "id": "ad-dd2",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "kind": "ADVANCE_TAX_DOC",
+      "status": "ISSUED",
+      "number": "DD-2026-002",
+      "issueDate": "2026-03-20",
+      "taxDate": "2026-03-18",
+      "dueDate": null,
+      "receivedDate": null,
+      "vatDeductionPeriod": null,
+      "currency": "EUR",
+      "fxRate": null,
+      "seller": {
+        "name": "Biela Orlica s. r. o.",
+        "ico": "36835587",
+        "dic": "2020123457",
+        "icDph": "SK2020123457",
+        "address": {
+          "street": "Hlavná 12",
+          "city": "Bratislava",
+          "zip": "811 01",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "buyer": {
+        "name": "Beta a. s.",
+        "ico": "22222222",
+        "dic": "2022345688",
+        "icDph": "SK2022345688",
+        "address": {
+          "city": "Žilina",
+          "country": "SK"
+        },
+        "vatPayer": true
+      },
+      "lines": [
+        {
+          "id": "l48",
+          "kind": "ITEM",
+          "name": "Záloha",
+          "qty": "1",
+          "unitPrice": "500.00",
+          "priceType": "NET",
+          "vatRate": "23",
+          "vatCategory": "S",
+          "exemptionReasonCode": null
+        }
+      ],
+      "docDiscount": null,
+      "totals": null,
+      "paymentMethod": "TRANSFER",
+      "links": [],
+      "payments": [],
+      "correctionReason": null,
+      "exportedAt": null,
+      "lockedAt": null,
+      "language": "sk"
+    }
+  ],
+  "vies": {}
+}

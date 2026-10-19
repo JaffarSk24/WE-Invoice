@@ -1,0 +1,18 @@
+{
+  "$comment": "Súhrnný výkaz DPH (§ 80 zákona o DPH): XML layout and supply codes by validity date. Written from the published form description; verified=false until an accountant and the official XSD of Finančná správa confirm it.",
+  "versions": [
+    {
+      "validFrom": "2021-01-01",
+      "validTo": null,
+      "form": "SVDPH",
+      "rootElement": "dokument",
+      "namespace": null,
+      "xsdFile": "sv_dph.xsd",
+      "supplyCodes": { "EU_GOODS": "0", "TRIANGULAR": "1", "EU_SERVICES": "2", "CALL_OFF": "3" },
+      "filingTypes": ["R", "O"],
+      "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/suhrnny-vykaz",
+      "verified": false,
+      "verifiedAt": null
+    }
+  ]
+}

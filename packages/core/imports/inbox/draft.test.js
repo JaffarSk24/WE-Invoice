@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
   recognizeXml, extractInvoiceFields, recognizeEkasaReceipt, draftFromRecognition, draftLines, receivedTotals,
-  EXPENSE_CATEGORIES, JOURNAL_COLUMNS, expenseCategory, expenseCategoryOf, withExpenseCategory,
+  PURCHASE_CATEGORIES, EXPENSE_CATEGORIES, expenseCategory, expenseCategoryOf, withExpenseCategory,
   vatPeriodKey, vatDeductionPeriodOf, deductibleVat, receivedKvSections
 } from '../../index.js';
 import { schema } from '../../index.js';
@@ -47,7 +47,8 @@ describe('draft received document', () => {
   it('uses one outside-scope line for a non-payer and the template choices', () => {
     const r = extractInvoiceFields(read('text/sk-invoice-nonpayer.txt'), ctx);
     const doc = draftFromRecognition(r, { ...ctx, template: { category: 'SERVICES', paymentMethod: 'CASH', lineName: 'Maľovanie' } });
-    expect(doc.lines).toEqual([expect.objectContaining({ unitPrice: '540.00', vatCategory: 'O', vatRate: null, name: 'Maľovanie', accountingCategory: 'SERVICES' })]);
+    expect(doc.lines).toEqual([expect.objectContaining({ unitPrice: '540.00', vatCategory: 'O', vatRate: null, name: 'Maľovanie', accountingCategory: 'EXPENSE_TAX_SERVICES' })]);
+    expect(doc.expenseCategory).toBe('SERVICES');
     expect(doc.paymentMethod).toBe('CASH');
     expect(doc.seller.vatPayer).toBe(false);
     expect(doc.totals.payable).toBe('540.00');
@@ -77,13 +78,13 @@ describe('draft received document', () => {
 });
 
 describe('expense categories', () => {
-  it('cover the peňažný denník columns and have unique ids', () => {
-    const ids = EXPENSE_CATEGORIES.map(c => c.id);
+  it('map onto the peňažný denník categories of the ledger and have unique ids', () => {
+    const ids = PURCHASE_CATEGORIES.map(c => c.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(JOURNAL_COLUMNS).toEqual(['MATERIAL', 'SERVICES', 'WAGES', 'INSURANCE', 'OTHER']);
-    EXPENSE_CATEGORIES.forEach(c => {
-      expect(JOURNAL_COLUMNS).toContain(c.journalColumn);
+    PURCHASE_CATEGORIES.forEach(c => {
+      expect(EXPENSE_CATEGORIES).toContain(c.ledgerCategory);
       expect(['YES', 'NO', 'PARTIAL']).toContain(c.taxDeductible);
+      expect(c.taxDeductible === 'NO').toBe(c.ledgerCategory === 'EXPENSE_NONTAX');
     });
     expect(expenseCategory('REPRESENTATION')).toMatchObject({ taxDeductible: 'NO', vatDeductible: false });
     expect(expenseCategory('NOPE')).toBeNull();
@@ -92,8 +93,11 @@ describe('expense categories', () => {
   it('are set on and read from the item lines', () => {
     const doc = withExpenseCategory({ lines: [{ kind: 'ITEM' }, { kind: 'TEXT' }, { kind: 'ITEM' }] }, 'FUEL');
     expect(expenseCategoryOf(doc)).toBe('FUEL');
-    expect(doc.lines[1].accountingCategory).toBeUndefined();
-    expect(expenseCategoryOf({ lines: [{ accountingCategory: 'A' }, { accountingCategory: 'B' }] })).toBeNull();
+    expect(doc.lines.map(l => l.accountingCategory)).toEqual(['EXPENSE_TAX_OVERHEAD', undefined, 'EXPENSE_TAX_OVERHEAD']);
+    expect(withExpenseCategory(doc, null)).toMatchObject({ expenseCategory: null, lines: [{ accountingCategory: null }, { kind: 'TEXT' }, { accountingCategory: null }] });
+    // A document categorised in the ledger only gets the first matching purchase category.
+    expect(expenseCategoryOf({ lines: [{ accountingCategory: 'EXPENSE_TAX_WAGES' }] })).toBe('WAGES');
+    expect(expenseCategoryOf({ lines: [{ accountingCategory: 'EXPENSE_TAX_GOODS' }, { accountingCategory: 'EXPENSE_TAX_WAGES' }] })).toBeNull();
   });
 });
 

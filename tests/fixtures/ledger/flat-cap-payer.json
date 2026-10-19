@@ -1,0 +1,19 @@
+{
+  "$comment": "A VAT payer with flat-rate expenses: VAT is not income, the cap of 20 000 EUR applies to § 6 ods. 1 and 2 and apart to § 6 ods. 4.",
+  "name": "flat expenses over the cap",
+  "mode": "TAX_RECORDS_FLAT",
+  "year": 2026,
+  "company": { "vatMode": "PAYER" },
+  "documents": [
+    { "id": "inv1", "kind": "INVOICE", "issueDate": "2026-05-01", "lines": [ { "unitPrice": "50000", "vatCategory": "S", "vatRate": "23" } ], "payments": [ { "date": "2026-05-05", "amount": "61500" } ] }
+  ],
+  "entries": [
+    { "id": "w", "date": "2026-07-01", "direction": "INCOME", "medium": "BANK", "amount": "10000", "category": "INCOME_TAX_OTHER", "incomeParagraph": "6_4", "auto": false }
+  ],
+  "expected": {
+    "flat": {
+      "rows": [ { "paragraph": "6_1_AB", "income": "50000.00", "expenses": "20000.00" }, { "paragraph": "6_4", "income": "10000.00", "expenses": "6000.00" } ],
+      "insurance": "0.00", "income": "60000.00", "expenses": "26000.00", "base": "34000.00"
+    }
+  }
+}

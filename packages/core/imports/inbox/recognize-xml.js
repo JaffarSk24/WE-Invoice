@@ -71,7 +71,10 @@ function readFields(format, xml, warnings) {
       const minimal = safeMinimal(format, xml);
       return { ...minimal, ...stripEmpty(fields), attachments: parsed.attachments || minimal.attachments || [] };
     } catch (e) {
-      if (!(e && e.code === 'NOT_IMPLEMENTED')) throw e;
+      // A strict parser refuses an incomplete invoice; a received one is
+      // still read, and the user checks it.
+      if (!(e && e.code)) throw e;
+      if (e.code !== 'NOT_IMPLEMENTED') warnings.push(`PARSER_FALLBACK: ${e.code}`);
     }
   }
   return readMinimal(format, xml);

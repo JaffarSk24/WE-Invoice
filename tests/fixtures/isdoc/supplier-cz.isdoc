@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns="http://isdoc.cz/namespace/2013" version="6.0.2">
+  <DocumentType>1</DocumentType>
+  <ID>2026-0042</ID>
+  <UUID>6F2C1B9E-3A4D-4E5F-8A7B-1C2D3E4F5A6B</UUID>
+  <IssuingSystem>Synthetic test data</IssuingSystem>
+  <IssueDate>2026-09-10</IssueDate>
+  <TaxPointDate>2026-09-09</TaxPointDate>
+  <VATApplicable>true</VATApplicable>
+  <ElectronicPossibilityAgreementReference></ElectronicPossibilityAgreementReference>
+  <Note>Fakturujeme Vám dodávku</Note>
+  <LocalCurrencyCode>CZK</LocalCurrencyCode>
+  <CurrRate>1</CurrRate>
+  <RefCurrRate>1</RefCurrRate>
+  <AccountingSupplierParty>
+    <Party>
+      <PartyIdentification><UserID></UserID><CatalogFirmIdentification>0</CatalogFirmIdentification><ID>27082440</ID></PartyIdentification>
+      <PartyName><Name>Dodavatel Brno s.r.o.</Name></PartyName>
+      <PostalAddress><StreetName>Masarykova</StreetName><BuildingNumber>5</BuildingNumber><CityName>Brno</CityName><PostalZone>602 00</PostalZone><Country><IdentificationCode>CZ</IdentificationCode><Name>Česká republika</Name></Country></PostalAddress>
+      <PartyTaxScheme><CompanyID>CZ27082440</CompanyID><TaxScheme>VAT</TaxScheme></PartyTaxScheme>
+      <Contact><Telephone>+420 500 000 000</Telephone><ElectronicMail>fakturace@example.cz</ElectronicMail></Contact>
+    </Party>
+  </AccountingSupplierParty>
+  <AccountingCustomerParty>
+    <Party>
+      <PartyIdentification><ID>12345679</ID></PartyIdentification>
+      <PartyName><Name>Biela Hora s. r. o.</Name></PartyName>
+      <PostalAddress><StreetName>Hlavná</StreetName><BuildingNumber>12</BuildingNumber><CityName>Bratislava</CityName><PostalZone>811 01</PostalZone><Country><IdentificationCode>SK</IdentificationCode><Name>Slovensko</Name></Country></PostalAddress>
+      <PartyTaxScheme><CompanyID>SK2020000004</CompanyID><TaxScheme>VAT</TaxScheme></PartyTaxScheme>
+    </Party>
+  </AccountingCustomerParty>
+  <InvoiceLines>
+    <InvoiceLine>
+      <ID>1</ID>
+      <InvoicedQuantity unitCode="H87">4</InvoicedQuantity>
+      <LineExtensionAmount>2000.00</LineExtensionAmount>
+      <LineExtensionAmountTaxInclusive>2420.00</LineExtensionAmountTaxInclusive>
+      <LineExtensionTaxAmount>420.00</LineExtensionTaxAmount>
+      <UnitPrice>500.00</UnitPrice>
+      <UnitPriceTaxInclusive>605.00</UnitPriceTaxInclusive>
+      <ClassifiedTaxCategory><Percent>21</Percent><VATCalculationMethod>0</VATCalculationMethod></ClassifiedTaxCategory>
+      <Note>Šedá barva</Note>
+      <Item><Description>Kancelářská židle</Description></Item>
+    </InvoiceLine>
+    <InvoiceLine>
+      <ID>2</ID>
+      <InvoicedQuantity unitCode="C62">1</InvoicedQuantity>
+      <LineExtensionAmount>300.00</LineExtensionAmount>
+      <LineExtensionAmountTaxInclusive>363.00</LineExtensionAmountTaxInclusive>
+      <LineExtensionTaxAmount>63.00</LineExtensionTaxAmount>
+      <UnitPrice>300.00</UnitPrice>
+      <UnitPriceTaxInclusive>363.00</UnitPriceTaxInclusive>
+      <ClassifiedTaxCategory><Percent>21</Percent><VATCalculationMethod>0</VATCalculationMethod></ClassifiedTaxCategory>
+      <Item><Description>Doprava</Description></Item>
+    </InvoiceLine>
+  </InvoiceLines>
+  <TaxTotal>
+    <TaxSubTotal>
+      <TaxableAmount>2300.00</TaxableAmount><TaxAmount>483.00</TaxAmount><TaxInclusiveAmount>2783.00</TaxInclusiveAmount>
+      <AlreadyClaimedTaxableAmount>0</AlreadyClaimedTaxableAmount><AlreadyClaimedTaxAmount>0</AlreadyClaimedTaxAmount><AlreadyClaimedTaxInclusiveAmount>0</AlreadyClaimedTaxInclusiveAmount>
+      <DifferenceTaxableAmount>2300.00</DifferenceTaxableAmount><DifferenceTaxAmount>483.00</DifferenceTaxAmount><DifferenceTaxInclusiveAmount>2783.00</DifferenceTaxInclusiveAmount>
+      <TaxCategory><Percent>21</Percent></TaxCategory>
+    </TaxSubTotal>
+    <TaxAmount>483.00</TaxAmount>
+  </TaxTotal>
+  <LegalMonetaryTotal>
+    <TaxExclusiveAmount>2300.00</TaxExclusiveAmount><TaxInclusiveAmount>2783.00</TaxInclusiveAmount>
+    <AlreadyClaimedTaxExclusiveAmount>0</AlreadyClaimedTaxExclusiveAmount><AlreadyClaimedTaxInclusiveAmount>0</AlreadyClaimedTaxInclusiveAmount>
+    <DifferenceTaxExclusiveAmount>2300.00</DifferenceTaxExclusiveAmount><DifferenceTaxInclusiveAmount>2783.00</DifferenceTaxInclusiveAmount>
+    <PaidDepositsAmount>0</PaidDepositsAmount>
+    <PayableAmount>2783.00</PayableAmount>
+  </LegalMonetaryTotal>
+  <PaymentMeans>
+    <Payment>
+      <PaidAmount>2783.00</PaidAmount>
+      <PaymentMeansCode>42</PaymentMeansCode>
+      <Details>
+        <PaymentDueDate>2026-09-24</PaymentDueDate>
+        <ID>123456789</ID><BankCode>0800</BankCode><Name>Česká spořitelna</Name>
+        <IBAN>CZ6508000000192000145399</IBAN><BIC>GIBACZPX</BIC>
+        <VariableSymbol>20260042</VariableSymbol>
+      </Details>
+    </Payment>
+  </PaymentMeans>
+</Invoice>

@@ -2,7 +2,7 @@
 // received invoices and credit notes, expense receipts; rows for the
 // lists; the status shown (the stored one, or the payment state once the
 // document is processed); and in demo mode the demo documents, read-only.
-import { paymentStatus, uuidv7, round } from '@we-invoice/core';
+import { paymentStatus, uuidv7, round, expenseCategoryOf } from '@we-invoice/core';
 import { getStore, hasStore } from '../../store/index.js';
 import { isDemo, demoData } from '../shell/demo-mode.js';
 import { todayLocal } from '../../components/dates.js';
@@ -47,7 +47,6 @@ export function receivedStatus(doc, today = todayLocal()) {
 }
 
 export function rowOf(doc, today = todayLocal()) {
-  const line = (doc.lines || []).find(l => !l.kind || l.kind === 'ITEM');
   return {
     id: doc.id,
     kind: doc.kind,
@@ -59,7 +58,7 @@ export function rowOf(doc, today = todayLocal()) {
     vat: (doc.totals && doc.totals.vat) || '0.00',
     currency: doc.currency || 'EUR',
     status: receivedStatus(doc, today),
-    category: (line && line.accountingCategory) || null,
+    category: expenseCategoryOf(doc),
     vatDeductionPeriod: doc.vatDeductionPeriod || null,
     confidence: doc.inbox ? doc.inbox.confidence : null,
     needsConfirmation: doc.inbox ? doc.inbox.needsConfirmation : false,

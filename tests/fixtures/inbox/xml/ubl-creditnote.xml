@@ -15,7 +15,7 @@
     <cac:TaxSubtotal><cbc:TaxableAmount currencyID="EUR">40.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="EUR">9.20</cbc:TaxAmount>
       <cac:TaxCategory><cbc:ID>S</cbc:ID><cbc:Percent>23</cbc:Percent><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:TaxCategory></cac:TaxSubtotal>
   </cac:TaxTotal>
-  <cac:LegalMonetaryTotal><cbc:TaxExclusiveAmount currencyID="EUR">40.00</cbc:TaxExclusiveAmount><cbc:PayableAmount currencyID="EUR">49.20</cbc:PayableAmount></cac:LegalMonetaryTotal>
+  <cac:LegalMonetaryTotal><cbc:LineExtensionAmount currencyID="EUR">40.00</cbc:LineExtensionAmount><cbc:TaxExclusiveAmount currencyID="EUR">40.00</cbc:TaxExclusiveAmount><cbc:PayableAmount currencyID="EUR">49.20</cbc:PayableAmount></cac:LegalMonetaryTotal>
   <cac:CreditNoteLine><cbc:ID>1</cbc:ID><cbc:CreditedQuantity unitCode="H87">1</cbc:CreditedQuantity><cbc:LineExtensionAmount currencyID="EUR">40.00</cbc:LineExtensionAmount>
     <cac:Item><cbc:Name>Predlžovací kábel 5 m</cbc:Name><cac:ClassifiedTaxCategory><cbc:ID>S</cbc:ID><cbc:Percent>23</cbc:Percent><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:ClassifiedTaxCategory></cac:Item>
     <cac:Price><cbc:PriceAmount currencyID="EUR">40.00</cbc:PriceAmount></cac:Price></cac:CreditNoteLine>

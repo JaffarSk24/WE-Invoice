@@ -1,0 +1,5 @@
+Číslo dokladu;Datum vystavení;DUZP;Datum splatnosti;Odběratel;IČ;DIČ;Ulice;Město;PSČ;Země;Měna;Variabilní symbol;Celkem bez DPH;DPH;Celkem s DPH;Uhrazeno;Datum úhrady
+FV2025001;15.11.2025;15.11.2025;29.11.2025;Odběratel Praha s.r.o.;27082440;CZ27082440;Na Příkopě 10;Praha;110 00;Česká republika;EUR;2025001;1000,00;230,00;1230,00;1230,00;20.11.2025
+FV2025002;01.12.2025;01.12.2025;15.12.2025;Malý zákazník;;;Hlavná 1;Nitra;949 01;Slovensko;EUR;2025002;100,00;0,00;100,00;;
+FV2025003;02.12.2025;02.12.2025;16.12.2025;Odběratel Praha s.r.o.;27082440;CZ27082440;Na Příkopě 10;Praha;110 00;CZ;EUR;2025003;200,00;38,00;238,00;;
+;03.12.2025;;;Bez čísla;;;;;;;EUR;;10,00;2,30;12,30;;

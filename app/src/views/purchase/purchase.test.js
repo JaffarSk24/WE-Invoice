@@ -84,7 +84,8 @@ describe('review values', () => {
   it('rebuilds lines and totals from edited amounts at the implied rate', () => {
     const doc = applyValues(base(), { ...valuesOf(base()), supplierName: 'Alfa', icDph: 'sk2030556605', issueDate: today, net: '100,00', vat: '23,00', total: '123,00', category: 'SERVICES' }, { company: store.company() });
     expect(doc.seller).toMatchObject({ name: 'Alfa', icDph: 'SK2030556605', vatPayer: true });
-    expect(doc.lines).toEqual([expect.objectContaining({ unitPrice: '100.00', vatRate: '23', accountingCategory: 'SERVICES' })]);
+    expect(doc.lines).toEqual([expect.objectContaining({ unitPrice: '100.00', vatRate: '23', accountingCategory: 'EXPENSE_TAX_SERVICES' })]);
+    expect(doc.expenseCategory).toBe('SERVICES');
     expect(doc.totals).toMatchObject({ net: '100.00', vat: '23.00', payable: '123.00' });
     expect(doc.vatDeductionPeriod).toBe('2026-10');
   });
@@ -125,7 +126,8 @@ describe('confirming, paying and deleting', () => {
     });
     expect(doc.number).toBe('FA-NEXT-9');
     expect(doc.inbox.sources.number).toBe('template');
-    expect(doc.lines[0].accountingCategory).toBe('SERVICES');
+    expect(doc.expenseCategory).toBe('SERVICES');
+    expect(doc.lines[0].accountingCategory).toBe('EXPENSE_TAX_SERVICES');
     expect(doc.contactId).toBeTruthy();
     expect(store.list('contacts')).toHaveLength(1);
   });
@@ -160,7 +162,7 @@ describe('confirming, paying and deleting', () => {
 describe('list helpers', () => {
   it('builds rows, filters them and sums expenses by category', () => {
     const doc = { id: 'd', kind: 'EXPENSE_RECEIPT', status: 'PROCESSED', number: '1', seller: { name: 'Pumpa' }, issueDate: '2026-10-01', currency: 'EUR',
-      totals: { payable: '12.30', vat: '2.30', breakdown: [{ category: 'S', rate: '23', base: '10.00', vat: '2.30' }] }, lines: [{ kind: 'ITEM', accountingCategory: 'FUEL' }], payments: [] };
+      totals: { payable: '12.30', vat: '2.30', breakdown: [{ category: 'S', rate: '23', base: '10.00', vat: '2.30' }] }, expenseCategory: 'FUEL', lines: [{ kind: 'ITEM', accountingCategory: 'EXPENSE_TAX_OVERHEAD' }], payments: [] };
     const row = rowOf(doc, today);
     expect(row).toMatchObject({ supplier: 'Pumpa', total: '12.30', category: 'FUEL', status: 'PROCESSED' });
     expect(filterRows([row], { from: '2026-10-01', to: '2026-10-31', contact: 'pum' })).toHaveLength(1);
