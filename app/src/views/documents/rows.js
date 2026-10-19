@@ -127,12 +127,16 @@ export function sumByCurrency(rows, field) {
   return [...totals.entries()].map(([currency, amount]) => ({ currency, amount: round(amount, 2) }));
 }
 
+// One collator for every comparison: localeCompare with options builds a
+// new one each time, which made sorting 10 000 rows take most of a second.
+const numeric = new Intl.Collator(undefined, { numeric: true });
+
 /** Newest first: issue date, then number; drafts without a date on top. */
 export function byNewest(a, b) {
   const da = a.issueDate || '9999-99-99';
   const db = b.issueDate || '9999-99-99';
   if (da !== db) return da < db ? 1 : -1;
-  return String(b.number || '').localeCompare(String(a.number || ''), undefined, { numeric: true });
+  return numeric.compare(String(b.number || ''), String(a.number || ''));
 }
 
 /** The fields the dashboard reads (views/dashboard/metrics.js). */

@@ -31,6 +31,22 @@ function allExempt(document) {
   return items.length > 0 && items.every(l => EXEMPT_CATEGORIES.has(l.vatCategory));
 }
 
+// The e-invoicing rules in force on a date, or null before the law. A
+// list asks for every document, so the answer is kept per date.
+const rulesOn = new Map();
+function einvoiceRules(date) {
+  if (rulesOn.has(date)) return rulesOn.get(date);
+  let rules;
+  try {
+    rules = getLegislation('einvoice', date);
+  } catch (e) {
+    if (!e || e.code !== 'LEGISLATION_NOT_IN_FORCE') throw e;
+    rules = null;
+  }
+  rulesOn.set(date, rules);
+  return rules;
+}
+
 /**
  * Whether a document must, may or must not go through Peppol.
  * @param {import('../schema/types.js').Company} company
@@ -54,8 +70,10 @@ export function peppolRequirement(company, contact, document, date = localDate()
   if (company?.vatMode !== 'PAYER') return result('OPTIONAL', 'sellerNotPayer');
 
   const supplyDate = [document.taxDate, document.deliveryDate, document.issueDate, date].find(isDate);
-  const einvoice = getLegislation('einvoice', supplyDate);
-  if (supplyDate < einvoice.mandatoryFrom) return result('OPTIONAL', 'beforeMandatoryDate');
+  // No e-invoicing rules in force on the date (a supply from before the
+  // law): sending through Peppol is a choice, as before the mandatory date.
+  const einvoice = einvoiceRules(supplyDate);
+  if (!einvoice || supplyDate < einvoice.mandatoryFrom) return result('OPTIONAL', 'beforeMandatoryDate');
   if (allExempt(document)) return result('OPTIONAL', 'exemptSupply');
 
   const issueDays = getLegislation('deadlines.invoiceIssueDays', supplyDate);

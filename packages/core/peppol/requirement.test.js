@@ -22,6 +22,11 @@ describe('peppolRequirement', () => {
     }
   });
 
+  it('a supply from before the e-invoicing law is OPTIONAL, not an error', () => {
+    expect(peppolRequirement(company(), contact(), invoice({ taxDate: '2025-06-30', issueDate: '2025-06-30' }), '2026-10-18'))
+      .toEqual({ requirement: 'OPTIONAL', reason: 'peppol.reason.beforeMandatoryDate' });
+  });
+
   it('before 1 January 2027 it is OPTIONAL', () => {
     expect(peppolRequirement(company(), contact(), invoice({ taxDate: '2026-12-31', issueDate: '2026-12-31' }), '2026-12-31'))
       .toEqual({ requirement: 'OPTIONAL', reason: 'peppol.reason.beforeMandatoryDate' });
