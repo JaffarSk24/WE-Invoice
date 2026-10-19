@@ -67,6 +67,14 @@ export async function boot(ctx) {
     if (state.status !== 'locked') dialogs.locked = false;
     if (state.status === 'error' && state.error) showError({ code: state.error });
   });
+  // The wizard's encryption step: the same dialog as in the sync settings.
+  // Keys can be made before signing in; they go to Drive with the data.
+  on('encryption:setup', (request) => {
+    if (!request) return;
+    request.handled = true;
+    if (engine.state && engine.state.encrypted) { request.result = true; return; }
+    request.result = new Promise((resolve) => openSetupModal({ engine, transport, showToast, showError, onFinish: resolve }));
+  });
   on('sync:conflicts', ({ conflicts, renumbered }) => {
     if (renumbered) showToast(t('sync.conflicts.renumbered', { count: renumbered }), { type: 'info', duration: 12000 });
     const locked = conflicts.filter(c => c.locked).length;

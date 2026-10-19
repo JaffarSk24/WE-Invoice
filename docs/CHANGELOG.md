@@ -69,6 +69,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Fixed
 
+- Screens no longer show the word "null" where an optional part is missing (reports, VAT reports, quick sale and others): elements are added through the helper that skips empty parts. An end-to-end test opens every menu screen with sample data and fails on "null", "undefined", "NaN" or an untranslated dictionary key.
 - The company made in the "My company" wizard is saved in the store and synced to Google Drive; it used to stay only on the device. A company kept on the device by an earlier version moves into the store at start, the device copy is dropped only after the store has written it, and the company switcher and the end of sample mode work through the store.
 - Phone layout of the Overview: quick actions in a 2 by 2 grid with the icon above the label, badges no longer wrap, the page header wraps cleanly, widget titles take the free width and the move arrows are hidden on a phone (the order is changed in "Widgets"), and the create menu dims the page behind it and closes on a tap outside.
 
@@ -317,6 +318,26 @@ All notable changes to this project are documented here. The format follows [Kee
 - Received invoices and expenses lists with filters, totals, payments, an expense summary by category with the input VAT to deduct, and manual entry.
 - Expense categories as data (`expense-categories.json`) with their peňažný denník column and income tax and VAT deductibility; the input VAT period of a received document follows the company VAT period and the later of supply and receipt; `receivedKvSections` tells the tax package where a document belongs in the kontrolný výkaz.
 - Inbox fixtures: five XML e-invoices, seven QR payloads, eleven invoice and receipt texts, three PDFs and six synthetic scans with expected fields; an OCR quality test in the performance suite and Playwright tests of the purchase flow.
+
+### Czech translation of wave B
+
+- Czech interface texts for every wave B screen: sales lists and the document editor, numbering and company settings, contacts, price list, recurring invoices, payment reminders and e-mail, e-invoicing via Peppol, bank and cash desk, purchases and the Inbox, export and import, VAT records and returns, bookkeeping for sole traders, stock, reports, search, the recycle bin and the change log. 2497 keys, so the Czech dictionary now has every Slovak key.
+
+#### Changed
+
+- The Czech sales part mirrors the Slovak layout: `cs/sales.js` merges `cs/sales/documents.js` and `cs/sales/crm.js`, which merge one file per screen.
+- Czech texts keep the Slovak names eFaktúra and Kontrolný výkaz everywhere, eFaktúra with Czech case endings (eFaktúry, eFaktúru, eFaktúr).
+- Czech texts keep the Slovak names of the tax forms and books Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH and Peňažný denník, always in the nominative.
+- Czech texts say "Odstranit" for every delete and clear action instead of the mixed "Smazat" and "Vymazat".
+
+### German translation of wave B
+
+- German interface texts for every screen of wave B: 2,497 keys in the parts sales (document lists, editor, numbering and company settings, contacts, price list, e-mail, recurring invoices, reminders), peppol, bank, purchase, exim, tax, ledger, stock and reports. The German dictionary now has all 3,288 Slovak keys.
+- The German sales part mirrors the Slovak layout: `de/sales.js` merges `de/sales/documents.js` and `de/sales/crm.js`, each with the same screen files and keys as in Slovak.
+
+#### Changed
+
+- German texts keep the Slovak names of forms and books in their basic form: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 33 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names instead of E-Rechnung, Kontrollmeldung, Zusammenfassende Meldung, USt-Voranmeldung and Kassenbuch. Kassenbuch now names only the printed book of a cash desk (pokladničná kniha).
 
 ### Interface translations
 

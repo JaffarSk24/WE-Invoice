@@ -3,7 +3,7 @@
 // forecast and profitability, each with a chart or summary, tables, CSV
 // export and printing. The screen redraws when the data changes; the
 // numbers come from the pure report functions of the core.
-import { h, icon, clear } from '../../ui/dom.js';
+import { h, icon, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
@@ -33,7 +33,7 @@ function safely(panel, render, state) {
     render(panel, state);
   } catch (e) {
     console.error('A report could not be drawn', e);
-    panel.append(h('p', { class: 'muted' }, t(e && e.code ? `errors.${e.code}` : 'errors.UNKNOWN')));
+    append(panel, [h('p', { class: 'muted' }, t(e && e.code ? `errors.${e.code}` : 'errors.UNKNOWN'))]);
   }
   refreshIcons(panel);
 }
@@ -68,7 +68,7 @@ export function renderReports(root) {
     refreshIcons(body);
   };
 
-  view.append(
+  append(view, [
     h('header', { class: 'view-header' },
       h('h1', {}, t('nav.reports')),
       h('div', { class: 'view-actions' },
@@ -76,7 +76,7 @@ export function renderReports(root) {
         h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => navigate('trash') }, icon('archive'), t('reports.trash.title')),
         h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => navigate('audit') }, icon('notebook-pen'), t('reports.audit.title')),
         h('button', { type: 'button', class: 'btn', onclick: printReport }, icon('file-text'), t('reports.print')))),
-    body);
+    body]);
   root.append(view);
   draw();
   refreshIcons(view);

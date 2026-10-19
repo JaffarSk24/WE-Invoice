@@ -3,7 +3,7 @@
 // own template or the built-in one. Editing a built-in template saves a
 // copy in the collection emailTemplates; deleting the copy brings the
 // built-in text back. A template may be limited to one document kind.
-import { h, icon, selectEl } from '../../ui/dom.js';
+import { h, icon, selectEl, append, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { openModal } from '../../ui/modal.js';
@@ -62,7 +62,7 @@ export function templatesBlock() {
       if (own.length) own.forEach(x => rows.push({ purpose, language, template: x }));
       else rows.push({ purpose, language, template: null });
     }));
-    box.replaceChildren(
+    append(clear(box), [
       h('table', { class: 'table templates-table' },
         h('thead', {}, h('tr', {}, [t('settings.email.purpose'), t('mail.field.language'), t('mail.field.subject'), ''].map(x => h('th', { scope: 'col' }, x)))),
         h('tbody', {}, rows.map(r => {
@@ -78,7 +78,7 @@ export function templatesBlock() {
                 onclick: async () => { if (await write(store => store.remove('emailTemplates', r.template.id))) showToast(t('settings.email.restored')); }
               }, icon('rotate-ccw')) : null));
         }))),
-      h('button', { type: 'button', class: 'btn', id: 'templates-add', onclick: () => openTemplateEditor(null) }, icon('plus'), t('settings.email.addTemplate')));
+      h('button', { type: 'button', class: 'btn', id: 'templates-add', onclick: () => openTemplateEditor(null) }, icon('plus'), t('settings.email.addTemplate'))]);
     refreshIcons(box);
   };
   draw();

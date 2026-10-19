@@ -1,7 +1,7 @@
 // The Overview screen (03-features.md § 3.2): a grid of widgets the user
 // can move (buttons or drag and drop) and hide; order and visibility are
 // kept on the device. Widgets draw from the dashboard data source.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { getPrefs, setPref } from '../../prefs.js';
@@ -105,13 +105,13 @@ export function renderDashboard(root) {
   };
   const onLayout = (next) => { layout = saveLayout(next); draw(); };
 
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' },
       h('h1', {}, t('nav.dashboard')),
       h('div', { class: 'view-actions' },
         dashboardData().demo ? h('span', { class: 'badge badge-demo' }, t('dashboard.demoBadge')) : null,
         h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => openWidgetPicker(layout, onLayout) }, icon('layout-grid'), t('dashboard.widgets')))),
-    grid, promoFooter({ inline: true }));
+    grid, promoFooter({ inline: true })]);
   draw();
   ['data:changed', 'company:switched', 'demo:enabled', 'demo:disabled'].forEach(ev => unsubscribe.push(on(ev, () => { if (grid.isConnected) draw(); })));
 }

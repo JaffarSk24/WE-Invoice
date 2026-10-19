@@ -1,7 +1,7 @@
 // The sales and purchases tabs: totals against last year, the chart by
 // period (this year's bars next to last year's), and tables by period,
 // client or supplier, item, label and project.
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { navigate } from '../../router.js';
 import { salesReport, sum, decimalComma } from '@we-invoice/core';
@@ -26,7 +26,7 @@ export function renderSalesPanel(panel, { data, period, direction }) {
   const report = runSales(data, period, direction);
   const prefix = `reports.${direction}`;
   const file = (part) => `${t(`${prefix}.file`)}-${part}-${period.from || ''}-${period.to || ''}`;
-  panel.append(
+  append(panel, [
     summaryCards([
       { label: t(`${prefix}.totalNet`), value: eur(report.total.net), note: changeText(report.change) ? t('reports.vsLastYear', { change: changeText(report.change) }) : null },
       { label: t('reports.totalGross'), value: eur(report.total.gross) },
@@ -80,5 +80,5 @@ export function renderSalesPanel(panel, { data, period, direction }) {
       reportTable({
         title: t('reports.byProject'), fileName: file('projects'), rows: report.byProject, empty: t('reports.noProjects'),
         columns: [{ id: 'key', label: t('reports.project'), value: (r) => r.key || t('reports.noProject') }, { id: 'count', label: t('reports.col.count'), align: 'num', value: (r) => r.count }, { id: 'net', label: t('reports.col.net'), ...money('net') }]
-      })));
+      }))]);
 }

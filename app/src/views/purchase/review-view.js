@@ -3,7 +3,7 @@
 // uložiť"); a processed one is edited, paid or deleted; "new" types one
 // in by hand. Recognised values the core was unsure of are marked.
 import { amountDue, cmp } from '@we-invoice/core';
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
@@ -118,7 +118,7 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
       ? h('button', { type: 'button', class: 'btn', dataset: { action: 'pay' }, disabled: !writable, onclick: pay }, icon('banknote'), t('purchase.payment.title')) : null,
     !isNew ? h('button', { type: 'button', class: 'btn btn-ghost', dataset: { action: 'delete' }, disabled: !writable, onclick: remove }, icon('trash-2'), t('common.delete')) : null);
 
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' },
       h('div', { class: 'review-title' },
         h('button', { type: 'button', class: 'btn btn-ghost btn-icon', 'aria-label': t('purchase.review.back'), onclick: () => navigate(route) }, icon('arrow-left')),
@@ -126,6 +126,6 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
         doc.inbox ? confidenceChip(doc.inbox.confidence, doc.inbox.needsConfirmation) : null)),
     inbox && doc.inbox && doc.inbox.needsConfirmation ? h('p', { class: 'review-notice', role: 'note' }, icon('info'), t('purchase.review.notice')) : null,
     h('div', { class: `review-grid ${preview ? '' : 'no-preview'}`.trim() }, preview ? preview.el : null,
-      h('div', { class: 'review-side' }, isNew ? null : paymentInfo(doc), form.el, actions)));
+      h('div', { class: 'review-side' }, isNew ? null : paymentInfo(doc), form.el, actions))]);
   refreshIcons(root);
 }

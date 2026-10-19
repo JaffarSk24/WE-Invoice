@@ -3,7 +3,7 @@
 // then and how long they are overdue. A row opens nothing: the documents
 // themselves belong to the sales and purchase screens.
 import { receivablesBook, payablesBook } from '@we-invoice/core';
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { createTable } from '../../components/table.js';
 import { emptyState } from '../../components/empty-state.js';
@@ -48,9 +48,9 @@ export function booksAt(documents, date) {
 /** ctx: { documents, date, flat } (the tax records keep receivables only) */
 export function renderBooksTab(panel, ctx) {
   const books = booksAt(ctx.documents, ctx.date);
-  panel.append(h('p', { class: 'muted' }, t('ledger.books.at', { date: formatDate(ctx.date) })),
+  append(panel, [h('p', { class: 'muted' }, t('ledger.books.at', { date: formatDate(ctx.date) })),
     section(t('ledger.books.receivables'), books.receivables, 'ledger-receivables'),
-    ctx.flat ? null : section(t('ledger.books.payables'), books.payables, 'ledger-payables'));
+    ctx.flat ? null : section(t('ledger.books.payables'), books.payables, 'ledger-payables')]);
 }
 
 export function booksTables(documents, date, flat = false) {
