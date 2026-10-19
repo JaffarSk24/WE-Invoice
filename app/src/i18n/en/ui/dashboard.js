@@ -30,7 +30,7 @@ export default {
   "dashboard.issued.net": "net {amount}",
   "dashboard.unpaid.open": "Unpaid",
   "dashboard.unpaid.overdue": "Overdue",
-  "dashboard.unpaid.count": "{n} documents",
+  "dashboard.unpaid.count": "{n, plural, one {# document} other {# documents}}",
   "dashboard.unpaid.d1to15": "1 to 15 days",
   "dashboard.unpaid.d16to30": "16 to 30 days",
   "dashboard.unpaid.d31to60": "31 to 60 days",
@@ -55,7 +55,7 @@ export default {
   "dashboard.taxCalendar.dpfo": "Personal income tax return",
   "dashboard.taxCalendar.dppo": "Corporate income tax return",
   "dashboard.taxCalendar.advance": "Income tax advance",
-  "dashboard.taxCalendar.daysLeft": "in {n} days",
+  "dashboard.taxCalendar.daysLeft": "in {n, plural, one {# day} other {# days}}",
   "dashboard.efaktury.waiting": "Waiting to be processed",
   "dashboard.efaktury.open": "Open received"
 };

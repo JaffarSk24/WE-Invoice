@@ -96,7 +96,7 @@ export default {
   "peppol.out.send": "Send",
   "peppol.out.sendSelected": "Send selected",
   "peppol.out.retry": "Try again",
-  "peppol.out.sending": "Sending {n} e-invoices…",
+  "peppol.out.sending": "Sending {n, plural, one {# e-invoice} other {# e-invoices}}…",
   "peppol.out.sent": "E-invoice {number} is sent.",
   "peppol.out.sentMany": "Sent: {ok}, with errors: {failed}.",
   "peppol.out.invalid": "E-invoice {number} was not sent: the document needs fixing.",
@@ -113,7 +113,7 @@ export default {
   "peppol.in.receiving": "Receiving e-invoices…",
   "peppol.in.received": "New e-invoices: {n}.",
   "peppol.in.nothingNew": "No new e-invoices.",
-  "peppol.in.someFailed": "{n} e-invoices could not be processed; they stay with the provider and will be retried.",
+  "peppol.in.someFailed": "{n, plural, one {# e-invoice} other {# e-invoices}} could not be processed; they stay with the provider and will be retried.",
   "peppol.in.empty": "No received e-invoices yet",
   "peppol.in.emptyText": "When a supplier sends you an e-invoice, it appears here.",
   "peppol.in.lastReceived": "Last received {date}",
@@ -128,7 +128,7 @@ export default {
   "peppol.col.deadline": "Deadline",
   "peppol.col.receivedDate": "Received",
 
-  "peppol.deadline.days": "{n} days",
+  "peppol.deadline.days": "{n, plural, one {# day} other {# days}}",
   "peppol.deadline.late": "overdue",
 
   "peppol.detail.title": "E-invoice {number}",

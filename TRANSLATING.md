@@ -37,6 +37,14 @@ npm run lint
 
 Look at the result in the app too (`npm run dev`, then pick the language at the bottom of the menu). Check the screens with the longest texts: the sidebar, the onboarding wizard, the overview widgets, Settings and the Help, and a narrow window for the phone layout. German words are long: when a label does not fit a button or the menu, choose a shorter word rather than relying on wrapping.
 
+## Numbers and plural forms
+
+A word that follows a number changes with it in every language here (1 deň, 2 dni, 5 dní; 1 документ, 3 документа, 5 документов). Write such texts with a plural block, which `t()` resolves by the rules of the language (`Intl.PluralRules`); `#` is the number:
+
+`"o {n, plural, one {# deň} few {# dni} other {# dní}}"`
+
+The forms are `one`, `few`, `many` and `other` (`other` is required and used for anything missing), and `=1`, `=0` for an exact number. Slovak and Czech use `one`, `few`, `other`; Russian and Ukrainian `one`, `few`, `many`, `other`; English and German `one`, `other`. Other placeholders may appear inside a form. A text that avoids the problem ("Doklady: {n}", "{n} дн.") is fine too. The placeholder check treats `{n, plural, ...}` and `{n}` as the same placeholder, so languages may differ in which they use.
+
 ## Typography
 
 - No long dashes (U+2014, U+2013): rebuild the sentence, or use a colon, a comma or a plain hyphen. The hygiene test rejects them.

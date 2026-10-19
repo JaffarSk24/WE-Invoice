@@ -84,7 +84,7 @@ export default {
   "bank.pain.title": "Úhrada přijatých faktur (SEPA)",
   "bank.pain.text": "Vyberte faktury k úhradě. Stažený soubor pain.001 nahrajete v internetovém bankovnictví jako hromadný příkaz.",
   "bank.pain.debtor": "Z účtu",
-  "bank.pain.date": "Datum splatnosti příkazu",
+  "bank.pain.date": "Datum provedení příkazu",
   "bank.pain.none": "Žádné neuhrazené přijaté faktury v EUR.",
   "bank.pain.skipped.IBAN_MISSING": "{number}: dodavatel nemá IBAN",
   "bank.pain.skipped.SEPA_EUR_ONLY": "{number}: převod SEPA je možný jen v EUR",

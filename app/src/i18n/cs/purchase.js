@@ -58,7 +58,7 @@ export default {
   "purchase.field.vatDeductionPeriod": "Odpočet DPH v období",
   "purchase.field.vatDeductionPeriod.hint": "Například 2026-10 nebo 2026-Q4",
   "purchase.field.note": "Interní poznámka",
-  "purchase.source.xml": "Z eFaktúry (XML)",
+  "purchase.source.xml": "Z faktury eFaktúra (XML)",
   "purchase.source.qr": "Z QR kódu",
   "purchase.source.ekasa": "Z eKasy",
   "purchase.source.text": "Z textu PDF",

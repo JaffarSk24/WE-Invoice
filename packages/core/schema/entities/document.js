@@ -74,7 +74,13 @@ export const PEPPOL_STATE = object({
   mls: { type: ['object', 'null'] },
   errors: { type: 'array', items: object({ code: SHORT_TEXT, message: TEXT, field: { type: ['string', 'null'] } }) },
   xmlFileId: NULLABLE_ID,
-  revision: { type: 'integer', minimum: 0 }
+  revision: { type: 'integer', minimum: 0 },
+  // Send queue: attempts of the current revision and when to retry after a
+  // network or server failure; delivery checks made and when to ask again.
+  attempts: { type: 'integer', minimum: 0 },
+  nextAttemptAt: NULLABLE_DATE_TIME,
+  statusChecks: { type: 'integer', minimum: 0 },
+  nextCheckAt: NULLABLE_DATE_TIME
 }, ['direction', 'status']);
 
 export const SEND_LOG_ENTRY = object({

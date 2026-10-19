@@ -6,12 +6,13 @@
 //   Slovak key too. Until then a missing translation is listed as a warning:
 //   feature packages add keys to sk and en, the translation package fills
 //   the other four.
+import { placeholderNames } from '../app/src/i18n/plural.js';
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { LANGUAGES } from '../app/src/i18n/languages.js';
 
 const STRICT = process.env.I18N_STRICT === '1';
-const placeholders = (s) => (String(s).match(/\{\w+\}/g) || []).sort().join(',');
+const placeholders = (s) => placeholderNames(s);
 
 async function load(code) {
   return import(`../app/src/i18n/${code}/index.js`);

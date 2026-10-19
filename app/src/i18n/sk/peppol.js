@@ -96,7 +96,7 @@ export default {
   "peppol.out.send": "Odoslať",
   "peppol.out.sendSelected": "Odoslať vybrané",
   "peppol.out.retry": "Skúsiť znova",
-  "peppol.out.sending": "Odosielam {n} eFaktúr…",
+  "peppol.out.sending": "Odosielam {n, plural, one {# eFaktúru} few {# eFaktúry} other {# eFaktúr}}…",
   "peppol.out.sent": "eFaktúra {number} je odoslaná.",
   "peppol.out.sentMany": "Odoslané: {ok}, s chybou: {failed}.",
   "peppol.out.invalid": "eFaktúra {number} sa neodoslala: doklad treba opraviť.",
@@ -113,7 +113,7 @@ export default {
   "peppol.in.receiving": "Prijímam eFaktúry…",
   "peppol.in.received": "Nové eFaktúry: {n}.",
   "peppol.in.nothingNew": "Žiadne nové eFaktúry.",
-  "peppol.in.someFailed": "{n} eFaktúr sa nepodarilo spracovať; zostávajú u poskytovateľa a skúsim ich znova.",
+  "peppol.in.someFailed": "{n, plural, one {# eFaktúru} few {# eFaktúry} other {# eFaktúr}} sa nepodarilo spracovať; zostávajú u poskytovateľa a skúsim ich znova.",
   "peppol.in.empty": "Zatiaľ žiadne prijaté eFaktúry",
   "peppol.in.emptyText": "Keď vám dodávateľ pošle eFaktúru, objaví sa tu.",
   "peppol.in.lastReceived": "Naposledy prijaté {date}",
@@ -128,7 +128,7 @@ export default {
   "peppol.col.deadline": "Lehota",
   "peppol.col.receivedDate": "Prijaté",
 
-  "peppol.deadline.days": "{n} dní",
+  "peppol.deadline.days": "{n, plural, one {# deň} few {# dni} other {# dní}}",
   "peppol.deadline.late": "po lehote",
 
   "peppol.detail.title": "eFaktúra {number}",

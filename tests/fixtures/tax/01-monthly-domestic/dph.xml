@@ -5,27 +5,45 @@
       <kodStatu>SK</kodStatu>
       <cislo>2020123457</cislo>
     </identifikacneCislo>
+    <dic>2020123457</dic>
+    <danovyUrad></danovyUrad>
+    <nevzniklaPov>0</nevzniklaPov>
     <typDP>
       <rdp>1</rdp>
       <odp>0</odp>
       <ddp>0</ddp>
+      <datumZisteniaDdp></datumZisteniaDdp>
     </typDP>
-    <zdanovacieObdobie>
+    <osoba>
+      <platitel>1</platitel>
+      <registrovana>0</registrovana>
+      <inaPovinna>0</inaPovinna>
+      <zdanitelna>0</zdanitelna>
+      <zastupca>0</zastupca>
+      <zastupca69aa>0</zastupca69aa>
+    </osoba>
+    <zdanObd>
       <mesiac>3</mesiac>
       <stvrtrok></stvrtrok>
       <rok>2026</rok>
-      <datumZisteniaDdp></datumZisteniaDdp>
-    </zdanovacieObdobie>
-    <nazovMenoPriezvisko>Biela Orlica s. r. o.</nazovMenoPriezvisko>
+    </zdanObd>
+    <meno>
+      <riadok>Biela Orlica s. r. o.</riadok>
+    </meno>
     <adresa>
       <ulica>Hlavná</ulica>
-      <supisneOrientacneCislo>12</supisneOrientacneCislo>
+      <cislo>12</cislo>
       <psc>81101</psc>
       <obec>Bratislava</obec>
-      <stat>SK</stat>
       <telefon>+421 2 1234 5678</telefon>
       <email>uctaren@example.sk</email>
     </adresa>
+    <opravnenaOsoba>
+      <menoPriezvisko></menoPriezvisko>
+      <telefon></telefon>
+      <email></email>
+    </opravnenaOsoba>
+    <datumVyhlasenia>10.04.2026</datumVyhlasenia>
   </hlavicka>
   <telo>
     <r01>180.00</r01>
@@ -47,19 +65,48 @@
     <r10a/>
     <r10b/>
     <r11/>
+    <r11a/>
+    <r11b/>
+    <r11c/>
+    <r11d/>
+    <r11e/>
     <r12/>
+    <r12a/>
+    <r12b/>
+    <r12c/>
+    <r12d/>
+    <r12e/>
     <r13/>
     <r14/>
     <r15/>
-    <r15a/>
     <r16/>
     <r17>384.20</r17>
     <r18>7.60</r18>
     <r18a>0.50</r18a>
     <r19>243.80</r19>
-    <r32>132.30</r32>
-    <r33>0.00</r33>
+    <r20/>
+    <r20a/>
+    <r21/>
+    <r22/>
+    <r22a/>
+    <r23/>
+    <r23a/>
+    <r23b/>
+    <r23c/>
+    <r24/>
+    <r25/>
+    <r26/>
+    <r27/>
+    <r28/>
+    <r29/>
+    <r30/>
+    <r31>132.30</r31>
+    <r32>0.00</r32>
+    <splneniePodmienok>0</splneniePodmienok>
+    <r33/>
+    <r34/>
     <r35>132.30</r35>
-    <datumVyhlasenia>2026-04-10</datumVyhlasenia>
+    <r36/>
+    <r37/>
   </telo>
 </dokument>

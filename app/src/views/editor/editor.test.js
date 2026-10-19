@@ -163,6 +163,17 @@ describe('store actions', () => {
     expect(store.company().series).toHaveLength(1);
   });
 
+  it('a non-payer issues lines outside the scope of VAT without a rate', async () => {
+    const { store } = await memoryStore({ company: { ...COMPANY, vatMode: 'NONPAYER', icDph: null } });
+    const contact = await store.insert('contacts', structuredClone(CONTACT));
+    const draft = filled(newDraft({ kind: 'INVOICE', company: store.company(), contact, today: TODAY }));
+    expect(draft.lines[0]).toMatchObject({ vatCategory: 'O', vatRate: null, exemptionReasonCode: 'VATEX-EU-O' });
+    const doc = await issueDraft(store, draft, { emit: () => {} });
+    expect(doc.totals).toMatchObject({ net: '500.00', vat: '0.00', gross: '500.00' });
+    expect(doc.totals.breakdown).toEqual([expect.objectContaining({ category: 'O', rate: null })]);
+    expect(doc.seller).toMatchObject({ vatPayer: false, icDph: null });
+  });
+
   it('refuses an incomplete document and stores nothing', async () => {
     const { store } = await withClient();
     const draft = newDraft({ kind: 'INVOICE', company: store.company(), today: TODAY });

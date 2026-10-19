@@ -1,7 +1,7 @@
 // Ukrainian texts: shell, navigation, common words (WP-0 / WP-UI).
 export default {
   "app.name": "WE Invoice",
-  "app.tagline": "Рахунки та електронні рахунки безкоштовно",
+  "app.tagline": "Рахунки та eFaktúra безкоштовно",
   "nav.dashboard": "Огляд",
   "nav.group.sales": "Продажі",
   "nav.invoices": "Рахунки",
@@ -15,7 +15,7 @@ export default {
   "nav.received": "Вхідні рахунки",
   "nav.expenses": "Витрати та чеки",
   "nav.inbox": "Вхідні",
-  "nav.group.efaktury": "Електронні рахунки",
+  "nav.group.efaktury": "eFaktúra",
   "nav.efakturyIn": "Отримані",
   "nav.efakturyOut": "Надіслані",
   "nav.group.money": "Гроші",
@@ -94,5 +94,5 @@ export default {
   "search.hint": "Введіть номер документа, назву контрагента або суму.",
   "pwa.newVersion": "Доступна нова версія застосунку.",
   "pwa.reload": "Оновити",
-  "legislation.einvoice.note": "З 1 січня 2027 року платники ПДВ у Словаччині виставляють внутрішні B2B-рахунки як електронні рахунки (eFaktúra) через Peppol, а приймати їх зобов’язані всі підприємці."
+  "legislation.einvoice.note": "З 1 січня 2027 року платники ПДВ у Словаччині виставляють внутрішні B2B-рахунки у форматі eFaktúra через Peppol, а приймати їх зобов’язані всі підприємці."
 };

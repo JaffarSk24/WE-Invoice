@@ -228,6 +228,19 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Form layouts (KVDPHv25, SVDPH, DPHv25) are data files in packages/core/tax/forms marked unverified until they are checked against the official XSD schemas of Finančná správa.
 
+#### Changed (19 October)
+
+- The kontrolný výkaz follows the official schema kv_dph_2025.xsd: root element KVDPH_2025, simplified invoices as B31 (in total) or B32 (per supplier), D1 and D2 with the standard rate in Z and D and the reduced rates in ZZn and DZn (D1 also with SumaObratov), sections in the order of the schema, and optional attributes left out instead of written empty. Both reduced rates (19 % and 5 %) are summed into ZZn and DZn until an accountant confirms it.
+- The VAT return follows the schema of form DPHv25: the header with dic, danovyUrad, typDP with the discovery date, osoba, zdanObd, meno lines and dates as dd.mm.yyyy, and a body with every row from r01 to r37 and splneniePodmienok in the order of the form. The map of amounts to rows was rebuilt after the poučenie: supplies where the recipient pays the tax go to rows 09 and 10, exempt supplies to 13, intra-EU goods to 14, reverse charge supplies to 15, own liability to 31, excess deduction to 32 and the amount to pay to 35. Rows 11 and 12 belong to triangular trade and imports and stay empty.
+- The súhrnný výkaz follows the schema of form SVDPHv20 (valid from 2020-01-01): the new header, records paged by twelve, and the three kinds of filing riadny, opravný and dodatočný.
+- No XML is produced while a report has an open error, so a file that the schema would reject is never offered. The screen says so instead of showing the XML.
+- The XSD test checks the SHA-256 of every schema against tests/fixtures/tax/xsd/sources.json, which now names the official download addresses.
+
+#### Added (19 October)
+
+- A warning when a supplier in section B.1 has no VAT ID, in all six interface languages.
+- The súhrnný výkaz always writes four name lines and twelve records of each part per page, and the VAT return writes splneniePodmienok as 0 or 1, as the official schemas require; every golden XML now validates against the official XSD of Finančná správa.
+
 ### eFaktúra through Peppol
 
 #### Added
@@ -249,6 +262,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - `providers.json`: API addresses of ePošťák, Verteco and eFaktúra.sk from their own documentation, with the sources listed; Dativery uses the SAPI-SK adapter; iPoštár has no adapter until its API is documented publicly.
 - The tax document to a received payment is written with type code 388.
+
+#### Changed (19 October)
+
+- The gateway proxy forwards the `Idempotency-Key` header to the Peppol provider, so a send retried from the browser after a lost answer is not delivered twice; the header is described in `gateway/openapi.yaml`.
+- The data model describes the e-invoice fields already written by the app: `autoReceive`, `emailCopy`, `vpdsDone` and `registered` in the Peppol settings of a company, and `attempts`, `nextAttemptAt`, `statusChecks` and `nextCheckAt` in the Peppol state of a document.
 
 ### Bank, cash and payments
 
@@ -305,6 +323,20 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Leaving the editor right after issuing no longer writes the stale draft over the issued document.
 
+#### Added (owner decisions, 19 October)
+
+- "Nepoužívam eKasa" in the company settings (company.ekasaExempt, off by default) and the core helper ekasaExempt: when it is on, the VRP2 hints for cash, card and on-site QR payments are left out on the document card, on the payments screen and on the quick sale; a quick sale then ends with a confirmation instead of the VRP2 data.
+- End to end test of the PDF preview inside the editor and on the document card.
+
+#### Changed (owner decisions, 19 October)
+
+- The page policy lets frames load blob: URLs (frame-src blob: only, nothing else loosened), so the PDF preview of the editor and of the document card shows inside the app on the web and on the desktop.
+- ekasaNeeded no longer treats usesEkasa: false as an opt-out: the wizard writes it for every company, so the eKasa helper of the payments screen never opened.
+
+#### Fixed (owner decisions, 19 October)
+
+- A test pins that a company that is not a VAT payer gets new lines outside the scope of VAT (category O, no rate) and issues them without VAT.
+
 ### Purchases, Inbox and expenses
 
 #### Added
@@ -338,6 +370,25 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Changed
 
 - German texts keep the Slovak names of forms and books in their basic form: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 33 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names instead of E-Rechnung, Kontrollmeldung, Zusammenfassende Meldung, USt-Voranmeldung and Kassenbuch. Kassenbuch now names only the printed book of a cash desk (pokladničná kniha).
+
+### Russian translation of wave B
+
+- Russian translation of the wave B interface: 2497 keys in the sales (documents, editor, numbering settings, contacts, price list, e-mail, recurring invoices, reminders), Peppol, bank and cash desk, purchase and Inbox, export and import, VAT, ledger, stock and reports parts. The Russian dictionary now has every Slovak key.
+- The Russian sales part is split into the same files as the Slovak one (`sales/documents/*.js`, `sales/crm/*.js`), with the same aggregators.
+
+### Changed
+
+- Russian texts keep the Slovak names of forms and registers in their basic form (eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník) instead of translated terms, also in the parts translated earlier (common, core, desktop, onboarding, dashboard, settings, help). Sentences are built around the name ("счёт eFaktúra", "форма Kontrolný výkaz") so that it is never declined.
+
+### Ukrainian translation of wave B
+
+- Ukrainian interface texts for every screen of wave B: 2,497 keys in the parts sales (document lists, editor, numbering and company settings, contacts, price list, e-mail, recurring invoices, reminders), peppol, bank, purchase, exim, tax, ledger, stock and reports. The Ukrainian dictionary now has all 3,288 Slovak keys.
+- The Ukrainian sales part mirrors the Slovak layout: `uk/sales.js` merges `uk/sales/documents.js` and `uk/sales/crm.js`, each with the same screen files and keys as in Slovak.
+
+#### Changed
+
+- Ukrainian texts keep the Slovak names of forms and books in their basic form, never translated or declined: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 26 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names, and the sentences are built around the name (an invoice in the eFaktúra format, the Kontrolný výkaz form, the Peňažný denník book). The cash desk book (pokladničná kniha) is still translated as an ordinary Ukrainian term.
+- eFaktúra status labels and network errors in Ukrainian use neutral forms and no longer speak in the first person.
 
 ### Interface translations
 

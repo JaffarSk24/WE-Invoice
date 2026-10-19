@@ -3,6 +3,7 @@
 // the cart on the right with quantities, totals, cash or card and an
 // optional partial payment. "Sell" issues the receipt, moves the stock and
 // shows what to type into the virtual cash register.
+import { ekasaExempt } from '@we-invoice/core';
 import { h, icon, append, clear } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
 import { t } from '../../../i18n/index.js';
@@ -13,7 +14,7 @@ import { emptyState } from '../../../components/empty-state.js';
 import { showToast, showError } from '../../../ui/toast.js';
 import { isDemo } from '../../shell/demo-mode.js';
 import { stockData } from '../data.js';
-import { moneyText, nameIndex, unitLabel, refuseWrite } from '../format.js';
+import { moneyText, nameIndex, unitLabel, refuseWrite, qtyText } from '../format.js';
 import { emptyCart, addToCart, setCartQty, changeCartQty, removeFromCart, findByCode, searchItems, cartPreview } from './cart.js';
 import { checkout } from './checkout.js';
 import { openSaleSummary } from './summary.js';
@@ -25,6 +26,7 @@ export function renderQuickSale(root) {
   unsubscribe.forEach(off => off());
   unsubscribe = [];
   let data = stockData();
+  const vrpHint = h('p', { class: 'field-hint', id: 'sale-vrp-hint', hidden: ekasaExempt(data.company) }, t('stock.sale.vrpHint'));
   const state = { cart: emptyCart(), query: '', method: 'CASH', paid: '', warehouseId: '', busy: false };
 
   const search = h('input', {
@@ -118,6 +120,12 @@ export function renderQuickSale(root) {
     refreshIcons(cartBox);
   }
 
+  function saleDone(document, warnings) {
+    showToast(t('stock.sale.done', { number: document.number || '' }), { type: 'success' });
+    const names = nameIndex(data.items);
+    warnings.forEach(w => showToast(t('stock.warning.negative', { item: names(w.itemId), qty: qtyText(w.qty) }), { type: 'info', duration: 8000 }));
+  }
+
   async function finish() {
     if (!state.cart.length || state.busy || refuseWrite()) return;
     const paidAmount = state.paid.trim() ? parseDecimal(state.paid) : null;
@@ -129,7 +137,9 @@ export function renderQuickSale(root) {
       state.cart = emptyCart();
       state.paid = '';
       paid.value = '';
-      openSaleSummary(document, { warnings, itemName: nameIndex(data.items) });
+      // A company without eKasa gets no VRP2 data to copy, only the confirmation.
+      if (ekasaExempt(data.company)) saleDone(document, warnings);
+      else openSaleSummary(document, { warnings, itemName: nameIndex(data.items) });
     } catch (e) {
       showError(e, 'stock.error.sale');
     } finally {
@@ -147,7 +157,7 @@ export function renderQuickSale(root) {
         h('h2', {}, t('stock.sale.cart')), cartBox, totalsBox, methodGroup,
         h('label', { class: 'sale-paid-field', for: 'sale-paid' }, h('span', {}, t('stock.sale.paidLabel')), paid),
         warehouseField, sell,
-        h('p', { class: 'field-hint' }, t('stock.sale.vrpHint'))))]);
+        vrpHint))]);
   drawItems();
   drawMethods();
   drawWarehouses();
@@ -158,6 +168,7 @@ export function renderQuickSale(root) {
   const refresh = () => {
     if (!root.isConnected) return;
     data = stockData();
+    vrpHint.hidden = ekasaExempt(data.company);
     drawItems();
     drawWarehouses();
   };

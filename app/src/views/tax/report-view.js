@@ -123,6 +123,8 @@ function suggest(def, src, period, today) {
   return def.types.includes(type) ? type : def.types[0];
 }
 
+// A report with an open error has no XML (the core refuses to write it).
 function xmlDetails(xml) {
+  if (!xml) return h('p', { class: 'muted tax-no-xml' }, t('tax.preview.noXml'));
   return h('details', { class: 'tax-xml' }, h('summary', {}, t('tax.preview.xml')), h('pre', { class: 'tax-xml-text' }, xml));
 }

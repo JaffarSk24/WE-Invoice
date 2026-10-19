@@ -4,15 +4,16 @@
 import { CoreError } from '../errors.js';
 import { DOCUMENT_KINDS } from '../schema/enums.js';
 
-// UNCL1001 codes. 386 (prepayment invoice) is used for the tax document
-// to a received advance; the FS table "Transpozícia Peppol BIS3" v1.12
-// lists 388 for Slovakia, so WP-PEPPOL fixes the final code against the
-// official table. 389 is the self-billed invoice.
+// UNCL1001 codes. The tax document to a received advance is a tax invoice,
+// 388, as the eFaktúra FAQ of the Financial Administration says (March and
+// April 2026); 386 (prepayment invoice) would be the proforma, which is no
+// tax document and is not sent as an eFaktúra. 389 is the self-billed
+// invoice.
 const UBL_TYPE_CODES = Object.freeze({
   INVOICE: '380',
   CREDIT_NOTE: '381',
   DEBIT_NOTE: '383',
-  ADVANCE_TAX_DOC: '386',
+  ADVANCE_TAX_DOC: '388',
   SELF_BILLING: '389'
 });
 

@@ -34,7 +34,7 @@ export default {
   'bank.import.profile.generic': 'Other bank (by column names)',
   'bank.import.account': 'To account',
   'bank.import.accountMismatch': 'The statement is for account {iban}, which is not one of the company accounts.',
-  'bank.import.summary': '{total} movements: {fresh} new, {duplicates} already imported.',
+  'bank.import.summary': '{total, plural, one {# movement} other {# movements}}: {fresh} new, {duplicates} already imported.',
   'bank.import.balances': 'Opening balance {opening}, closing balance {closing}.',
   'bank.import.warning.BANK_ROWS_INVALID': 'Rows without a date or an amount were skipped: {n}.',
   'bank.import.warning.BANK_ROWS_PENDING': 'Movements not booked yet were skipped: {n}.',

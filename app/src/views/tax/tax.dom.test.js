@@ -197,7 +197,7 @@ describe('report screens', () => {
     const { show } = await setup('01-monthly-domestic');
     const root = await show('vat-return');
     const rows = Array.from(root.querySelectorAll('.tax-preview tbody tr')).map(tr => tr.children[0].textContent);
-    expect(rows).toEqual(['01', '01a', '02', '02a', '03', '04', '17', '18', '18a', '19', '32', '33', '35']);
+    expect(rows).toEqual(['01', '01a', '02', '02a', '03', '04', '17', '18', '18a', '19', '31', '32', '35']);
     expect(root.querySelector('.tax-preview tbody tr td:nth-child(2)').textContent).toMatch(/19 %/);
   });
 });

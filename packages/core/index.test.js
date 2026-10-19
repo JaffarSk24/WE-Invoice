@@ -39,7 +39,7 @@ const API = [
   'matchStatement', 'makePayment', 'addPayment', 'removePayments', 'applyMatch', 'unapplyMatch', 'statusAfterPayments',
   'validatePain001', 'sepaText', 'paymentsForReceived', 'creditorIbanOf', 'defaultCashSeries', 'bookVouchers', 'cashBalance',
   'cashBookRows', 'checkCashOut', 'cashKindForPayment', 'buildCashVoucher', 'cashDifference', 'cashLimitCheck',
-  'isBusinessParty', 'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded',
+  'isBusinessParty', 'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded', 'ekasaExempt',
   'ekasaManualEntry', 'listPayments', 'bankTxDirection', 'paymentCandidates', 'paymentParty', 'openPaymentAmount',
   'recognizeXml', 'detectXmlFormat', 'registerInboxParser', 'recognizeQr', 'detectQrFormat', 'recognizeEkasaReceipt',
   'recognizeFound', 'detectInboxFile', 'mergeRecognitions', 'draftFromRecognition', 'pickFieldValue', 'applyUserValue',

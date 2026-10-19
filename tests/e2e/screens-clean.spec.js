@@ -4,7 +4,7 @@
 import { test, expect } from '@playwright/test';
 import { ALL_ROUTES } from '../../app/src/views/shell/nav.js';
 
-const RAW = /\b(null|undefined|NaN)\b|\[object Object\]/;
+const RAW = /\b(null|undefined|NaN)\b|\[object Object\]|, plural,/;
 const KEY = /\b(?:[a-z][a-zA-Z]*\.){2,}[a-zA-Z]+\b/;
 
 test('no raw values or dictionary keys on any screen', async ({ page, isMobile }) => {

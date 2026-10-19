@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<KVDPH xmlns="https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd">
+<KVDPH_2025 xmlns="https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd">
   <Identifikacia>
     <IcDphPlatitela>SK2020123457</IcDphPlatitela>
     <Druh>R</Druh>
@@ -24,7 +24,7 @@
     <B2 Dod="SK2023456798" F="2026/0457" Den="2026-02-27" Z="1000.00" D="230.00" S="23" O="230.00"/>
     <B2 Dod="SK2024567897" F="F-88" Den="2026-03-12" Z="40.00" D="7.60" S="19" O="7.60"/>
     <B2 Dod="SK2024567897" F="F-88" Den="2026-03-12" Z="10.00" D="0.50" S="5" O="0.50"/>
-    <B3 Z="60.00" D="13.80" O="13.80"/>
-    <D2 ZZ="200.00" DZ="46.00" ZN="80.00" DN="15.20"/>
+    <B31 Z="60.00" D="13.80" O="13.80"/>
+    <D2 Z="200.00" D="46.00" ZZn="80.00" DZn="15.20"/>
   </Transakcie>
-</KVDPH>
+</KVDPH_2025>

@@ -18,12 +18,12 @@ export default {
   "dashboard.widget.topClients": "Top 5 klientů",
   "dashboard.widget.topDebtors": "Top 5 dlužníků",
   "dashboard.widget.balance": "Prodej a nákup",
-  "dashboard.widget.efaktury": "Doručené eFaktúry",
+  "dashboard.widget.efaktury": "Doručené faktury eFaktúra",
   "dashboard.widget.accounts": "Zůstatky na účtech",
   "dashboard.quick.invoice": "Nová faktura",
   "dashboard.quick.expense": "Nový výdaj",
   "dashboard.quick.import": "Import výpisu",
-  "dashboard.quick.receive": "Přijmout eFaktúry",
+  "dashboard.quick.receive": "Přijmout faktury eFaktúra",
   "dashboard.issued.month": "Tento měsíc",
   "dashboard.issued.year": "Tento rok",
   "dashboard.issued.lastYear": "Minulý rok",
@@ -55,7 +55,7 @@ export default {
   "dashboard.taxCalendar.dpfo": "Daňové přiznání FO",
   "dashboard.taxCalendar.dppo": "Daňové přiznání PO",
   "dashboard.taxCalendar.advance": "Záloha na daň",
-  "dashboard.taxCalendar.daysLeft": "za {n} dní",
+  "dashboard.taxCalendar.daysLeft": "za {n, plural, one {# den} few {# dny} other {# dní}}",
   "dashboard.efaktury.waiting": "Čekají na zpracování",
   "dashboard.efaktury.open": "Otevřít doručené"
 };
