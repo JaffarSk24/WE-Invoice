@@ -74,10 +74,11 @@ export function rememberPeriod(company, period) {
   setPref('taxPeriods', all);
 }
 
-// Screens of the document kinds (routes in views/shell/nav.js).
+// Screens of the document kinds (routes in views/shell/nav.js), the same
+// as the search and reports use (views/search/engine.js).
 const DOCUMENT_ROUTES = Object.freeze({
   INVOICE: 'invoices', ADVANCE_TAX_DOC: 'invoices', SELF_BILLING: 'invoices', CREDIT_NOTE: 'credit-notes', DEBIT_NOTE: 'credit-notes',
-  SALES_RECEIPT: 'cash', RECEIVED_INVOICE: 'received', RECEIVED_CREDIT_NOTE: 'received', EXPENSE_RECEIPT: 'expenses'
+  SALES_RECEIPT: 'invoices', RECEIVED_INVOICE: 'received', RECEIVED_CREDIT_NOTE: 'received', EXPENSE_RECEIPT: 'expenses'
 });
 
 /** Hash of the screen of a document, "#/invoices/<id>", or null. */
