@@ -7,7 +7,8 @@ import {
   Construction, Copy, Download, Ellipsis, ExternalLink, FileCheck, FileMinus, FilePlus2, FileSpreadsheet, FileText, Files, Code, Globe, HardDrive,
   Eye, GripVertical, Hourglass, Import, Inbox, Info, KeyRound, Keyboard, Landmark, LayoutDashboard, LayoutGrid, Lock, LogIn, Mail, MailCheck,
   NotebookPen, Palette, PartyPopper, PencilLine, Plug, Plus, Printer, Receipt, RefreshCw, Repeat, RotateCcw, ScanLine, Search, Send, Settings,
-  ShieldCheck, ShoppingCart, Smartphone, Sparkles, SquareX, ThumbsUp, Trash2, TriangleAlert, Truck, Users, Wallet, X
+  ShieldCheck, ShoppingCart, Smartphone, Sparkles, SquareX, ThumbsUp, Trash2, TriangleAlert, Truck, Users, Wallet, X,
+  ArrowLeftRight, History, Store, Warehouse
 } from 'lucide';
 import { createIcons } from 'lucide';
 
@@ -18,7 +19,8 @@ export const usedIcons = {
   Construction, Copy, Download, Ellipsis, ExternalLink, FileCheck, FileMinus, FilePlus2, FileSpreadsheet, FileText, Files, Code, Globe, HardDrive,
   Eye, GripVertical, Hourglass, Import, Inbox, Info, KeyRound, Keyboard, Landmark, LayoutDashboard, LayoutGrid, Lock, LogIn, Mail, MailCheck,
   NotebookPen, Palette, PartyPopper, PencilLine, Plug, Plus, Printer, Receipt, RefreshCw, Repeat, RotateCcw, ScanLine, Search, Send, Settings,
-  ShieldCheck, ShoppingCart, Smartphone, Sparkles, SquareX, ThumbsUp, Trash2, TriangleAlert, Truck, Users, Wallet, X
+  ShieldCheck, ShoppingCart, Smartphone, Sparkles, SquareX, ThumbsUp, Trash2, TriangleAlert, Truck, Users, Wallet, X,
+  ArrowLeftRight, History, Store, Warehouse
 };
 
 export function refreshIcons(root = document) {

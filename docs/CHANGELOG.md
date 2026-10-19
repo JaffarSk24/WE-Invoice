@@ -65,6 +65,8 @@ All notable changes to this project are documented here. The format follows [Kee
 - The Help item was added to the navigation.
 - Settings, Documents: the print language of the company's documents (Slovak by default) and an optional second language for bilingual documents, as drop-down lists. The interface language stays a separate setting of the device.
 
+- Menu items for the screens of wave B: Quick sale, Stock, Export and import, Recycle bin and Change log; "Price list and stock" is now "Price list", as stock has its own screen.
+
 #### Fixed
 
 - The company made in the "My company" wizard is saved in the store and synced to Google Drive; it used to stay only on the device. A company kept on the device by an earlier version moves into the store at start, the device copy is dropped only after the store has written it, and the company switcher and the end of sample mode work through the store.

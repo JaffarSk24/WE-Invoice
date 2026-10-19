@@ -13,7 +13,8 @@ export const NAV = Object.freeze([
       { route: 'quotes', label: 'nav.quotes', icon: 'clipboard-list' },
       { route: 'orders', label: 'nav.orders', icon: 'shopping-cart' },
       { route: 'delivery-notes', label: 'nav.deliveryNotes', icon: 'truck' },
-      { route: 'recurring', label: 'nav.recurring', icon: 'repeat' }
+      { route: 'recurring', label: 'nav.recurring', icon: 'repeat' },
+      { route: 'quick-sale', label: 'nav.quickSale', icon: 'store' }
     ]
   },
   {
@@ -44,7 +45,8 @@ export const NAV = Object.freeze([
   {
     items: [
       { route: 'contacts', label: 'nav.contacts', icon: 'users' },
-      { route: 'items', label: 'nav.items', icon: 'boxes' }
+      { route: 'items', label: 'nav.items', icon: 'boxes' },
+      { route: 'stock', label: 'nav.stock', icon: 'warehouse' }
     ]
   },
   {
@@ -62,6 +64,9 @@ export const NAV = Object.freeze([
   {
     items: [
       { route: 'reports', label: 'nav.reports', icon: 'chart-column' },
+      { route: 'exim', label: 'nav.exim', icon: 'arrow-left-right' },
+      { route: 'trash', label: 'nav.trash', icon: 'trash-2' },
+      { route: 'audit', label: 'nav.audit', icon: 'history' },
       { route: 'settings', label: 'nav.settings', icon: 'settings' },
       { route: 'help', label: 'nav.help', icon: 'circle-help' }
     ]
