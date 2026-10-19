@@ -6,7 +6,8 @@
 //   fab:action { id: 'invoice' }, quick:invoice { contact }   the same for an invoice
 //   hotkey:new / hotkey:save / hotkey:issue   on the sales screens
 // Events it sends: document:send, peppol:send, stock:document-issued
-// (see views/editor), pdf:download (boot/pdf.js).
+// (see views/editor), pdf:download (boot/pdf.js), and on the desktop
+// desktop:tray with what clients owe (views/documents/tray-summary.js).
 import { registerSettingsSection } from '../views/settings/registry.js';
 import { setDashboardSource } from '../views/dashboard/data.js';
 import { SALES_ROUTES, isSalesKind, routeForKind, salesHash, LIST_ROUTES } from '../views/documents/kinds.js';
@@ -17,6 +18,7 @@ import { hasStore, getStore } from '../store/index.js';
 import { fold } from '../views/documents/rows.js';
 import { documentsSettings } from '../views/settings/documents-section.js';
 import { companySection } from '../views/settings/company-section.js';
+import { traySummary } from '../views/documents/tray-summary.js';
 
 export function openNew(kind, contactId = null) {
   const route = routeForKind(kind);
@@ -58,4 +60,21 @@ export async function boot(ctx) {
   syncDashboard();
   ['company:switched', 'demo:enabled', 'demo:disabled'].forEach(ev => ctx.on(ev, syncDashboard));
   ctx.on('data:changed', (e) => { if (!e || e.collection === 'company') syncDashboard(); });
+
+  // The desktop tray: open receivables and overdue invoices, redrawn a
+  // moment after documents change.
+  if (ctx.transport && ctx.transport.platform !== 'web') {
+    let timer = null;
+    const sendTray = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const store = hasStore() ? getStore() : null;
+        const company = store && store.company();
+        ctx.emit('desktop:tray', company ? traySummary(store.list('documents'), company) : { show: true, dueTotal: null, currency: 'EUR', overdueCount: 0, canReceive: false });
+      }, 300);
+    };
+    sendTray();
+    ['company:switched', 'demo:disabled'].forEach(ev => ctx.on(ev, sendTray));
+    ctx.on('data:changed', (e) => { if (!e || !e.collection || e.collection === 'documents' || e.collection === 'company') sendTray(); });
+  }
 }
