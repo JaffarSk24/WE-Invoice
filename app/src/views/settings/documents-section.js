@@ -18,7 +18,6 @@ import { isDemo } from '../shell/demo-mode.js';
 import { emit } from '../../events.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { selectField, textArea, textField, checkboxField } from '../../components/fields.js';
-import { PDF_TEMPLATES } from '../../pdf/index.js';
 import { numberingSection } from './numbering-section.js';
 
 export const DEFAULT_PRINT_LANGUAGE = 'sk';
@@ -128,7 +127,7 @@ function defaultsForm(root, company, demo) {
   });
   const template = selectField({
     label: t('pdf.settings.template'), value: d.template || 'CLASSIC', attrs: { disabled: demo, id: 'settings-template' },
-    options: PDF_TEMPLATES.map(id => ({ value: id, label: t(`pdf.template.${id}`) })), onChange: (value) => save({ template: value })
+    options: schema.DOCUMENT_TEMPLATES.map(id => ({ value: id, label: t(`pdf.template.${id}`) })), onChange: (value) => save({ template: value })
   });
   const color = textField({ label: t('pdf.settings.brandColor'), type: 'color', value: d.brandColor || '#4facfe', attrs: { disabled: demo } });
   color.input.addEventListener('change', () => save({ brandColor: color.input.value }));

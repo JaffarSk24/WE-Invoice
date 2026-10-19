@@ -124,6 +124,7 @@ export default {
   "documents.totals.vatEur": "VAT in euros",
   "documents.totals.notYet": "The totals appear once the lines are complete.",
   "documents.preview.title": "PDF preview of the document",
+  "documents.editor.loading": "Opening the document…",
   "documents.preview.loading": "Preparing the PDF preview…",
   "documents.preview.failed": "The PDF preview could not be prepared.",
   "documents.preview.inTab": "Open the document preview in a new tab.",

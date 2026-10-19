@@ -156,3 +156,11 @@ describe('discount column', () => {
     expect(text).toContain('10 %');
   });
 });
+
+describe('template list', () => {
+  it('matches the template enum of the schema, which the settings show', async () => {
+    const { schema } = await import('@we-invoice/core');
+    const { TEMPLATE_IDS } = await import('./templates/index.js');
+    expect([...TEMPLATE_IDS].sort()).toEqual([...schema.DOCUMENT_TEMPLATES].sort());
+  });
+});

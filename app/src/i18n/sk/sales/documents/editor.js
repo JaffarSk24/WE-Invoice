@@ -124,6 +124,7 @@ export default {
   "documents.totals.vatEur": "DPH v eurách",
   "documents.totals.notYet": "Súčty sa zobrazia, keď budú položky úplné.",
   "documents.preview.title": "Náhľad dokladu v PDF",
+  "documents.editor.loading": "Otvárame doklad…",
   "documents.preview.loading": "Pripravujeme náhľad PDF…",
   "documents.preview.failed": "Náhľad PDF sa nepodarilo pripraviť.",
   "documents.preview.inTab": "Náhľad dokladu otvoríte v novej karte.",

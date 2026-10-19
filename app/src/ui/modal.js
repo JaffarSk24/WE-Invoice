@@ -36,7 +36,9 @@ export function openModal({ title, body, actions = [], wide = false, onClose = n
   stack.push(api);
   refreshIcons(content);
   const first = content.querySelector('[autofocus], input, select, textarea, .modal-actions button');
-  if (first) setTimeout(() => first.focus(), 30);
+  // Focus moves in a moment after opening, unless the person (or a test)
+  // has already put it inside the dialog: their typing must not jump.
+  if (first) setTimeout(() => { if (!content.contains(document.activeElement)) first.focus(); }, 30);
   return api;
 }
 
