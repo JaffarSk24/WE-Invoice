@@ -8,7 +8,7 @@ export default {
   "settings.section.email": "E-Mail",
   "settings.section.email.text": "Versand über Gmail oder SMTP und Nachrichtenvorlagen.",
   "settings.section.peppol": "Peppol",
-  "settings.section.peppol.text": "Anbieter für E-Rechnungen, API-Schlüssel, Verbindungstest und Teilnehmerstatus.",
+  "settings.section.peppol.text": "Anbieter für eFaktúra, API-Schlüssel, Verbindungstest und Teilnehmerstatus.",
   "settings.section.reminders": "Mahnungen",
   "settings.section.reminders.text": "Wann und wie Mahnungen versendet werden.",
   "settings.section.sync": "Sync und Verschlüsselung",
