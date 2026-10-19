@@ -38,7 +38,7 @@ test('a CAMT.053 statement pays the invoices and the aging report follows', asyn
   const chooser = page.waitForEvent('filechooser');
   await page.locator('.view-actions .btn-primary').click();
   await (await chooser).setFiles({ name: 'vypis.xml', mimeType: 'application/xml', buffer: STATEMENT });
-  await expect(page.locator('.import-body')).toContainText('nových');
+  await expect(page.locator('.import-body')).toContainText('nové');
   await page.locator('.modal-actions .btn-primary').click();
 
   const match = page.locator('.modal-content', { hasText: 'Párovanie platieb' });
