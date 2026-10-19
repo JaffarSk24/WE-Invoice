@@ -15,6 +15,7 @@ test('a client is created by IČO and edited', async ({ page }) => {
   await expect(page.locator('#contact-title')).toHaveText(CLIENT.name);
   await expect(page.locator('.contact-badges .vat-light[data-light]')).toHaveAttribute('data-light', 'green');
   await expect(page.locator('.contact-overview')).toContainText(CLIENT.ico);
+  await expect(page.locator('.contact-badges .peppol-badge')).toBeVisible();
 
   await page.locator('#contact-edit').click();
   await page.selectOption('#contact-language', 'en');
