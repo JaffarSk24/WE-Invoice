@@ -61,6 +61,7 @@ export default {
   "documents.action.addPayment": "Додати оплату",
   "documents.action.edit": "Редагувати",
   "documents.action.copy": "Копіювати",
+  "documents.action.recurring": "Повторювати регулярно",
   "documents.action.more": "Інші дії",
   "documents.action.deleteDraft": "Видалити чернетку",
   "documents.action.closeEdit": "Закрити редагування",
