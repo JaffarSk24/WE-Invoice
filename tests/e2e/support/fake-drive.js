@@ -153,3 +153,45 @@ export async function newDevice(browser, testInfo, drive, { signIn = true } = {}
   const page = await context.newPage();
   return { context, page };
 }
+
+const dialog = (page, title) => page.locator('.modal-content[role="dialog"]', { has: page.locator('h3', { hasText: title }) });
+
+/** Answers the first-sync password dialog; returns the 24 recovery words. */
+export async function turnOnEncryption(page, password, expect) {
+  const setup = dialog(page, 'Heslo na šifrovanie');
+  await expect(setup).toBeVisible({ timeout: 15_000 });
+  await setup.getByLabel('Heslo (aspoň 8 znakov)').fill(password);
+  await setup.getByLabel('Heslo ešte raz').fill(password);
+  await setup.getByRole('button', { name: 'Zašifrovať' }).click();
+  const recovery = dialog(page, 'Obnovovací kľúč');
+  await expect(recovery.locator('.sync-words li')).toHaveCount(24);
+  const words = (await recovery.locator('.sync-words li').allInnerTexts()).map(w => w.trim());
+  await recovery.getByRole('button', { name: 'Mám ho uložený' }).click();
+  const check = dialog(page, 'Overenie kľúča');
+  for (const field of await check.locator('.sync-field').all()) {
+    const n = Number((await field.locator('label').innerText()).replace(/\D/g, ''));
+    await field.locator('input').fill(words[n - 1]);
+  }
+  await check.getByRole('button', { name: 'Potvrdiť' }).click();
+  await expect(page.locator('.toast', { hasText: 'Šifrovanie je zapnuté' })).toBeVisible({ timeout: 15_000 });
+  return words;
+}
+
+/** Types the password into the unlock dialog of a device without the key. */
+export async function unlockWith(page, password, expect) {
+  const unlock = dialog(page, 'Zadajte heslo');
+  await expect(unlock).toBeVisible({ timeout: 15_000 });
+  await unlock.locator('input[type="password"]').fill(password);
+  await unlock.getByRole('button', { name: 'Odomknúť' }).click();
+  await expect(unlock).toHaveCount(0, { timeout: 15_000 });
+}
+
+/** Presses "Synchronizovať" in Settings and waits until the sync is done. */
+export async function syncNow(page, drive, expect) {
+  await page.goto('./#/settings/sync');
+  const before = drive.requests;
+  await page.locator('#settings-sync-sync').click();
+  // The status reads "syncing" from before the first request until the end.
+  await expect.poll(() => drive.requests).toBeGreaterThan(before);
+  await expect(page.locator('#settings-sync-status')).toHaveText('Synchronizované', { timeout: 15_000 });
+}
