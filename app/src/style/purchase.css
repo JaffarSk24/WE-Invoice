@@ -1,0 +1,77 @@
+/* Purchase screens (WP-PURCHASE): the Inbox drop zone and queue, the
+   review with the file preview and "Vybrať", the expense summary. Colours
+   only through the tokens of ui/tokens.css. */
+
+.view-subtitle { margin-top: 4px; }
+.section-title { font-size: 16px; font-weight: 600; margin: 24px 0 12px; }
+
+.inbox-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+  padding: 32px 20px; border: 2px dashed var(--border-strong); border-radius: var(--radius-lg);
+  background: var(--overlay-02); transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.inbox-drop.is-over { border-color: var(--accent-blue); background: var(--overlay-hover); }
+.inbox-drop.is-disabled { opacity: 0.6; }
+.inbox-drop h2 { font-size: 18px; margin: 0; }
+.inbox-drop-icon { width: 40px; height: 40px; color: var(--accent-blue); }
+.inbox-drop-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+
+.inbox-progress { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.inbox-progress-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto 120px; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border-color); }
+.inbox-progress-item svg { width: 18px; height: 18px; color: var(--text-secondary); }
+.inbox-progress-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inbox-progress progress { width: 120px; accent-color: var(--accent-blue); }
+
+.conf-chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--border-strong); color: var(--text-secondary); }
+.conf-chip.is-low { color: var(--warning); border-color: var(--warning); }
+
+.review-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.review-title h1 { margin: 0; }
+.review-notice { display: flex; align-items: center; gap: 8px; margin: -8px 0 16px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--overlay-04); color: var(--text-secondary); }
+.review-notice svg { width: 18px; height: 18px; color: var(--info); flex: none; }
+.review-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 1fr); gap: 24px; align-items: start; }
+.review-grid.no-preview { grid-template-columns: minmax(0, 720px); }
+.review-side { display: grid; gap: 16px; }
+.review-section { border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px 4px; margin: 0 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.review-section legend { padding: 0 6px; font-weight: 600; }
+.review-section .field[data-field="supplierName"], .review-section .field[data-field="note"], .review-section .field[data-field="iban"] { grid-column: 1 / -1; }
+.review-form .field { position: relative; }
+.field-pick { position: absolute; right: 4px; top: 28px; }
+.review-form .field:has(.field-pick) input { padding-right: 40px; }
+.field-low input, .field-low select { border-color: var(--warning); }
+.field-check { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--warning); margin-top: 4px; }
+.field-check svg { width: 14px; height: 14px; }
+.field-source { font-size: 11px; margin-top: 2px; }
+.field-picked input { border-color: var(--success); }
+.review-actions { display: flex; flex-wrap: wrap; gap: 10px; position: sticky; bottom: var(--promo-height, 0px); z-index: 1; padding: 12px 0; background: var(--bg-primary); }
+
+.review-preview { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--overlay-02); padding: 12px; }
+.preview-pages { display: grid; gap: 12px; }
+.preview-page { position: relative; }
+.preview-canvas { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+.pick-layer { position: absolute; inset: 0; display: none; }
+.is-picking .pick-layer { display: block; }
+.pick-box { position: absolute; min-height: 0; padding: 0; margin: 0; border: 1px solid var(--accent-blue); border-radius: 2px; background: var(--overlay-04); cursor: crosshair; }
+.pick-box:hover, .pick-box:focus-visible { background: var(--overlay-hover); border-width: 2px; outline: none; box-shadow: var(--focus-ring); }
+.pick-banner { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin-bottom: 10px; border-radius: var(--radius-sm); background: var(--bg-elevated); border: 1px solid var(--accent-blue); }
+.pick-banner[hidden] { display: none; }
+.pick-banner span { flex: 1; }
+.pick-banner svg { width: 18px; height: 18px; color: var(--accent-blue); }
+
+.payment-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 0; padding: 14px 18px; }
+.payment-info dt { color: var(--text-secondary); }
+.payment-info dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.expense-summary { margin-bottom: 16px; }
+.expense-summary .section-title { margin-top: 0; }
+
+@media (max-width: 1023px) {
+  .review-grid { grid-template-columns: 1fr; }
+  .review-preview { position: static; max-height: 45vh; }
+}
+@media (max-width: 767px) {
+  .review-section { grid-template-columns: 1fr; }
+  .inbox-progress-item { grid-template-columns: auto minmax(0, 1fr); }
+  .inbox-progress-item progress { grid-column: 1 / -1; width: 100%; }
+  .review-actions { bottom: var(--bottom-bar-height); }
+}

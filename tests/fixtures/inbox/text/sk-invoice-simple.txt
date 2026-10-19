@@ -1,0 +1,20 @@
+FAKTÚRA - DAŇOVÝ DOKLAD č. 2026105
+Dodávateľ:                                  Odberateľ:
+Účtovníctvo Pro s.r.o.                      Biela Orlica s.r.o.
+Mlynská 8, 040 01 Košice                    Hlavná 1, 811 01 Bratislava
+IČO: 51234564                               IČO: 36123455
+DIČ: 2022334402                             DIČ: 2020123402
+IČ DPH: SK2022334402                        IČ DPH: SK2020123402
+Banka: VÚB, a.s.
+IBAN: SK91 5600 0000 0012 3456 7890
+Variabilný symbol: 2026105
+Konštantný symbol: 0308
+Dátum vyhotovenia: 01.10.2026
+Dátum dodania: 30.09.2026
+Dátum splatnosti: 15.10.2026
+Popis                         Množstvo   Cena bez DPH   DPH %   Spolu
+Vedenie účtovníctva 09/2026   1          180,00         23 %    221,40
+Rekapitulácia DPH
+Sadzba    Základ dane    DPH       Spolu
+23 %      180,00         41,40     221,40
+Celkom k úhrade: 221,40 EUR

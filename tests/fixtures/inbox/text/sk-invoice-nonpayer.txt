@@ -1,0 +1,16 @@
+Faktúra 2026-014
+Dodávateľ:
+Ján Novák - Maliarske práce
+Lipová 3, 917 01 Trnava
+IČO: 33334447
+DIČ: 1022334401
+Nie je platiteľ DPH.
+Odberateľ:
+Biela Orlica s.r.o.
+IČO: 36123455
+Dátum vystavenia: 03.10.2026
+Dátum splatnosti: 17.10.2026
+Číslo účtu (IBAN): SK3702000000003312345678
+Variabilný symbol: 202614
+Maľovanie kancelárie, 45 m2
+Celkom k úhrade: 540,00 €

@@ -1,0 +1,12 @@
+{
+  "receiptId": "O-7DBCDA8A56EE426DBCDA8A56EE426D1A",
+  "okp": "1A2B3C4D-5E6F7A8B-9C0D1E2F-3A4B5C6D-7E8F9A0B",
+  "issuedAt": "2026-10-14T15:42:05.000Z",
+  "seller": { "name": "Čerpacia stanica Slnovrat s.r.o.", "ico": "36987123", "dic": "2055667702", "icDph": "SK2055667702", "address": "Cesta k Slnku 4 82104 Bratislava" },
+  "items": [
+    { "name": "Natural 95", "qty": "42.15", "price": "69.93", "vatRate": "23" },
+    { "name": "Umývanie Štandard", "qty": "1", "price": "9.90", "vatRate": "23" },
+    { "name": "Káva", "qty": "1", "price": "2.10", "vatRate": "5" }
+  ],
+  "totals": { "total": "81.93", "vat": { "basic": "14.93", "reduced2": "0.10" } }
+}

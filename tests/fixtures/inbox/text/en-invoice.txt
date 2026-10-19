@@ -1,0 +1,13 @@
+INVOICE
+Invoice number: INV-2026-00412
+Seller: Cloudhost Europe Ltd.
+VAT ID: CZ50778811
+Bill to: Biela Orlica s.r.o., Hlavna 1, Bratislava, VAT ID: SK2020123402
+Issue date: 2026-10-01
+Due date: 2026-10-31
+Description                  Net        VAT 21 %
+Virtual server, October      45.00      9.45
+Total net: 45.00 EUR
+VAT amount: 9.45 EUR
+Total due: 54.45 EUR
+IBAN: CZ97 0100 0000 4312 3456 7890
