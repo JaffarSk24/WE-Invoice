@@ -38,7 +38,7 @@ export default {
   "exim.format.omega": "Omega (KROS)",
   "exim.format.omega.hint": "Текстовый импорт счетов в кодировке Windows-1250.",
   "exim.format.isdoc": "ISDOC",
-  "exim.format.isdoc.hint": "Электронный счёт к каждому документу, стандарт в Чехии.",
+  "exim.format.isdoc.hint": "Структурированный счёт ISDOC к каждому документу, стандарт в Чехии.",
   "exim.format.ubl": "UBL (Peppol)",
   "exim.format.ubl.hint": "eFaktúra в формате Peppol BIS 3.0.",
 
@@ -148,7 +148,7 @@ export default {
   "exim.program.pohoda": "Pohoda XML",
   "exim.program.pohoda.hint": "XML-файл из Pohoda (счета, справочник контрагентов, запасы).",
   "exim.program.isdoc": "ISDOC",
-  "exim.program.isdoc.hint": "Электронные счета ISDOC, например от чешских поставщиков.",
+  "exim.program.isdoc.hint": "Счета в формате ISDOC, например от чешских поставщиков.",
   "exim.program.csv": "Произвольный CSV",
   "exim.program.csv.hint": "Любая таблица; столбцы вы сопоставите в предпросмотре.",
 

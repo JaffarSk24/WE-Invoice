@@ -58,7 +58,7 @@ export default {
   "purchase.field.vatDeductionPeriod": "Вычет НДС в периоде",
   "purchase.field.vatDeductionPeriod.hint": "Например, 2026-10 или 2026-Q4",
   "purchase.field.note": "Внутренняя заметка",
-  "purchase.source.xml": "Из eFaktúry (XML)",
+  "purchase.source.xml": "Из XML eFaktúra",
   "purchase.source.qr": "Из QR-кода",
   "purchase.source.ekasa": "Из eKasa",
   "purchase.source.text": "Из текста PDF",
