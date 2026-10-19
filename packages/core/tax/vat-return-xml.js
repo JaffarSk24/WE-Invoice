@@ -54,6 +54,8 @@ export function vatReturnXml(vr, company, form, ctx = {}) {
       el('email', {}, company.email || '')),
     el('opravnenaOsoba', {}, el('menoPriezvisko', {}, ''), el('telefon', {}, ''), el('email', {}, '')),
     el('datumVyhlasenia', {}, dateText(ctx.today)));
-  const body = el('telo', {}, ...form.rowOrder.map(row => el(row, {}, byRow.has(row) ? byRow.get(row) : null)));
+  // splneniePodmienok is a 0/1 box (conditions of § 79 ods. 2 for an
+  // early refund), never empty.
+  const body = el('telo', {}, ...form.rowOrder.map(row => el(row, {}, byRow.has(row) ? byRow.get(row) : (row === 'splneniePodmienok' ? flag(ctx.refundConditions === true) : null))));
   return toXml(el(form.rootElement, form.namespace ? { xmlns: form.namespace } : {}, header, body));
 }

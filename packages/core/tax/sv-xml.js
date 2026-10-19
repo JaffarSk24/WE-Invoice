@@ -18,6 +18,9 @@ import { splitStreet, companyDic, amountText, nameLines } from './forms.js';
 
 const flag = (on) => (on ? '1' : '0');
 
+// A list filled up to `size` items with `filler`.
+const padded = (list, size, filler) => [...list, ...Array.from({ length: Math.max(0, size - list.length) }, () => filler)];
+
 function pages(rows, size) {
   const out = [];
   for (let i = 0; i < rows.length; i += size) out.push(rows.slice(i, i + size));
@@ -41,7 +44,7 @@ export function svXml(sv, company, form, today) {
       el('mesiac', {}, p.kind === 'MONTH' ? String(p.month) : ''),
       el('stvrtrok', {}, p.kind === 'QUARTER' ? String(p.quarter) : ''),
       el('rok', {}, String(p.year))),
-    el('obchodneMeno', {}, ...nameLines(company.name, form.nameLines).map(line => el('riadok', {}, line))),
+    el('obchodneMeno', {}, ...padded(nameLines(company.name, form.nameLines), form.nameLines, '').map(line => el('riadok', {}, line))),
     el('adresa', {},
       el('ulica', {}, street),
       el('cislo', {}, number),
@@ -52,11 +55,17 @@ export function svXml(sv, company, form, today) {
     el('celkovaHodnota', {}, amountText(total)),
     el('konatel', {}, company.name || ''),
     el('datumVyhlasenia', {}, el('den', {}, d || ''), el('mesiac', {}, m || ''), el('rok', {}, y || '')));
-  const body = el('telo', {}, ...pages(sv.rows, form.recordsPerPage).map(page => el('strana', {},
-    ...page.map(r => el('zaznam', {},
+  // The schema wants every page full: twelve records of each part, the
+  // unused ones empty; part 2 (call-off stock) is not used by the app.
+  const size = form.recordsPerPage;
+  const empty = { country: '', number: '', value: '', code: '' };
+  const body = el('telo', {}, ...pages(sv.rows, size).map(page => el('strana', {},
+    ...padded(page, size, empty).map(r => el('zaznam', {},
       el('kodStatu', {}, r.country),
       el('idCislo', {}, r.number),
       el('hodnota', {}, r.value),
-      el('kod', {}, r.code))))));
+      el('kod', {}, r.code))),
+    ...Array.from({ length: size }, () => el('zaznamCast2', {},
+      el('kodStatu', {}, ''), el('idCislo', {}, ''), el('idCislo2', {}, ''), el('vratenieTovaru', {}, ''), el('oprava', {}, ''))))));
   return toXml(el(form.rootElement, form.namespace ? { xmlns: form.namespace } : {}, header, body));
 }

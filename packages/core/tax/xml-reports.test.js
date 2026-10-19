@@ -52,7 +52,11 @@ describe('report XML', () => {
     const vies = Object.fromEntries(buyers.map(b => [b.buyer.icDph, 'VALID']));
     const sv = buildSv(vatRecords(buyers, '2026-03', company()), { company: company(), type: 'D', vies, today: '2026-04-10' });
     expect((sv.xml.match(/<strana>/g) || []).length).toBe(2);
-    expect((sv.xml.match(/<zaznam>/g) || []).length).toBe(13);
+    // Every page holds twelve records of each part (the schema says so);
+    // thirteen of them carry a buyer.
+    expect((sv.xml.match(/<zaznam>/g) || []).length).toBe(24);
+    expect((sv.xml.match(/<zaznamCast2>/g) || []).length).toBe(24);
+    expect((sv.xml.match(/<kodStatu>DE<\/kodStatu>/g) || []).length).toBe(13);
     expect(sv.xml).toContain('<dodatocny>1</dodatocny>');
     expect(sv.xml).toContain('<celkovaHodnota>130.00</celkovaHodnota>');
   });
