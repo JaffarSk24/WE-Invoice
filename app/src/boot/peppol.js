@@ -19,7 +19,6 @@ import { registerSettingsSection } from '../views/settings/registry.js';
 import { setPeppolServiceLoader, getPeppolService } from '../peppol/runtime.js';
 import { getStore, hasStore } from '../store/index.js';
 import { isDemo } from '../views/shell/demo-mode.js';
-import { buildPdf, pdfFileNameFor } from '../pdf/index.js';
 import '../style/peppol.css';
 
 const WEB_INTERVAL_MS = 5 * 60 * 1000;
@@ -57,8 +56,10 @@ export async function boot(ctx) {
   let loading = null;
   setPeppolServiceLoader(() => {
     if (!loading) {
-      loading = import('../peppol/service.js').then(m => m.createPeppolService({
-        getStore: () => (hasStore() ? getStore() : null), transport, emit, buildPdf, pdfName: pdfFileNameFor
+      // The PDF module (with the payment QR library) loads together with
+      // the service, not at start.
+      loading = Promise.all([import('../peppol/service.js'), import('../pdf/index.js')]).then(([m, pdf]) => m.createPeppolService({
+        getStore: () => (hasStore() ? getStore() : null), transport, emit, buildPdf: pdf.buildPdf, pdfName: pdf.pdfFileNameFor
       }));
       loading.catch(() => { loading = null; });
     }

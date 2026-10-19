@@ -8,10 +8,11 @@ import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { FORMS } from './forms.js';
 
-const root = new URL('../../../tests/fixtures/tax/', import.meta.url).pathname;
-const cache = new URL('../../../node_modules/.cache/we-invoice-xsd/', import.meta.url).pathname;
+const root = fileURLToPath(new URL('../../../tests/fixtures/tax/', import.meta.url));
+const cache = fileURLToPath(new URL('../../../node_modules/.cache/we-invoice-xsd/', import.meta.url));
 const sources = JSON.parse(readFileSync(join(root, 'xsd/sources.json'), 'utf8')).files;
 const REPORT_FORM = { kv: 'kv', sv: 'sv', dph: 'dph' };
 

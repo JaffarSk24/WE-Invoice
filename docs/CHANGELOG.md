@@ -191,6 +191,62 @@ All notable changes to this project are documented here. The format follows [Kee
 - Full backup of the open company in one JSON file with a checksum, optionally sealed with a password (PBKDF2 and AES-GCM from the sync package). Restore shows what the file holds, can save the current data first, needs an explicit confirmation, migrates older schema versions, refuses newer and damaged files, and wins over the copies on other devices at the next sync.
 - The "Export a import" screen at `#/exim` with the tabs Export, Import, WE Time Tracker and Backup, and the backup in Settings, Export a import.
 
+### Bookkeeping for sole traders
+
+#### Added
+
+- Bookkeeping core for sole traders in `packages/core/ledger`: automatic cash book entries from document payments (split by line category, VAT kept apart for payers, foreign currency by the document rate, stable ids so two devices create the same record), the peňažný denník with every column of the MF SR form, month totals and cash and bank balances carried between years, books of receivables and payables at a day, tax depreciation (straight and accelerated, every group, months of use, disposal, rounding up to whole euros) and an accounting plan, travel compensation (km rate, fuel, meal allowance), the Výkaz o príjmoch a výdavkoch and the Výkaz o majetku a záväzkoch, the year closing checklist, the tax records with flat-rate expenses and the DPFO typ B table 1 summary, and a CSV writer.
+- Ten golden years in `tests/fixtures/ledger` (non-payer, payer, transfers, assets, year-end books, advances and credit notes, warnings, trips and foreign currency, flat-rate below and over the cap).
+- Screens for the `cash-journal`, `assets` and `closing` routes: the cash book with its books and trip log (or the income records and the type B summary with flat-rate expenses), the asset register with asset cards and plans, and the closing wizard with both statements. Tables become cards on a phone; print to PDF and CSV on every screen; demo mode shows the sample company and writes nothing; companies without bookkeeping get an explanation.
+- Automatic entries kept in line with payments in the background while a bookkeeping company is open.
+
+#### Changed
+
+- `legislation/sk.json`: accelerated depreciation coefficients, rounding and proration switches in `depreciation`; travel rates (km rate and meal allowance bands) with validity dates from April 2025 in `travel`; `prorateByMonths` and the separate cap of § 6 ods. 4 in `flatExpenses`. All values stay unverified until checked against the source.
+
+### VAT records and returns
+
+#### Added
+
+- VAT records (evidencia DPH, § 70) for a month or a quarter, built from issued and received documents: tax point by the date of supply, deduction period chosen by the user or the period of receipt, the § 20 date rule for intra-EU goods, the cash scheme (§ 68d) by the payments of the period, advance tax documents taken out of the final invoice, credit and debit notes with a negative sign, documents in other currencies converted by the rate on the document.
+- Treatment of every VAT group: domestic supply, domestic reverse charge (§ 69 ods. 12), intra-EU goods and services, export, exempt, outside the scope, OSS, acquisitions from the EU, services from abroad (§ 69 ods. 3), import and foreign VAT.
+- Kontrolný výkaz DPH with sections A.1, A.2, B.1, B.2, B.3.1 or B.3.2 (threshold of 3000 EUR deducted from simplified invoices), C.1, C.2, D.1 and D.2, filing types R, O and D, and its XML.
+- Súhrnný výkaz DPH per buyer VAT id and supply code, with the VIES check through the gateway, filing types R and O, and its XML.
+- Daňové priznanie k DPH (DPHv25, periods from July 2025): amounts under stable names mapped to the rows of the form by a data file, own liability and excess deduction, filing types R, O and D, and its XML.
+- Checks before export with links to the documents: missing date of supply or receipt, missing or invalid VAT ids, corrections without the original invoice, stored totals that differ from the lines, broken or unsettled advances, documents changed after export, drafts in the period, rates without a row on the form.
+- Closing and opening of a period (company.closedPeriods, with an audit entry and a required reason to open) and canChangeInPeriod for the document editors.
+- Filed reports recorded in the audit log with a digest of their documents, a warning when documents change after filing, and the suggested filing type by the deadline.
+- VAT registration limit: turnover of the calendar year, the previous year and the last 12 months against vatRegistrationThreshold, with warnings from 80 % and over the immediate limit.
+- OSS data per country and rate for a quarter, as CSV.
+- Screens vat-records, kv, sv and vat-return: period switcher, summary, checks, preview of the rows, XML download, the "filed" mark, the disclaimer, and read-only sample data in demo mode. The screens load on first use.
+- Twelve golden examples in tests/fixtures/tax with the expected rows and XML, and an XSD validation test that uses the official schemas once they are provided.
+
+#### Changed
+
+- Form layouts (KVDPHv25, SVDPH, DPHv25) are data files in packages/core/tax/forms marked unverified until they are checked against the official XSD schemas of Finančná správa.
+
+### eFaktúra through Peppol
+
+#### Added
+
+- E-invoices in Peppol BIS Billing 3.0 (UBL 2.1) with the Slovak rules: `buildUbl(document, company, options)` writes an Invoice or a CreditNote from `computeTotals` without recomputing any amount, with the legal notes (reverse charge, cash accounting scheme, self-billing), the reference to the corrected invoice (BT-25, BT-26), the VAT in EUR for other currencies (BT-6, BT-111), the delivery country of intra-community supplies and the optional PDF attachment (`company.defaults.attachPdfToEInvoice`, on by default).
+- `parseUbl(xml, { received })` reads a received Invoice or CreditNote back into a document with parties, lines, VAT by rate, payment details, references and attachments; it keeps the stated totals and reports differences as warnings. The XML parser has no dependencies and refuses DOCTYPE declarations.
+- `validateUblLocal` and `hasBlockingIssues`: the Slovak rules of `packages/core/ubl/sk-rules.json` (one test per rule) checked before sending.
+- 28 UBL fixtures in `tests/fixtures/ubl` (rates 23, 19 and 5 %, line and document discounts and charges, reverse charge, exempt, intra-community and export supplies, not subject to VAT, foreign currencies, the tax document to a payment, a final invoice after an advance, credit and debit notes, gross prices, base quantity, cash rounding, PDF attachment) with expected XML, a build, parse and build round trip, and invalid cases.
+- CI workflow `ubl-validate.yml`: the fixture XML is checked against the UBL 2.1 schema, the OpenPeppol BIS Billing 3.0.21 rules and the CEN EN 16931 rules (1.3.17), run by Saxon-HE on the runner's Java, with every artefact pinned by version and SHA-256.
+- Provider adapters behind one interface: SAPI-SK (for every provider that speaks it), Verteco and the ePošťák API. In the browser the calls go through the gateway proxy, on the desktop straight to the provider; keys stay in `transport.secrets`, tokens only in memory.
+- Sending queue: local checks, provider validation where offered, the XML archived in Drive before it leaves, an idempotency key per document revision, retries with back-off for network and server failures, locking of accepted documents and delivery checks where the provider reports them.
+- Receiving: polling, the original XML archived before anything else, the document stored as a received invoice or credit note to process with its attachments, the supplier matched or created by DIČ, duplicates detected, and the provider acknowledged only after the document is safe.
+- Settings > eFaktúra: a connection wizard with the beta code, the provider cards from `providers.json`, the VPDS instructions, keys with a connection test, the Peppol registration check through the gateway and the options (automatic receiving, PDF attachment, e-mail copy).
+- Screens `efaktury-out` (what was sent or must be sent, with the 15-day deadline, single and bulk sending, retry, XML download) and `efaktury-in` (received e-invoices with a receive-now button).
+- Events for other modules: `peppol:send`, `peppol:sendMany`, `peppol:receive`, and `peppol:status`, `peppol:received` in return. Background rounds at start, every 5 minutes on the web and on the desktop scheduler tick `scheduler:efaktury`.
+- Slovak and English texts of the module.
+
+#### Changed
+
+- `providers.json`: API addresses of ePošťák, Verteco and eFaktúra.sk from their own documentation, with the sources listed; Dativery uses the SAPI-SK adapter; iPoštár has no adapter until its API is documented publicly.
+- The tax document to a received payment is written with type code 388.
+
 ### Interface translations
 
 #### Added
