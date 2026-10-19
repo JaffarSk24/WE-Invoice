@@ -3,7 +3,7 @@
 // The wide table with all columns, as the MF SR form has it, is what the
 // CSV and the print get (journalTables).
 import { JOURNAL_COLUMNS, sum, sub, round, isZero } from '@we-invoice/core';
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { createTable } from '../../components/table.js';
 import { emptyState } from '../../components/empty-state.js';
@@ -48,13 +48,13 @@ function columnTotals(journal) {
 /** The tab content. ctx: { journal, summary, payer, warnings, readOnly } */
 export function renderJournalTab(panel, ctx) {
   const { journal, summary } = ctx;
-  panel.append(stats([
+  append(panel, [stats([
     { label: t('ledger.stat.taxIncome'), value: money(summary.taxIncome) },
     { label: t('ledger.stat.taxExpense'), value: money(summary.taxExpense) },
     { label: t('ledger.stat.result'), value: money(summary.result), tone: summary.result.startsWith('-') ? 'danger' : null },
     { label: t('ledger.stat.cash'), value: money(journal.closing.cash) },
     { label: t('ledger.stat.bank'), value: money(journal.closing.bank) }
-  ]), ...warnings(journal, ctx.warnings || []));
+  ]), ...warnings(journal, ctx.warnings || [])]);
   const empty = emptyState({
     title: t('ledger.journal.empty.title'), text: t('ledger.journal.empty.text'), iconName: 'notebook-pen',
     actionLabel: ctx.readOnly ? null : t('ledger.entry.add'), onAction: () => openEntryForm()

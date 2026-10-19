@@ -4,7 +4,7 @@
 // actions, cards on a phone. Redrawn on every data change.
 import { allowedStatuses } from '@we-invoice/core';
 import '../../style/documents.css';
-import { h, icon, selectEl } from '../../ui/dom.js';
+import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
@@ -102,11 +102,11 @@ export function renderDocumentList(root, route) {
   filter = { ...bar.value(), payment: '', query: '' };
 
   listBox.append(h('div', { class: 'documents-tools' }, search, payment), bar.el, table.el);
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' },
       h('h1', {}, t(config.title)),
       h('div', { class: 'view-actions' }, isDemo() ? h('span', { class: 'badge badge-demo' }, t('dashboard.demoBadge')) : null, newButtons(route, config))),
-    emptyBox, listBox);
+    emptyBox, listBox]);
   apply();
   refreshIcons(root);
 

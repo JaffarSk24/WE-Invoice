@@ -34,7 +34,7 @@ export default {
   "filter.save": "Uložit filtr",
   "filter.saveName": "Název filtru",
   "filter.savedToast": "Filtr „{name}“ je uložen.",
-  "filter.reset": "Vymazat",
+  "filter.reset": "Odstranit",
   "status.DRAFT": "Koncept",
   "status.ISSUED": "Vystavená",
   "status.SENT": "Odeslaná",

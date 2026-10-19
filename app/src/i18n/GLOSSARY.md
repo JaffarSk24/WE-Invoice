@@ -1,6 +1,6 @@
 # Glossary
 
-Terms of the Slovak dictionary (the reference) and their translations, so that every language uses one word for one thing. Slovak terms follow the wording of zákon o DPH č. 222/2004 Z. z. Czech terms follow the Czech VAT act (zákon č. 235/2004 Sb.), German terms follow German and Austrian business usage and the German print dictionary (`print/de.json`). Russian and Ukrainian keep the Slovak identifiers (IČO, DIČ, IČ DPH, eFaktúra) as proper names and explain them once, in the help and next to the input field. Maintained by the translation work package; see `TRANSLATING.md` in the repository root.
+Terms of the Slovak dictionary (the reference) and their translations, so that every language uses one word for one thing. Slovak terms follow the wording of zákon o DPH č. 222/2004 Z. z. Czech terms follow the Czech VAT act (zákon č. 235/2004 Sb.), German terms follow German and Austrian business usage and the German print dictionary (`print/de.json`). Every language keeps the Slovak identifiers (IČO, DIČ, IČ DPH) as proper names and explains them once, in the help and next to the input field. The Slovak forms and registers (eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník) keep their Slovak names in Czech, German, Russian and Ukrainian; English gives its own term with the Slovak name in brackets in screen titles (see TRANSLATING.md). Maintained by the translation work package; see `TRANSLATING.md` in the repository root.
 
 ## Documents
 
@@ -28,7 +28,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | pravidelná faktúra | pravidelná faktura | recurring invoice | Serienrechnung (wiederkehrende Rechnung) | регулярный счёт | регулярний рахунок |
 | doklad | doklad | document | Beleg | документ | документ |
 | zjednodušená faktúra | zjednodušená faktura | simplified invoice | vereinfachte Rechnung | упрощённый счёт | спрощений рахунок |
-| eFaktúra | e-faktura | e-invoice | E-Rechnung | eFaktúra (электронный счёт) | eFaktúra (електронний рахунок) |
+| eFaktúra | eFaktúra | e-invoice (eFaktúra) | eFaktúra | eFaktúra | eFaktúra |
 
 ## Parties and identifiers
 
@@ -68,10 +68,10 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | vývoz | vývoz | export | Ausfuhr | экспорт | експорт |
 | uplatňovanie DPH na základe prijatia platby | uplatňování DPH na základě přijetí platby | cash accounting | Versteuerung nach vereinnahmten Entgelten | НДС по факту получения оплаты | ПДВ за фактом отримання оплати |
 | zdaňovacie obdobie | zdaňovací období | tax period | Besteuerungszeitraum | налоговый период | податковий період |
-| priznanie DPH | přiznání k DPH | VAT return | USt-Voranmeldung | декларация по НДС | декларація з ПДВ |
-| kontrolný výkaz | kontrolní výkaz | VAT control statement | Kontrollmeldung | контрольная ведомость | контрольна відомість |
-| súhrnný výkaz | souhrnný výkaz | EC sales list | Zusammenfassende Meldung (menu: EU-Meldung (ZM)) | сводная ведомость | зведена відомість |
-| evidencia DPH | evidence DPH | VAT records | USt-Aufzeichnungen | учёт НДС | облік ПДВ |
+| priznanie DPH | Priznanie k DPH | VAT return (Priznanie k DPH) | Priznanie k DPH | Priznanie k DPH | Priznanie k DPH |
+| kontrolný výkaz | Kontrolný výkaz | VAT control statement (Kontrolný výkaz) | Kontrolný výkaz | Kontrolný výkaz | Kontrolný výkaz |
+| súhrnný výkaz | Súhrnný výkaz | EC sales list (Súhrnný výkaz) | Súhrnný výkaz | Súhrnný výkaz | Súhrnný výkaz |
+| evidencia DPH | Evidencia DPH | VAT records (Evidencia DPH) | Evidencia DPH | Evidencia DPH | Evidencia DPH |
 | limit registrácie DPH | limit pro registraci k DPH | VAT registration threshold | USt-Registrierungsgrenze | порог регистрации по НДС | поріг реєстрації платником ПДВ |
 | obrat | obrat | turnover | Umsatz | оборот | оборот |
 | daňový doklad | daňový doklad | tax document | Steuerbeleg | налоговый документ | податковий документ |
@@ -107,7 +107,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | paušálne výdavky | paušální výdaje | flat-rate expenses | Ausgabenpauschale | паушальные расходы | паушальні витрати |
 | jednoduché účtovníctvo | jednoduché účetnictví | single-entry bookkeeping | einfache Buchführung | простая бухгалтерия | проста бухгалтерія |
 | podvojné účtovníctvo | podvojné účetnictví | double-entry bookkeeping | doppelte Buchführung | двойная бухгалтерия | подвійна бухгалтерія |
-| peňažný denník | peněžní deník | cash book | Kassenbuch | денежный журнал | грошовий журнал |
+| peňažný denník | Peňažný denník | cash book (Peňažný denník) | Peňažný denník | Peňažný denník | Peňažný denník |
 | majetok | majetek | assets | Anlagevermögen | имущество | майно |
 | uzávierka | uzávěrka | closing | Abschluss | закрытие периода | закриття періоду |
 | zaúčtovaná | zaúčtovaná | booked | verbucht | проведён | проведено |

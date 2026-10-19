@@ -3,7 +3,7 @@
 // the cart on the right with quantities, totals, cash or card and an
 // optional partial payment. "Sell" issues the receipt, moves the stock and
 // shows what to type into the virtual cash register.
-import { h, icon } from '../../../ui/dom.js';
+import { h, icon, append, clear } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
 import { t } from '../../../i18n/index.js';
 import { on } from '../../../events.js';
@@ -68,9 +68,9 @@ export function renderQuickSale(root) {
       return;
     }
     for (const item of items) {
-      itemsBox.append(h('button', { type: 'button', class: 'sale-item', role: 'listitem', dataset: { item: item.id }, onclick: () => add(item) },
+      append(itemsBox, [h('button', { type: 'button', class: 'sale-item', role: 'listitem', dataset: { item: item.id }, onclick: () => add(item) },
         h('span', { class: 'sale-item-name' }, item.name),
-        h('span', { class: 'sale-item-price' }, moneyText(item.price, item.currency || 'EUR'), item.priceType === 'NET' ? h('span', { class: 'muted' }, ` ${t('stock.sale.net')}`) : null)));
+        h('span', { class: 'sale-item-price' }, moneyText(item.price, item.currency || 'EUR'), item.priceType === 'NET' ? h('span', { class: 'muted' }, ` ${t('stock.sale.net')}`) : null))]);
     }
   }
 
@@ -107,11 +107,11 @@ export function renderQuickSale(root) {
         h('div', { class: 'sale-line-total num' }, moneyText(totals.get(entry.item.id) || '0')),
         h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('stock.sale.remove'), onclick: () => { state.cart = removeFromCart(state.cart, entry.item.id); drawCart(); } }, icon('x'))));
     }
-    totalsBox.replaceChildren(
+    append(clear(totalsBox), [
       h('dt', {}, t('stock.sale.vat')), h('dd', {}, moneyText(preview.vat)),
       h('dt', {}, t('stock.sale.total')), h('dd', {}, moneyText(preview.gross)),
       preview.rounding !== '0.00' ? [h('dt', {}, t('stock.sale.rounding')), h('dd', {}, moneyText(preview.rounding))] : null,
-      h('dt', { class: 'sale-payable-label' }, t('stock.sale.payable')), h('dd', { class: 'sale-payable', id: 'sale-payable' }, moneyText(preview.payable)));
+      h('dt', { class: 'sale-payable-label' }, t('stock.sale.payable')), h('dd', { class: 'sale-payable', id: 'sale-payable' }, moneyText(preview.payable))]);
     sell.disabled = !state.cart.length || state.busy;
     refreshIcons(cartBox);
   }
@@ -136,7 +136,7 @@ export function renderQuickSale(root) {
     }
   }
 
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('h1', {}, t('stock.sale.title')),
       h('div', { class: 'view-actions' }, isDemo() ? h('span', { class: 'badge badge-demo' }, t('stock.demo.badge')) : null)),
     h('div', { class: 'sale-layout' },
@@ -145,7 +145,7 @@ export function renderQuickSale(root) {
         h('h2', {}, t('stock.sale.cart')), cartBox, totalsBox, methodGroup,
         h('label', { class: 'sale-paid-field', for: 'sale-paid' }, h('span', {}, t('stock.sale.paidLabel')), paid),
         warehouseField, sell,
-        h('p', { class: 'field-hint' }, t('stock.sale.vrpHint')))));
+        h('p', { class: 'field-hint' }, t('stock.sale.vrpHint'))))]);
   drawItems();
   drawMethods();
   drawWarehouses();

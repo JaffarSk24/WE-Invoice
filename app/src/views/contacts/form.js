@@ -4,7 +4,7 @@
 // own terms: due days, discount, currency, print language (empty = as the
 // company), reminders on or off, price level. Errors are shown at the
 // fields; nothing is saved until the card is valid.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang } from '../../i18n/index.js';
 import { schema } from '@we-invoice/core';
@@ -108,7 +108,7 @@ export function renderContactForm(root, id, { transport }) {
   };
 
   const section = (title, ...children) => h('fieldset', { class: 'form-section' }, h('legend', {}, title), h('div', { class: 'form-grid' }, children));
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' },
       h('div', {},
         h('a', { href: existing ? `#/contacts/${encodeURIComponent(existing.id)}` : '#/contacts', class: 'back-link' }, icon('arrow-left'), t('contacts.back')),
@@ -124,7 +124,7 @@ export function renderContactForm(root, id, { transport }) {
       section(t('contacts.section.other'), f.tags.el, f.note.el),
       h('div', { class: 'form-actions' },
         h('button', { type: 'button', class: 'btn', onclick: () => history.back() }, t('common.cancel')),
-        h('button', { type: 'submit', class: 'btn btn-primary', id: 'contact-save' }, icon('check'), t('common.save')))));
+        h('button', { type: 'submit', class: 'btn btn-primary', id: 'contact-save' }, icon('check'), t('common.save'))))]);
   refreshIcons(root);
   setTimeout(() => f.name.input.focus(), 0);
 }

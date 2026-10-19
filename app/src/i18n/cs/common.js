@@ -1,7 +1,7 @@
 // Czech texts: shell, navigation, common words (WP-0 / WP-UI).
 export default {
   "app.name": "WE Invoice",
-  "app.tagline": "Fakturace a e-faktura zdarma",
+  "app.tagline": "Fakturace a eFaktúra zdarma",
   "nav.dashboard": "Přehled",
   "nav.group.sales": "Prodej",
   "nav.invoices": "Faktury",
@@ -15,7 +15,7 @@ export default {
   "nav.received": "Přijaté faktury",
   "nav.expenses": "Výdaje a účtenky",
   "nav.inbox": "Inbox",
-  "nav.group.efaktury": "e-Faktury",
+  "nav.group.efaktury": "eFaktúry",
   "nav.efakturyIn": "Doručené",
   "nav.efakturyOut": "Odeslané",
   "nav.group.money": "Peníze",
@@ -30,12 +30,17 @@ export default {
   "nav.trash": "Koš",
   "nav.audit": "Deník změn",
   "nav.group.tax": "Daně a účetnictví",
-  "nav.vatRecords": "Evidence DPH",
-  "nav.kv": "Kontrolní výkaz",
-  "nav.sv": "Souhrnný výkaz",
-  "nav.vatReturn": "Přiznání k DPH",
-  "nav.cashJournal": "Peněžní deník",
+  "nav.vatRecords": "Evidencia DPH",
+  "nav.kv": "Kontrolný výkaz",
+  "nav.sv": "Súhrnný výkaz",
+  "nav.vatReturn": "Priznanie k DPH",
+  "nav.cashJournal": "Peňažný denník",
   "nav.assets": "Majetek",
+  "screen.kv.title": "Kontrolný výkaz",
+  "screen.sv.title": "Súhrnný výkaz",
+  "screen.vatReturn.title": "Priznanie k DPH",
+  "screen.vatRecords.title": "Evidencia DPH",
+  "screen.cashJournal.title": "Peňažný denník",
   "nav.closing": "Uzávěrka",
   "nav.reports": "Přehledy",
   "nav.settings": "Nastavení",
@@ -89,5 +94,5 @@ export default {
   "search.hint": "Zadejte číslo dokladu, název kontaktu nebo částku.",
   "pwa.newVersion": "Je k dispozici nová verze aplikace.",
   "pwa.reload": "Obnovit",
-  "legislation.einvoice.note": "Od 1. 1. 2027 plátci DPH na Slovensku vystavují tuzemské B2B faktury jako e-faktury přes Peppol a přijímat je musí všichni podnikatelé."
+  "legislation.einvoice.note": "Od 1. 1. 2027 plátci DPH na Slovensku vystavují tuzemské B2B faktury jako eFaktúry přes Peppol a přijímat je musí všichni podnikatelé."
 };

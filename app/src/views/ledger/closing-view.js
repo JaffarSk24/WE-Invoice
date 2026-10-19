@@ -6,7 +6,7 @@
 // balances carried into the next year. With flat-rate expenses the screen
 // gives the DPFO summary and the receivables at 31 December.
 import { yearClosing, depreciationPlan } from '@we-invoice/core';
-import { clear, h, icon } from '../../ui/dom.js';
+import { clear, h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
@@ -93,23 +93,23 @@ function drawSimple(root, data, year, readOnly) {
   }));
   root.append(callout('info', t('ledger.closing.disclaimer')));
   if (state.closedAt) root.append(callout('info', t('ledger.closing.closedAt', { date: formatDate(state.closedAt.slice(0, 10)) })));
-  root.append(stats([
+  append(root, [stats([
     { label: t('ledger.stat.cash'), value: money(result.journal.closing.cash) },
     { label: t('ledger.stat.bank'), value: money(result.journal.closing.bank) },
     { label: t('ledger.books.receivables'), value: money(result.receivables.total) },
     { label: t('ledger.books.payables'), value: money(result.payables.total) },
     { label: t('ledger.stat.result'), value: money(result.incomeExpense.result), tone: result.negativeResult ? 'danger' : null }
-  ]));
+  ])]);
   root.append(inputsCard(root, companyId, year, state, readOnly));
   const list = h('ul', { class: 'ledger-checklist' }, result.checklist.map(checkItem));
   result.disposals.forEach(d => list.append(h('li', { class: 'ledger-check is-bad' }, icon('info'), h('span', {}, t('ledger.closing.disposal', { name: d.name, amount: money(d.residual) })))));
   root.append(h('section', { class: 'card ledger-card' }, h('h2', {}, t('ledger.closing.checks')), list));
   root.append(h('div', { class: 'ledger-statements' }, statementCard(specs[0], result.incomeExpense.rows), statementCard(specs[1], result.assetsLiabilities.rows)));
-  root.append(h('section', { class: 'card ledger-card ledger-carry' },
+  append(root, [h('section', { class: 'card ledger-card ledger-carry' },
     h('h2', {}, t('ledger.closing.carryTitle', { year: result.carryForward.year })),
     h('p', {}, t('ledger.closing.carryText', { cash: money(result.carryForward.cash), bank: money(result.carryForward.bank) })),
     result.ready ? null : h('p', { class: 'muted' }, t('ledger.closing.notReady')),
-    h('button', { type: 'button', class: 'btn btn-primary', disabled: readOnly, dataset: { action: 'close-year' }, onclick: () => closeYear(root, data, result, companyId) }, icon('lock'), t('ledger.closing.close'))));
+    h('button', { type: 'button', class: 'btn btn-primary', disabled: readOnly, dataset: { action: 'close-year' }, onclick: () => closeYear(root, data, result, companyId) }, icon('lock'), t('ledger.closing.close')))]);
   refreshIcons(root);
 }
 

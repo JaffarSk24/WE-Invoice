@@ -8,7 +8,7 @@
 //   column: { id, label, render(row), align: 'num'?, total(rows)?, primary?,
 //             hidden? (off by default), always? (cannot be hidden),
 //             sortValue(row)? }
-import { h, icon } from '../ui/dom.js';
+import { h, icon, append } from '../ui/dom.js';
 import { refreshIcons } from '../ui/icons.js';
 import { t } from '../i18n/index.js';
 import { getPrefs, setPref } from '../prefs.js';
@@ -67,9 +67,9 @@ export function createTable({ key, columns, rows = [], rowKey = (r) => r.id, sel
     bulkBar.hidden = !selected.size;
     if (!selected.size) return;
     bulkBar.append(h('span', { class: 'bulk-count' }, t('table.selected', { n: selected.size })));
-    bulkActions.forEach(a => bulkBar.append(h('button', {
+    bulkActions.forEach(a => append(bulkBar, [h('button', {
       type: 'button', class: 'btn', onclick: () => a.onClick(selectedRows())
-    }, a.icon ? icon(a.icon) : null, a.label)));
+    }, a.icon ? icon(a.icon) : null, a.label)]));
     bulkBar.append(h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { selected.clear(); refreshBulk(); list.refresh(); } }, t('table.clearSelection')));
     refreshIcons(bulkBar);
   }
@@ -166,7 +166,7 @@ export function createTable({ key, columns, rows = [], rowKey = (r) => r.id, sel
         columns, visible, onApply: (ids) => { visible = visibleColumnIds(columns, saveColumnChoice(key, ids)); build(); }
       })
     }, icon('columns-3'), t('table.columns'));
-    toolbar.append(count, h('div', { class: 'table-tools' }, phone ? null : densityGroup, cols));
+    append(toolbar, [count, h('div', { class: 'table-tools' }, phone ? null : densityGroup, cols)]);
     refreshIcons(toolbar);
   }
 

@@ -2,7 +2,7 @@
 // `search(query)` for items, arrows move through them, Enter picks one,
 // Escape closes. `search` may be sync or async and returns
 // [{ id, label, hint? }].
-import { h } from '../ui/dom.js';
+import { h, append } from '../ui/dom.js';
 
 let counter = 0;
 
@@ -42,10 +42,10 @@ export function autocomplete({ label, placeholder = null, search, onPick, minLen
   };
   const render = () => {
     while (list.firstChild) list.removeChild(list.firstChild);
-    items.forEach((item, i) => list.append(h('li', {
+    items.forEach((item, i) => append(list, [h('li', {
       id: `${id}-opt-${i}`, role: 'option', 'aria-selected': 'false', class: 'ac-item',
       onmousedown: (e) => { e.preventDefault(); pick(i); }
-    }, h('span', { class: 'ac-label' }, item.label), item.hint ? h('span', { class: 'ac-hint' }, item.hint) : null)));
+    }, h('span', { class: 'ac-label' }, item.label), item.hint ? h('span', { class: 'ac-hint' }, item.hint) : null)]));
     list.hidden = !items.length;
     input.setAttribute('aria-expanded', items.length ? 'true' : 'false');
     highlight(-1);

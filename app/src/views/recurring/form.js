@@ -3,7 +3,7 @@
 // end of the period, draft or issued, automatic e-mail, the introduction
 // text with {period}, a preview of the next runs, and for a saved
 // template the documents it has made so far with a send button.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { emit } from '../../events.js';
@@ -102,7 +102,7 @@ export function renderTemplateForm(root, id) {
   const grid = (...children) => h('div', { class: 'form-grid' }, children);
   const historyBody = h('div', {}, existing ? history(existing) : null);
   const historyCard = existing ? h('section', { class: 'card tpl-history-card' }, h('h2', {}, t('recurring.history.title')), historyBody) : null;
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('div', {},
       h('a', { href: '#/recurring', class: 'back-link' }, icon('arrow-left'), t('recurring.back')),
       h('h1', {}, existing ? (existing.name || t('recurring.editTitle')) : t('recurring.new')))),
@@ -117,7 +117,7 @@ export function renderTemplateForm(root, id) {
         existing ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove }, icon('x'), t('common.delete')) : null,
         h('button', { type: 'button', class: 'btn', onclick: () => go('recurring') }, t('common.cancel')),
         h('button', { type: 'submit', class: 'btn btn-primary', id: 'tpl-save' }, icon('check'), t('common.save')))),
-    historyCard || '');
+    historyCard || '']);
   if (existing) {
     onData(historyCard, ['recurringTemplates', 'documents'], () => {
       const fresh = getOf('recurringTemplates', existing.id);

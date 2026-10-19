@@ -3,7 +3,7 @@
 // when it works, and the check that 0245:<DIČ> is registered in Peppol.
 // Keys go to transport.secrets only; the screen shows at most their last
 // four characters.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
@@ -115,8 +115,8 @@ export function lookupStep(ctx) {
   const result = h('p', { class: 'peppol-result', 'aria-live': 'polite' });
   const show = (registered, checkedAt) => {
     result.className = `peppol-result ${registered ? 'is-ok' : 'is-wait'}`;
-    result.replaceChildren(icon(registered ? 'circle-check' : 'hourglass'), ' ', t(registered ? 'peppol.lookup.registered' : 'peppol.lookup.notYet'),
-      checkedAt ? h('span', { class: 'muted small' }, ` ${t('peppol.lookup.checkedAt', { date: formatDateTime(checkedAt) })}`) : null);
+    append(clear(result), [icon(registered ? 'circle-check' : 'hourglass'), ' ', t(registered ? 'peppol.lookup.registered' : 'peppol.lookup.notYet'),
+      checkedAt ? h('span', { class: 'muted small' }, ` ${t('peppol.lookup.checkedAt', { date: formatDateTime(checkedAt) })}`) : null]);
     refreshIcons(result);
   };
   if (ctx.settings.registered !== null && ctx.settings.lastCheckAt) show(ctx.settings.registered, ctx.settings.lastCheckAt);
