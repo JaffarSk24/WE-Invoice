@@ -27,7 +27,7 @@ describe('kinds', () => {
     expect(ublTypeCode('INVOICE')).toBe('380');
     expect(ublTypeCode('CREDIT_NOTE')).toBe('381');
     expect(ublTypeCode('DEBIT_NOTE')).toBe('383');
-    expect(ublTypeCode('ADVANCE_TAX_DOC')).toBe('386');
+    expect(ublTypeCode('ADVANCE_TAX_DOC')).toBe('388');
     expect(ublTypeCode('SELF_BILLING')).toBe('389');
     expect(ublTypeCode('PROFORMA')).toBeNull();
     expect(ublTypeCode('QUOTE')).toBeNull();
