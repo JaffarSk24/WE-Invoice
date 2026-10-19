@@ -23,7 +23,7 @@ export default {
   "ledger.tab.income": "Облік доходів",
   "ledger.tab.receivables": "Дебіторська заборгованість",
   "ledger.tab.flatSummary": "Підсумок для декларації типу B",
-  "ledger.file.journal": "penazny-dennik", "ledger.file.books": "debitorska-zaborhovanist-zobovyazannya", "ledger.file.trips": "zhurnal-poizdok", "ledger.file.income": "oblik-dokhodiv", "ledger.file.summary": "pidsumok-deklaratsiya-b", "ledger.file.assets": "knyha-mayna", "ledger.file.statements": "zvity",
+  "ledger.file.journal": "penazny-dennik", "ledger.file.books": "pohladavky-zavazky", "ledger.file.trips": "kniha-jazd", "ledger.file.income": "evidencia-prijmov", "ledger.file.summary": "suhrn-dpfo-b", "ledger.file.assets": "kniha-majetku", "ledger.file.statements": "vykazy",
   "ledger.export.csv": "CSV",
   "ledger.export.print": "Друк / PDF",
   "ledger.export.error": "Не вдалося зберегти файл.",

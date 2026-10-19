@@ -48,12 +48,12 @@ export default {
   "exim.budget.empty": "За период нет платежей в евро.",
   "exim.budget.done": "CSV для WE Budget сохранён. Платежей: {n}.",
 
-  "exim.file.register": "dokumenty",
-  "exim.file.lines": "pozicii",
-  "exim.file.omegaIssued": "omega-vystavlennye-scheta",
-  "exim.file.omegaReceived": "omega-vkhodyashchie-scheta",
-  "exim.file.summary": "svodka",
-  "exim.file.backup": "rezervnaya-kopiya-we-invoice",
+  "exim.file.register": "doklady",
+  "exim.file.lines": "polozky",
+  "exim.file.omegaIssued": "omega-faktury-vydane",
+  "exim.file.omegaReceived": "omega-faktury-prijate",
+  "exim.file.summary": "prehlad",
+  "exim.file.backup": "zaloha-we-invoice",
 
   "exim.summary.title": "WE Invoice: экспорт для бухгалтера",
   "exim.summary.company": "Компания",

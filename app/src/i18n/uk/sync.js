@@ -38,7 +38,7 @@ export default {
   "sync.recovery.copy": "Скопіювати",
   "sync.recovery.copied": "Скопійовано в буфер обміну.",
   "sync.recovery.written": "Ключ збережено",
-  "sync.recovery.fileName": "WE-Invoice-klyuch-vidnovlennya.txt",
+  "sync.recovery.fileName": "WE-Invoice-obnovovaci-kluc.txt",
   "sync.recovery.fileText": "WE Invoice: ключ відновлення (24 слова). Зберігайте поза комп’ютером.",
   "sync.recovery.confirmTitle": "Перевірка ключа",
   "sync.recovery.confirmText": "Введіть три слова з ключа, щоб ми переконалися, що ви його зберегли.",

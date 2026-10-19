@@ -23,7 +23,7 @@ export default {
   "ledger.tab.income": "Учёт доходов",
   "ledger.tab.receivables": "Дебиторская задолженность",
   "ledger.tab.flatSummary": "Сводка для декларации DPFO типа B",
-  "ledger.file.journal": "penazny-dennik", "ledger.file.books": "debitorskaya-kreditorskaya", "ledger.file.trips": "zhurnal-poezdok", "ledger.file.income": "uchet-dohodov", "ledger.file.summary": "svodka-dpfo-b", "ledger.file.assets": "kniga-imushchestva", "ledger.file.statements": "otchety",
+  "ledger.file.journal": "penazny-dennik", "ledger.file.books": "pohladavky-zavazky", "ledger.file.trips": "kniha-jazd", "ledger.file.income": "evidencia-prijmov", "ledger.file.summary": "suhrn-dpfo-b", "ledger.file.assets": "kniha-majetku", "ledger.file.statements": "vykazy",
   "ledger.export.csv": "CSV",
   "ledger.export.print": "Печать / PDF",
   "ledger.export.error": "Не удалось сохранить файл.",
