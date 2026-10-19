@@ -46,7 +46,7 @@ export default {
   "documents.company.web": "Вебсайт",
   "documents.company.vatMode": "Режим ПДВ",
   "documents.company.ekasaExempt": "Я не використовую eKasa",
-  "documents.company.ekasaExemptHint": "Лише якщо на вас поширюється виняток за § 3 ods. 2 zákona č. 384/2025 Z. z. Інакше під час оплати готівкою або карткою ми нагадаємо вам про чек eKasa.",
+  "documents.company.ekasaExemptHint": "Лише якщо на вас поширюється виняток за § 3 ч. 2 закону № 384/2025 Z. z. Інакше під час оплати готівкою або карткою застосунок нагадає вам про чек eKasa.",
   "documents.company.snapshotHint": "Зміни застосуються до нових документів. Виставлені документи зберігають дані на дату виставлення.",
   "documents.company.saved": "Дані компанії збережено.",
   "documents.company.accounts": "Банківські рахунки",

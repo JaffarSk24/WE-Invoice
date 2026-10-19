@@ -108,7 +108,7 @@ export default {
   "bank.ekasa.vatLines": "Розбивка за ставками ПДВ",
   "bank.ekasa.vatLine": "{rate} %: база {base}, ПДВ {vat}, разом {gross}",
   "bank.ekasa.vatNone": "Без ПДВ: {gross}",
-  "bank.ekasa.manualOnly": "WE Invoice не підключається до VRP2: {law} (§ 5 ods. 6) не дозволяє використовувати для VRP інше клієнтське середовище.",
+  "bank.ekasa.manualOnly": "WE Invoice не підключається до VRP2: {law} (§ 5 ч. 6) не дозволяє використовувати для VRP інше клієнтське середовище.",
   "bank.ekasa.receiptId": "ID чека eKasa",
   "bank.ekasa.okp": "OKP",
   "bank.ekasa.saved": "Дані чека eKasa збережено.",
