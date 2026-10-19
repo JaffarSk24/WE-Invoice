@@ -23,9 +23,9 @@ test('the invoice list of 10 000 documents opens within 200 ms', async ({ page, 
   const timings = [];
   for (let i = 0; i < 3; i += 1) {
     const ms = await page.evaluate(() => new Promise(resolve => {
-      const start = performance.now();
+      const start = window.performance.now();
       const done = () => {
-        if (document.querySelector('.data-table tr.row')) requestAnimationFrame(() => resolve(performance.now() - start));
+        if (document.querySelector('.data-table tr.row')) requestAnimationFrame(() => resolve(window.performance.now() - start));
         else requestAnimationFrame(done);
       };
       document.querySelector('.sidebar .nav-item[href="#/invoices"]').click();
