@@ -15,3 +15,4 @@ export { offsetCandidates, planOffset, buildOffset, cancelOffset } from './offse
 export { EKASA_METHODS, ekasaNeeded, ekasaExempt, ekasaManualEntry } from './ekasa-manual.js';
 export { listPayments } from './listing.js';
 export { candidatesFor as paymentCandidates, partyOf as paymentParty, openAmount as openPaymentAmount } from './match/candidates.js';
+export { CASH_VAT_CATEGORIES, cashVatAllowed, cashVatChoices, cashVatLine, cashVatProblems } from './cash-vat.js';

@@ -41,6 +41,7 @@ const API = [
   'cashBookRows', 'checkCashOut', 'cashKindForPayment', 'buildCashVoucher', 'cashDifference', 'cashLimitCheck',
   'isBusinessParty', 'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded', 'ekasaExempt',
   'ekasaManualEntry', 'listPayments', 'bankTxDirection', 'paymentCandidates', 'paymentParty', 'openPaymentAmount',
+  'cashVatAllowed', 'cashVatChoices', 'cashVatLine', 'cashVatProblems', 'isTaxCashVoucher',
   'recognizeXml', 'detectXmlFormat', 'registerInboxParser', 'recognizeQr', 'detectQrFormat', 'recognizeEkasaReceipt',
   'recognizeFound', 'detectInboxFile', 'mergeRecognitions', 'draftFromRecognition', 'pickFieldValue', 'applyUserValue',
   'learnTemplate', 'applyTemplateRegions', 'findSupplierContact', 'expenseCategory', 'expenseCategoryOf', 'withExpenseCategory',

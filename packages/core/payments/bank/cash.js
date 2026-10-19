@@ -11,6 +11,7 @@ import { add, sub, round, cmp, abs, isNegative } from '../../money/index.js';
 import { uuidv7 } from '../../ids/index.js';
 import { CoreError } from '../../errors.js';
 import { kindFitsDirection } from './match/candidates.js';
+import { cashVatLine, cashVatProblems } from './cash-vat.js';
 
 export const CASH_KINDS = Object.freeze(['CASH_IN', 'CASH_OUT']);
 // Sorts after every real number of the same day.
@@ -88,11 +89,22 @@ export function cashKindForPayment(document) {
   return kindFitsDirection(document.kind, 'IN') ? 'CASH_IN' : 'CASH_OUT';
 }
 
+// The VAT choice of a voucher: `vat` ("S:23", "AE", "E", "O"), else the
+// older `vatRate` (a standard rate or none).
+function vatChoice(input) {
+  if (input.vat) return input.vat;
+  return input.vatRate ? `S:${input.vatRate}` : 'O';
+}
+
 /**
- * A new voucher and the counter update of its series.
- * @param {{book: object, kind: string, date: string, amount: string, purpose: string, partner?: object|null,
- *   contactId?: string|null, series: object, taken?: string[], vatRate?: string|null, paysDocId?: string|null,
- *   paymentId?: string|null, id?: string}} input
+ * A new voucher and the counter update of its series. The amount is what
+ * changes hands: VAT included for a rate, the base for AE, E and O. A
+ * reverse charge voucher needs the partner's Slovak IČ DPH. An expense is
+ * received on its own date, which places it in the VAT records.
+ * @param {{book: object, kind: string, date: string, amount: string, purpose: string,
+ *   partner?: {name?: string, icDph?: string|null, ico?: string|null, dic?: string|null}|null,
+ *   contactId?: string|null, series: object, taken?: string[], vat?: string, vatRate?: string|null,
+ *   paysDocId?: string|null, paymentId?: string|null, id?: string}} input
  * @returns {{voucher: object, series: object}}
  */
 export function buildCashVoucher(input) {
@@ -101,17 +113,16 @@ export function buildCashVoucher(input) {
   if (!series) throw new CoreError('CASH_SERIES_MISSING', 'the cash book has no series');
   const value = round(abs(amount), 2);
   if (cmp(value, '0') <= 0) throw new CoreError('AMOUNT_INVALID', 'a voucher needs an amount');
+  const vat = cashVatLine(vatChoice(input), date);
+  const [problem] = cashVatProblems(vat.vatCategory, input.partner);
+  if (problem) throw new CoreError(problem, `voucher ${vat.vatCategory} for ${input.partner?.name || 'no partner'}`);
   const { number, counterKey, nextCounter } = nextNumber(series, { date, taken: input.taken || [] });
-  const rate = input.vatRate ? String(input.vatRate) : null;
-  const line = {
-    id: uuidv7(), kind: 'ITEM', name: String(purpose || '').slice(0, 500), qty: '1', unitPrice: value,
-    priceType: 'GROSS', vatCategory: rate ? 'S' : 'O', vatRate: rate
-  };
-  const party = input.partner ? { contactId: input.contactId || null, name: input.partner.name || '', ...input.partner } : null;
+  const line = { id: uuidv7(), kind: 'ITEM', name: String(purpose || '').slice(0, 500), qty: '1', unitPrice: value, priceType: 'GROSS', ...vat };
+  const party = input.partner ? partySnapshot(input.partner, input.contactId) : null;
   const voucher = {
     id: input.id || uuidv7(),
     kind, status: 'ISSUED', seriesId: series.id, number, cashBookId: book.id,
-    issueDate: date, taxDate: date, currency: book.currency, contactId: input.contactId || null,
+    issueDate: date, taxDate: date, receivedDate: kind === 'CASH_OUT' ? date : null, currency: book.currency, contactId: input.contactId || null,
     buyer: kind === 'CASH_IN' ? party : null, seller: kind === 'CASH_OUT' ? party : null,
     lines: [line], payments: [], paymentMethod: 'CASH',
     paysDocId: input.paysDocId || null, paymentId: input.paymentId || null
@@ -119,6 +130,12 @@ export function buildCashVoucher(input) {
   const totals = computeTotals(voucher);
   voucher.totals = { lineNet: totals.lineNet, allowances: totals.allowances, charges: totals.charges, net: totals.net, vat: totals.vat, gross: totals.gross, prepaid: totals.prepaid, rounding: totals.rounding, payable: totals.payable, breakdown: totals.breakdown };
   return { voucher, series: { ...series, counters: { ...(series.counters || {}), [counterKey]: nextCounter } } };
+}
+
+// The partner on the voucher: the name and the ids the VAT reports read.
+function partySnapshot(partner, contactId) {
+  const id = (value) => (value ? String(value).replace(/\s+/g, '').toUpperCase() : null);
+  return { ...partner, contactId: contactId || null, name: partner.name || '', icDph: id(partner.icDph), ico: partner.ico || null, dic: partner.dic || null };
 }
 
 /** Difference of the counted cash against the book: positive is a surplus. */
