@@ -8,7 +8,7 @@ export default {
   "settings.section.email": "Ел. пошта",
   "settings.section.email.text": "Надсилання через Gmail або SMTP і шаблони листів.",
   "settings.section.peppol": "Peppol",
-  "settings.section.peppol.text": "Провайдер eFaktúr, ключ API, перевірка з’єднання та статус учасника.",
+  "settings.section.peppol.text": "Провайдер eFaktúra, ключ API, перевірка з’єднання та статус учасника.",
   "settings.section.reminders": "Нагадування",
   "settings.section.reminders.text": "Коли і як надсилаються нагадування про оплату.",
   "settings.section.sync": "Синхронізація та шифрування",
