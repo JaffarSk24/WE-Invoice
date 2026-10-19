@@ -55,7 +55,7 @@ export default {
   "dashboard.taxCalendar.dpfo": "Einkommensteuererklärung",
   "dashboard.taxCalendar.dppo": "Körperschaftsteuererklärung",
   "dashboard.taxCalendar.advance": "Steuervorauszahlung",
-  "dashboard.taxCalendar.daysLeft": "in {n} Tagen",
+  "dashboard.taxCalendar.daysLeft": "in {n, plural, one {# Tag} other {# Tagen}}",
   "dashboard.efaktury.waiting": "Warten auf Bearbeitung",
   "dashboard.efaktury.open": "Empfangene öffnen"
 };

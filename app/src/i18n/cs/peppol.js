@@ -128,7 +128,7 @@ export default {
   "peppol.col.deadline": "Lhůta",
   "peppol.col.receivedDate": "Přijato",
 
-  "peppol.deadline.days": "{n} dní",
+  "peppol.deadline.days": "{n, plural, one {# den} few {# dny} other {# dní}}",
   "peppol.deadline.late": "po lhůtě",
 
   "peppol.detail.title": "eFaktúra {number}",

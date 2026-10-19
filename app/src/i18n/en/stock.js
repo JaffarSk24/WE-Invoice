@@ -85,7 +85,7 @@ export default {
   "stock.inventory.difference": "Difference",
   "stock.inventory.countFor": "Counted quantity: {item}",
   "stock.inventory.post": "Post differences",
-  "stock.inventory.confirm": "Post {n} stocktaking differences on {date}?",
+  "stock.inventory.confirm": "Post the stocktaking differences ({n}) on {date}?",
   "stock.inventory.posted": "Stocktaking differences posted: {n}.",
   "stock.inventory.nothing": "The counted quantities match the books.",
   "stock.inventory.note": "Stocktaking {date}",

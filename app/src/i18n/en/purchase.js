@@ -149,7 +149,7 @@ export default {
   "errors.INBOX_FILE_TOO_LARGE": "The file is larger than 20 MB.",
   "errors.XML_INVALID": "The XML file is damaged.",
   "errors.PDF_READER_LOAD_FAILED": "The PDF reader could not be loaded. Please try again.",
-  "errors.PDF_PASSWORD": "The PDF is password protected. Upload it without a password.",
+  "errors.PDF_PASSWORD": "The PDF is password-protected. Upload it without a password.",
   "errors.PDF_DAMAGED": "The PDF is damaged or cannot be opened.",
   "errors.IMAGE_UNREADABLE": "The picture cannot be opened.",
   "errors.OCR_LOAD_FAILED": "Text recognition could not be started.",

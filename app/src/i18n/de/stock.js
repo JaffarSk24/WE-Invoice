@@ -85,7 +85,7 @@ export default {
   "stock.inventory.difference": "Differenz",
   "stock.inventory.countFor": "Gezählte Menge: {item}",
   "stock.inventory.post": "Differenzen buchen",
-  "stock.inventory.confirm": "{n} Inventurdifferenzen zum {date} buchen?",
+  "stock.inventory.confirm": "Inventurdifferenzen ({n}) zum {date} buchen?",
   "stock.inventory.posted": "Gebuchte Inventurdifferenzen: {n}.",
   "stock.inventory.nothing": "Die gezählten Mengen stimmen mit dem Buchbestand überein.",
   "stock.inventory.note": "Inventur {date}",

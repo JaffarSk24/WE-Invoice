@@ -55,7 +55,7 @@ export default {
   "dashboard.taxCalendar.dpfo": "Daňové přiznání FO",
   "dashboard.taxCalendar.dppo": "Daňové přiznání PO",
   "dashboard.taxCalendar.advance": "Záloha na daň",
-  "dashboard.taxCalendar.daysLeft": "za {n} dní",
+  "dashboard.taxCalendar.daysLeft": "za {n, plural, one {# den} few {# dny} other {# dní}}",
   "dashboard.efaktury.waiting": "Čekají na zpracování",
   "dashboard.efaktury.open": "Otevřít doručené"
 };

@@ -248,7 +248,7 @@ export default {
   "exim.tracker.contact": "Odběratel faktury",
   "exim.tracker.noContact": "Vyberu později",
   "exim.tracker.create": "Vytvořit koncept faktury",
-  "exim.tracker.created": "Koncept faktury s {n} položkami je vytvořen.",
+  "exim.tracker.created": "Koncept faktury {n, plural, one {s # položkou} other {s # položkami}} je vytvořen.",
   "exim.tracker.statusFile": "Stáhnout stavový soubor pro Time Tracker",
   "exim.tracker.lineDay": "Práce {date}",
   "exim.tracker.lineWork": "Odpracované hodiny",

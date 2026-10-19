@@ -34,7 +34,7 @@ export default {
   "bank.import.profile.generic": "Andere Bank (nach Spaltennamen)",
   "bank.import.account": "Auf Konto",
   "bank.import.accountMismatch": "Der Auszug gehört zum Konto {iban}, das nicht zu den Konten der Firma gehört.",
-  "bank.import.summary": "{total} Bewegungen: {fresh} neu, {duplicates} bereits importiert.",
+  "bank.import.summary": "{total, plural, one {# Bewegung} other {# Bewegungen}}: {fresh} neu, {duplicates} bereits importiert.",
   "bank.import.balances": "Anfangssaldo {opening}, Endsaldo {closing}.",
   "bank.import.warning.BANK_ROWS_INVALID": "Zeilen ohne Datum oder Betrag wurden ausgelassen: {n}.",
   "bank.import.warning.BANK_ROWS_PENDING": "Noch nicht gebuchte Bewegungen wurden ausgelassen: {n}.",

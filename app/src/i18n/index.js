@@ -4,7 +4,8 @@
 // keys are named by screen: "nav.invoices", "invoice.editor.addLine".
 import { sk } from './sk/index.js';
 import { en } from './en/index.js';
-import { LANGUAGES, FALLBACK_LANGUAGE, resolveLanguage } from './languages.js';
+import { LANGUAGES, FALLBACK_LANGUAGE, resolveLanguage, localeOf } from './languages.js';
+import { applyPlurals } from './plural.js';
 
 export const translations = { sk, en };
 const loading = new Map();
@@ -56,6 +57,7 @@ export function t(key, params = null) {
   const dict = translations[currentLang()] || translations[FALLBACK_LANGUAGE];
   let s = dict[key] ?? translations[FALLBACK_LANGUAGE][key] ?? key;
   if (params) {
+    s = applyPlurals(s, params, localeOf(dict[key] !== undefined ? currentLang() : FALLBACK_LANGUAGE));
     s = s.replace(/\{(\w+)\}/g, (m, name) => (params[name] !== undefined ? String(params[name]) : m));
   }
   return s;

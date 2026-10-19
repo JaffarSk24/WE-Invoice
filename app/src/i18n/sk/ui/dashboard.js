@@ -30,7 +30,7 @@ export default {
   "dashboard.issued.net": "bez DPH {amount}",
   "dashboard.unpaid.open": "Neuhradené",
   "dashboard.unpaid.overdue": "Po splatnosti",
-  "dashboard.unpaid.count": "{n} dokladov",
+  "dashboard.unpaid.count": "{n, plural, one {# doklad} few {# doklady} other {# dokladov}}",
   "dashboard.unpaid.d1to15": "1 až 15 dní",
   "dashboard.unpaid.d16to30": "16 až 30 dní",
   "dashboard.unpaid.d31to60": "31 až 60 dní",
@@ -55,7 +55,7 @@ export default {
   "dashboard.taxCalendar.dpfo": "Daňové priznanie FO",
   "dashboard.taxCalendar.dppo": "Daňové priznanie PO",
   "dashboard.taxCalendar.advance": "Preddavok na daň",
-  "dashboard.taxCalendar.daysLeft": "o {n} dní",
+  "dashboard.taxCalendar.daysLeft": "o {n, plural, one {# deň} few {# dni} other {# dní}}",
   "dashboard.efaktury.waiting": "Čakajú na spracovanie",
   "dashboard.efaktury.open": "Otvoriť doručené"
 };
