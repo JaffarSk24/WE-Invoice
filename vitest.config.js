@@ -13,6 +13,16 @@ export default defineConfig({
   test: {
     include: ['packages/**/*.test.js', 'app/**/*.test.js', 'desktop/**/*.test.js', 'tests/**/*.test.js'],
     exclude: ['**/node_modules/**', 'tests/e2e/**', 'gateway/**', '**/*.perf.test.js'],
-    setupFiles: ['./tests/setup.js']
+    setupFiles: ['./tests/setup.js'],
+    // npm run test:coverage: the targets of the test plan (§ 11.1) for the
+    // core, 100 % of lines for the VAT, numbering, UBL, tax and ledger
+    // modules, 80 % for the app logic.
+    coverage: {
+      provider: 'v8',
+      reporter: ['text-summary', 'json-summary'],
+      reportsDirectory: 'coverage',
+      include: ['packages/core/**/*.js', 'app/src/**/*.js', 'desktop/**/*.cjs'],
+      exclude: ['**/*.test.js', '**/*.perf.test.js', '**/fixtures.js', 'app/src/i18n/**', 'app/src/peppol/mock-provider.js', 'app/src/sync/drive-mock.js']
+    }
   }
 });
