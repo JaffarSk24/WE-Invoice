@@ -28,7 +28,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | pravidelná faktúra | pravidelná faktura | recurring invoice | Serienrechnung (wiederkehrende Rechnung) | регулярный счёт | регулярний рахунок |
 | doklad | doklad | document | Beleg | документ | документ |
 | zjednodušená faktúra | zjednodušená faktura | simplified invoice | vereinfachte Rechnung | упрощённый счёт | спрощений рахунок |
-| eFaktúra | e-faktura | e-invoice | E-Rechnung | eFaktúra (электронный счёт) | eFaktúra (електронний рахунок) |
+| eFaktúra | eFaktúra | e-invoice | E-Rechnung | eFaktúra (электронный счёт) | eFaktúra (електронний рахунок) |
 
 ## Parties and identifiers
 
@@ -68,10 +68,10 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | vývoz | vývoz | export | Ausfuhr | экспорт | експорт |
 | uplatňovanie DPH na základe prijatia platby | uplatňování DPH na základě přijetí platby | cash accounting | Versteuerung nach vereinnahmten Entgelten | НДС по факту получения оплаты | ПДВ за фактом отримання оплати |
 | zdaňovacie obdobie | zdaňovací období | tax period | Besteuerungszeitraum | налоговый период | податковий період |
-| priznanie DPH | přiznání k DPH | VAT return | USt-Voranmeldung | декларация по НДС | декларація з ПДВ |
-| kontrolný výkaz | kontrolní výkaz | VAT control statement | Kontrollmeldung | контрольная ведомость | контрольна відомість |
-| súhrnný výkaz | souhrnný výkaz | EC sales list | Zusammenfassende Meldung (menu: EU-Meldung (ZM)) | сводная ведомость | зведена відомість |
-| evidencia DPH | evidence DPH | VAT records | USt-Aufzeichnungen | учёт НДС | облік ПДВ |
+| priznanie DPH | Priznanie k DPH | VAT return | USt-Voranmeldung | декларация по НДС | декларація з ПДВ |
+| kontrolný výkaz | Kontrolný výkaz | VAT control statement | Kontrollmeldung | контрольная ведомость | контрольна відомість |
+| súhrnný výkaz | Súhrnný výkaz | EC sales list | Zusammenfassende Meldung (menu: EU-Meldung (ZM)) | сводная ведомость | зведена відомість |
+| evidencia DPH | Evidencia DPH | VAT records | USt-Aufzeichnungen | учёт НДС | облік ПДВ |
 | limit registrácie DPH | limit pro registraci k DPH | VAT registration threshold | USt-Registrierungsgrenze | порог регистрации по НДС | поріг реєстрації платником ПДВ |
 | obrat | obrat | turnover | Umsatz | оборот | оборот |
 | daňový doklad | daňový doklad | tax document | Steuerbeleg | налоговый документ | податковий документ |
@@ -107,7 +107,7 @@ Terms of the Slovak dictionary (the reference) and their translations, so that e
 | paušálne výdavky | paušální výdaje | flat-rate expenses | Ausgabenpauschale | паушальные расходы | паушальні витрати |
 | jednoduché účtovníctvo | jednoduché účetnictví | single-entry bookkeeping | einfache Buchführung | простая бухгалтерия | проста бухгалтерія |
 | podvojné účtovníctvo | podvojné účetnictví | double-entry bookkeeping | doppelte Buchführung | двойная бухгалтерия | подвійна бухгалтерія |
-| peňažný denník | peněžní deník | cash book | Kassenbuch | денежный журнал | грошовий журнал |
+| peňažný denník | Peňažný denník | cash book | Kassenbuch | денежный журнал | грошовий журнал |
 | majetok | majetek | assets | Anlagevermögen | имущество | майно |
 | uzávierka | uzávěrka | closing | Abschluss | закрытие периода | закриття періоду |
 | zaúčtovaná | zaúčtovaná | booked | verbucht | проведён | проведено |

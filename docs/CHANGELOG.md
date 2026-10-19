@@ -319,6 +319,17 @@ All notable changes to this project are documented here. The format follows [Kee
 - Expense categories as data (`expense-categories.json`) with their peňažný denník column and income tax and VAT deductibility; the input VAT period of a received document follows the company VAT period and the later of supply and receipt; `receivedKvSections` tells the tax package where a document belongs in the kontrolný výkaz.
 - Inbox fixtures: five XML e-invoices, seven QR payloads, eleven invoice and receipt texts, three PDFs and six synthetic scans with expected fields; an OCR quality test in the performance suite and Playwright tests of the purchase flow.
 
+### Czech translation of wave B
+
+- Czech interface texts for every wave B screen: sales lists and the document editor, numbering and company settings, contacts, price list, recurring invoices, payment reminders and e-mail, e-invoicing via Peppol, bank and cash desk, purchases and the Inbox, export and import, VAT records and returns, bookkeeping for sole traders, stock, reports, search, the recycle bin and the change log. 2497 keys, so the Czech dictionary now has every Slovak key.
+
+#### Changed
+
+- The Czech sales part mirrors the Slovak layout: `cs/sales.js` merges `cs/sales/documents.js` and `cs/sales/crm.js`, which merge one file per screen.
+- Czech texts keep the Slovak names eFaktúra and Kontrolný výkaz everywhere, eFaktúra with Czech case endings (eFaktúry, eFaktúru, eFaktúr).
+- Czech texts keep the Slovak names of the tax forms and books Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH and Peňažný denník, always in the nominative.
+- Czech texts say "Odstranit" for every delete and clear action instead of the mixed "Smazat" and "Vymazat".
+
 ### Interface translations
 
 #### Added
