@@ -1,6 +1,7 @@
 // Builds the PDF fixtures of the Inbox from the text fixtures with
 // pdfmake: a text layer (as an accounting program prints it), one PDF with
-// a PAY by square QR code and one with an embedded CII XML (ZUGFeRD).
+// a PAY by square QR code, a receipt with the QR code of an online eKasa
+// receipt and one with an embedded CII XML (ZUGFeRD).
 // Run from the repository root: node tests/fixtures/inbox/make-pdfs.js
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -36,6 +37,7 @@ async function build(name, { text, qr = null, files = null }) {
 }
 
 await build('sk-invoice-simple', { text: readFileSync(here('text/sk-invoice-simple.txt'), 'utf8'), qr: payloads['pbs-accounting'] });
+await build('sk-receipt-ekasa', { text: readFileSync(here('text/sk-receipt-ekasa.txt'), 'utf8'), qr: payloads['ekasa-online'] });
 await build('sk-invoice-multirate', { text: readFileSync(here('text/sk-invoice-multirate.txt'), 'utf8') });
 await build('de-invoice-zugferd', {
   text: readFileSync(here('text/de-invoice.txt'), 'utf8'),
