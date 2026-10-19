@@ -5,3 +5,5 @@
 ## Changed
 
 - The Czech sales part mirrors the Slovak layout: `cs/sales.js` merges `cs/sales/documents.js` and `cs/sales/crm.js`, which merge one file per screen.
+- Czech texts keep the Slovak names eFaktúra and Kontrolný výkaz everywhere, with Czech case endings (eFaktúry, eFaktúru, eFaktúr).
+- Czech texts say "Odstranit" for every delete and clear action instead of the mixed "Smazat" and "Vymazat".

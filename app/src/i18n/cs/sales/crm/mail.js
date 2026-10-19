@@ -22,7 +22,7 @@ export default {
   "mail.error.draft": "Koncept nelze poslat. Doklad nejdřív vystavte.",
   "mail.sent": "E-mail odešel na {to}.",
   "mail.log.EMAIL": "E-mail",
-  "mail.log.PEPPOL": "E-faktura",
+  "mail.log.PEPPOL": "eFaktúra",
   "mail.log.LINK": "Odkaz",
   "mail.log.PRINT": "Tisk",
   "mail.result.SENT": "odesláno",

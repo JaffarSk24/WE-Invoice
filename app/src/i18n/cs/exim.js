@@ -40,7 +40,7 @@ export default {
   "exim.format.isdoc": "ISDOC",
   "exim.format.isdoc.hint": "Elektronická faktura ke každému dokladu, standard v Česku.",
   "exim.format.ubl": "UBL (Peppol)",
-  "exim.format.ubl.hint": "E-faktura ve formátu Peppol BIS 3.0.",
+  "exim.format.ubl.hint": "eFaktúra ve formátu Peppol BIS 3.0.",
 
   "exim.budget.title": "WE Budget",
   "exim.budget.text": "Přijaté platby za faktury a zaplacené výdaje období jako CSV pro import do WE Budget (Výpis, Import).",
