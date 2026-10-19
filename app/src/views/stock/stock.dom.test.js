@@ -77,4 +77,24 @@ describe('quick sale screen', () => {
     expect(root.querySelectorAll('.sale-line')).toHaveLength(0);
     expect(levelRows(stockData()).find(r => r.id === item.id).qty).toBe('3');
   });
+
+  it('shows no VRP2 hint nor VRP2 data for a company that does not use eKasa', async () => {
+    await store.updateCompany({ ekasaExempt: true });
+    const root = document.createElement('main');
+    document.body.append(root);
+    renderQuickSale(root);
+    expect(root.querySelector('#sale-vrp-hint').hidden).toBe(true);
+    root.querySelector('[data-item]').click();
+    root.querySelector('#sale-sell').click();
+    await until(() => document.querySelector('.toast-success'));
+    expect(document.querySelector('.toast-success').textContent).toMatch(/PR\d{4}0001/);
+    expect(document.querySelector('#stock-vrp')).toBe(null);
+  });
+
+  it('shows the VRP2 hint by default', () => {
+    const root = document.createElement('main');
+    document.body.append(root);
+    renderQuickSale(root);
+    expect(root.querySelector('#sale-vrp-hint').hidden).toBe(false);
+  });
 });

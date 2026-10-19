@@ -170,6 +170,7 @@ export default {
   "stock.sale.sell": "Продати",
   "stock.sale.vrpHint": "Зареєструйте товарний чек також у реєстраторі розрахункових операцій (VRP2): після продажу ви побачите дані, які потрібно перенести.",
   "stock.sale.doneTitle": "Продано: дані для VRP2",
+  "stock.sale.done": "Товарний чек {number} збережено.",
   "stock.sale.vrpIntro": "Перенесіть ці дані у віртуальний касовий апарат eKasa (VRP2).",
   "stock.sale.number": "Номер товарного чека",
   "stock.sale.date": "Дата",

@@ -13,7 +13,8 @@ import { pickAccount } from './bank/import-dialog.js';
 import { confirmProposal } from './bank/match-dialog.js';
 import { manualProposal } from './bank/tx-dialog.js';
 import { createCashBook, createVoucher, cancelVoucher } from './cash/operations.js';
-import { removeManualPayment, cancelOffsetProtocol } from './payments/actions-dialog.js';
+import { removeManualPayment, cancelOffsetProtocol, openPaymentActions } from './payments/actions-dialog.js';
+import { t } from '../../i18n/index.js';
 import { offsetPartners } from './payments/offset-dialog.js';
 import { moneyState, demoDocument } from './shared/data.js';
 import { lazyScreen } from '../../boot/bank.js';
@@ -125,6 +126,20 @@ describe('payments', () => {
     await removeManualPayment(store, doc.id, payment.id);
     expect(store.get('documents', doc.id).payments).toEqual([]);
     expect(store.get('documents', voucher.id).status).toBe('CANCELLED');
+  });
+
+  it('offers the eKasa helper for a cash payment unless the company does not use eKasa', async () => {
+    const store = await freshStore();
+    const doc = await store.insert('documents', invoice());
+    const payment = makePayment(doc, { date: '2026-10-05', amount: '40', method: 'CASH', source: 'MANUAL' });
+    await store.update('documents', doc.id, addPayment(doc, payment));
+    const labels = () => [...document.querySelectorAll('.modal-actions button')].map(b => b.textContent);
+    openPaymentActions(ctx, doc.id, payment.id);
+    expect(labels()).toContain(t('bank.ekasa.title'));
+    document.body.innerHTML = '';
+    await store.updateCompany({ ekasaExempt: true });
+    openPaymentActions(ctx, doc.id, payment.id);
+    expect(labels()).not.toContain(t('bank.ekasa.title'));
   });
 
   it('lists the payments on the screen', async () => {

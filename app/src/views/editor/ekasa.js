@@ -5,7 +5,7 @@
 // buttons, the link to the official VRP2 page, and the field for the
 // receipt id the user types back. Item lines and the VAT breakdown are
 // not shown on purpose: the receipt must not contain them.
-import { getLegislation, cmp } from '@we-invoice/core';
+import { getLegislation, cmp, ekasaExempt } from '@we-invoice/core';
 import { h, icon } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { openModal } from '../../ui/modal.js';
@@ -18,7 +18,7 @@ export const EKASA_METHODS = Object.freeze(['CASH', 'CARD', 'QR_ON_SITE']);
 
 /** Whether a payment needs the eKasa screen: a cash, card or on-site QR payment, unless the company is exempt. */
 export function needsEkasa(company, method) {
-  return EKASA_METHODS.includes(method) && !(company && company.ekasaExempt === true);
+  return EKASA_METHODS.includes(method) && !ekasaExempt(company);
 }
 
 /** The VRP2 address from legislation, or null. */
