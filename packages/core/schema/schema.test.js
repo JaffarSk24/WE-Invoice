@@ -69,6 +69,22 @@ describe('schemas', () => {
     COLLECTIONS.forEach(c => expect(data[c]).toEqual([]));
   });
 
+  it('describes the e-invoice settings of a company and the send queue of a document', () => {
+    const vc = ajv.compile(SCHEMAS.Company);
+    const peppol = { providerId: 'verteco', participantId: '0245:2020123456', enabled: true, sandbox: false, autoReceive: true, emailCopy: false, vpdsDone: true, registered: null };
+    expect(vc({ ...company, peppol }), JSON.stringify(vc.errors)).toBe(true);
+    expect(vc({ ...company, peppol: { ...peppol, registered: true } })).toBe(true);
+    expect(vc({ ...company, peppol: { ...peppol, autoReceive: 'yes' } })).toBe(false);
+    expect(vc({ ...company, peppol: { ...peppol, registered: 'no' } })).toBe(false);
+    const vd = ajv.compile(SCHEMAS.Document);
+    const state = { direction: 'OUT', status: 'FAILED', revision: 1, attempts: 2, nextAttemptAt: NOW, statusChecks: 0, nextCheckAt: null };
+    expect(vd({ ...invoice, peppol: state }), JSON.stringify(vd.errors)).toBe(true);
+    expect(vd({ ...invoice, peppol: { ...state, attempts: -1 } })).toBe(false);
+    expect(vd({ ...invoice, peppol: { ...state, statusChecks: 1.5 } })).toBe(false);
+    expect(vd({ ...invoice, peppol: { ...state, nextAttemptAt: 'tomorrow' } })).toBe(false);
+    expect(vd({ ...invoice, peppol: { ...state, nextCheckAt: 5 } })).toBe(false);
+  });
+
   it('knows every document kind of the specification', () => {
     ['INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'QUOTE', 'RECEIVED_INVOICE', 'EXPENSE_RECEIPT', 'REMINDER', 'SELF_BILLING']
       .forEach(k => expect(DOCUMENT_KINDS).toContain(k));

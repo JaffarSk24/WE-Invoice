@@ -45,7 +45,14 @@ export const COMPANY_PEPPOL = object({
   enabled: { type: 'boolean' },
   sandbox: { type: 'boolean' },
   lastCheckAt: NULLABLE_DATE_TIME,
-  capabilities: { type: 'object' }
+  capabilities: { type: 'object' },
+  // Wizard and service settings of WP-PEPPOL: receive automatically, send a
+  // copy by e-mail, the provider chosen in VPDS, and the last SMP lookup
+  // (null until checked).
+  autoReceive: { type: 'boolean' },
+  emailCopy: { type: 'boolean' },
+  vpdsDone: { type: 'boolean' },
+  registered: { type: ['boolean', 'null'] }
 });
 
 export const companySchema = entity('Company', {

@@ -13,6 +13,12 @@ describe('proxy helpers', () => {
     expect(h).toEqual({ 'user-agent': 'WE-Invoice-gateway', 'content-type': 'application/json', 'x-peppol-participant-id': '0245:1', authorization: 'Bearer t' });
   });
 
+  it('forwards the Idempotency-Key of a send so a retry is not delivered twice', () => {
+    const h = upstreamHeaders({ 'x-upstream-authorization': 'Bearer t', 'content-type': 'application/json', 'idempotency-key': 'doc-1:2' });
+    expect(h).toEqual({ 'user-agent': 'WE-Invoice-gateway', 'content-type': 'application/json', 'idempotency-key': 'doc-1:2', authorization: 'Bearer t' });
+    expect(upstreamHeaders({ accept: 'application/json' })).not.toHaveProperty('idempotency-key');
+  });
+
   it('keeps the raw path and query, refuses traversal', () => {
     expect(upstreamPath('/v1/proxy/peppol/verteco/document/receive/%2F1?x=1&y=%20', 'verteco')).toBe('document/receive/%2F1?x=1&y=%20');
     expect(() => upstreamPath('/v1/proxy/peppol/verteco/../admin', 'verteco')).toThrow();
@@ -38,14 +44,14 @@ describe('ANY /v1/proxy/peppol/{providerId}/{path}', () => {
     let upstreamRequest;
     ctx.pool('https://api.verteco.test').intercept({
       path: '/v1/document/send?x=1', method: 'POST',
-      headers: { authorization: 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068' }
+      headers: { authorization: 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068', 'idempotency-key': 'doc-1:1' }
     }).reply((options) => {
       upstreamRequest = options;
       return { statusCode: 201, data: '{"id":"doc-1","token":"RESPONSE-SECRET"}', responseOptions: { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600', 'set-cookie': 'sid=1' } } };
     });
     const res = await ctx.app.inject({
       method: 'POST', url: '/v1/proxy/peppol/verteco/document/send?x=1',
-      headers: { 'content-type': 'application/json', 'x-upstream-authorization': 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068', cookie: 'a=b' },
+      headers: { 'content-type': 'application/json', 'x-upstream-authorization': 'Bearer SECRET-TOKEN', 'x-peppol-participant-id': '0245:2020317068', 'idempotency-key': 'doc-1:1', cookie: 'a=b' },
       payload: '{"payload":"<Invoice/>"}'
     });
     expect(res.statusCode).toBe(201);
