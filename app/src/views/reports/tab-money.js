@@ -1,7 +1,7 @@
 // The receivables and payables tab (aging by 1-15, 16-30, 31-60 and 60+
 // days past due on today's local date) and the cash flow forecast tab
 // (open invoices, recurring invoices and received invoices by month).
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { navigate } from '../../router.js';
 import { agingReport, cashflowForecast, AGING_BUCKETS, sum, decimalComma } from '@we-invoice/core';
@@ -15,7 +15,7 @@ const money = (field) => ({ align: 'num', value: (r) => decimalComma(r[field]), 
 
 function agingSide(panel, side, name) {
   const prefix = `reports.aging.${name}`;
-  panel.append(
+  append(panel, [
     h('h3', { class: 'report-section-title' }, t(`${prefix}.title`)),
     summaryCards([
       { label: t('reports.aging.total'), value: eur(side.total) },
@@ -42,7 +42,7 @@ function agingSide(panel, side, name) {
         { id: 'days', label: t('reports.col.daysOverdue'), align: 'num', value: (r) => r.days },
         { id: 'due', label: t('reports.col.due'), ...money('due') }
       ]
-    }));
+    })]);
 }
 
 export function renderAgingPanel(panel, { data }) {
@@ -54,7 +54,7 @@ export function renderAgingPanel(panel, { data }) {
 
 export function renderCashflowPanel(panel, { data, months = 6 }) {
   const report = cashflowForecast({ documents: data.documents, recurringTemplates: data.recurringTemplates }, { today: todayLocal(), months });
-  panel.append(
+  append(panel, [
     h('p', { class: 'muted report-note' }, t('reports.cashflow.note')),
     summaryCards([
       { label: t('reports.cashflow.inflow'), value: eur(report.inflow) },
@@ -92,5 +92,5 @@ export function renderCashflowPanel(panel, { data, months = 6 }) {
         { id: 'name', label: t('reports.col.contact'), value: (r) => r.name },
         { id: 'amount', label: t('reports.col.amount'), ...money('amount') }
       ]
-    }));
+    })]);
 }

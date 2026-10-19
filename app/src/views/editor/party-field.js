@@ -3,7 +3,7 @@
 // (name, identifiers, address, e-mail). The full contact card belongs to
 // the contacts package; this form only creates what an invoice needs.
 import { isValidIco, isValidDic, isValidVatId } from '@we-invoice/core';
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { autocomplete } from '../../components/autocomplete.js';
 import { textField } from '../../components/fields.js';
@@ -98,10 +98,10 @@ export function partyField(ctx) {
     while (summary.firstChild) summary.removeChild(summary.firstChild);
     if (!buyer || !buyer.name) { summary.append(h('p', { class: 'muted' }, t('documents.party.none'))); return; }
     const a = buyer.address || {};
-    summary.append(
+    append(summary, [
       h('strong', {}, buyer.name),
       h('span', {}, [a.street, [a.zip, a.city].filter(Boolean).join(' '), a.country].filter(Boolean).join(', ')),
-      h('span', { class: 'muted small' }, [buyer.ico && `${t('documents.party.ico')} ${buyer.ico}`, buyer.dic && `${t('documents.party.dic')} ${buyer.dic}`, buyer.icDph && `${t('documents.party.icDph')} ${buyer.icDph}`].filter(Boolean).join(' · ')));
+      h('span', { class: 'muted small' }, [buyer.ico && `${t('documents.party.ico')} ${buyer.ico}`, buyer.dic && `${t('documents.party.dic')} ${buyer.dic}`, buyer.icDph && `${t('documents.party.icDph')} ${buyer.icDph}`].filter(Boolean).join(' · '))]);
   };
   show(ctx.buyer);
   if (ctx.readOnly) search.input.disabled = true;

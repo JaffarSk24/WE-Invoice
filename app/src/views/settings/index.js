@@ -1,7 +1,7 @@
 // The Settings screen: a list of sections on the left (a select on the
 // phone), the chosen section on the right. #/settings/<section> opens a
 // section directly. Sections of other packages come from the registry.
-import { h, icon, selectEl } from '../../ui/dom.js';
+import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { routeFromHash } from '../../router.js';
@@ -44,10 +44,10 @@ export function renderSettings(root) {
 
   const redraw = () => {
     while (list.firstChild) list.removeChild(list.firstChild);
-    SETTINGS_SECTIONS.forEach(s => list.append(h('a', {
+    SETTINGS_SECTIONS.forEach(s => append(list, [h('a', {
       class: 'nav-item', href: `#/settings/${s.id}`, 'aria-current': s.id === current ? 'page' : null, dataset: { section: s.id },
       onclick: (e) => { e.preventDefault(); open(s.id); }
-    }, icon(s.icon), h('span', {}, t(`settings.section.${s.id}`)))));
+    }, icon(s.icon), h('span', {}, t(`settings.section.${s.id}`)))]));
     select.value = current;
     drawSection(panel, current, redraw);
     refreshIcons(list);

@@ -2,7 +2,7 @@
 // VAT (the other one is shown computed), VAT category and rate, category,
 // description. Sections registered by other packages (stock levels, price
 // levels) follow below for a saved item.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { schema, vatRatesOn } from '@we-invoice/core';
@@ -80,7 +80,7 @@ export function renderItemForm(root, id) {
 
   const extra = h('div', { class: 'item-sections' });
   if (existing) renderItemSections(extra, { item: existing, readOnly: !canWrite() }, (sid) => h('section', { class: 'card item-section', dataset: { section: sid } }));
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('div', {},
       h('a', { href: '#/items', class: 'back-link' }, icon('arrow-left'), t('items.back')),
       h('h1', {}, existing ? existing.name : t('items.new')))),
@@ -91,7 +91,7 @@ export function renderItemForm(root, id) {
         existing ? h('button', { type: 'button', class: 'btn btn-ghost', onclick: remove }, icon('x'), t('common.delete')) : null,
         h('button', { type: 'button', class: 'btn', onclick: () => go('items') }, t('common.cancel')),
         h('button', { type: 'submit', class: 'btn btn-primary', id: 'item-save' }, icon('check'), t('common.save')))),
-    extra);
+    extra]);
   refresh();
   refreshIcons(root);
 }

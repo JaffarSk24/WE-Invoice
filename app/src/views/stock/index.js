@@ -3,7 +3,7 @@
 // actions for a receipt, an issue and a transfer typed in by hand. The
 // tab is part of the address (#/stock/moves), so a link opens it. Every
 // tab redraws when the data it reads changes, locally or by sync.
-import { h, icon } from '../../ui/dom.js';
+import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { on } from '../../events.js';
@@ -49,7 +49,7 @@ export function renderStock(root) {
   });
 
   const action = (kind, iconName, id) => h('button', { type: 'button', class: 'btn', id, onclick: () => openMoveDialog(kind) }, icon(iconName), t(`stock.action.${kind.toLowerCase()}`));
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' },
       h('h1', {}, t('stock.title')),
       h('div', { class: 'view-actions stock-header-actions' },
@@ -58,7 +58,7 @@ export function renderStock(root) {
         action('ISSUE', 'arrow-up', 'stock-issue'),
         action('TRANSFER', 'truck', 'stock-transfer'),
         h('button', { type: 'button', class: 'btn btn-primary', id: 'stock-quick-sale', onclick: () => navigate('quick-sale') }, icon('shopping-cart'), t('stock.action.quickSale')))),
-    tabs.el);
+    tabs.el]);
   refreshIcons(root);
 
   const redraw = () => {

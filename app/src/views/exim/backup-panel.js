@@ -2,7 +2,7 @@
 // with a password, and the way back. A restore shows what the file holds,
 // can save the current data first and needs an explicit "I understand";
 // a file that is damaged, foreign or newer than the app replaces nothing.
-import { h, clear } from '../../ui/dom.js';
+import { h, clear, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { openModal } from '../../ui/modal.js';
@@ -113,16 +113,16 @@ export function renderBackupPanel(panel, deps = {}) {
         restoreButton.disabled = false;
       }
     });
-    restoreInfo.append(h('div', { class: 'callout' },
+    append(restoreInfo, [h('div', { class: 'callout' },
       h('p', {}, h('strong', {}, backup.companyName || ''), ` (${formatDateTime(backup.createdAt)})`),
       h('p', { class: 'small' }, t('exim.backup.contents', { documents: counts.documents || 0, contacts: counts.contacts || 0, items: counts.items || 0 })),
       !canRestore ? h('p', { class: 'small' }, t(source.demo ? 'exim.demoReadOnly' : 'exim.backup.readOnly')) : null,
       canRestore && !source.company ? h('p', { class: 'small' }, t('exim.backup.newCompany')) : null,
       h('label', { for: 'exim-restore-keep', class: 'checkbox-label' }, keep, h('span', {}, t('exim.backup.keepCurrent'))),
-      h('div', { class: 'exim-actions' }, restoreButton)));
+      h('div', { class: 'exim-actions' }, restoreButton))]);
   }
 
-  panel.append(
+  append(panel, [
     h('section', { class: 'card exim-card' },
       h('h2', {}, t('exim.backup.title')),
       h('p', { class: 'muted' }, t('exim.backup.text')),
@@ -134,5 +134,5 @@ export function renderBackupPanel(panel, deps = {}) {
     h('section', { class: 'card exim-card' },
       h('h2', {}, t('exim.backup.restoreHeading')),
       h('p', { class: 'muted' }, t('exim.backup.restoreIntro')),
-      h('div', { class: 'exim-actions' }, openButton), restoreInfo));
+      h('div', { class: 'exim-actions' }, openButton), restoreInfo)]);
 }
