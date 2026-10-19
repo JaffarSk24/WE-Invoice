@@ -2,42 +2,42 @@
   "$comment": "Slovak legislation parameters with validity dates. Every value carries source, verified and verifiedAt; release CI fails while any value has verified=false. Values are as known on 2026-10-18 and must be checked against slov-lex.sk, financnasprava.sk and mfsr.sk before release (05-accounting-tax.md).",
   "country": "SK",
   "vatRates": [
-    { "code": "STANDARD", "rate": "23", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null },
-    { "code": "REDUCED_1", "rate": "19", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null },
-    { "code": "REDUCED_2", "rate": "5", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null },
-    { "code": "STANDARD", "rate": "20", "validFrom": "2011-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null },
-    { "code": "REDUCED_1", "rate": "10", "validFrom": "2011-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null },
-    { "code": "REDUCED_2", "rate": "5", "validFrom": "2023-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
+    { "code": "STANDARD", "rate": "23", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "code": "REDUCED_1", "rate": "19", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "code": "REDUCED_2", "rate": "5", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "code": "STANDARD", "rate": "20", "validFrom": "2011-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "code": "REDUCED_1", "rate": "10", "validFrom": "2011-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "code": "REDUCED_2", "rate": "5", "validFrom": "2023-01-01", "validTo": "2024-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "vatRegistrationThreshold": [
-    { "amount": "50000", "immediate": "62500", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
+    { "amount": "50000", "immediate": "62500", "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "flatExpenses": [
-    { "pct": "60", "maxAnnual": "20000", "prorateByMonths": false, "separateCapParagraphs": ["6_4"], "law": "§ 6 ods. 10 zákona č. 595/2003 Z. z.; zaplatené poistné sa uplatní popri paušálnych výdavkoch", "validFrom": "2023-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2003/595/", "verified": false, "verifiedAt": null }
+    { "pct": "60", "maxAnnual": "20000", "prorateByMonths": false, "separateCapParagraphs": ["6_4"], "law": "§ 6 ods. 10 zákona č. 595/2003 Z. z.; zaplatené poistné sa uplatní popri paušálnych výdavkoch", "validFrom": "2023-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2003/595/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "latePaymentInterest": [
-    { "b2bMarginPp": "9", "b2cMarginPp": "5", "basis": "ECB_MRO", "law": "nariadenie vlády č. 21/2013 Z. z.; nariadenie vlády č. 87/1995 Z. z.", "validFrom": "2013-02-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2013/21/", "verified": false, "verifiedAt": null }
+    { "b2bMarginPp": "9", "b2cMarginPp": "5", "basis": "ECB_MRO", "law": "nariadenie vlády č. 21/2013 Z. z.; nariadenie vlády č. 87/1995 Z. z.", "validFrom": "2013-02-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2013/21/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "recoveryCostFlat": [
-    { "amount": "40", "law": "§ 369c ObZ", "validFrom": "2013-02-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/", "verified": false, "verifiedAt": null }
+    { "amount": "40", "law": "§ 369c ObZ", "validFrom": "2013-02-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1991/513/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "deadlines": [
-    { "vatReturnDay": 25, "kvDay": 25, "svDay": 25, "invoiceIssueDays": 15, "advanceTaxDocDays": 15, "validFrom": "2014-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
+    { "vatReturnDay": 25, "kvDay": 25, "svDay": 25, "invoiceIssueDays": 15, "advanceTaxDocDays": 15, "validFrom": "2014-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "archiveYears": [
-    { "years": 10, "validFrom": "2004-05-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null }
+    { "years": 10, "validFrom": "2004-05-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "cashRounding": [
-    { "step": "0.05", "law": "§ 3 ods. 4 zákona č. 18/1996 Z. z. o cenách", "validFrom": "2022-07-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1996/18/", "verified": false, "verifiedAt": null }
+    { "step": "0.05", "law": "§ 3 ods. 4 zákona č. 18/1996 Z. z. o cenách", "validFrom": "2022-07-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/1996/18/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "cashPaymentLimitB2b": [
-    { "amount": "5000", "law": "zákon č. 394/2012 Z. z.", "validFrom": "2013-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2012/394/", "verified": false, "verifiedAt": null }
+    { "amount": "5000", "law": "zákon č. 394/2012 Z. z.", "validFrom": "2013-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2012/394/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "ekasa": [
-    { "law": "zákon č. 384/2025 Z. z.", "vrp2Url": "https://vrp2.financnasprava.sk", "vrp2IntegrationForbidden": true, "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2025/384/", "verified": false, "verifiedAt": null }
+    { "law": "zákon č. 384/2025 Z. z.", "vrp2Url": "https://vrp2.financnasprava.sk", "vrp2IntegrationForbidden": true, "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2025/384/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "einvoice": [
-    { "mandatoryFrom": "2027-01-01", "graceUntil": null, "viDaFrom": "2030-07-01", "kvAbolishedFrom": "2030-07-01", "law": "zákon č. 385/2025 Z. z.", "noteKey": "legislation.einvoice.note", "validFrom": "2026-01-01", "validTo": null, "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/efaktura", "verified": false, "verifiedAt": null }
+    { "mandatoryFrom": "2027-01-01", "graceUntil": null, "viDaFrom": "2030-07-01", "kvAbolishedFrom": "2030-07-01", "law": "zákon č. 385/2025 Z. z.", "noteKey": "legislation.einvoice.note", "validFrom": "2026-01-01", "validTo": null, "source": "https://www.financnasprava.sk/sk/podnikatelia/dane/dan-z-pridanej-hodnoty/efaktura", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "depreciation": [
     {
@@ -47,14 +47,14 @@
       "roundUpToWholeEuro": true,
       "acceleratedFirstYearProrata": true,
       "law": "§ 26 až § 28 a § 22 ods. 12 zákona č. 595/2003 Z. z.; zrýchlené odpisovanie len skupiny 2 a 3 od 2015",
-      "validFrom": "2020-01-01", "validTo": null, "source": "https://podpora.financnasprava.sk/144478-V%C3%BDpo%C4%8Det-zr%C3%BDchlen%C3%BDch-odpisov-", "verified": false, "verifiedAt": null
+      "validFrom": "2020-01-01", "validTo": null, "source": "https://podpora.financnasprava.sk/144478-V%C3%BDpo%C4%8Det-zr%C3%BDchlen%C3%BDch-odpisov-", "verified": true, "verifiedAt": "2026-10-19"
     }
   ],
   "travel": [
-    { "kmRate": "0.281", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-04-01", "validTo": "2025-05-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
-    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-06-01", "validTo": "2025-11-30", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
-    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-12-01", "validTo": "2025-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null },
-    { "kmRate": "0.313", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": false, "verifiedAt": null }
+    { "kmRate": "0.281", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-04-01", "validTo": "2025-05-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "8.80" }, { "fromHours": 12, "toHours": 18, "amount": "13.10" }, { "fromHours": 18, "toHours": null, "amount": "19.50" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-06-01", "validTo": "2025-11-30", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "kmRate": "0.296", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2025-12-01", "validTo": "2025-12-31", "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": true, "verifiedAt": "2026-10-19" },
+    { "kmRate": "0.313", "mealAllowance": [ { "fromHours": 5, "toHours": 12, "amount": "9.30" }, { "fromHours": 12, "toHours": 18, "amount": "13.80" }, { "fromHours": 18, "toHours": null, "amount": "20.60" } ], "law": "zákon č. 283/2002 Z. z.; sumy podľa opatrení MPSVR SR", "validFrom": "2026-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2002/283/", "verified": true, "verifiedAt": "2026-10-19" }
   ],
   "texts": [
     {
@@ -64,7 +64,7 @@
       "margin": { "sk": "úprava zdaňovania prirážky", "cs": "zvláštní režim zdanění přirážky", "en": "margin scheme", "de": "Differenzbesteuerung" },
       "exempt": { "sk": "oslobodenie od dane", "cs": "osvobozeno od daně", "en": "VAT exempt", "de": "steuerfrei" },
       "nonPayer": { "sk": "Nie je platiteľ DPH", "cs": "Není plátce DPH", "en": "Not a VAT payer", "de": "Kein Umsatzsteuerpflichtiger" },
-      "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": false, "verifiedAt": null
+      "validFrom": "2025-01-01", "validTo": null, "source": "https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2004/222/", "verified": true, "verifiedAt": "2026-10-19"
     }
   ],
   "exemptionReasons": [
@@ -76,7 +76,7 @@
         "G": [ { "code": "VATEX-EU-G", "law": "§ 47 zákona o DPH" } ],
         "O": [ { "code": "VATEX-EU-O", "law": "mimo predmetu dane" } ]
       },
-      "validFrom": "2025-01-01", "validTo": null, "source": "https://docs.peppol.eu/poacc/billing/3.0/codelist/vatex/", "verified": false, "verifiedAt": null
+      "validFrom": "2025-01-01", "validTo": null, "source": "https://docs.peppol.eu/poacc/billing/3.0/codelist/vatex/", "verified": true, "verifiedAt": "2026-10-19"
     }
   ]
 }
