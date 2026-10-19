@@ -5,24 +5,24 @@
 // for the period, so the row numbers live in data:
 //   supply.*        issued supplies with VAT, by rate (cash scheme included)
 //   acquisition.*   goods acquired from another member state (§ 11), by rate
-//   recipient.*     supplies the company pays the VAT for (§ 69 ods. 2, 3, 12)
-//   services693.*   of which services from abroad (§ 69 ods. 3)
+//   recipient.*     supplies the company pays the VAT for (§ 69 ods. 2, 3,
+//                   9 to 12), by rate
 //   exempt.base     exempt supplies, intra-EU supplies and exports
-//   euGoods.base    of which intra-EU supplies of goods (§ 43)
+//   euGoods.base    of which intra-EU supplies of goods (§ 43 ods. 1 and 4)
 //   reverseChargeIssued.base  issued supplies under § 69 ods. 12
 //   outputTotal, deduction.*, ownLiability, excessDeduction, toPay
-// The coefficient (§ 50), corrections of deductions (§ 53, § 54, § 54a),
-// self-assessed imports and an excess deduction carried over are not
-// computed: the rows stay empty and the screen says so.
+// Triangular trade, self-assessed imports (§ 84a), the coefficient (§ 50),
+// corrections of deductions (§ 53, § 54, § 54a) and an excess deduction
+// carried over are not computed: their rows stay empty and the screen says
+// so. No XML is produced while an error is open (xml is null then).
 import { add, sub, round, sum, cmp, isZero } from '../money/index.js';
 import { getLegislation } from '../legislation/index.js';
 import { CoreError } from '../errors.js';
 import { formVersion, amountText } from './forms.js';
-import { problem } from './problems.js';
+import { problem, canExport } from './problems.js';
 import { vatReturnXml } from './vat-return-xml.js';
 
 const RECIPIENT = ['DOMESTIC_RC', 'EU_SERVICES', 'THIRD_SERVICES'];
-const SERVICES_693 = ['EU_SERVICES', 'THIRD_SERVICES'];
 const EXEMPT_OUT = ['EXEMPT', 'EU_GOODS', 'EXPORT'];
 
 // The legislation code (STANDARD, REDUCED_1...) of a rate valid on a date.
@@ -35,7 +35,7 @@ function rateCode(rate, date) {
 /**
  * @param {ReturnType<import('./records.js').vatRecords>} records
  * @param {{company: object, type?: 'R'|'O'|'D', today?: string, discoveredOn?: string}} ctx
- * @returns {{period: string, type: string, amounts: Object<string, string>, rows: Array<{row: string, key: string, amount: string}>, problems: Array, xml: string, form: object}}
+ * @returns {{period: string, type: string, amounts: Object<string, string>, rows: Array<{row: string, key: string, amount: string}>, problems: Array, xml: string|null, form: object}}
  */
 export function buildVatReturn(records, ctx = {}) {
   const company = ctx.company || {};
@@ -71,10 +71,6 @@ export function buildVatReturn(records, ctx = {}) {
     }
     if (e.treatment === 'EU_GOODS_ACQ') byRate('acquisition', e);
     if (RECIPIENT.includes(e.treatment)) byRate('recipient', e);
-    if (SERVICES_693.includes(e.treatment)) {
-      put('services693.base', e.base);
-      put('services693.vat', e.vat);
-    }
     if (!isZero(e.deductible)) {
       const code = rateCode(e.rate, records.from);
       if (code) put(`deduction.${code}`, e.deductible);
@@ -101,6 +97,6 @@ export function buildVatReturn(records, ctx = {}) {
   rows.sort((a, b) => form.rowOrder.indexOf(a.row) - form.rowOrder.indexOf(b.row));
   const summary = { outputVat: amounts.outputTotal, deduction: round(deduction, 2), ownLiability: amounts.ownLiability, excessDeduction: amounts.excessDeduction };
   const result = { period: records.period, type, amounts, rows, summary, problems, form: { name: form.form, xsd: form.xsdFile, verified: form.verified } };
-  result.xml = vatReturnXml(result, company, form, ctx);
+  result.xml = canExport(problems) ? vatReturnXml(result, company, form, ctx) : null;
   return result;
 }

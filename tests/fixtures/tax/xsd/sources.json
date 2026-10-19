@@ -1,9 +1,9 @@
 {
-  "$comment": "Official download address of each XSD named in packages/core/tax/forms/*.json. The addresses are filled in by whoever downloads the schemas from the catalogue of Finančná správa; until then the XSD test is skipped.",
-  "catalogue": "https://www.financnasprava.sk/sk/elektronicke-sluzby/verejne-sluzby/katalogy",
+  "$comment": "Official download address of each XSD named in packages/core/tax/forms/*.json, from the form server of Finančná správa. Checked 2026-10-19.",
+  "catalogue": "https://pfseform.financnasprava.sk/Formulare/eFormVzor/DP/",
   "files": {
-    "kv_dph_2025.xsd": { "url": null, "form": "KVDPHv25" },
-    "sv_dph.xsd": { "url": null, "form": "SVDPH" },
-    "dphv25.xsd": { "url": null, "form": "DPHv25" }
+    "kv_dph_2025.xsd": { "url": "https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd", "form": "KVDPHv25", "sha256": "a3a05977630532c63e332a6bd138a4cbe478c52ad70bec467bbcb6fdfc494c23" },
+    "sv_dph.xsd": { "url": "https://pfseform.financnasprava.sk/Formulare/eFormVzor/DP/form.471.sk.xsd", "form": "SVDPHv20", "sha256": "d6aececce63af273265732478ef077864cbe2b041e93c07273550ff63d62601e" },
+    "dphv25.xsd": { "url": "https://pfseform.financnasprava.sk/Formulare/eFormVzor/DP/form.616.sk.xsd", "form": "DPHv25", "sha256": "c658401661be8773f31ccb913a53f07254ecf422fe470fdc24e09ded4c539d69" }
   }
 }

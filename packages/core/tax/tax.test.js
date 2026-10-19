@@ -98,7 +98,7 @@ describe('reports', () => {
   it('rejects unknown filing types and periods without a form', () => {
     const records = vatRecords([doc()], '2026-03', company());
     expect(() => buildKv(records, { company: company(), type: 'X' })).toThrow(expect.objectContaining({ code: 'TAX_FILING_TYPE_INVALID' }));
-    expect(() => buildSv(records, { company: company(), type: 'D' })).toThrow(expect.objectContaining({ code: 'TAX_FILING_TYPE_INVALID' }));
+    expect(() => buildSv(records, { company: company(), type: 'X' })).toThrow(expect.objectContaining({ code: 'TAX_FILING_TYPE_INVALID' }));
     expect(() => buildVatReturn(vatRecords([], '2025-06', company()), { company: company() })).toThrow(expect.objectContaining({ code: 'TAX_FORM_NOT_AVAILABLE' }));
   });
 
@@ -108,7 +108,7 @@ describe('reports', () => {
     expect(vr.problems.map(p => p.code)).toContain('DISCOVERED_DATE_MISSING');
     const ok = buildVatReturn(records, { company: company(), type: 'D', discoveredOn: '2026-05-02' });
     expect(ok.xml).toContain('<ddp>1</ddp>');
-    expect(ok.xml).toContain('<datumZisteniaDdp>2026-05-02</datumZisteniaDdp>');
+    expect(ok.xml).toContain('<datumZisteniaDdp>02.05.2026</datumZisteniaDdp>');
   });
 
   it('reports a rate the form has no row for', () => {
@@ -197,7 +197,8 @@ describe('filed reports', () => {
     expect(suggestedFilingType(log, 'kv', '2026-04', '2026-05-01')).toBe('R');
     expect(suggestedFilingType(log, 'kv', '2026-03', '2026-04-25')).toBe('O');
     expect(suggestedFilingType(log, 'kv', '2026-03', '2026-04-26')).toBe('D');
-    expect(suggestedFilingType([filingEntry({ report: 'sv', period: '2026-03', type: 'R', status: 'FILED', digest })], 'sv', '2026-03', '2026-06-01')).toBe('O');
+    expect(suggestedFilingType([filingEntry({ report: 'sv', period: '2026-03', type: 'R', status: 'FILED', digest })], 'sv', '2026-03', '2026-06-01')).toBe('D');
+    expect(suggestedFilingType([filingEntry({ report: 'sv', period: '2026-03', type: 'R', status: 'FILED', digest })], 'sv', '2026-03', '2026-04-20')).toBe('O');
   });
 });
 

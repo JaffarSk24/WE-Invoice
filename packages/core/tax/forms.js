@@ -56,3 +56,44 @@ export function splitStreet(street) {
 export function companyVatId(company) {
   return String((company && company.icDph) || '').replace(/\s+/g, '').toUpperCase();
 }
+
+/** "2026-04-10" -> "10.04.2026", the date format of the form headers. */
+export function dateText(ymd) {
+  if (!ymd) return '';
+  const [y, m, d] = String(ymd).split('-');
+  return `${d}.${m}.${y}`;
+}
+
+/**
+ * A name split into at most `count` lines of at most `width` characters,
+ * at spaces where possible: the "riadok" elements of the form headers.
+ * @returns {string[]}
+ */
+export function nameLines(name, count = 4, width = 36) {
+  const words = String(name || '').trim().split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = '';
+  for (const word of words) {
+    for (let rest = word; rest;) {
+      const room = line ? width - line.length - 1 : width;
+      if (rest.length <= room) {
+        line = line ? `${line} ${rest}` : rest;
+        rest = '';
+      } else if (line) {
+        lines.push(line);
+        line = '';
+      } else {
+        lines.push(rest.slice(0, width));
+        rest = rest.slice(width);
+      }
+    }
+  }
+  if (line) lines.push(line);
+  return lines.slice(0, count);
+}
+
+/** The DIČ of the company (10 digits). */
+export function companyDic(company) {
+  const dic = String((company && company.dic) || '').replace(/\s+/g, '');
+  return dic || companyVatId(company).replace(/^[A-Z]{2}/, '');
+}

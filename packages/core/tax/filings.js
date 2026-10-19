@@ -69,11 +69,10 @@ export function filingStatus(auditEntries, report, period, digest) {
 /**
  * The kind of filing to offer: riadny when nothing was filed; after a
  * filing, opravný until the deadline and dodatočný after it (§ 78a ods. 9,
- * § 16 daňového poriadku). The súhrnný výkaz knows only opravný.
+ * § 16 daňového poriadku); the súhrnný výkaz the same (form SVDPHv20).
  */
 export function suggestedFilingType(auditEntries, report, period, today) {
   const { filed } = filingStatus(auditEntries, report, period, null);
   if (!filed) return 'R';
-  if (report === 'sv') return 'O';
   return today <= filingDueDate(period, report) ? 'O' : 'D';
 }

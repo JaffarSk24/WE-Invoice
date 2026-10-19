@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<KVDPH xmlns="https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd">
+<KVDPH_2025 xmlns="https://ekr.financnasprava.sk/Formulare/XSD/kv_dph_2025.xsd">
   <Identifikacia>
     <IcDphPlatitela>SK2020123457</IcDphPlatitela>
     <Druh>R</Druh>
@@ -18,6 +18,6 @@
   </Identifikacia>
   <Transakcie>
     <B1 Dod="ATU12345678" F="AS-1001" Den="2026-03-01" Z="120.00" D="27.60" S="23" O="27.60"/>
-    <B1 Dod="" F="INV-55" Den="2026-03-05" Z="89.99" D="20.70" S="23" O="20.70"/>
+    <B1 F="INV-55" Den="2026-03-05" Z="89.99" D="20.70" S="23" O="20.70"/>
   </Transakcie>
-</KVDPH>
+</KVDPH_2025>

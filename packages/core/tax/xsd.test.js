@@ -2,10 +2,13 @@
 // schemas of Finančná správa (05-accounting-tax.md § 5.3.4). The schemas are
 // not in the repository (see tests/fixtures/tax/xsd/README.md): they come
 // from TAX_XSD_DIR, the local cache or a download, and the test is skipped
-// with a warning when there is none or xmllint is missing. Every file is
-// always checked to be well-formed when xmllint is there.
+// with a warning when there is none or xmllint is missing. A schema whose
+// SHA-256 differs from tests/fixtures/tax/xsd/sources.json fails the test:
+// a silent change on the server must not change the result unnoticed.
+// Every file is always checked to be well-formed when xmllint is there.
 import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,21 +28,43 @@ function hasXmllint() {
   }
 }
 
+const sha256 = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
+
+// Throws when a schema is not the one sources.json names.
+function checked(file, path) {
+  const expected = sources[file] && sources[file].sha256;
+  const actual = sha256(path);
+  if (expected && actual !== expected) throw new Error(`${file} at ${path} has SHA-256 ${actual}, expected ${expected}: the schema changed, check the new version`);
+  return path;
+}
+
+const resolved = new Map();
+
 async function schemaPath(file) {
+  if (!resolved.has(file)) resolved.set(file, findSchema(file));
+  return resolved.get(file);
+}
+
+async function findSchema(file) {
   const dirs = [process.env.TAX_XSD_DIR, cache].filter(Boolean);
-  for (const dir of dirs) if (existsSync(join(dir, file))) return join(dir, file);
+  for (const dir of dirs) if (existsSync(join(dir, file))) return checked(file, join(dir, file));
   const url = sources[file] && sources[file].url;
   if (!url) return null;
+  let bytes;
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    mkdirSync(cache, { recursive: true });
-    writeFileSync(join(cache, file), Buffer.from(await response.arrayBuffer()));
-    return join(cache, file);
+    bytes = Buffer.from(await response.arrayBuffer());
   } catch (e) {
     console.warn(`[tax-xsd] ${file} could not be downloaded: ${e.message}`);
     return null;
   }
+  const actual = createHash('sha256').update(bytes).digest('hex');
+  const expected = sources[file].sha256;
+  if (expected && actual !== expected) throw new Error(`${file} downloaded from ${url} has SHA-256 ${actual}, expected ${expected}: the schema changed, check the new version`);
+  mkdirSync(cache, { recursive: true });
+  writeFileSync(join(cache, file), bytes);
+  return join(cache, file);
 }
 
 const files = readdirSync(root)
@@ -52,6 +77,15 @@ if (!xmllint) console.warn('[tax-xsd] xmllint is not installed: XML checks skipp
 describe('tax XML files', () => {
   it('there are XML files to check', () => {
     expect(files.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it('names a download address and a checksum for every schema of the forms', () => {
+    const named = new Set(Object.values(FORMS).flatMap(form => form.versions.map(v => v.xsdFile)));
+    for (const file of named) {
+      expect(sources[file], file).toBeTruthy();
+      expect(sources[file].url, file).toMatch(/^https:\/\//);
+      expect(sources[file].sha256, file).toMatch(/^[0-9a-f]{64}$/);
+    }
   });
 
   it.skipIf(!xmllint).each(files)('%s is well-formed', (file) => {
