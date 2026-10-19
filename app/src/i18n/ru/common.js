@@ -1,7 +1,7 @@
 // Russian texts: shell, navigation, common words (WP-0 / WP-UI).
 export default {
   "app.name": "WE Invoice",
-  "app.tagline": "Счета и электронные счета бесплатно",
+  "app.tagline": "Счета и eFaktúra бесплатно",
   "nav.dashboard": "Обзор",
   "nav.group.sales": "Продажи",
   "nav.invoices": "Счета",
@@ -15,7 +15,7 @@ export default {
   "nav.received": "Входящие счета",
   "nav.expenses": "Расходы и чеки",
   "nav.inbox": "Входящие",
-  "nav.group.efaktury": "Электронные счета",
+  "nav.group.efaktury": "eFaktúra",
   "nav.efakturyIn": "Полученные",
   "nav.efakturyOut": "Отправленные",
   "nav.group.money": "Деньги",
@@ -94,5 +94,5 @@ export default {
   "search.hint": "Введите номер документа, название контрагента или сумму.",
   "pwa.newVersion": "Доступна новая версия приложения.",
   "pwa.reload": "Обновить",
-  "legislation.einvoice.note": "С 1 января 2027 года плательщики НДС в Словакии выставляют внутренние B2B-счета как электронные счета (eFaktúra) через Peppol, а принимать их обязаны все предприниматели."
+  "legislation.einvoice.note": "С 1 января 2027 года плательщики НДС в Словакии выставляют внутренние B2B-счета в формате eFaktúra через Peppol, а принимать такие счета обязаны все предприниматели."
 };
