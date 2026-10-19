@@ -1,11 +1,14 @@
 // What the buttons of the review do with the store: confirm a document
 // from the Inbox (and teach its supplier), save changes, record a payment,
-// delete. Each returns the saved document; errors go to the caller.
+// delete. Each returns the saved document; errors go to the caller. A
+// change that touches a closed VAT period is refused (TAX_PERIOD_CLOSED);
+// a document still waiting in the Inbox does not count as booked yet.
 import { draftFromRecognition, emptyRecognition, pickFieldValue } from '@we-invoice/core';
 import { applyValues } from './review-values.js';
 import { rememberSupplier } from './supplier.js';
 import { withPayment, receivedStatus } from './data.js';
 import { deleteFile } from './file-store.js';
+import { assertPeriodOpen } from '../documents/period-guard.js';
 
 /** A blank received document of a kind, for typing one in by hand. */
 export function blankDocument(kind, { company, today }) {
@@ -22,6 +25,7 @@ export async function saveDocument(store, doc, values, { regions = {}, isNew = f
   let next = applyValues(doc, values, { company });
   if (next.status === 'TO_PROCESS' || isNew) next.status = 'PROCESSED';
   if (next.inbox) next.inbox = { ...next.inbox, needsConfirmation: false, confirmedAt: new Date().toISOString() };
+  assertPeriodOpen(isNew || doc.status === 'TO_PROCESS' ? null : doc, next, company);
   const contact = await rememberSupplier(store, next, {
     category: values.category || undefined, paymentMethod: values.paymentMethod || undefined, regions
   });

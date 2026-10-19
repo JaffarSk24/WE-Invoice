@@ -1,8 +1,8 @@
 // The actions of an issued document: PDF, print, send by e-mail (the
 // e-mail package hears document:send), send through Peppol (peppol:send,
 // tax documents only), add a payment, edit while canEdit allows (a locked
-// document after a confirmed reason), copy, the conversions and the
-// statuses a user may set. Every write goes through the guard, so demo
+// document after a confirmed reason, never in a closed VAT period), copy,
+// the conversions and the statuses a user may set. Every write goes through the guard, so demo
 // mode and read-only data say why nothing happened.
 import { canEdit, canTransition, isPayable, isTaxDocument, allowedStatuses } from '@we-invoice/core';
 import { h, icon } from '../../ui/dom.js';
@@ -16,6 +16,7 @@ import { todayLocal } from '../../components/dates.js';
 import { salesHash, routeForKind } from '../documents/kinds.js';
 import { salesStore, guardWrite, allContacts } from '../documents/source.js';
 import { downloadPdf } from '../documents/bulk.js';
+import { blockingPeriod } from '../documents/period-guard.js';
 import { pdfOptions } from '../documents/pdf-options.js';
 import { buildPdf, pdfFileNameFor } from '../../pdf/index.js';
 import { canFrameBlobs, openPdf } from '../documents/pdf-frame.js';
@@ -62,6 +63,7 @@ export function detailActions({ doc, row, company, route, documents }) {
   const canWrite = () => !isDemo() && Boolean(store()) && !store().readOnly;
 
   async function edit() {
+    if (blockingPeriod(doc, doc, company)) { showToast(t('errors.TAX_PERIOD_CLOSED'), { type: 'error' }); return; }
     const check = canEdit(doc);
     if (check.editable) {
       if (isTaxDocument(doc.kind) && !(await confirmDialog(t('documents.detail.editIssuedConfirm')))) return;

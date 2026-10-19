@@ -2,14 +2,15 @@
 // list (#/invoices), a new document (#/invoices/new?kind=&contact=), the
 // card of a document (#/invoices/<id>) and its editor (#/invoices/<id>/edit).
 // A draft always opens in the editor; an issued document opens in the
-// editor only while canEdit allows, otherwise its card is shown. The
-// editor and the card (with the PDF and payment QR code) load on first use,
-// so the start of the app stays light.
+// editor only while canEdit allows and its VAT period is open, otherwise
+// its card is shown. The editor and the card (with the PDF and payment QR
+// code) load on first use, so the start of the app stays light.
 import { canEdit } from '@we-invoice/core';
 import { h, icon } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { LIST_ROUTES, parseSalesHash, salesHash, routeForKind } from './kinds.js';
-import { findDocument } from './source.js';
+import { findDocument, companyNow } from './source.js';
+import { blockingPeriod } from './period-guard.js';
 import { renderDocumentList } from './list-view.js';
 
 let leaveEditor = null;
@@ -65,7 +66,7 @@ export function salesRoute({ transport }) {
     const doc = findDocument(parsed.id);
     if (!doc) { notFound(root, name); return; }
     const home = routeForKind(doc.kind) || name;
-    const editable = Array.isArray(doc.lines) && canEdit(doc).editable;
+    const editable = Array.isArray(doc.lines) && canEdit(doc).editable && !blockingPeriod(doc, doc, companyNow());
     if ((doc.status === 'DRAFT' && Array.isArray(doc.lines)) || (parsed.mode === 'edit' && editable)) {
       whenLoaded(root, (m) => { leaveEditor = m.renderEditor(root, { route: home, kind: doc.kind, doc, transport }); });
     } else {
