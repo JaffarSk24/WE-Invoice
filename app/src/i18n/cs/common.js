@@ -15,7 +15,7 @@ export default {
   "nav.received": "Přijaté faktury",
   "nav.expenses": "Výdaje a účtenky",
   "nav.inbox": "Inbox",
-  "nav.group.efaktury": "eFaktúry",
+  "nav.group.efaktury": "eFaktúra",
   "nav.efakturyIn": "Doručené",
   "nav.efakturyOut": "Odeslané",
   "nav.group.money": "Peníze",
@@ -94,5 +94,5 @@ export default {
   "search.hint": "Zadejte číslo dokladu, název kontaktu nebo částku.",
   "pwa.newVersion": "Je k dispozici nová verze aplikace.",
   "pwa.reload": "Obnovit",
-  "legislation.einvoice.note": "Od 1. 1. 2027 plátci DPH na Slovensku vystavují tuzemské B2B faktury jako eFaktúry přes Peppol a přijímat je musí všichni podnikatelé."
+  "legislation.einvoice.note": "Od 1. 1. 2027 plátci DPH na Slovensku vystavují tuzemské B2B faktury jako eFaktúra přes Peppol a přijímat je musí všichni podnikatelé."
 };
