@@ -1,0 +1,7 @@
+mBank S.A.;
+#Výpis pohybů na účtu;
+#Číslo účtu:;670100-2212345678/6210;
+
+#Datum uskutečnění transakce;#Datum zaúčtování transakce;#Popis transakce;#Zpráva pro příjemce;#Plátce/Příjemce;#Číslo účtu plátce/příjemce;#KS;#VS;#SS;#Částka transakce;#Účetní zůstatek po transakci;
+05-10-2026;05-10-2026;PŘÍCHOZÍ PLATBA;Faktura FA20260001;Alfa CZ s.r.o.;2400123456/2010;0308;20260001;;30 750,00;130 750,00;
+06-10-2026;06-10-2026;ODCHOZÍ PLATBA;;Dodavatel CZ s.r.o.;123456789/0100;;2026555;;-9 225,50;121 524,50;

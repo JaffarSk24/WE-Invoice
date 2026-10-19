@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.02">
+  <BkToCstmrStmt>
+    <GrpHdr><MsgId>STMT-2026-10-07</MsgId><CreDtTm>2026-10-08T06:00:00+02:00</CreDtTm></GrpHdr>
+    <Stmt>
+      <Id>2026-10-07-001</Id>
+      <CreDtTm>2026-10-08T06:00:00+02:00</CreDtTm>
+      <Acct><Id><IBAN>SK3911000000002900123456</IBAN></Id><Ccy>EUR</Ccy></Acct>
+      <Bal><Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp><Amt Ccy="EUR">4000.00</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2026-10-04</Dt></Dt></Bal>
+      <Bal><Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp><Amt Ccy="EUR">5476.00</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2026-10-07</Dt></Dt></Bal>
+      <Ntry>
+        <Amt Ccy="EUR">1230.00</Amt><CdtDbtInd>CRDT</CdtDbtInd><Sts>BOOK</Sts>
+        <BookgDt><Dt>2026-10-05</Dt></BookgDt><ValDt><Dt>2026-10-05</Dt></ValDt>
+        <AcctSvcrRef>TB-261005-0001</AcctSvcrRef>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>/VS20260001/SS/KS0308</EndToEndId></Refs>
+          <RltdPties><Dbtr><Nm>Alfa s.r.o.</Nm></Dbtr><DbtrAcct><Id><IBAN>SK9709000000001234567891</IBAN></Id></DbtrAcct></RltdPties>
+          <RmtInf><Ustrd>Fakt&#250;ra FA20260001</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">369.00</Amt><CdtDbtInd>DBIT</CdtDbtInd><Sts>BOOK</Sts>
+        <BookgDt><Dt>2026-10-06</Dt></BookgDt><ValDt><Dt>2026-10-06</Dt></ValDt>
+        <AcctSvcrRef>TB-261006-0002</AcctSvcrRef>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>/VS2026555/SS/KS</EndToEndId></Refs>
+          <RltdPties><Cdtr><Nm>Dod&#225;vate&#318; s.r.o.</Nm></Cdtr><CdtrAcct><Id><IBAN>SK8583300000005566778899</IBAN></Id></CdtrAcct></RltdPties>
+          <RmtInf><Ustrd>PF2026555</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">615.00</Amt><CdtDbtInd>CRDT</CdtDbtInd><Sts>BOOK</Sts>
+        <BookgDt><Dt>2026-10-07</Dt></BookgDt><ValDt><Dt>2026-10-07</Dt></ValDt>
+        <AcctSvcrRef>TB-261007-0003</AcctSvcrRef>
+        <NtryDtls>
+          <TxDtls>
+            <Refs><EndToEndId>NOTPROVIDED</EndToEndId></Refs>
+            <AmtDtls><TxAmt><Amt Ccy="EUR">400.00</Amt></TxAmt></AmtDtls>
+            <RltdPties><Dbtr><Nm>Beta a.s.</Nm></Dbtr><DbtrAcct><Id><IBAN>SK0902000000004400112233</IBAN></Id></DbtrAcct></RltdPties>
+            <RmtInf><Strd><CdtrRefInf><Ref>VS20260002</Ref></CdtrRefInf></Strd></RmtInf>
+          </TxDtls>
+          <TxDtls>
+            <AmtDtls><TxAmt><Amt Ccy="EUR">215.00</Amt></TxAmt></AmtDtls>
+            <RltdPties><Dbtr><Nm>Gama &amp; syn</Nm></Dbtr></RltdPties>
+            <RmtInf><Ustrd><![CDATA[FA20260003 <batch>]]></Ustrd></RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="EUR">50.00</Amt><CdtDbtInd>DBIT</CdtDbtInd><Sts>PDNG</Sts>
+        <BookgDt><Dt>2026-10-07</Dt></BookgDt>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

@@ -1,16 +1,17 @@
-// Bank statements: parsing (CSV profiles, CAMT.053, MT940, ABO/GPC), matching
-// with documents, SEPA pain.001 (WP-BANK).
-import { NotImplementedError } from '../../errors.js';
-
-/** @returns {{format: string, transactions: object[], warnings: string[]}} */
-export function parseBankStatement(text, options = {}) { throw new NotImplementedError('parseBankStatement'); }
-
-/**
- * Match suggestions for one transaction (VS + amount 100, IBAN + amount 90,
- * number in message 80, amount + name 60).
- * @returns {Array<{docId: string, confidence: number, reason: string}>}
- */
-export function matchBankTx(tx, documents, contacts) { throw new NotImplementedError('matchBankTx'); }
-
-/** SEPA credit transfer XML. @returns {string} */
-export function buildPain001(payments, debtor) { throw new NotImplementedError('buildPain001'); }
+// Bank statements, matching, SEPA payments, the cash book, offsets and
+// the eKasa helper (WP-BANK). Each concern lives in its own file; this
+// one only gathers the public API, which packages/core/index.js re-exports.
+export { parseBankStatement, detectStatementFormat, STATEMENT_FORMATS } from './statement.js';
+export { BANK_PROFILES } from './csv/profiles.js';
+export { withImportKeys, splitDuplicates } from './normalize.js';
+export { parseSymbols, ibanFromDomestic } from './text.js';
+export { matchBankTx, matchStatement, PRESELECT_FROM, CONFIDENCE as MATCH_CONFIDENCE, directionOf as bankTxDirection } from './match/index.js';
+export { makePayment, addPayment, removePayments, applyMatch, unapplyMatch, statusAfterPayments } from './apply.js';
+export { buildPain001, validatePain001, sepaText, PAIN001_NAMESPACE } from './pain001.js';
+export { paymentsForReceived, creditorIbanOf } from './payables.js';
+export { CASH_KINDS, defaultCashSeries, bookVouchers, cashBalance, cashBookRows, checkCashOut, cashKindForPayment, buildCashVoucher, cashDifference } from './cash.js';
+export { cashLimitCheck, isBusinessParty, cashBookCsv } from './cash-rules.js';
+export { offsetCandidates, planOffset, buildOffset, cancelOffset } from './offset.js';
+export { EKASA_METHODS, ekasaNeeded, ekasaManualEntry } from './ekasa-manual.js';
+export { listPayments } from './listing.js';
+export { candidatesFor as paymentCandidates, partyOf as paymentParty, openAmount as openPaymentAmount } from './match/candidates.js';

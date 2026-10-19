@@ -29,13 +29,18 @@ const API = [
   'eurAmounts', 'partyOf', 'trashEntries', 'restoredRecord', 'purgedRecord', 'auditEntryFor', 'filterAudit', 'changedFields',
   'collectLabels', 'collectProjects', 'normalizeLabels', 'toCsv', 'decimalComma', 'fold',
   'uuidv7', 'isValidIco', 'isValidDic', 'isValidVatId', 'isValidIban', 'bicFromIban',
-  // WP-EXIM
-  'protectCell', 'weBudgetRows', 'selectExportDocuments', 'registerRows', 'lineRows', 'exportState', 'exportFingerprint', 'exportedPatch',
-  'accountantFiles', 'accountantSummary', 'exportFileName', 'buildBackup', 'serializeBackup', 'backupChecksum', 'buildZip', 'buildXlsx',
-  'encodeWindows1250', 'decodeWindows1250', 'pohodaAddressbook', 'documentUuid', 'importOmegaText', 'importRows', 'readTimeTracker',
-  'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan', 'importContactKey', 'importDocumentKey', 'importItemKey', 'continueSeries',
-  'guessMapping', 'guessEntity', 'importFields', 'readCsv', 'decodeText', 'detectDelimiter', 'readXlsx', 'readZip', 'isZip',
-  'parseBackup', 'planRestore', 'createReport', 'mergeReports'
+  'protectCell', 'weBudgetRows', 'selectExportDocuments', 'registerRows', 'lineRows', 'exportState', 'exportFingerprint',
+  'exportedPatch', 'accountantFiles', 'accountantSummary', 'exportFileName', 'buildBackup', 'serializeBackup', 'backupChecksum',
+  'buildZip', 'buildXlsx', 'encodeWindows1250', 'decodeWindows1250', 'pohodaAddressbook', 'documentUuid', 'importOmegaText',
+  'importRows', 'readTimeTracker', 'timeTrackerClients', 'timeTrackerStatus', 'buildImportPlan', 'applyImportPlan',
+  'importContactKey', 'importDocumentKey', 'importItemKey', 'continueSeries', 'guessMapping', 'guessEntity', 'importFields',
+  'readCsv', 'decodeText', 'detectDelimiter', 'readXlsx', 'readZip', 'isZip', 'parseBackup', 'planRestore', 'createReport',
+  'mergeReports', 'detectStatementFormat', 'withImportKeys', 'splitDuplicates', 'parseSymbols', 'ibanFromDomestic',
+  'matchStatement', 'makePayment', 'addPayment', 'removePayments', 'applyMatch', 'unapplyMatch', 'statusAfterPayments',
+  'validatePain001', 'sepaText', 'paymentsForReceived', 'creditorIbanOf', 'defaultCashSeries', 'bookVouchers', 'cashBalance',
+  'cashBookRows', 'checkCashOut', 'cashKindForPayment', 'buildCashVoucher', 'cashDifference', 'cashLimitCheck',
+  'isBusinessParty', 'cashBookCsv', 'offsetCandidates', 'planOffset', 'buildOffset', 'cancelOffset', 'ekasaNeeded',
+  'ekasaManualEntry', 'listPayments', 'bankTxDirection', 'paymentCandidates', 'paymentParty', 'openPaymentAmount',
 ];
 
 describe('core public API', () => {

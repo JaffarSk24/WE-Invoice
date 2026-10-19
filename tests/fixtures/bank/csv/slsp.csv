@@ -1,0 +1,4 @@
+Dátum zaúčtovania,Dátum valuty,Partner,IBAN partnera,Suma,Mena,Variabilný symbol,Konštantný symbol,Špecifický symbol,Referencia platby,Poznámka,Správa pre príjemcu,Číslo transakcie
+2026-10-05,2026-10-05,Alfa s.r.o.,SK9709000000001234567891,"1230,00",EUR,20260001,0308,,,,Faktúra FA20260001,TX-SLSP-0001
+2026-10-06,2026-10-06,Dodávateľ s.r.o.,SK8583300000005566778899,"-369,00",EUR,2026555,,,,,,TX-SLSP-0002
+2026-10-07,2026-10-07,Beta a.s.,SK0902000000004400112233,"615,00",EUR,,,,/VS20260002/SS/KS0308,,,TX-SLSP-0003

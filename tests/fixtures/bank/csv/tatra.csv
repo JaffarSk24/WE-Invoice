@@ -1,0 +1,4 @@
+Dátum zaúčtovania;Dátum valuty;Suma;Mena;Názov protistrany;IBAN protistrany;Variabilný symbol;Konštantný symbol;Špecifický symbol;Referencia platiteľa;Popis transakcie;Správa pre prijímateľa
+05.10.2026;05.10.2026;1 230,00;EUR;Alfa s.r.o.;SK97 0900 0000 0012 3456 7891;20260001;0308;;;Prijatá platba;Faktúra FA20260001
+06.10.2026;06.10.2026;-369,00;EUR;Dodávateľ s.r.o.;SK8583300000005566778899;2026555;;;;Odoslaná platba;
+07.10.2026;07.10.2026;615,00;EUR;Beta a.s.;SK0902000000004400112233;;;;/VS20260002/SS/KS0308;Prijatá platba;

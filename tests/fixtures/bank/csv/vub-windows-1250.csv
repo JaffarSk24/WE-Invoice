@@ -1,0 +1,4 @@
+Dátum transakcie;Dátum spracovania;Èíslo úètu protistrany;Názov protistrany;Debet;Kredit;Mena;VS;KS;ŠS;Popis;Identifikácia transakcie
+05.10.2026;05.10.2026;SK9709000000001234567891;Alfa s.r.o.;;1230,00;EUR;20260001;0308;;Faktúra FA20260001;VUB-0001
+06.10.2026;06.10.2026;SK8583300000005566778899;Dodávate¾ s.r.o.;369,00;;EUR;2026555;;;Úhrada;VUB-0002
+07.10.2026;07.10.2026;SK0902000000004400112233;Beta a.s.;;615,00;EUR;20260002;;;Platba;VUB-0003
