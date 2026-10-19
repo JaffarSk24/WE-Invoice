@@ -87,8 +87,7 @@ const CSV_FIELDS = {
   itemRate: ['itemvatrate'], total: ['totalpricewithvat'], payment: ['paymentmethodname', 'billingmethodname', 'paymentname'], note: ['remark', 'customerremark']
 };
 
-function ordersFromCsv(text) {
-  const rows = readCsv(text);
+function ordersFromRows(rows) {
   const header = (rows[0] || []).map(normalizeKey);
   const col = Object.fromEntries(Object.entries(CSV_FIELDS).map(([f, names]) => [f, header.findIndex(h => names.includes(h))]));
   const get = (row, f) => (col[f] >= 0 ? readText(row[col[f]]) : null);
@@ -133,14 +132,18 @@ function lineOf(item, i, date) {
 }
 
 /**
- * @param {string} text  the XML or CSV export
+ * @param {string|string[][]} input  the XML or CSV export, or the rows of a spreadsheet export
  * @param {{company?: object, target?: 'INVOICE_DRAFT'|'ORDER_IN', addItems?: boolean}} [ctx]
  * @returns {{contacts: object[], items: object[], documents: object[], report: object}}
  */
-export function importShoptet(text, ctx = {}) {
+export function importShoptet(input, ctx = {}) {
   const parsed = emptyParsed();
-  const xml = /^\s*(\ufeff)?\s*</.test(text);
-  const orders = xml ? children(parseXml(text), 'ORDER').concat(children(parseXml(text), 'order')).map(orderFromXml) : ordersFromCsv(text);
+  let orders;
+  if (Array.isArray(input)) orders = ordersFromRows(input);
+  else if (/^\s*(\ufeff)?\s*</.test(input)) {
+    const root = parseXml(input);
+    orders = children(root, 'ORDER').concat(children(root, 'order')).map(orderFromXml);
+  } else orders = ordersFromRows(readCsv(input));
   if (!orders.length) warn(parsed.report, 'documents', '', 'NOTHING_FOUND');
   const target = ctx.target === 'ORDER_IN' ? 'ORDER_IN' : 'INVOICE_DRAFT';
   const own = ctx.company || {};

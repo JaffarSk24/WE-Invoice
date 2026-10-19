@@ -11,7 +11,13 @@ export const SALES_KINDS = Object.freeze([
   'INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'SELF_BILLING', 'SALES_RECEIPT'
 ]);
 export const PURCHASE_KINDS = Object.freeze(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT']);
-export const ACCOUNTING_KINDS = Object.freeze([...SALES_KINDS, ...PURCHASE_KINDS]);
+// Written out rather than spread: a spread at the top of a module counts as
+// a side effect for the bundler and would keep this module in the start
+// bundle of the app.
+export const ACCOUNTING_KINDS = Object.freeze([
+  'INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'SELF_BILLING', 'SALES_RECEIPT',
+  'RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'
+]);
 
 export function isPurchase(document) {
   return PURCHASE_KINDS.includes(document.kind);

@@ -116,3 +116,11 @@ describe('SuperFaktúra API', () => {
     expect(czk.lines[0]).toMatchObject({ vatCategory: 'Z', vatRate: null });
   });
 });
+
+describe('Shoptet spreadsheet export', () => {
+  it('reads rows of an XLSX or XLS file like the CSV', async () => {
+    const { readCsv } = await import('./csv.js');
+    const r = importShoptet(readCsv(text('shoptet/orders.csv')), { company });
+    expect(r.documents.map(d => d.orderReference)).toEqual(['2026000201']);
+  });
+});
