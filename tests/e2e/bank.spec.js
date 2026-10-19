@@ -87,7 +87,7 @@ test('import a CSV statement, match it and the invoice is paid', async ({ page }
   await expect(page.locator('main h1, .view-header h1').first()).toHaveText('Banka');
 
   await importStatement(page);
-  await expect(page.locator('.import-body')).toContainText('3 pohybov: 3 nových, 0 už importovaných.');
+  await expect(page.locator('.import-body')).toContainText('3 pohyby: nové 3, už importované 0.');
   await expect(page.locator('.import-body select').first()).toHaveValue('tatra');
   await page.locator('.modal-actions .btn-primary').click();
 
@@ -108,7 +108,7 @@ test('import a CSV statement, match it and the invoice is paid', async ({ page }
 
   // The same statement again: nothing new.
   await importStatement(page);
-  await expect(page.locator('.import-body')).toContainText('3 pohybov: 0 nových, 3 už importovaných.');
+  await expect(page.locator('.import-body')).toContainText('3 pohyby: nové 0, už importované 3.');
   await expect(page.locator('.modal-actions .btn-primary')).toBeDisabled();
   await page.locator('.modal-actions .btn', { hasText: 'Zrušiť' }).click();
 
