@@ -4,7 +4,7 @@
 // irreversible confirmation behave for the keyboard.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createTable } from './table.js';
-import { amountField, textField } from './fields.js';
+import { amountField, textField, numberField, dateField, selectField, textArea } from './fields.js';
 import { createTabs } from './tabs.js';
 import { statusBadge } from './status-badge.js';
 import { emptyState } from './empty-state.js';
@@ -112,5 +112,22 @@ describe('irreversible confirmation', () => {
     expect(danger.disabled).toBe(false);
     danger.click();
     expect(await answer).toBe(true);
+  });
+});
+
+describe('field ids', () => {
+  it('keeps an id given by the caller and points the label to it', () => {
+    const fields = [
+      textField({ label: 'Name', attrs: { id: 'own-name' } }),
+      numberField({ label: 'Qty', attrs: { id: 'own-qty' } }),
+      dateField({ label: 'Date', attrs: { id: 'own-date' } }),
+      selectField({ label: 'Kind', options: [{ value: 'a', label: 'A' }], attrs: { id: 'own-kind' } }),
+      textArea({ label: 'Note', attrs: { id: 'own-note' } })
+    ];
+    for (const f of fields) {
+      expect(f.el.querySelector('label').getAttribute('for')).toBe(f.input.id);
+      expect(f.input.getAttribute('aria-describedby')).toContain(`${f.input.id}-error`);
+    }
+    expect(fields.map(f => f.input.id)).toEqual(['own-name', 'own-qty', 'own-date', 'own-kind', 'own-note']);
   });
 });

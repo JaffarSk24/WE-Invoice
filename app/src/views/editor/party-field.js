@@ -88,9 +88,8 @@ export function partyField(ctx) {
   const error = h('div', { class: 'field-error', role: 'alert', hidden: true });
   const search = autocomplete({
     label: t('documents.party.client'), placeholder: t('documents.party.search'),
-    search: (q) => searchContacts(ctx.contacts(), q), onPick: (item) => ctx.onPick(item.id)
+    search: (q) => searchContacts(ctx.contacts(), q), onPick: (item) => ctx.onPick(item.id), id: 'editor-contact'
   });
-  search.input.id = 'editor-contact';
   const create = h('button', { type: 'button', class: 'btn btn-ghost', id: 'editor-new-contact', disabled: ctx.readOnly,
     onclick: () => openQuickContact({ name: search.value(), onCreate: ctx.onCreate }) }, icon('plus'), t('documents.party.new'));
 

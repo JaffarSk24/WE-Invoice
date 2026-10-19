@@ -6,6 +6,7 @@ import { parseDecimal, toInputText } from './decimal.js';
 
 let counter = 0;
 const nextId = (prefix) => `${prefix}-${++counter}`;
+// A field given its own id (attrs.id) keeps it, so its label still points to it.
 
 function wrap({ id, label, hint = null, required = false, control, cls = '' }) {
   const hintId = hint ? `${id}-hint` : null;
@@ -28,7 +29,7 @@ function wrap({ id, label, hint = null, required = false, control, cls = '' }) {
 }
 
 export function textField({ label, value = '', name = null, type = 'text', placeholder = null, hint = null, required = false, attrs = {}, onInput = null }) {
-  const id = nextId('f');
+  const id = (attrs && attrs.id) || nextId('f');
   const input = h('input', { type, id, name, value, placeholder, autocomplete: 'off', ...attrs });
   if (onInput) input.addEventListener('input', () => onInput(input.value));
   const field = wrap({ id, label, hint, required, control: input });
@@ -36,7 +37,7 @@ export function textField({ label, value = '', name = null, type = 'text', place
 }
 
 export function textArea({ label, value = '', name = null, rows = 3, hint = null, attrs = {} }) {
-  const id = nextId('f');
+  const id = (attrs && attrs.id) || nextId('f');
   const input = h('textarea', { id, name, rows, ...attrs }, value);
   const field = wrap({ id, label, hint, control: input });
   return { ...field, value: () => input.value };
@@ -44,7 +45,7 @@ export function textArea({ label, value = '', name = null, rows = 3, hint = null
 
 // Integer or decimal number; value() returns a decimal string or null.
 export function numberField({ label, value = null, name = null, hint = null, required = false, attrs = {}, onChange = null }) {
-  const id = nextId('f');
+  const id = (attrs && attrs.id) || nextId('f');
   const input = h('input', { type: 'text', inputmode: 'decimal', id, name, value: toInputText(value), autocomplete: 'off', class: 'num', ...attrs });
   const field = wrap({ id, label, hint, required, control: input });
   const read = () => parseDecimal(input.value);
@@ -57,8 +58,8 @@ export function numberField({ label, value = null, name = null, hint = null, req
 }
 
 // Money: like numberField, with the currency shown after the input.
-export function amountField({ label, value = null, currency = 'EUR', name = null, hint = null, required = false, onChange = null }) {
-  const field = numberField({ label, value, name, hint, required, onChange, attrs: { class: 'num amount-input' } });
+export function amountField({ label, value = null, currency = 'EUR', name = null, hint = null, required = false, onChange = null, attrs = {} }) {
+  const field = numberField({ label, value, name, hint, required, onChange, attrs: { ...attrs, class: 'num amount-input' } });
   const group = h('div', { class: 'amount-group' }, field.input, h('span', { class: 'amount-currency', 'aria-hidden': 'true' }, currency));
   field.el.insertBefore(group, field.el.querySelector('.field-hint, .field-error'));
   return field;
@@ -66,14 +67,14 @@ export function amountField({ label, value = null, currency = 'EUR', name = null
 
 // Calendar date as YYYY-MM-DD (no time zone).
 export function dateField({ label, value = '', name = null, hint = null, required = false, attrs = {} }) {
-  const id = nextId('f');
+  const id = (attrs && attrs.id) || nextId('f');
   const input = h('input', { type: 'date', id, name, value, ...attrs });
   const field = wrap({ id, label, hint, required, control: input });
   return { ...field, value: () => input.value || null };
 }
 
 export function selectField({ label, options, value = null, name = null, hint = null, required = false, onChange = null, attrs = {} }) {
-  const id = nextId('f');
+  const id = (attrs && attrs.id) || nextId('f');
   const input = selectEl(options, value, { id, name, ...attrs });
   if (onChange) input.addEventListener('change', () => onChange(input.value));
   const field = wrap({ id, label, hint, required, control: input });

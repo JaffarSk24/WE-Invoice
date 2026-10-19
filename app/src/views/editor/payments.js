@@ -30,8 +30,7 @@ export function openPaymentDialog(ctx) {
   const { doc, company } = ctx;
   const due = amountDue(doc);
   const currency = doc.currency || 'EUR';
-  const amount = amountField({ label: t('documents.payments.amount'), value: cmp(due, '0') > 0 ? due : null, currency, required: true });
-  amount.input.id = 'payment-amount';
+  const amount = amountField({ label: t('documents.payments.amount'), value: cmp(due, '0') > 0 ? due : null, currency, required: true, attrs: { id: 'payment-amount' } });
   const date = dateField({ label: t('documents.payments.date'), value: todayLocal(), required: true, attrs: { id: 'payment-date' } });
   const method = selectField({
     label: t('documents.payments.method'), value: doc.paymentMethod || 'TRANSFER', attrs: { id: 'payment-method' },

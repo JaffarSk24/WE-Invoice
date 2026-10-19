@@ -62,6 +62,8 @@ export function renderQuickSale(root) {
   function drawItems() {
     itemsBox.replaceChildren();
     const items = searchItems(sellable(data.items), state.query);
+    // A list only while it holds items; the empty state is not a list item.
+    if (items.length) itemsBox.setAttribute('role', 'list'); else itemsBox.removeAttribute('role');
     if (!items.length) {
       itemsBox.append(emptyState({ title: t('stock.sale.noItems.title'), text: t('stock.sale.noItems.text'), iconName: 'shopping-cart' }));
       refreshIcons(itemsBox);
