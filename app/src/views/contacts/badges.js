@@ -21,7 +21,7 @@ export function vatBadge(contact, { now = new Date(), withDate = false } = {}) {
 export function peppolBadge(contact) {
   const capable = contact.peppolCapable;
   if (!capable || !capable.value) return null;
-  return h('span', { class: 'vat-light vat-green', title: capable.checkedAt ? t('contacts.vat.checkedAt', { date: formatDateTime(capable.checkedAt) }) : null },
+  return h('span', { class: 'vat-light vat-green peppol-badge', title: capable.checkedAt ? t('contacts.vat.checkedAt', { date: formatDateTime(capable.checkedAt) }) : null },
     icon('mail-check'), h('span', {}, t('contacts.peppol.capable')));
 }
 
