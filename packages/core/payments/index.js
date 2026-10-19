@@ -20,6 +20,8 @@ export function payableOf(document) {
 /** Sum of the payments recorded in the document currency. */
 export function paidAmount(document) {
   const payments = (document.payments || []).filter(p => !p.deleted && (!p.currency || !document.currency || p.currency === document.currency));
+  // Most documents of a list have no payment yet: no arithmetic needed.
+  if (!payments.length) return '0.00';
   return round(sum(payments.map(p => p.amount)), 2);
 }
 

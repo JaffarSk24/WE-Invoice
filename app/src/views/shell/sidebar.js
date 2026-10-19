@@ -43,10 +43,11 @@ export function companyOptions(companies, current) {
   return options;
 }
 
-function companySwitcher() {
+// The company select of the menu; the phone's More screen has its own copy.
+export function companySwitcher({ id = 'company-switcher' } = {}) {
   const current = currentCompany();
   const sel = selectEl(companyOptions(companyList(), current), current ? current.id : '', {
-    'aria-label': t('shell.company.label'), id: 'company-switcher', class: 'company-switcher'
+    'aria-label': t('shell.company.label'), id, class: 'company-switcher'
   });
   sel.addEventListener('change', () => {
     if (sel.value === ADD_COMPANY) { sel.value = current ? current.id : ''; navigate('onboarding'); return; }
@@ -79,12 +80,13 @@ export function refreshNav(active) {
     old.replaceWith(fresh);
     refreshIcons(fresh);
   }
-  const sw = document.getElementById('company-switcher');
-  if (sw) {
-    const fresh = companySwitcher();
+  ['company-switcher', 'more-company-switcher'].forEach(id => {
+    const sw = document.getElementById(id);
+    if (!sw) return;
+    const fresh = companySwitcher({ id });
     sw.parentNode.replaceWith(fresh);
     refreshIcons(fresh);
-  }
+  });
 }
 
 export function renderSidebar({ active, prefs, onLanguage, onTheme }) {

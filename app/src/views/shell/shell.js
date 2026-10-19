@@ -4,7 +4,7 @@
 import { h, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
-import { renderSidebar, navList } from './sidebar.js';
+import { renderSidebar, navList, companySwitcher } from './sidebar.js';
 import { renderBottomBar } from './bottom-bar.js';
 import { promoFooter } from './promo.js';
 
@@ -24,7 +24,9 @@ export function renderShell(root, { active, prefs, onLanguage, onTheme }) {
   return main;
 }
 
-// The phone "More" screen: the full navigation as a list.
+// The phone "More" screen: the company switch (the menu with its own is
+// hidden on phones) and the full navigation as a list.
 export function renderMore(root) {
-  root.append(h('header', { class: 'view-header' }, h('h1', {}, t('nav.more'))), navList(null), promoFooter({ inline: true }));
+  root.append(h('header', { class: 'view-header' }, h('h1', {}, t('nav.more'))), companySwitcher({ id: 'more-company-switcher' }), navList(null), promoFooter({ inline: true }));
+  refreshIcons(root);
 }

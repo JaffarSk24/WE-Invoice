@@ -92,6 +92,9 @@ function collect(document, ctx) {
       continue;
     }
     const placed = placement(document, direction, treatment, ctx);
+    // A document with no date at all belongs to no period: every period
+    // reports it, so it is dated before filing instead of vanishing.
+    if (!placed.inside && placed.undated) placed.problems.forEach(x => ctx.problems.push(x));
     if (!placed.inside) continue;
     placed.problems.forEach(x => ctx.problems.push(x));
     push(ctx, document, { ...base, date: placed.date }, group, treatment, sign);
@@ -157,7 +160,7 @@ function placement(document, direction, treatment, ctx) {
   if (direction === 'OUT' && treatment === 'EU_GOODS') {
     const date = intraEuGoodsDate(document);
     if (!document.taxDate) problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
-    return date ? { inside: inside(date), date, problems } : { inside: false, problems };
+    return date ? { inside: inside(date), date, problems } : { inside: false, undated: true, problems };
   }
   if (direction === 'OUT') {
     let date = document.taxDate;
@@ -165,19 +168,19 @@ function placement(document, direction, treatment, ctx) {
       date = document.issueDate;
       if (!CORRECTION_KINDS.includes(document.kind) && document.kind !== 'SALES_RECEIPT') problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
     }
-    if (!date) return { inside: false, problems };
+    if (!date) return { inside: false, undated: true, problems };
     return { inside: inside(date), date, problems };
   }
   if (isSelfAssessed(treatment, direction)) {
     const date = selfAssessedDate(document, treatment);
-    if (!date) return { inside: false, problems };
+    if (!date) return { inside: false, undated: true, problems: [problem('TAX_DATE_MISSING', document, { severity: 'error' })] };
     if (!document.taxDate) problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
     return { inside: inside(date), date, problems };
   }
   const received = document.receivedDate || null;
   if (!received) problems.push(problem('RECEIVED_DATE_MISSING', document, { severity: 'error' }));
   const date = received || document.issueDate || document.taxDate;
-  if (!date) return { inside: false, problems };
+  if (!date) return { inside: false, undated: true, problems };
   const chosen = document.vatDeductionPeriod;
   if (chosen) {
     // A deduction period of the other length counts in the company's own

@@ -13,6 +13,8 @@ import { openSignInModal } from '../sync/ui/signin.js';
 import { openSetupModal } from '../sync/ui/setup.js';
 import { openUnlockModal } from '../sync/ui/unlock.js';
 import { createSyncBanner } from '../sync/ui/banner.js';
+import { createSyncSection } from '../sync/ui/settings-section.js';
+import { registerSettingsSection } from '../views/settings/registry.js';
 import '../style/update-banner.css';
 import { topBanner } from '../ui/top-banners.js';
 
@@ -44,6 +46,7 @@ export async function boot(ctx) {
   if (transport.secrets && typeof transport.secrets.useKey === 'function') transport.secrets.useKey(() => vault.key);
   const engine = new SyncEngine({ store, transport, vault, emit, readme: t('sync.drive.readme') });
   setEngine(engine);
+  registerSettingsSection('sync', createSyncSection({ engine, transport }));
 
   // A banner that stays while sync cannot run, as in WE Budget.
   const bannerEl = topBanner('sync-banner', 'alert');

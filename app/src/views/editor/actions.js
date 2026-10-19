@@ -7,6 +7,7 @@
 //   stock:document-issued { documentId }   after a document is issued
 import { issueDocument, canTransition, uuidv7, contactSnapshot, localDate } from '@we-invoice/core';
 import { resolveSeries, withSeries, takenNumbers } from '../documents/series.js';
+import { assertPeriodOpen } from '../documents/period-guard.js';
 import { emit as busEmit } from '../../events.js';
 
 const STRIP = ['id', 'createdAt', 'updatedAt', 'deleted'];
@@ -31,9 +32,14 @@ async function audit(store, action, entityId, extra = {}) {
   }
 }
 
-/** Inserts a new draft or updates a stored one; returns the stored record. */
+/**
+ * Inserts a new draft or updates a stored one; returns the stored record.
+ * A change that touches a closed VAT period is refused (TAX_PERIOD_CLOSED).
+ */
 export async function saveDocument(store, doc) {
-  if (store.get('documents', doc.id)) return store.update('documents', doc.id, patchOf(doc));
+  const before = store.get('documents', doc.id);
+  assertPeriodOpen(before, doc, store.company());
+  if (before) return store.update('documents', doc.id, patchOf(doc));
   return store.insert('documents', fieldsOf(doc));
 }
 

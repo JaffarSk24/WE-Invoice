@@ -61,6 +61,9 @@ describe('sync state', () => {
   it('normalizes payloads and unknown statuses', () => {
     expect(normalizeSyncStatus('ok').status).toBe('ok');
     expect(normalizeSyncStatus({ status: 'weird' }).status).toBe('idle');
+    // The engine's own states: not signed in is "only on this device".
+    expect(['off', 'unavailable', 'checking', 'setup', 'renew', 'locked', 'syncing', 'offline', 'error'].map(s => normalizeSyncStatus({ status: s }).status))
+      .toEqual(['local', 'local', 'syncing', 'locked', 'reauth', 'locked', 'syncing', 'offline', 'error']);
     expect(normalizeSyncStatus({ status: 'error', message: 'x' }).message).toBe('x');
     expect(syncIcon('nope')).toBe('cloud');
     expect(sk[syncTextKey('syncing')]).toBeTruthy();

@@ -6,8 +6,8 @@ import { h, append } from '../ui/dom.js';
 
 let counter = 0;
 
-export function autocomplete({ label, placeholder = null, search, onPick, minLength = 1, value = '', hint = null }) {
-  const id = `ac-${++counter}`;
+export function autocomplete({ label, placeholder = null, search, onPick, minLength = 1, value = '', hint = null, id: ownId = null }) {
+  const id = ownId || `ac-${++counter}`;
   const listId = `${id}-list`;
   const input = h('input', {
     type: 'text', id, value, placeholder, autocomplete: 'off', spellcheck: 'false', role: 'combobox',

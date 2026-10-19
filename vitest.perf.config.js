@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: ['packages/**/*.perf.test.js', 'app/**/*.perf.test.js'],
+    include: ['packages/**/*.perf.test.js', 'app/**/*.perf.test.js', 'tests/**/*.perf.test.js'],
     exclude: ['**/node_modules/**'],
     fileParallelism: false,
     testTimeout: 30000

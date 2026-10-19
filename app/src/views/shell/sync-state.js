@@ -5,6 +5,8 @@
 //   status       'local' | 'idle' | 'syncing' | 'ok' | 'error' | 'offline'
 //                | 'signedOut' | 'locked' | 'reauth'
 //
+// The engine (sync/engine.js) has its own words for some states; they are
+// mapped here, so a device that is not signed in never reads as synced.
 // Unknown statuses are shown as neutral so a new engine state never breaks
 // the shell.
 import { on } from '../../events.js';
@@ -20,9 +22,12 @@ const state = { status: 'local', at: null, message: null };
 const listeners = new Set();
 let started = false;
 
+const ENGINE_STATUSES = Object.freeze({ off: 'local', unavailable: 'local', checking: 'syncing', setup: 'locked', renew: 'reauth' });
+
 export function normalizeSyncStatus(payload) {
   const raw = payload && typeof payload === 'object' ? payload : { status: payload };
-  const status = SYNC_STATUSES.includes(raw.status) ? raw.status : 'idle';
+  const mapped = ENGINE_STATUSES[raw.status] || raw.status;
+  const status = SYNC_STATUSES.includes(mapped) ? mapped : 'idle';
   return { status, at: raw.at || null, message: raw.message || null };
 }
 

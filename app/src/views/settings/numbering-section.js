@@ -10,7 +10,7 @@ import { openModal, confirmDialog } from '../../ui/modal.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { textField, selectField, checkboxField } from '../../components/fields.js';
 import { todayLocal } from '../../components/dates.js';
-import { NUMBERED_KINDS, SERIES_RESETS, defaultSeries, seriesOfKind, withSeries, previewNumber, previewVs, maskError, setNextCounter, nextCounterOf, takenNumbers } from '../documents/series.js';
+import { NUMBERED_KINDS, SERIES_RESETS, defaultSeries, defaultSeriesId, seriesOfKind, withSeries, previewNumber, previewVs, maskError, setNextCounter, nextCounterOf, takenNumbers } from '../documents/series.js';
 import { companyStore, saveCompanyPatch } from './company-section-store.js';
 
 function documentsOf(store) {
@@ -73,7 +73,7 @@ export function numberingSection(root, { redraw, company, demo }) {
   const box = h('div', { class: 'series-list' });
   NUMBERED_KINDS.forEach(kind => {
     const list = seriesOfKind(company, kind);
-    const shown = list.length ? list : [defaultSeries(kind)];
+    const shown = list.length ? list : [defaultSeries(kind, { id: defaultSeriesId(kind) })];
     shown.forEach(series => {
       const isNew = !list.length;
       const next = previewNumber(series, today, takenNumbers(documents, series.id));

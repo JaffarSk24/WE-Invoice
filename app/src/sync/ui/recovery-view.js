@@ -47,8 +47,11 @@ export function showRecoveryWords({ words, positions, transport, showToast }) {
       actions: [{
         label: t('sync.recovery.written'), kind: 'primary',
         onClick: (m) => {
+          // Closing this dialog on the way to the check is not a "no".
+          const check = confirmWords({ words, positions });
+          settled = true;
           m.close();
-          confirmWords({ words, positions }).then(ok => { finish(ok); });
+          check.then(ok => resolve(ok));
         }
       }]
     });
