@@ -4,7 +4,7 @@
 // itself a moment after the last change; "Vystaviť" checks the particulars
 // and issues it. Issued documents open here only while canEdit allows.
 import '../../style/editor.css';
-import { h, icon, clear } from '../../ui/dom.js';
+import { h, icon, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { todayLocal } from '../../components/dates.js';
@@ -24,6 +24,8 @@ import { createTotalsPanel } from './totals-panel.js';
 import { createPdfPreview, previewDocument } from './preview.js';
 import { clientPrice, searchItems } from './pricing.js';
 import { editorActions } from './editor-actions.js';
+import { attachmentsPanel } from './attachments-panel.js';
+import { attachmentHandlers } from './attachment-handlers.js';
 
 const SAVE_DELAY_MS = 1200;
 
@@ -127,6 +129,23 @@ export function renderEditor(root, { route, kind, doc = null, params = {}, trans
     if (missing.length) missingBox.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
 
+  // The document is stored before its first file, so the files always
+  // belong to a stored record; the panel alone is redrawn afterwards.
+  const attachBox = h('div', { class: 'editor-attachments' });
+  const attachments = attachmentHandlers({
+    prepare: async () => {
+      const store = salesStore();
+      if (state.draft.status === 'DRAFT') { clearTimeout(state.timer); await actions.persist(store, { force: true }); }
+      return state.draft.id;
+    },
+    after: (doc) => { if (doc) { state.draft = { ...state.draft, attachments: doc.attachments || [] }; drawAttachments(); } }
+  });
+  function drawAttachments() {
+    clear(attachBox);
+    append(attachBox, [attachmentsPanel({ doc: state.draft, ...attachments })]);
+    refreshIcons(attachBox);
+  }
+
   function drawForm() {
     clear(form);
     const ctx = { draft: state.draft, company, documents: documents(), transport, onDraft };
@@ -145,7 +164,8 @@ export function renderEditor(root, { route, kind, doc = null, params = {}, trans
       itemById: (id) => allItems().find(i => i.id === id) || null,
       itemPrice: (item, qty) => clientPrice(item, { contact: contact(), date: state.draft.issueDate, qty, priceLevels: allPriceLevels() })
     });
-    form.append(...[party.el, head.el, lines.el, advancesPanel(ctx), payment.el, totalsPanel.el].filter(Boolean));
+    append(form, [party.el, head.el, lines.el, advancesPanel(ctx), payment.el, attachBox, totalsPanel.el]);
+    drawAttachments();
     refreshIcons(form);
     if (state.missing.length) showMissing(state.missing);
   }

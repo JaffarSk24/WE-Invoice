@@ -15,6 +15,8 @@ export default {
   "mail.dialog.opened": "Поштова програма мала відкритися, PDF завантажено. Не забудьте прикріпити його.",
   "mail.dialog.openAgain": "Відкрити лист знову",
   "mail.dialog.attachment": "Вкладення: документ у PDF",
+  "mail.dialog.extraAttachments": "Інші вкладення: {names}",
+  "mail.dialog.missingAttachments": "Цих вкладень немає на цьому пристрої, їх не буде надіслано: {names}",
   "mail.dialog.send": "Надіслати",
   "mail.dialog.openClient": "Відкрити в поштовій програмі",
   "mail.error.recipients": "Перевірте адреси одержувачів: {list}",

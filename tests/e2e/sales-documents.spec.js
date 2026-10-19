@@ -137,3 +137,39 @@ test('the PDF preview shows inside the app, in the editor and on the card', asyn
   await expect(page.locator('.detail-pdf iframe.pdf-frame')).toHaveAttribute('src', /^blob:/);
   expect(blocked).toEqual([]);
 });
+
+test('attachments: added to a draft, sent with the e-mail, opened and removed from the issued invoice', async ({ page }) => {
+  await companyFromWizard(page);
+  await newClient(page, 'Epsilon, s. r. o.');
+  await fillLine(page, { name: 'Montáž', qty: '1', price: '120' });
+  await page.locator('.editor-attachments input[type="file"]').setInputFiles([
+    { name: 'zmluva.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n%%EOF\n') },
+    { name: 'foto.png', mimeType: 'image/png', buffer: Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]) }
+  ]);
+  await expect(page.locator('.editor-attachments .attachment-name')).toHaveText(['zmluva.pdf', 'foto.png']);
+  await expect(page).toHaveURL(/#\/invoices\/[^/]+\/edit/);
+
+  await page.locator('#editor-issue').click();
+  await expect(page.locator('main h1')).toHaveText(/Faktúra FA\d{8}/);
+  const card = page.locator('.doc-attachments');
+  await expect(card.locator('.attachment-name')).toHaveText(['zmluva.pdf', 'foto.png']);
+
+  await page.locator('#detail-send').click();
+  await expect(page.locator('#mail-extras')).toContainText('zmluva.pdf, foto.png');
+  await page.locator('.modal-content').getByRole('button', { name: 'Zrušiť' }).click();
+
+  // The image opens in a new tab of the browser, nothing is downloaded.
+  const downloads = [];
+  page.on('download', d => downloads.push(d));
+  const opened = page.waitForEvent('popup');
+  await card.locator('.attachment-row', { hasText: 'foto.png' }).locator('.attachment-open').click();
+  const tab = await opened;
+  await expect.poll(() => tab.url()).toMatch(/^blob:/);
+  await tab.close();
+  expect(downloads).toEqual([]);
+
+  await card.locator('.attachment-row', { hasText: 'zmluva.pdf' }).locator('.attachment-remove').click();
+  await expect(page.locator('.modal-content')).toContainText('zmluva.pdf');
+  await page.locator('.modal-content .btn-danger').click();
+  await expect(card.locator('.attachment-name')).toHaveText(['foto.png']);
+});

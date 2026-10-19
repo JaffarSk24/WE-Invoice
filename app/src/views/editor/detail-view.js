@@ -1,6 +1,6 @@
 // The card of an issued document (07-ui-ux-i18n.md § 7.3): status ribbon,
-// the actions, client and amounts, payments, related documents, the send
-// log and the PDF. Redrawn when the document changes (a payment, a status
+// the actions, client and amounts, payments, attachments, related
+// documents, the send log and the PDF. Redrawn when the document changes (a payment, a status
 // from the Peppol package). Demo documents show their summary only.
 import { canEdit } from '@we-invoice/core';
 import { h, icon, clear, append } from '../../ui/dom.js';
@@ -19,6 +19,8 @@ import { buildPdf } from '../../pdf/index.js';
 import { ribbonSteps } from './ribbon.js';
 import { paymentsCard } from './payments.js';
 import { detailActions } from './detail-actions.js';
+import { attachmentsPanel } from './attachments-panel.js';
+import { attachmentHandlers } from './attachment-handlers.js';
 
 function field(label, value) {
   return value ? h('div', { class: 'detail-field' }, h('span', { class: 'muted small' }, label), h('span', {}, value)) : null;
@@ -113,6 +115,7 @@ export function renderDetail(root, { route, id }) {
       ribbon(doc, row.status),
       summary(doc, row),
       full && actions ? paymentsCard({ doc, company, readOnly: !actions.canWrite(), onRemove: actions.removePayment, onReceipt: actions.saveReceipt }) : null,
+      full && actions ? attachmentsPanel({ doc, readOnly: !actions.canWrite(), ...attachmentHandlers({ prepare: () => doc.id }) }) : null,
       linksCard(doc, documents),
       sendLogCard(doc),
       full ? pdfCard(doc, company, keepUrl) : null]);
