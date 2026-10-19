@@ -2,7 +2,7 @@
 export default {
   "tax.disclaimer": "WE Invoice připraví podklady; odpovědnost za podání nese plátce. Doporučujeme kontrolu účetním.",
   "tax.empty.title": "Nejdřív vytvořte firmu",
-  "tax.empty.text": "Evidence DPH a výkazy se sestavují z dokladů otevřené firmy.",
+  "tax.empty.text": "Evidencia DPH a výkazy se sestavují z dokladů otevřené firmy.",
   "tax.readOnly": "Data jsou otevřená jen pro čtení, změnu teď nelze uložit.",
   "tax.demo.readOnly": "V ukázkovém režimu se nic neukládá.",
   "tax.form.unverified": "Struktura tiskopisu {form} zatím nebyla ověřena vůči oficiálnímu XSD schématu slovenské finanční správy. Před podáním soubor zkontrolujte v aplikaci eDane nebo na portálu FS.",
@@ -76,11 +76,11 @@ export default {
   "tax.problem.PARTNER_VAT_ID_MISSING": "Doklad {number} nemá IČ DPH partnera.",
   "tax.problem.PARTNER_VAT_ID_INVALID": "Doklad {number} má neplatné IČ DPH {id}.",
   "tax.problem.DOCUMENT_NUMBER_MISSING": "Vystavený doklad nemá číslo.",
-  "tax.problem.SV_NOT_REGISTERED": "Souhrnný výkaz podává jen osoba registrovaná k DPH.",
-  "tax.problem.SV_DOMESTIC_BUYER": "Doklad {number}: odběratel se slovenským IČ DPH {id} do souhrnného výkazu nepatří.",
+  "tax.problem.SV_NOT_REGISTERED": "Súhrnný výkaz podává jen osoba registrovaná k DPH.",
+  "tax.problem.SV_DOMESTIC_BUYER": "Doklad {number}: odběratel se slovenským IČ DPH {id} nepatří do výkazu Súhrnný výkaz.",
   "tax.problem.VIES_INVALID": "IČ DPH {id} (doklad {number}) není v systému VIES platné.",
   "tax.problem.VIES_NOT_CHECKED": "IČ DPH {id} (doklad {number}) zatím nebylo ověřeno v systému VIES.",
-  "tax.problem.VAT_RETURN_NOT_REGISTERED": "Přiznání k DPH podává jen osoba registrovaná k DPH.",
+  "tax.problem.VAT_RETURN_NOT_REGISTERED": "Priznanie k DPH podává jen osoba registrovaná k DPH.",
   "tax.problem.DISCOVERED_DATE_MISSING": "Dodatečné přiznání potřebuje datum zjištění důvodů pro jeho podání.",
   "tax.problem.RATE_NOT_ON_FORM": "Doklad {number} má sazbu {rate} %, pro kterou tiskopis nemá řádek.",
   "tax.problem.ROW_NOT_ON_FORM": "Částka {key} nemá na tiskopisu řádek.",
@@ -183,7 +183,7 @@ export default {
   "errors.TAX_PERIOD_ALREADY_CLOSED": "Období je už uzavřené.",
   "errors.TAX_PERIOD_NOT_CLOSED": "Období není uzavřené.",
   "errors.TAX_PERIOD_OPEN_REASON_REQUIRED": "Uveďte důvod otevření období.",
-  "errors.TAX_PERIOD_CLOSED": "Doklad patří do uzavřeného období. Nejdřív období otevřete v Evidenci DPH.",
+  "errors.TAX_PERIOD_CLOSED": "Doklad patří do uzavřeného období. Nejdřív období otevřete na obrazovce Evidencia DPH.",
   "errors.TAX_SAVE_UNAVAILABLE": "Soubor se nepodařilo uložit.",
   "errors.TAX_READ_ONLY": "Data jsou otevřená jen pro čtení, změnu teď nelze uložit."
 };
