@@ -1,0 +1,4 @@
+{"itemCount": 2, "pageCount": 1, "perPage": 100, "page": 1, "items": [
+  {"StockItem": {"id": "9", "name": "Káva zrnková 1 kg", "description": "Arabica", "sku": "KAVA-1KG", "unit": "ks", "unit_price": 18, "vat": 23, "watch_stock": true}},
+  {"StockItem": {"id": "10", "name": "Školenie baristov", "description": "", "sku": null, "unit": "hod", "unit_price": "40.00", "vat": "23", "watch_stock": false}}
+]}
