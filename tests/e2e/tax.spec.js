@@ -35,7 +35,7 @@ test('the súhrnný výkaz and the VAT return open', async ({ page }) => {
   await page.goto('./#/sv');
   await expect(page.locator('main#main h1')).toHaveText('Súhrnný výkaz');
   await page.goto('./#/vat-return');
-  await expect(page.locator('main#main h1')).toHaveText('Priznanie DPH');
+  await expect(page.locator('main#main h1')).toHaveText('Priznanie k DPH');
   await expect(page.locator('.tax-preview')).toBeVisible();
 });
 
