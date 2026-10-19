@@ -26,6 +26,8 @@ function copyCanvas(source) {
 async function loadPages(doc) {
   const read = recentRead(doc.id);
   if (read && read.canvases && read.canvases.length) return read.canvases.map((c, i) => ({ canvas: copyCanvas(c), items: (read.pages && read.pages[i]) || [] }));
+  // An eFaktúra from Peppol is structured data; its XML lives in the Peppol archive.
+  if (doc.peppol && doc.peppol.direction === 'IN') return [];
   const attachment = (doc.attachments || [])[0];
   const file = attachment ? await getFile(attachment.id) : null;
   if (!file) return null;
