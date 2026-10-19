@@ -305,6 +305,20 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Leaving the editor right after issuing no longer writes the stale draft over the issued document.
 
+#### Added (owner decisions, 19 October)
+
+- "Nepoužívam eKasa" in the company settings (company.ekasaExempt, off by default) and the core helper ekasaExempt: when it is on, the VRP2 hints for cash, card and on-site QR payments are left out on the document card, on the payments screen and on the quick sale; a quick sale then ends with a confirmation instead of the VRP2 data.
+- End to end test of the PDF preview inside the editor and on the document card.
+
+#### Changed (owner decisions, 19 October)
+
+- The page policy lets frames load blob: URLs (frame-src blob: only, nothing else loosened), so the PDF preview of the editor and of the document card shows inside the app on the web and on the desktop.
+- ekasaNeeded no longer treats usesEkasa: false as an opt-out: the wizard writes it for every company, so the eKasa helper of the payments screen never opened.
+
+#### Fixed (owner decisions, 19 October)
+
+- A test pins that a company that is not a VAT payer gets new lines outside the scope of VAT (category O, no rate) and issues them without VAT.
+
 ### Purchases, Inbox and expenses
 
 #### Added
