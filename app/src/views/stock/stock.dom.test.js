@@ -97,4 +97,34 @@ describe('quick sale screen', () => {
     renderQuickSale(root);
     expect(root.querySelector('#sale-vrp-hint').hidden).toBe(false);
   });
+
+  it('sells a reverse-charge line only with the buyer IČ DPH and shows it for VRP2', async () => {
+    await store.insert('contacts', { kind: 'COMPANY', name: 'Beta, s. r. o.', icDph: 'SK2020000004', country: 'SK' });
+    const root = document.createElement('main');
+    document.body.append(root);
+    renderQuickSale(root);
+    root.querySelector('[data-item]').click();
+    expect(root.querySelector('#sale-buyer').hidden).toBe(true);
+    const vat = root.querySelector('select.sale-vat');
+    expect([...vat.options].map(o => o.value)).toEqual(expect.arrayContaining(['S:23', 'AE', 'E']));
+    vat.value = 'AE';
+    vat.dispatchEvent(new Event('change'));
+    expect(root.querySelector('#sale-buyer').hidden).toBe(false);
+    expect(root.querySelector('#sale-payable').textContent).toMatch(/10[.,]00/);
+    root.querySelector('#sale-sell').click();
+    await until(() => root.querySelector('#sale-buyer-name-error') && !root.querySelector('#sale-buyer-name-error').hidden);
+    expect(document.querySelector('#stock-vrp')).toBe(null);
+    const pick = root.querySelector('#sale-buyer-pick');
+    pick.value = pick.options[1].value;
+    pick.dispatchEvent(new Event('change'));
+    expect(root.querySelector('#sale-buyer-icdph').value).toBe('SK2020000004');
+    root.querySelector('#sale-sell').click();
+    await until(() => document.querySelector('#stock-vrp-buyer'));
+    expect(document.querySelector('#stock-vrp-buyer').textContent).toBe('Beta, s. r. o., SK2020000004');
+    expect(document.querySelector('#stock-vrp td[data-category="AE"]').textContent).toBe(t('vat.category.AE'));
+    expect(document.querySelector('#stock-vrp-reverse-charge')).not.toBe(null);
+    const receipt = store.list('documents').find(d => d.kind === 'SALES_RECEIPT');
+    expect(receipt.buyer).toMatchObject({ name: 'Beta, s. r. o.', icDph: 'SK2020000004' });
+    expect(receipt.lines[0]).toMatchObject({ vatCategory: 'AE', vatRate: '0', exemptionReasonCode: 'VATEX-EU-AE' });
+  });
 });

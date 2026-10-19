@@ -53,6 +53,13 @@
 .sale-line-qty { display: flex; align-items: center; gap: 2px; }
 .sale-qty { width: 64px; text-align: right; }
 .sale-line-total { min-width: 80px; text-align: right; }
+.sale-line-vat { grid-column: 1 / -1; }
+.sale-line-vat select { min-height: 32px; max-width: 100%; }
+.sale-buyer { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 12px; border: 1px solid var(--warning); border-radius: var(--radius-sm); }
+.sale-buyer[hidden] { display: none; }
+.sale-buyer legend { padding: 0 4px; font-weight: 600; }
+.sale-buyer-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--text-secondary); }
+.sale-buyer-field[hidden] { display: none; }
 .sale-totals, .stock-vrp-head, .stock-vrp-totals { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0; }
 .sale-totals dd, .stock-vrp-totals dd { text-align: right; font-variant-numeric: tabular-nums; margin: 0; }
 .stock-vrp-head dd { margin: 0; }

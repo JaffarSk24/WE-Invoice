@@ -8,7 +8,7 @@ import { resetPrefsCache, setPref } from '../../prefs.js';
 import { stockData, addMoves, ensureWarehouse, saveWarehouse, removeWarehouse, removeMove, setValuationMethod, valuationMethod, writeBlocker } from './data.js';
 import { syncDocumentMoves, queueDocumentSync } from './document-moves.js';
 import { checkout } from './sale/checkout.js';
-import { addToCart, setCartQty, changeCartQty, removeFromCart, findByCode, searchItems, cartPreview } from './sale/cart.js';
+import { addToCart, setCartQty, setCartVat, changeCartQty, removeFromCart, findByCode, searchItems, cartPreview } from './sale/cart.js';
 import { levelRows } from './levels-tab.js';
 import { moveRows } from './moves-tab.js';
 import { tabFromHash } from './index.js';
@@ -138,6 +138,17 @@ describe('quick sale', () => {
 describe('cart', () => {
   const a = { id: 'a', name: 'Alfa', code: 'A1', barcode: '111', price: '1.00', priceType: 'GROSS', vatCategory: 'S', vatRate: '23' };
   const b = { id: 'b', name: 'Beta', code: 'b2', barcode: null, price: '0.99', priceType: 'GROSS', vatCategory: 'S', vatRate: '23' };
+
+  it('keeps the VAT choice of a line and says when the buyer is needed', () => {
+    const payer = { vatMode: 'PAYER' };
+    let cart = setCartVat(addToCart([], a), 'a', 'AE');
+    expect(cart[0].vat).toBe('AE');
+    const preview = cartPreview(cart, { company: payer, method: 'CARD', date: '2026-10-18' });
+    expect(preview).toMatchObject({ gross: '0.81', vat: '0.00', buyerNeed: 'AE' });
+    expect(preview.lines[0].category).toBe('AE');
+    cart = setCartVat(cart, 'a', null);
+    expect(cartPreview(cart, { company: payer, method: 'CARD', date: '2026-10-18' })).toMatchObject({ gross: '1.00', buyerNeed: null });
+  });
 
   it('adds, changes and removes lines', () => {
     let cart = addToCart([], a);

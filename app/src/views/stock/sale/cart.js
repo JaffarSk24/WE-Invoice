@@ -1,8 +1,9 @@
 // The cart of the quick sale as plain data: adding an item (by click, by
 // code or barcode from a scanner), changing a quantity, removing a line
-// and the preview of the totals the receipt will have. No DOM here, so
+// the VAT choice of a line, and the preview of the totals the receipt
+// will have, with the buyer a reverse-charge line needs. No DOM here, so
 // the rules are tested without a page.
-import { add, cmp, isZero, computeTotals, salesReceiptLine } from '@we-invoice/core';
+import { add, cmp, isZero, computeTotals, salesReceiptLine, salesReceiptBuyerNeed } from '@we-invoice/core';
 
 export function emptyCart() {
   return [];
@@ -24,6 +25,11 @@ export function setCartQty(cart, itemId, qty) {
 export function changeCartQty(cart, itemId, delta) {
   const found = cart.find(e => e.item.id === itemId);
   return found ? setCartQty(cart, itemId, add(found.qty, delta)) : cart;
+}
+
+/** Sets the VAT choice of a line ("S:23", "AE"...); null returns to the item VAT. */
+export function setCartVat(cart, itemId, vat) {
+  return cart.map(e => (e.item.id === itemId ? { ...e, vat: vat || null } : e));
 }
 
 export function removeFromCart(cart, itemId) {
@@ -50,16 +56,18 @@ export function searchItems(items, query, limit = 60) {
 
 /**
  * Totals the receipt will have: gross, VAT and, for cash, the amount after
- * the legal rounding.
- * @returns {{gross: string, vat: string, net: string, payable: string, rounding: string, lines: Array<object>}}
+ * the legal rounding; buyerNeed names the category ('AE' or 'K') that makes
+ * the receipt need the buyer's IČ DPH.
+ * @returns {{gross: string, vat: string, net: string, payable: string, rounding: string, lines: Array<object>, buyerNeed: string|null}}
  */
 export function cartPreview(cart, { company = null, date = null, method = 'CASH' } = {}) {
-  if (!cart.length) return { gross: '0.00', vat: '0.00', net: '0.00', payable: '0.00', rounding: '0.00', lines: [] };
-  const lines = cart.map(e => salesReceiptLine(e.item, e.qty, { company, date }));
+  if (!cart.length) return { gross: '0.00', vat: '0.00', net: '0.00', payable: '0.00', rounding: '0.00', lines: [], buyerNeed: null };
+  const lines = cart.map(e => salesReceiptLine(e.item, e.qty, { company, date, vat: e.vat || null }));
   const totals = computeTotals({ kind: 'SALES_RECEIPT', currency: 'EUR', issueDate: date, lines, docDiscount: null }, { cashRounding: method === 'CASH' });
   const amounts = new Map(totals.lines.map(l => [l.id, l]));
   return {
     gross: totals.gross, vat: totals.vat, net: totals.net, payable: totals.payable, rounding: totals.rounding,
-    lines: lines.map((line, i) => ({ itemId: cart[i].item.id, total: amounts.get(line.id)?.total || '0.00' }))
+    lines: lines.map((line, i) => ({ itemId: cart[i].item.id, total: amounts.get(line.id)?.total || '0.00', category: line.vatCategory })),
+    buyerNeed: salesReceiptBuyerNeed(lines)
   };
 }
