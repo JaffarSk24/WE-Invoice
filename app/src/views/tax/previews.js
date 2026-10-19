@@ -58,7 +58,7 @@ export const KV_REPORT = {
 export const SV_REPORT = {
   report: 'sv',
   title: 'screen.sv.title',
-  types: ['R', 'O'],
+  types: FILING_TYPES,
   periodKinds: true,
   build: buildSv,
   prepare: async (records, { state }) => ({ vies: state.vies || {} }),

@@ -6,7 +6,7 @@
 //   UPDATE_TAX_GOLDEN=1 npx vitest run packages/core/tax/golden.test.js
 // and have the diff checked by an accountant before it is committed.
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync, statSync, rmSync } from 'node:fs';
 import { vatRecords, buildKv, buildSv, buildVatReturn, exportChecks, mergeProblems } from '../index.js';
 
 const dir = new URL('../../../tests/fixtures/tax/', import.meta.url);
@@ -57,11 +57,19 @@ describe('tax golden examples', () => {
     const expectedFile = new URL(`${name}/expected.json`, dir);
     if (UPDATE) {
       writeFileSync(expectedFile, `${JSON.stringify(actual, null, 2)}\n`);
-      for (const [report, xml] of Object.entries(out.xml)) writeFileSync(new URL(`${name}/${report}.xml`, dir), xml);
+      for (const [report, xml] of Object.entries(out.xml)) {
+        const file = new URL(`${name}/${report}.xml`, dir);
+        if (xml) writeFileSync(file, xml);
+        else rmSync(file, { force: true });
+      }
     }
     expect(actual).toEqual(JSON.parse(readFileSync(expectedFile, 'utf8')));
+    // A report with an open error has no XML, so its file must not exist:
+    // the XSD test checks only files the generator would really produce.
     for (const [report, xml] of Object.entries(out.xml)) {
-      expect(xml, `${name}/${report}.xml`).toBe(readFileSync(new URL(`${name}/${report}.xml`, dir), 'utf8'));
+      const file = new URL(`${name}/${report}.xml`, dir);
+      if (xml) expect(xml, `${name}/${report}.xml`).toBe(readFileSync(file, 'utf8'));
+      else expect(existsSync(file), `${name}/${report}.xml should not exist`).toBe(false);
     }
   });
 });

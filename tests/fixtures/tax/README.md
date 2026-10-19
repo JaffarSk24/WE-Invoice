@@ -1,6 +1,6 @@
 # Golden examples of the tax reports
 
-Each folder is one scenario of a tax period: `input.json` holds the company, the documents and the period; `expected.json` the totals of the VAT records, the sizes of the kontrolný výkaz sections, the rows of the súhrnný výkaz and of the VAT return and every problem the checks report; `kv.xml`, `sv.xml` and `dph.xml` the expected XML files. `packages/core/tax/golden.test.js` runs them all.
+Each folder is one scenario of a tax period: `input.json` holds the company, the documents and the period; `expected.json` the totals of the VAT records, the sizes of the kontrolný výkaz sections, the rows of the súhrnný výkaz and of the VAT return and every problem the checks report; `kv.xml`, `sv.xml` and `dph.xml` the expected XML files. A report with an open error (scenario 11 on purpose, and the kontrolný výkaz of a person registered under § 7 in scenario 12) has no XML: the generator refuses to write it, so the file is missing and the XSD test checks only files that would really be filed. `packages/core/tax/golden.test.js` runs them all.
 
 All parties are synthetic: the Slovak VAT ids have valid checksums but belong to nobody.
 

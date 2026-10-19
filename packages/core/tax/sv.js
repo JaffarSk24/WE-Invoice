@@ -5,12 +5,13 @@
 // note lowers the value in the period it is issued in. The buyer's VAT id
 // must be valid in VIES before filing: the caller passes the results it
 // has (ctx.vies), the core only reads them.
-// Kinds of filing: R riadny, O opravný (§ 80 ods. 5).
+// Kinds of filing: R riadny, O opravný, D dodatočný (form SVDPHv20). No
+// XML is produced while an error is open (xml is null then).
 import { add, isZero } from '../money/index.js';
 import { isValidVatId } from '../ids/validate.js';
 import { CoreError } from '../errors.js';
 import { formVersion, amountText } from './forms.js';
-import { problem } from './problems.js';
+import { problem, canExport } from './problems.js';
 import { svXml } from './sv-xml.js';
 
 const SV_TREATMENTS = ['EU_GOODS', 'EU_SERVICES'];
@@ -23,8 +24,8 @@ export function splitVatId(vatId) {
 
 /**
  * @param {ReturnType<import('./records.js').vatRecords>} records  records of the SV period
- * @param {{company: object, type?: 'R'|'O', vies?: Object<string, 'VALID'|'INVALID'|'UNKNOWN'>, today?: string}} ctx
- * @returns {{period: string, type: string, rows: Array, problems: Array, xml: string, form: object}}
+ * @param {{company: object, type?: 'R'|'O'|'D', vies?: Object<string, 'VALID'|'INVALID'|'UNKNOWN'>, today?: string}} ctx
+ * @returns {{period: string, type: string, rows: Array, problems: Array, xml: string|null, form: object}}
  */
 export function buildSv(records, ctx = {}) {
   const company = ctx.company || {};
@@ -65,7 +66,7 @@ export function buildSv(records, ctx = {}) {
     .filter(r => !isZero(r.value))
     .sort((a, b) => a.vatId.localeCompare(b.vatId) || a.code.localeCompare(b.code));
   const result = { period: records.period, type, rows, problems: dedupe(problems), form: { name: form.form, xsd: form.xsdFile, verified: form.verified } };
-  result.xml = svXml(result, company, form, ctx.today || null);
+  result.xml = canExport(result.problems) ? svXml(result, company, form, ctx.today || null) : null;
   return result;
 }
 

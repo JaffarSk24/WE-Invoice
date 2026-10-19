@@ -22,7 +22,7 @@ import { isValidVatId } from '../ids/validate.js';
 import { getLegislation } from '../legislation/index.js';
 import { CoreError } from '../errors.js';
 import { formVersion, rateText, amountText } from './forms.js';
-import { problem } from './problems.js';
+import { problem, canExport } from './problems.js';
 import { kvXml } from './kv-xml.js';
 
 export const FILING_TYPES = Object.freeze(['R', 'O', 'D']);
@@ -56,10 +56,19 @@ function docRow(e, partnerField) {
   };
 }
 
+// D.1 and D.2 are sums by rate; the XML folds them into the columns of
+// forms/kv.json (see kv-xml.js).
 function rateTotals(entries) {
   return groupBy(entries, e => rateText(e.rate) || '', e => ({ rate: rateText(e.rate) }))
     .filter(r => !(isZero(r.base) && isZero(r.vat)))
     .sort((a, b) => cmp(b.rate || '0', a.rate || '0'));
+}
+
+// The legislation code (STANDARD, REDUCED_1, REDUCED_2) of a rate on a date.
+export function rateCodeOn(rate, date) {
+  if (rate === null || rate === undefined || rate === '') return null;
+  const entry = getLegislation('vatRates', date).find(e => cmp(e.rate, rate) === 0);
+  return entry ? entry.code : null;
 }
 
 /**
@@ -102,12 +111,16 @@ export function buildKv(records, ctx = {}) {
   const d2 = rateTotals(domesticOut.filter(e => !e.ekasa && !isSkPayer(e.partner)));
 
   for (const row of [...d1, ...d2]) {
-    if (!form.rateTotals[row.rate]) problems.push(problem('RATE_NOT_ON_FORM', null, { severity: 'error', params: { rate: row.rate ?? '' } }));
+    row.code = rateCodeOn(row.rate, records.from);
+    if (!row.code || !form.rateColumns[row.code]) problems.push(problem('RATE_NOT_ON_FORM', null, { severity: 'error', params: { rate: row.rate ?? '' } }));
   }
   checkPartners(entries, problems);
+  checkRows({ b1, b2, c2, b3 }, problems);
   const sections = { A1: a1, A2: a2, B1: b1, B2: b2, B3: b3, C1: c1, C2: c2, D1: d1, D2: d2 };
   const result = { period: records.period, type, sections, problems, form: { name: form.form, xsd: form.xsdFile, verified: form.verified } };
-  result.xml = kvXml(result, records, company, form);
+  // No XML while an error is open: the schema has no place for a missing
+  // VAT id, number or original invoice.
+  result.xml = canExport(problems) ? kvXml(result, records, company, form) : null;
   return result;
 }
 
@@ -131,4 +144,18 @@ function checkPartners(entries, problems) {
       seen.add(e.docId);
     }
   }
+}
+
+// Rows of received documents: the schema needs the supplier's invoice
+// number, and B.3.2 the supplier's VAT id. A supplier from outside the EU
+// without a VAT id is listed in B.1 without one (a warning to check).
+function checkRows({ b1, b2, c2, b3 }, problems) {
+  const doc = (r) => ({ id: r.docId, number: r.number, kind: r.kind });
+  for (const r of [...b1, ...b2, ...c2]) {
+    if (!r.number) problems.push(problem('DOCUMENT_NUMBER_MISSING', doc(r), { severity: 'error' }));
+  }
+  for (const r of b1) {
+    if (!r.supplier) problems.push(problem('B1_SUPPLIER_WITHOUT_VAT_ID', doc(r), { severity: 'warning' }));
+  }
+  if (b3.perSupplier && b3.suppliers.some(r => !r.supplier)) problems.push(problem('PARTNER_VAT_ID_MISSING', null, { severity: 'error' }));
 }

@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dokument>
   <hlavicka>
-    <icDph>SK2020123457</icDph>
-    <druhVykazu>
-      <rv>1</rv>
-      <opv>0</opv>
-    </druhVykazu>
+    <identifikacneCislo>
+      <kodStatu>SK</kodStatu>
+      <dic>2020123457</dic>
+    </identifikacneCislo>
+    <danovyUrad></danovyUrad>
+    <druhSV>
+      <riadny>1</riadny>
+      <opravny>0</opravny>
+      <dodatocny>0</dodatocny>
+    </druhSV>
     <obdobie>
       <mesiac>3</mesiac>
       <stvrtrok></stvrtrok>
       <rok>2026</rok>
     </obdobie>
-    <nazov>Ján Malý</nazov>
-    <sidlo>
+    <obchodneMeno>
+      <riadok>Ján Malý</riadok>
+    </obchodneMeno>
+    <adresa>
       <ulica>Hlavná</ulica>
       <cislo>12</cislo>
       <psc>81101</psc>
       <obec>Bratislava</obec>
-      <stat>SK</stat>
-    </sidlo>
-    <telefon>+421 2 1234 5678</telefon>
-    <email>uctaren@example.sk</email>
-    <datumVyplnenia>2026-04-10</datumVyplnenia>
+      <tel>+421 2 1234 5678</tel>
+      <email>uctaren@example.sk</email>
+    </adresa>
+    <celkovaHodnota>600.00</celkovaHodnota>
+    <konatel>Ján Malý</konatel>
+    <datumVyhlasenia>
+      <den>10</den>
+      <mesiac>04</mesiac>
+      <rok>2026</rok>
+    </datumVyhlasenia>
   </hlavicka>
   <telo>
-    <riadky>
-      <riadok>
+    <strana>
+      <zaznam>
         <kodStatu>DE</kodStatu>
-        <icDph>123456789</icDph>
+        <idCislo>123456789</idCislo>
         <hodnota>600.00</hodnota>
         <kod>2</kod>
-      </riadok>
-    </riadky>
+      </zaznam>
+    </strana>
   </telo>
 </dokument>
