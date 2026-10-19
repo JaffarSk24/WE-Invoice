@@ -131,6 +131,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - README: installing on macOS (`xattr -cr`) and Windows (SmartScreen).
 - Tests for every pure part of the main process (backups, data checks, window bounds, network policy and requests, update utils, tray menu, scheduler, deep links, mail, secrets, packaging check) and the app side (transport, close handshake, tray state, updates, boot).
 
+#### Fixed (19 October)
+
+- The universal macOS build failed: the ad-hoc signing ran on the x64 and arm64 halves before they were merged, so their signature files differed. Only the merged app is signed now; the dmg and zip build, carry both architectures and start.
+
 ### Website, waitlist, privacy and terms
 
 #### Added
@@ -193,6 +197,18 @@ All notable changes to this project are documented here. The format follows [Kee
 - WE Budget: the payments of a period as a CSV the WE Budget statement import reads.
 - Full backup of the open company in one JSON file with a checksum, optionally sealed with a password (PBKDF2 and AES-GCM from the sync package). Restore shows what the file holds, can save the current data first, needs an explicit confirmation, migrates older schema versions, refuses newer and damaged files, and wins over the copies on other devices at the next sync.
 - The "Export a import" screen at `#/exim` with the tabs Export, Import, WE Time Tracker and Backup, and the backup in Settings, Export a import.
+
+#### Added (19 October)
+
+- Migration reads old Excel 97-2003 files (.xls, BIFF8) with its own small reader: the compound file container, the shared string table across CONTINUE records, dates by number format and cached formula results. Excel 95 files and files protected by a password are refused with their own messages.
+- Shoptet orders: the XML and the CSV order export become draft invoices (numbered when issued, the order code kept as the order reference) or received orders, with the customers as contacts and the products as price list items. Lines link to the price list by product code, prices are taken with VAT so the totals equal the orders, cancelled orders are skipped, and an order imported before is not imported again.
+- SuperFaktura API: with the account e-mail and the API key, clients, the price list and invoices with their lines and payments are downloaded page by page with a progress line and a stop button, then shown in the import preview like a file. The credentials can be kept on the device in the transport secrets. On the desktop the API is called directly; in the browser a request the API refuses is sent through the gateway route `/v1/proxy/superfaktura/{market}/{path}`.
+
+#### Changed (19 October)
+
+- The export, import and backup dictionaries are split into two files per language.
+- Two kind lists of the export modules are written out instead of spread, so the export code no longer loads with the start of the app.
+- The screen builds its DOM only through the helpers of `ui/dom.js`.
 
 ### Bookkeeping for sole traders
 

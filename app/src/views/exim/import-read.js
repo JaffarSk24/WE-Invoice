@@ -1,16 +1,22 @@
-// From picked files to what the importers read: an XLSX becomes rows of
-// its first sheet, a CSV rows of its text (UTF-8 or windows-1250), XML,
-// ISDOC and text files their text. Then the importer of the chosen
-// program parses them into drafts with a report.
+// From picked files to what the importers read: an XLSX or an old XLS
+// becomes rows of its first sheet, a CSV rows of its text (UTF-8 or
+// windows-1250), XML, ISDOC and text files their text. Then the importer
+// of the chosen program parses them into drafts with a report. The XLS
+// and Shoptet readers are imported by path: only this lazy screen uses
+// them, so the start of the app does not carry them.
 import {
   readXlsx, readCsv, decodeText, isZip, importIdoklad, importSuperfaktura, importKros, importPohoda, importCsv, parseIsdoc,
   createReport
 } from './core-bridge.js';
 import { CoreError } from '@we-invoice/core';
 import { fileBytes } from './files.js';
+import { readXls, isXls } from '../../../../packages/core/imports/xls.js';
+import { importShoptet } from '../../../../packages/core/imports/shoptet.js';
 
-export const PROGRAMS = Object.freeze(['idoklad', 'superfaktura', 'kros', 'pohoda', 'isdoc', 'csv']);
-export const ACCEPT = '.csv,.txt,.xlsx,.xml,.isdoc';
+export const PROGRAMS = Object.freeze(['idoklad', 'superfaktura', 'superfakturaApi', 'kros', 'pohoda', 'isdoc', 'shoptet', 'csv']);
+// Programs that come over the network, not in files.
+export const API_PROGRAMS = Object.freeze(['superfakturaApi']);
+export const ACCEPT = '.csv,.txt,.xlsx,.xls,.xml,.isdoc';
 
 /** One file as { name, rows } (a table) or { name, text }. */
 export async function readSourceFile(file) {
@@ -21,16 +27,17 @@ export async function readSourceFile(file) {
     const book = await readXlsx(bytes);
     return { name, rows: book.rows };
   }
-  if (/\.xls$/i.test(name) || (bytes[0] === 0xd0 && bytes[1] === 0xcf)) throw new CoreError('IMPORT_XLS_OLD', 'old binary XLS');
+  if (isXls(bytes)) return { name, rows: readXls(bytes).rows };
   const { text } = decodeText(bytes);
-  if (/\.csv$/i.test(name) || (!/^\s*</.test(text) && !/^\s*R00\t/.test(text))) return { name, rows: readCsv(text) };
+  if (/\.csv$/i.test(name) || (!/^\s*</.test(text) && !/^\s*R00\t/.test(text))) return { name, rows: readCsv(text), text };
   return { name, text };
 }
 
 /**
  * @param {string} program  one of PROGRAMS
  * @param {Array<{name: string, rows?: string[][], text?: string}>} files
- * @param {{company: object, direction: 'OUT'|'IN', mappings?: Map<string, {entity, mapping}>}} ctx
+ * @param {{company: object, direction: 'OUT'|'IN', mappings?: Map<string, {entity, mapping}>, target?: string, addItems?: boolean}} ctx
+ *   target and addItems: what Shoptet orders become, and whether their products join the price list
  */
 export function parseSources(program, files, ctx) {
   const tableCtx = (file) => ({ company: ctx.company, direction: ctx.direction, ...(ctx.mappings && ctx.mappings.get(file.name)) });
@@ -40,6 +47,7 @@ export function parseSources(program, files, ctx) {
     case 'kros': return mergeResults(files.map(f => importKros([f], tableCtx(f))));
     case 'pohoda': return mergeResults(files.map(f => importPohoda(requireText(f), { company: ctx.company })));
     case 'isdoc': return mergeResults(files.map(f => isdocResult(f, ctx)));
+    case 'shoptet': return mergeResults(files.map(f => importShoptet(typeof f.text === 'string' ? f.text : f.rows, { company: ctx.company, target: ctx.target, addItems: ctx.addItems })));
     default: return mergeResults(files.map(f => {
       const mapped = ctx.mappings && ctx.mappings.get(f.name);
       return importCsv(f.rows || readCsv(requireText(f)), mapped ? mapped.mapping : null, { ...tableCtx(f), name: f.name });

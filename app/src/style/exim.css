@@ -50,3 +50,8 @@
   .exim-dates { flex-wrap: wrap; }
   .exim-actions .btn { flex: 1 1 auto; }
 }
+
+/* Option blocks of one import source at a time; [hidden] wins over the grid. */
+.exim-card [hidden] { display: none; }
+.exim-sf { margin: 8px 0; }
+.exim-sf progress { width: 100%; height: 8px; margin-top: 8px; accent-color: var(--accent-blue); }

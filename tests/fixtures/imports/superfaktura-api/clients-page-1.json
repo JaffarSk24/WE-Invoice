@@ -1,0 +1,4 @@
+{"itemCount": 3, "pageCount": 2, "perPage": 2, "page": 1, "items": [
+  {"Client": {"id": "101", "name": "Kaviareň u Moniky, s. r. o.", "ico": "44556677", "dic": "2022000018", "ic_dph": "SK2022000018", "iban": "SK3112000000198742637541", "email": "fakturacia@example.sk", "address": "Štúrova 1", "city": "Žilina", "zip": "010 01", "country": "Slovensko", "country_iso_id": "SK", "phone": "+421 41 000 000", "due_date": "14", "currency": "EUR", "comment": ""}, "ClientStat": {"id": "1"}},
+  {"Client": {"id": "102", "name": "Česká kavárna s.r.o.", "ico": "27082440", "dic": "CZ27082440", "ic_dph": "CZ27082440", "email": "", "address": "Na Příkopě 10", "city": "Praha", "zip": "110 00", "country": "Česká republika", "country_iso_id": "CZ", "phone": "", "due_date": null, "currency": "CZK", "comment": "Platí vždy včas"}}
+]}

@@ -30,7 +30,11 @@ const VOUCHER_TYPES = Object.freeze({ SALES_RECEIPT: 'receipt', CASH_IN: 'receip
 const RATE_NAMES = Object.freeze({ STANDARD: 'high', REDUCED_1: 'low', REDUCED_2: 'third' });
 const PAYMENT_TYPES = Object.freeze({ TRANSFER: 'draft', CASH: 'cash', CARD: 'creditcard', COD: 'delivery', OFFSET: 'compensation', ONLINE: 'draft', QR_ON_SITE: 'draft' });
 
-export const POHODA_KINDS = Object.freeze([...Object.keys(INVOICE_TYPES), ...Object.keys(VOUCHER_TYPES)]);
+// The keys of both maps, written out (see ACCOUNTING_KINDS in period.js).
+export const POHODA_KINDS = Object.freeze([
+  'INVOICE', 'SELF_BILLING', 'CREDIT_NOTE', 'DEBIT_NOTE', 'PROFORMA', 'RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE',
+  'SALES_RECEIPT', 'CASH_IN', 'EXPENSE_RECEIPT', 'CASH_OUT'
+]);
 
 /** The other party of a document: the buyer of a sale, the seller of a purchase. */
 export function partnerOf(document) {
