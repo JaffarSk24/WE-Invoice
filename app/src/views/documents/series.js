@@ -21,6 +21,13 @@ export const DEFAULT_MASKS = Object.freeze({
 export const NUMBERED_KINDS = Object.freeze(Object.keys(DEFAULT_MASKS));
 export const SERIES_RESETS = Object.freeze(['YEARLY', 'MONTHLY', 'NEVER']);
 
+// The series made on first use has the same id on every device: two
+// devices that both issue their first invoice before syncing then number
+// in one series, and the merge finds a number taken twice.
+export function defaultSeriesId(kind) {
+  return `series-default-${kind}`;
+}
+
 export function defaultSeries(kind, { id = uuidv7(), name = '' } = {}) {
   return { id, name, kind, mask: DEFAULT_MASKS[kind] || 'D{YYYY}{N:4}', vsMask: null, reset: 'YEARLY', isDefault: true, counters: {} };
 }
@@ -41,7 +48,7 @@ export function resolveSeries(company, kind, seriesId = null, newId = undefined)
   const own = seriesOfKind(company, kind);
   const hit = (seriesId && own.find(s => s.id === seriesId)) || own[0];
   if (hit) return { series: hit, created: false };
-  return { series: defaultSeries(kind, newId ? { id: newId } : {}), created: true };
+  return { series: defaultSeries(kind, { id: newId || defaultSeriesId(kind) }), created: true };
 }
 
 /** The company's series list with one series replaced or added. */
