@@ -1,29 +1,20 @@
 // A cash receipt or expense voucher by hand, and the actions of an existing
-// one. VAT rates come from legislation on the voucher date (only offered
-// to a VAT payer). An expense that would take the balance below zero asks
+// one. The VAT choice (a rate, reverse charge, an exemption or no VAT) comes
+// from legislation on the voucher date and is offered to a VAT payer only
+// (voucher-vat.js). An expense that would take the balance below zero asks
 // first unless the book allows it.
 import { h } from '../../../ui/dom.js';
 import { openModal, confirmDialog } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast } from '../../../ui/toast.js';
-import { textField, amountField, dateField, selectField } from '../../../components/fields.js';
+import { textField, amountField, dateField } from '../../../components/fields.js';
 import { todayLocal } from '../../../components/dates.js';
-import { checkCashOut, vatRatesOn } from '@we-invoice/core';
+import { checkCashOut } from '@we-invoice/core';
 import { moneyState } from '../shared/data.js';
 import { canWrite, guarded } from '../shared/write.js';
 import { money, day } from '../shared/format.js';
 import { createVoucher, cancelVoucher } from './operations.js';
-
-function vatOptions(company, date) {
-  if (company.vatMode !== 'PAYER') return null;
-  let rates = [];
-  try {
-    rates = vatRatesOn(date || todayLocal());
-  } catch (e) {
-    console.warn('No VAT rates on the date', e);
-  }
-  return [{ value: '', label: t('cash.voucher.noVat') }, ...rates.map(r => ({ value: r.rate, label: `${r.rate} %` }))];
-}
+import { voucherVatFields, vatChoiceLabel } from './voucher-vat.js';
 
 /** Asks before an expense takes the balance below zero; true when it may go on. */
 export async function negativeAllowed(book, documents, date, amount) {
@@ -39,12 +30,11 @@ export function openVoucherDialog({ book, kind }) {
   const date = dateField({ label: t('cash.voucher.date'), value: todayLocal(), required: true });
   const amount = amountField({ label: t('cash.voucher.amount'), currency: book.currency, required: true });
   const purpose = textField({ label: t('cash.voucher.purpose'), required: true });
-  const partner = textField({ label: t(kind === 'CASH_IN' ? 'cash.voucher.partnerIn' : 'cash.voucher.partnerOut') });
-  const options = vatOptions(state.company, todayLocal());
-  const vat = options ? selectField({ label: t('cash.voucher.vatRate'), options, value: '' }) : null;
+  const vat = voucherVatFields({ state, kind, date: () => date.value() || todayLocal() });
+  date.input.addEventListener('change', () => vat.refresh());
   openModal({
     title: t(`cash.kind.${kind}`),
-    body: h('div', { class: 'form-grid' }, date.el, amount.el, purpose.el, partner.el, vat ? vat.el : null),
+    body: h('div', { class: 'form-grid voucher-form' }, date.el, amount.el, purpose.el, vat.els),
     actions: [
       { label: t('common.cancel'), onClick: (m) => m.close() },
       {
@@ -52,18 +42,26 @@ export function openVoucherDialog({ book, kind }) {
           const value = amount.value();
           if (!value || Number(value) <= 0) { amount.setError(t('errors.AMOUNT_INVALID')); return; }
           if (!purpose.value()) { purpose.setError(t('cash.voucher.purposeRequired')); return; }
+          if (!vat.validate()) return;
           const when = date.value() || todayLocal();
           if (kind === 'CASH_OUT' && !(await negativeAllowed(book, moneyState().documents, when, value))) return;
           m.close();
           const voucher = await guarded(store => createVoucher(store, {
             bookId: book.id, kind, date: when, amount: value, purpose: purpose.value(),
-            partner: partner.value() ? { name: partner.value() } : null, vatRate: vat && vat.value() ? vat.value() : null
+            partner: vat.partner(), contactId: vat.contactId(), vat: vat.vat()
           }));
           if (voucher) showToast(t('cash.voucher.saved', { number: voucher.number }), { type: 'success' });
         }
       }
     ]
   });
+}
+
+// The VAT of a voucher in words, for its actions dialog.
+function voucherVatText(voucher) {
+  const line = voucher.lines?.[0];
+  if (!line || !line.vatCategory || line.vatCategory === 'O') return null;
+  return vatChoiceLabel({ category: line.vatCategory, rate: line.vatRate });
 }
 
 export function openVoucherActions(voucherId) {
@@ -76,7 +74,8 @@ export function openVoucherActions(voucherId) {
     body: h('div', {},
       h('p', {}, `${day(voucher.issueDate)}: ${money(voucher.totals?.payable, voucher.currency)}`),
       h('p', {}, voucher.lines?.[0]?.name || ''),
-      party?.name ? h('p', { class: 'muted' }, party.name) : null),
+      voucherVatText(voucher) ? h('p', { class: 'muted' }, voucherVatText(voucher)) : null,
+      party?.name ? h('p', { class: 'muted' }, [party.name, party.icDph].filter(Boolean).join(', ')) : null),
     actions: [
       { label: t('common.close'), onClick: (m) => m.close() },
       {
