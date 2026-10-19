@@ -61,6 +61,7 @@ export default {
   "documents.action.addPayment": "Add payment",
   "documents.action.edit": "Edit",
   "documents.action.copy": "Copy",
+  "documents.action.recurring": "Repeat regularly",
   "documents.action.more": "More actions",
   "documents.action.deleteDraft": "Delete draft",
   "documents.action.closeEdit": "Close editing",

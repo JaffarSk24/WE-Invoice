@@ -61,6 +61,7 @@ export default {
   "documents.action.addPayment": "Pridať úhradu",
   "documents.action.edit": "Upraviť",
   "documents.action.copy": "Kopírovať",
+  "documents.action.recurring": "Opakovať pravidelne",
   "documents.action.more": "Ďalšie akcie",
   "documents.action.deleteDraft": "Zmazať koncept",
   "documents.action.closeEdit": "Zavrieť úpravu",
