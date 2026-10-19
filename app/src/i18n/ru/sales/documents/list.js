@@ -61,6 +61,7 @@ export default {
   "documents.action.addPayment": "Добавить оплату",
   "documents.action.edit": "Изменить",
   "documents.action.copy": "Копировать",
+  "documents.action.recurring": "Повторять регулярно",
   "documents.action.more": "Другие действия",
   "documents.action.deleteDraft": "Удалить черновик",
   "documents.action.closeEdit": "Закрыть редактирование",
