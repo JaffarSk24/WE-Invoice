@@ -8,7 +8,9 @@ import { HttpError, upstreamUnavailable } from '../lib/errors.js';
 import { resolvePublicHost, assertSameOrigin } from '../lib/ssrf.js';
 import { createAllowlist, resolveUpstreamBase } from '../providers/allowlist.js';
 
-const FORWARD_REQUEST = ['content-type', 'accept', 'content-length', 'x-peppol-participant-id', 'x-api-key', 'accept-language', 'if-none-match'];
+// idempotency-key: the client sends one key per document revision, so a send
+// retried after a lost answer is not delivered twice (04-peppol.md § 4.6).
+const FORWARD_REQUEST = ['content-type', 'accept', 'content-length', 'x-peppol-participant-id', 'x-api-key', 'accept-language', 'if-none-match', 'idempotency-key'];
 // Never cache-control or set-cookie: provider answers carry API tokens and
 // must not be cached anywhere, so the gateway always answers no-store.
 const FORWARD_RESPONSE = ['content-type', 'content-length', 'content-disposition', 'etag', 'location', 'x-request-id', 'retry-after'];

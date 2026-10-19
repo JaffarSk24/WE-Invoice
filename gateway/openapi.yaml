@@ -36,6 +36,7 @@ paths:
       - { name: path, in: path, required: true, description: Rest of the upstream path (wildcard), schema: { type: string } }
       - { name: X-Upstream-Authorization, in: header, required: false, description: Moved to Authorization of the upstream request. Never logged or stored., schema: { type: string } }
       - { name: X-Upstream-Base, in: header, required: false, description: Only for providerId "sapi-sk" with a custom base URL; must pass the SSRF checks., schema: { type: string, format: uri } }
+      - { name: Idempotency-Key, in: header, required: false, description: Forwarded unchanged; one key per document revision so a retried send is not delivered twice., schema: { type: string, maxLength: 200 } }
     x-rate-limit: 60/min per IP; body up to 15 MB; streamed, never stored
     get: { tags: [proxy], summary: Proxy GET to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
     post: { tags: [proxy], summary: Proxy POST to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
