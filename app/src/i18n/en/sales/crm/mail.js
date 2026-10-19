@@ -15,6 +15,8 @@ export default {
   'mail.dialog.opened': 'Your mail program should open now and the PDF is downloaded. Remember to attach it.',
   'mail.dialog.openAgain': 'Open the e-mail again',
   'mail.dialog.attachment': 'Attachment: the document as PDF',
+  'mail.dialog.extraAttachments': 'Other attachments: {names}',
+  'mail.dialog.missingAttachments': 'These attachments are not on this device and will not be sent: {names}',
   'mail.dialog.send': 'Send',
   'mail.dialog.openClient': 'Open in the mail program',
   'mail.error.recipients': 'Check the recipient addresses: {list}',

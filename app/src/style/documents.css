@@ -59,3 +59,10 @@ label.btn.is-disabled { opacity: 0.5; pointer-events: none; }
   .more-menu { right: auto; left: 0; }
   .pdf-frame { min-height: 480px; }
 }
+
+.attachment-list { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.attachment-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 6px 0; border-bottom: 1px solid var(--border-color); }
+.attachment-row svg { width: 18px; height: 18px; color: var(--text-muted); }
+.attachment-name { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; }
+.attachment-tools { display: inline-flex; gap: 4px; margin-left: auto; }
+.attachment-add { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }

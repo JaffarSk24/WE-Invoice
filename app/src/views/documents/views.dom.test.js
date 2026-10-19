@@ -11,6 +11,7 @@ import { salesRoute } from './route-view.js';
 import { renderEditor } from '../editor/view.js';
 import { newDraft } from '../editor/draft.js';
 import { boot, openNew } from '../../boot/sales-documents.js';
+import { addAttachments } from '../editor/attachments.js';
 import { setPref } from '../../prefs.js';
 import { COMPANY, CONTACT } from './fixtures.js';
 
@@ -140,6 +141,32 @@ describe('eKasa hint on the card', () => {
     const root = await cardWithCashPayment();
     expect(root.querySelector('.payment-row')).not.toBeNull();
     expect(root.querySelector('.payment-row .payment-tools .btn-sm:not(.btn-icon)')).toBeNull();
+  });
+});
+
+describe('attachments on the card', () => {
+  it('lists the files and removes one from an issued document only after a confirmation', async () => {
+    const contact = await store.insert('contacts', structuredClone(CONTACT));
+    const doc = await store.insert('documents', { ...filledDraft(contact), status: 'ISSUED', number: 'FA20260004', seller: { name: 'Alfa' } });
+    const bytes = { name: 'zmluva.pdf', type: 'application/pdf', size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer };
+    await addAttachments(store, doc.id, [bytes]);
+    const root = document.createElement('main');
+    document.body.append(root);
+    window.location.hash = `#/invoices/${doc.id}`;
+    salesRoute({ transport: null })(root, 'invoices');
+    // The card loads on first use.
+    for (let i = 0; i < 100 && !root.querySelector('.doc-attachments'); i += 1) await tick(10);
+    expect(root.querySelector('.doc-attachments .attachment-name').textContent).toBe('zmluva.pdf');
+    expect(root.querySelector('#attachment-add')).not.toBeNull();
+
+    root.querySelector('.attachment-remove').click();
+    const confirm = document.querySelector('.modal-content .btn-danger');
+    expect(confirm).not.toBeNull();
+    expect(store.get('documents', doc.id).attachments).toHaveLength(1);
+    confirm.click();
+    await tick(30);
+    expect(store.get('documents', doc.id).attachments).toEqual([]);
+    expect(store.list('auditLog').some(e => e.entityId === doc.id && e.reason === 'attachment removed')).toBe(true);
   });
 });
 

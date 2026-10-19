@@ -5,7 +5,7 @@
 // happens: SMTP sends with the PDF attached; without it the PDF is
 // downloaded and the user's mail program opens to attach it by hand.
 import '../style/contacts.css';
-import { h, icon, selectEl } from '../ui/dom.js';
+import { h, icon, selectEl, append } from '../ui/dom.js';
 import { refreshIcons } from '../ui/icons.js';
 import { t } from '../i18n/index.js';
 import { openModal } from '../ui/modal.js';
@@ -16,6 +16,7 @@ import { composeMail, splitAddresses, invalidAddresses } from './compose.js';
 import { MAIL_LANGUAGES } from './templates.js';
 import { smtpAccount } from './deliver.js';
 import { sendDocumentMail } from './send.js';
+import { documentAttachments } from './attachments.js';
 
 function input(id, label, value, type = 'text') {
   const el = h('input', { id, type, value, autocomplete: 'off', spellcheck: 'false' });
@@ -51,6 +52,16 @@ export function openSendDialog(ctx) {
   const note = smtp
     ? h('p', { class: 'callout' }, icon('info'), h('span', {}, t('mail.dialog.smtpNote', { from: smtp.from })))
     : h('p', { class: 'callout callout-warning' }, icon('info'), h('span', {}, t(transport.platform === 'web' ? 'mail.dialog.webNote' : 'mail.dialog.noSmtpNote')));
+
+  // The document's own files go with the PDF; the ones this device does not have are named.
+  const extraNote = h('div', { class: 'mail-extras muted small', id: 'mail-extras' });
+  const names = (document.attachments || []).map(a => a.name);
+  if (names.length) {
+    append(extraNote, [h('p', {}, icon('file-text'), ' ', t('mail.dialog.extraAttachments', { names: names.join(', ') }))]);
+    documentAttachments(document).then(({ missing }) => {
+      if (missing.length) append(extraNote, [h('p', { class: 'callout callout-warning' }, t('mail.dialog.missingAttachments', { names: missing.join(', ') }))]);
+    }).catch(e => console.warn('Attachments could not be checked', e));
+  }
 
   let modal = null;
   let busy = false;
@@ -94,6 +105,7 @@ export function openSendDialog(ctx) {
       subject.row,
       h('div', { class: 'field' }, h('label', { for: 'mail-body' }, t('mail.field.body')), body),
       h('p', { class: 'muted small' }, icon('file-text'), ' ', t('mail.dialog.attachment')),
+      extraNote,
       status),
     actions: [
       { label: t('common.cancel'), onClick: (m) => m.close() },

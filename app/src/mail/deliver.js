@@ -1,8 +1,9 @@
 // Getting an e-mail out. On the desktop with an SMTP account the message
 // goes through window.weMail (nodemailer in the main process, password in
-// the system keychain) with the PDF attached. In the browser the PDF is
-// downloaded and the user's mail program opens with a mailto: link; the
-// user attaches the PDF there (a link cannot carry an attachment). Gmail
+// the system keychain) with the PDF and the document's own attachments.
+// In the browser those files are downloaded and the user's mail program
+// opens with a mailto: link; the user attaches them there (a link cannot
+// carry an attachment). Gmail
 // sending needs a verified Google app and is not wired yet. Every outcome
 // becomes a sendLog entry on the document.
 import { CoreError, canTransition } from '@we-invoice/core';
@@ -28,11 +29,15 @@ async function bytesOf(blob) {
   return new Uint8Array(await blob.arrayBuffer());
 }
 
-export async function sendViaSmtp(win, account, message, attachment = null) {
+// extras: the document's attachments [{ fileName, blob, contentType }].
+export async function sendViaSmtp(win, account, message, attachment = null, extras = []) {
+  const files = [];
+  if (attachment) files.push({ filename: attachment.fileName, content: await bytesOf(attachment.blob), contentType: 'application/pdf' });
+  for (const extra of extras) files.push({ filename: extra.fileName, content: await bytesOf(extra.blob), contentType: extra.contentType || 'application/octet-stream' });
   const result = await win.weMail.send(account, {
     to: message.to, cc: message.cc, bcc: message.bcc, replyTo: message.replyTo || undefined,
     subject: message.subject, text: message.body,
-    attachments: attachment ? [{ filename: attachment.fileName, content: await bytesOf(attachment.blob), contentType: 'application/pdf' }] : []
+    attachments: files
   });
   if (!result || !result.ok) {
     const code = (result && result.error && result.error.code) || 'MAIL_FAILED';
@@ -41,10 +46,12 @@ export async function sendViaSmtp(win, account, message, attachment = null) {
   return { result: 'SENT', messageId: result.messageId || null };
 }
 
-// Downloads the PDF and opens the mail program. Returns the mailto link so
-// the dialog can offer it again when nothing opened.
-export async function openMailClient({ transport, message, attachment = null, openUrl }) {
+// Downloads the PDF and the attachments and opens the mail program.
+// Returns the mailto link so the dialog can offer it again when nothing
+// opened.
+export async function openMailClient({ transport, message, attachment = null, extras = [], openUrl }) {
   if (attachment) await transport.files.saveAs(attachment.fileName, attachment.blob);
+  for (const extra of extras) await transport.files.saveAs(extra.fileName, extra.blob instanceof Blob ? extra.blob : new Blob([extra.blob], { type: extra.contentType }));
   const url = mailtoUrl(message);
   openUrl(url);
   return { result: 'CLIENT_OPENED', url };
