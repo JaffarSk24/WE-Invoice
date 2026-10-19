@@ -1,8 +1,10 @@
 // The quick sale screen (route #/quick-sale, predajka, § 3.6): items on the
 // left (search, or a USB barcode scanner that types the code and Enter),
 // the cart on the right with quantities, totals, cash or card and an
-// optional partial payment. "Sell" issues the receipt, moves the stock and
-// shows what to type into the virtual cash register.
+// optional partial payment. Each line has its VAT choice, as on an invoice;
+// a reverse-charge line asks for the buyer's IČ DPH. "Sell" issues the
+// receipt, moves the stock and shows what to type into the virtual cash
+// register.
 import { ekasaExempt } from '@we-invoice/core';
 import { h, icon, append, clear } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
@@ -15,7 +17,9 @@ import { showToast, showError } from '../../../ui/toast.js';
 import { isDemo } from '../../shell/demo-mode.js';
 import { stockData } from '../data.js';
 import { moneyText, nameIndex, unitLabel, refuseWrite, qtyText } from '../format.js';
-import { emptyCart, addToCart, setCartQty, changeCartQty, removeFromCart, findByCode, searchItems, cartPreview } from './cart.js';
+import { emptyCart, addToCart, setCartQty, setCartVat, changeCartQty, removeFromCart, findByCode, searchItems, cartPreview } from './cart.js';
+import { vatSelect } from './vat-select.js';
+import { createBuyerForm } from './buyer.js';
 import { checkout } from './checkout.js';
 import { openSaleSummary } from './summary.js';
 
@@ -54,6 +58,7 @@ export function renderQuickSale(root) {
   const methodGroup = h('div', { class: 'segmented', role: 'group', 'aria-label': t('stock.sale.method') });
   const warehouse = h('select', { id: 'sale-warehouse', 'aria-label': t('stock.filter.warehouse'), onchange: (e) => { state.warehouseId = e.target.value; } });
   const warehouseField = h('label', { class: 'sale-warehouse' }, h('span', {}, t('stock.move.warehouse')), warehouse);
+  const buyerForm = createBuyerForm({ contacts: () => data.contacts });
   const sell = h('button', { type: 'button', class: 'btn btn-primary sale-sell', id: 'sale-sell', onclick: () => finish() }, icon('banknote'), t('stock.sale.sell'));
 
   function add(item) {
@@ -97,7 +102,9 @@ export function renderQuickSale(root) {
     try { preview = cartPreview(state.cart, { company: data.company, date: todayLocal(), method: state.method }); } catch (e) { showError(e); preview = cartPreview([], {}); }
     if (!state.cart.length) cartBox.append(h('p', { class: 'muted sale-cart-empty' }, t('stock.sale.cartEmpty')));
     const totals = new Map(preview.lines.map(l => [l.itemId, l.total]));
+    const today = todayLocal();
     for (const entry of state.cart) {
+      const vat = vatSelect(entry, { company: data.company, date: today, onChange: (value) => { state.cart = setCartVat(state.cart, entry.item.id, value); drawCart(); } });
       const qty = h('input', {
         type: 'text', inputmode: 'decimal', class: 'num sale-qty', value: toInputText(entry.qty), 'aria-label': t('stock.sale.qtyFor', { item: entry.item.name }),
         onchange: (e) => { const parsed = parseDecimal(e.target.value); state.cart = setCartQty(state.cart, entry.item.id, parsed ?? entry.qty); drawCart(); }
@@ -109,8 +116,10 @@ export function renderQuickSale(root) {
           qty,
           h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('stock.sale.more'), onclick: () => { state.cart = changeCartQty(state.cart, entry.item.id, '1'); drawCart(); } }, icon('chevron-right'))),
         h('div', { class: 'sale-line-total num' }, moneyText(totals.get(entry.item.id) || '0')),
-        h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('stock.sale.remove'), onclick: () => { state.cart = removeFromCart(state.cart, entry.item.id); drawCart(); } }, icon('x'))));
+        h('button', { type: 'button', class: 'btn btn-ghost btn-icon btn-sm', 'aria-label': t('stock.sale.remove'), onclick: () => { state.cart = removeFromCart(state.cart, entry.item.id); drawCart(); } }, icon('x')),
+        vat ? h('div', { class: 'sale-line-vat' }, vat) : null));
     }
+    buyerForm.show(preview.buyerNeed);
     append(clear(totalsBox), [
       h('dt', {}, t('stock.sale.vat')), h('dd', {}, moneyText(preview.vat)),
       h('dt', {}, t('stock.sale.total')), h('dd', {}, moneyText(preview.gross)),
@@ -133,14 +142,17 @@ export function renderQuickSale(root) {
     state.busy = true;
     drawCart();
     try {
-      const { document, warnings } = await checkout(state.cart, { method: state.method, paid: paidAmount, warehouseId: state.warehouseId || null });
+      const { document, warnings } = await checkout(state.cart, { method: state.method, paid: paidAmount, warehouseId: state.warehouseId || null, buyer: buyerForm.value() });
       state.cart = emptyCart();
+      buyerForm.reset();
       state.paid = '';
       paid.value = '';
       // A company without eKasa gets no VRP2 data to copy, only the confirmation.
       if (ekasaExempt(data.company)) saleDone(document, warnings);
       else openSaleSummary(document, { warnings, itemName: nameIndex(data.items) });
     } catch (e) {
+      // A missing or wrong IČ DPH is marked at its field as well.
+      if (e && e.details && e.details.field && String(e.code).startsWith('SALES_RECEIPT_BUYER')) buyerForm.setError(e.details.field, t(`errors.${e.code}`));
       showError(e, 'stock.error.sale');
     } finally {
       state.busy = false;
@@ -154,7 +166,7 @@ export function renderQuickSale(root) {
     h('div', { class: 'sale-layout' },
       h('section', { class: 'card sale-catalog', 'aria-label': t('stock.sale.catalog') }, search, itemsBox),
       h('section', { class: 'card sale-cart', 'aria-label': t('stock.sale.cart') },
-        h('h2', {}, t('stock.sale.cart')), cartBox, totalsBox, methodGroup,
+        h('h2', {}, t('stock.sale.cart')), cartBox, totalsBox, buyerForm.el, methodGroup,
         h('label', { class: 'sale-paid-field', for: 'sale-paid' }, h('span', {}, t('stock.sale.paidLabel')), paid),
         warehouseField, sell,
         vrpHint))]);
@@ -172,6 +184,6 @@ export function renderQuickSale(root) {
     drawItems();
     drawWarehouses();
   };
-  unsubscribe.push(on('data:changed', (e) => { if (!e || ['items', 'warehouses', 'company', null].includes(e.collection ?? null)) refresh(); }));
+  unsubscribe.push(on('data:changed', (e) => { if (!e || ['items', 'warehouses', 'company', 'contacts', null].includes(e.collection ?? null)) refresh(); }));
   ['company:switched', 'demo:enabled', 'demo:disabled'].forEach(ev => unsubscribe.push(on(ev, refresh)));
 }

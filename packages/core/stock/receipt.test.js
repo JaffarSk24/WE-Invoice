@@ -70,10 +70,11 @@ describe('vrpSummary', () => {
     const summary = vrpSummary(sale().document);
     expect(summary).toMatchObject({ number: 'PR20260001', method: 'CASH', total: '27.08', rounding: '0.02', payable: '27.10', paid: '27.10' });
     expect(summary.lines).toEqual([
-      { name: 'Farba', qty: '2', unitPrice: '12.30', vatRate: '23', total: '24.60' },
-      { name: 'Štetec', qty: '1', unitPrice: '2.48', vatRate: '23', total: '2.48' }
+      { name: 'Farba', qty: '2', unitPrice: '12.30', category: 'S', vatRate: '23', total: '24.60', exemption: null },
+      { name: 'Štetec', qty: '1', unitPrice: '2.48', category: 'S', vatRate: '23', total: '2.48', exemption: null }
     ]);
-    expect(summary.vat).toEqual([{ rate: '23', base: '22.02', vat: '5.06', total: '27.08' }]);
+    expect(summary.vat).toEqual([{ category: 'S', rate: '23', base: '22.02', vat: '5.06', total: '27.08' }]);
+    expect(summary).toMatchObject({ texts: [], buyer: null, reverseCharge: false });
   });
 });
 

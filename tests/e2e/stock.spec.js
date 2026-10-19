@@ -73,3 +73,39 @@ test('receipt, quick sale and the stock level drops', async ({ page }) => {
   await page.goto('./#/stock/moves');
   await expect(page.locator('.data-table')).toContainText('Výdaj');
 });
+
+test('a reverse-charge line on the quick sale needs the buyer IČ DPH', async ({ page }) => {
+  test.setTimeout(90_000);
+  await createCompany(page);
+
+  await page.goto('./#/stock');
+  await page.locator('#stock-receipt').click();
+  await page.locator('#stock-move-new-item').click();
+  await page.fill('#stock-new-item-name', 'Mobilný telefón');
+  await topModal(page).locator('.field', { hasText: 'Predajná cena bez DPH' }).locator('input').fill('100');
+  await topModal(page).getByRole('button', { name: 'Uložiť' }).click();
+  await page.fill('#stock-move-qty', '5');
+  await topModal(page).getByRole('button', { name: 'Uložiť' }).click();
+  await expect(page.locator('.modal-content')).toHaveCount(0);
+
+  await page.goto('./#/quick-sale');
+  await page.locator('.sale-item', { hasText: 'Mobilný telefón' }).click();
+  await expect(page.locator('#sale-buyer')).toBeHidden();
+  await page.locator('select.sale-vat').selectOption('AE');
+  await expect(page.locator('#sale-buyer')).toBeVisible();
+  await expect(page.locator('#sale-payable')).toContainText('100,00');
+  await page.locator('#sale-sell').click();
+  await expect(page.locator('#sale-buyer-name-error')).toBeVisible();
+  await expect(page.locator('#stock-vrp')).toHaveCount(0);
+
+  await page.fill('#sale-buyer-name', 'Gama, s. r. o.');
+  await page.fill('#sale-buyer-icdph', 'CZ12345679');
+  await page.locator('#sale-sell').click();
+  await expect(page.locator('#sale-buyer-icdph-error')).toContainText('SK');
+  await page.fill('#sale-buyer-icdph', 'SK2021000003');
+  await page.locator('#sale-sell').click();
+  await expect(page.locator('#stock-vrp-buyer')).toHaveText('Gama, s. r. o., SK2021000003');
+  await expect(page.locator('#stock-vrp td[data-category="AE"]').first()).toHaveText('Prenesenie daňovej povinnosti');
+  await expect(page.locator('#stock-vrp-reverse-charge')).toBeVisible();
+  await expect(page.locator('#stock-vrp-payable')).toContainText('100,00');
+});

@@ -11,11 +11,12 @@ import { StockError, writeBlocker, ensureWarehouse } from '../data.js';
 import { queueDocumentSync, quietDocument } from '../document-moves.js';
 
 /**
- * @param {Array<{item: object, qty: string}>} cart
- * @param {{method: 'CASH'|'CARD', paid?: string|null, warehouseId?: string|null}} options
+ * @param {Array<{item: object, qty: string, vat?: string|null}>} cart
+ * @param {{method: 'CASH'|'CARD', paid?: string|null, warehouseId?: string|null, buyer?: object|null}} options
+ *   buyer: name and IČ DPH, required by a reverse-charge line (the core checks it)
  * @returns {Promise<{document: object, warnings: Array<object>}>}
  */
-export async function checkout(cart, { method = 'CASH', paid = null, warehouseId = null } = {}) {
+export async function checkout(cart, { method = 'CASH', paid = null, warehouseId = null, buyer = null } = {}) {
   const blocker = writeBlocker();
   if (blocker) throw new StockError(blocker);
   const store = getStore();
@@ -24,7 +25,7 @@ export async function checkout(cart, { method = 'CASH', paid = null, warehouseId
   const warehouse = warehouseId || await ensureWarehouse();
   const taken = store.list('documents', { includeDeleted: true }).filter(d => d.seriesId === series.id && d.number).map(d => d.number);
   const { document, series: advanced } = issueSalesReceipt(cart, {
-    company, series, method, paid, warehouseId: warehouse, taken, priceLevels: store.list('priceLevels')
+    company, series, method, paid, warehouseId: warehouse, taken, priceLevels: store.list('priceLevels'), buyer
   });
   const warnings = negativeStockWarnings(store.list('stockMoves'), movesForDocument(document, { items: store.list('items'), warehouseId: warehouse }));
   const list = company.series || [];
