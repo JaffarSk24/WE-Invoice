@@ -116,6 +116,33 @@ describe('route and card', () => {
   });
 });
 
+describe('eKasa hint on the card', () => {
+  async function cardWithCashPayment() {
+    const contact = await store.insert('contacts', structuredClone(CONTACT));
+    const doc = await store.insert('documents', {
+      ...filledDraft(contact), status: 'ISSUED', number: 'FA20260003', seller: { name: 'Alfa' },
+      payments: [{ id: 'p1', date: '2026-10-18', amount: '50.00', currency: 'EUR', method: 'CASH', source: 'CASH' }]
+    });
+    const root = document.createElement('main');
+    document.body.append(root);
+    window.location.hash = `#/invoices/${doc.id}`;
+    salesRoute({ transport: null })(root, 'invoices');
+    return root;
+  }
+
+  it('offers the VRP2 data for a cash payment by default', async () => {
+    const root = await cardWithCashPayment();
+    expect(root.querySelector('.payment-row .payment-tools .btn-sm')).not.toBeNull();
+  });
+
+  it('hides it when the company does not use eKasa', async () => {
+    await store.updateCompany({ ekasaExempt: true });
+    const root = await cardWithCashPayment();
+    expect(root.querySelector('.payment-row')).not.toBeNull();
+    expect(root.querySelector('.payment-row .payment-tools .btn-sm:not(.btn-icon)')).toBeNull();
+  });
+});
+
 describe('start-up', () => {
   it('registers the sales routes and opens the editor on document:new', async () => {
     const routes = new Map();

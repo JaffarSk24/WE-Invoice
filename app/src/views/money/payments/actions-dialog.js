@@ -7,7 +7,7 @@ import { h } from '../../../ui/dom.js';
 import { openModal, confirmDialog } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast } from '../../../ui/toast.js';
-import { removePayments, cancelOffset, EKASA_METHODS } from '@we-invoice/core';
+import { removePayments, cancelOffset, EKASA_METHODS, ekasaExempt } from '@we-invoice/core';
 import { moneyState } from '../shared/data.js';
 import { canWrite, guarded } from '../shared/write.js';
 import { money, day } from '../shared/format.js';
@@ -37,7 +37,7 @@ export function openPaymentActions(ctx, docId, paymentId) {
   const amount = money(String(payment.amount).replace('-', ''), payment.currency || doc.currency);
   const removable = payment.source !== 'BANK_IMPORT' && payment.method !== 'OFFSET';
   const actions = [{ label: t('common.close'), onClick: (m) => m.close() }];
-  if (SALES.has(doc.kind) && EKASA_METHODS.includes(payment.method)) {
+  if (SALES.has(doc.kind) && EKASA_METHODS.includes(payment.method) && !ekasaExempt(state.company)) {
     actions.push({ label: t('bank.ekasa.title'), onClick: (m) => { m.close(); openEkasaDialog(docId, paymentId); } });
   }
   if (payment.offsetId) {

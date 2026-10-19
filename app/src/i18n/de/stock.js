@@ -170,6 +170,7 @@ export default {
   "stock.sale.sell": "Verkaufen",
   "stock.sale.vrpHint": "Erfassen Sie den Verkauf auch in der Registrierkasse (VRP2): Nach dem Verkauf sehen Sie die Angaben zum Übertragen.",
   "stock.sale.doneTitle": "Verkauft: Angaben für VRP2",
+  "stock.sale.done": "Kassenbeleg {number} ist gespeichert.",
   "stock.sale.vrpIntro": "Übertragen Sie diese Angaben in die virtuelle eKasa-Registrierkasse (VRP2).",
   "stock.sale.number": "Nummer des Kassenbelegs",
   "stock.sale.date": "Datum",

@@ -6,7 +6,7 @@ import { describe, it, expect } from 'vitest';
 import * as core from '../../index.js';
 import {
   defaultCashSeries, buildCashVoucher, cashBalance, cashBookRows, checkCashOut, cashKindForPayment, cashDifference,
-  cashLimitCheck, cashBookCsv, planOffset, buildOffset, cancelOffset, offsetCandidates, ekasaManualEntry, ekasaNeeded, listPayments
+  cashLimitCheck, cashBookCsv, planOffset, buildOffset, cancelOffset, offsetCandidates, ekasaManualEntry, ekasaNeeded, ekasaExempt, listPayments
 } from './index.js';
 import { paymentState } from '../index.js';
 
@@ -154,7 +154,12 @@ describe('eKasa stage 1', () => {
     expect(ekasaNeeded(sale, pay('CASH'), company)).toBe(true);
     expect(ekasaNeeded(sale, pay('QR_ON_SITE'), company)).toBe(true);
     expect(ekasaNeeded(sale, pay('TRANSFER'), company)).toBe(false);
-    expect(ekasaNeeded(sale, pay('CARD'), { usesEkasa: false })).toBe(false);
+    expect(ekasaNeeded(sale, pay('CARD'), { ekasaExempt: true })).toBe(false);
+    // usesEkasa: false is what the wizard writes for every company; it is not an opt-out.
+    expect(ekasaNeeded(sale, pay('CARD'), { usesEkasa: false })).toBe(true);
+    expect(ekasaNeeded(sale, pay('CARD'), null)).toBe(true);
+    expect(ekasaExempt({ ekasaExempt: true })).toBe(true);
+    expect(ekasaExempt({})).toBe(false);
     expect(ekasaNeeded(invoice('PF', 'RECEIVED_INVOICE', '1'), pay('CASH'), company)).toBe(false);
   });
 

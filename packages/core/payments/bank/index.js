@@ -12,6 +12,6 @@ export { paymentsForReceived, creditorIbanOf } from './payables.js';
 export { CASH_KINDS, defaultCashSeries, bookVouchers, cashBalance, cashBookRows, checkCashOut, cashKindForPayment, buildCashVoucher, cashDifference } from './cash.js';
 export { cashLimitCheck, isBusinessParty, cashBookCsv } from './cash-rules.js';
 export { offsetCandidates, planOffset, buildOffset, cancelOffset } from './offset.js';
-export { EKASA_METHODS, ekasaNeeded, ekasaManualEntry } from './ekasa-manual.js';
+export { EKASA_METHODS, ekasaNeeded, ekasaExempt, ekasaManualEntry } from './ekasa-manual.js';
 export { listPayments } from './listing.js';
 export { candidatesFor as paymentCandidates, partyOf as paymentParty, openAmount as openPaymentAmount } from './match/candidates.js';

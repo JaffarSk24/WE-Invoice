@@ -15,9 +15,18 @@ export const EKASA_METHODS = Object.freeze(['CASH', 'CARD', 'QR_ON_SITE']);
 const INVOICE_KINDS = new Set(['INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'DEBIT_NOTE']);
 const SALE_KINDS = new Set([...INVOICE_KINDS, 'SALES_RECEIPT']);
 
+/**
+ * True when the company said in its settings that it does not use eKasa
+ * ("Nepoužívam eKasa", an exception of § 3 ods. 2): the VRP2 hints are not
+ * shown then. Off by default, so a new company gets the hints.
+ */
+export function ekasaExempt(company) {
+  return company?.ekasaExempt === true;
+}
+
 /** True when a payment of this document needs an eKasa receipt and the company uses eKasa. */
 export function ekasaNeeded(document, payment, company) {
-  if (!document || !payment || company?.usesEkasa === false) return false;
+  if (!document || !payment || ekasaExempt(company)) return false;
   return SALE_KINDS.has(document.kind) && EKASA_METHODS.includes(payment.method);
 }
 

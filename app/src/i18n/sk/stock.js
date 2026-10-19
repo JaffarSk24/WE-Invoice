@@ -170,6 +170,7 @@ export default {
   "stock.sale.sell": "Predať",
   "stock.sale.vrpHint": "Predajku zaevidujte aj v registračnej pokladnici (VRP2): po predaji uvidíte údaje na prepis.",
   "stock.sale.doneTitle": "Predané: údaje pre VRP2",
+  "stock.sale.done": "Predajka {number} je uložená.",
   "stock.sale.vrpIntro": "Prepíšte tieto údaje do virtuálnej registračnej pokladnice eKasa (VRP2).",
   "stock.sale.number": "Číslo predajky",
   "stock.sale.date": "Dátum",

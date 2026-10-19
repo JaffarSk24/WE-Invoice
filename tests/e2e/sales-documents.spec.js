@@ -118,3 +118,22 @@ test('proforma paid in full, then the final invoice deducts the advance', async 
   await expect(page.locator('main h1')).toHaveText(/Faktúra FA\d{8}/);
   await expect(page.locator('.detail-links')).toContainText('Zálohová faktúra ZF');
 });
+
+test('the PDF preview shows inside the app, in the editor and on the card', async ({ page, isMobile }) => {
+  const blocked = [];
+  page.on('console', m => { if (/Refused to frame/i.test(m.text())) blocked.push(m.text()); });
+  await companyFromWizard(page);
+  await newClient(page, 'Delta, s. r. o.');
+  await fillLine(page, { name: 'Servis', qty: '1', price: '80' });
+  if (isMobile) await page.locator('.editor-preview-toggle').click();
+  const frame = page.locator('.editor-preview iframe.pdf-frame');
+  await expect(frame).toBeVisible();
+  await expect(frame).toHaveAttribute('src', /^blob:/);
+  await expect(page.locator('#editor-open-preview')).toHaveCount(0);
+  if (isMobile) await page.locator('.editor-preview-toggle').click();
+
+  await page.locator('#editor-issue').click();
+  await expect(page.locator('main h1')).toHaveText(/Faktúra FA\d{8}/);
+  await expect(page.locator('.detail-pdf iframe.pdf-frame')).toHaveAttribute('src', /^blob:/);
+  expect(blocked).toEqual([]);
+});

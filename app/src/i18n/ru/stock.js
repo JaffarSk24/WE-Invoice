@@ -170,6 +170,7 @@ export default {
   "stock.sale.sell": "Продать",
   "stock.sale.vrpHint": "Зарегистрируйте товарный чек и в кассовом аппарате (VRP2): после продажи вы увидите данные для переноса.",
   "stock.sale.doneTitle": "Продано: данные для VRP2",
+  "stock.sale.done": "Товарный чек {number} сохранён.",
   "stock.sale.vrpIntro": "Перенесите эти данные в виртуальную кассу eKasa (VRP2).",
   "stock.sale.number": "Номер товарного чека",
   "stock.sale.date": "Дата",

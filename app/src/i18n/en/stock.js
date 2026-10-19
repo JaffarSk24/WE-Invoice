@@ -170,6 +170,7 @@ export default {
   "stock.sale.sell": "Sell",
   "stock.sale.vrpHint": "Also record the sale in the cash register (VRP2): after the sale you see the data to type in.",
   "stock.sale.doneTitle": "Sold: data for VRP2",
+  "stock.sale.done": "Sales receipt {number} is saved.",
   "stock.sale.vrpIntro": "Type this data into the virtual cash register eKasa (VRP2).",
   "stock.sale.number": "Receipt number",
   "stock.sale.date": "Date",
