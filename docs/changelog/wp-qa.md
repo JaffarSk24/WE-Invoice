@@ -6,7 +6,7 @@
 - End-to-end scenarios for the seams between the packages: an issued invoice moves the stock, lands in the VAT records and, once paid, in the cash book, with the price of the client's price level; bank payments change the statuses and the aging report; a closed VAT period keeps a document out of the editor; the card sends by e-mail and Peppol and starts a recurring invoice; an Inbox invoice reaches the VAT records and the Pohoda export.
 - Accessibility audit with axe of every menu screen in both themes and of the main dialogs, and the main path with the keyboard only.
 - Seeded generator of synthetic companies, contacts, items and documents with valid IČO, DIČ and IBAN (`tests/gen`), performance budgets over 10 000 documents in `npm run test:perf`, and the opening time of the invoice list measured in the browser.
-- `npm run test:coverage` with the V8 provider of Vitest; more unit tests for the VAT records, the tax reports and the UBL reader.
+- `npm run test:coverage` with the V8 provider of Vitest; more unit tests that bring the tax and UBL modules of the core to full line coverage.
 - In-memory Google Drive and Peppol provider for the end-to-end tests (`tests/e2e/support`).
 - Settings, Sync: the account and the state of the sync, with sign in and out, sync now, turning encryption on, unlocking this device and changing the password.
 - The company switch on the More screen of phones.
@@ -26,3 +26,4 @@
 - Fields given their own id lost their label (editor dates, payment amount, the company wizard and settings), and the quick sale item box was a list without items when empty.
 - A long receipt id in a title made the review screen wider than a phone and covered the Save button.
 - The eFaktura duty of a document dated before the e-invoicing rules threw an error for every such row of a list.
+- A document without any date left the VAT records without a word; every period now lists it as an error.
