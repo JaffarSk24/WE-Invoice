@@ -10,10 +10,10 @@ import { vatRecords } from '@we-invoice/core';
 import { createCashBook } from './operations.js';
 import { openVoucherDialog } from './voucher-dialog.js';
 
-async function setup(vatMode = 'PAYER') {
+async function setup(vatMode = 'PAYER', extra = {}) {
   const store = createStore({ adapter: memoryAdapter(), emitter: () => {} });
   await store.open();
-  await store.createCompany({ name: 'Firma', series: [], vatMode, vatPeriod: 'MONTH', icDph: 'SK2020123457' });
+  await store.createCompany({ name: 'Firma', series: [], vatMode, vatPeriod: 'MONTH', icDph: 'SK2020123457', ...extra });
   await store.insert('contacts', { kind: 'COMPANY', name: 'Zberne suroviny s.r.o.', ico: '12345679', icDph: 'SK2021234567' });
   const book = await createCashBook(store, { name: 'Hlavna', openingBalance: '1000' });
   return { store, book };
@@ -85,5 +85,41 @@ describe('cash voucher VAT in the dialog', () => {
     save();
     await settle();
     expect(store.list('documents')[0].lines[0].vatCategory).toBe('O');
+  });
+
+  it('marks a sale as recorded in eKasa by default and hides the mark for reverse charge', async () => {
+    const { store, book } = await setup();
+    openVoucherDialog({ book, kind: 'CASH_IN' });
+    const mark = field('Sale recorded in eKasa');
+    type(input('VAT'), 'S:23');
+    expect(mark.hidden).toBe(false);
+    expect(input('Sale recorded in eKasa').checked).toBe(true);
+    type(input('VAT'), 'AE');
+    expect(mark.hidden).toBe(true);
+    type(input('VAT'), 'S:23');
+    type(input('Amount'), '123');
+    type(input('Purpose'), 'Predaj');
+    save();
+    await settle();
+    expect(store.list('documents')[0]).toMatchObject({ ekasaSale: true });
+  });
+
+  it('stores a cleared mark, and offers no mark when the company does not use eKasa or for an expense', async () => {
+    const { store, book } = await setup();
+    openVoucherDialog({ book, kind: 'CASH_IN' });
+    type(input('VAT'), 'S:23');
+    input('Sale recorded in eKasa').checked = false;
+    type(input('Amount'), '61.50');
+    type(input('Purpose'), 'Predaj');
+    save();
+    await settle();
+    expect(store.list('documents')[0].ekasaSale).toBe(false);
+    document.body.innerHTML = '';
+    openVoucherDialog({ book, kind: 'CASH_OUT' });
+    expect(field('Sale recorded in eKasa')).toBeUndefined();
+    document.body.innerHTML = '';
+    const exempt = await setup('PAYER', { ekasaExempt: true });
+    openVoucherDialog({ book: exempt.book, kind: 'CASH_IN' });
+    expect(field('Sale recorded in eKasa')).toBeUndefined();
   });
 });

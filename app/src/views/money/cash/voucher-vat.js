@@ -2,12 +2,14 @@
 // fills the name and the IČ DPH), the partner's name and IČ DPH, and the
 // VAT choice from legislation on the voucher date (rates, reverse charge,
 // exemption, no VAT). Reverse charge shows its legal reference and asks for
-// the partner's Slovak IČ DPH; the check itself is the core's.
+// the partner's Slovak IČ DPH; the check itself is the core's. A sale of a
+// company that uses eKasa carries "predaj evidovaný v eKasa", ticked by
+// default, so its VAT is not counted again next to the eKasa turnover.
 import { h, append, clear } from '../../../ui/dom.js';
 import { t } from '../../../i18n/index.js';
-import { textField, selectField } from '../../../components/fields.js';
+import { textField, selectField, checkboxField } from '../../../components/fields.js';
 import { autocomplete } from '../../../components/autocomplete.js';
-import { cashVatChoices, cashVatLine, cashVatProblems } from '@we-invoice/core';
+import { cashVatChoices, cashVatLine, cashVatProblems, ekasaExempt } from '@we-invoice/core';
 
 /** The label of a VAT choice in the select. */
 export function vatChoiceLabel(choice) {
@@ -28,7 +30,8 @@ function lawOf(value, date) {
 
 /**
  * @param {{state: object, kind: string, date: () => string}} options
- * @returns {{els: HTMLElement[], vat: () => string, partner: () => object|null, contactId: () => string|null, refresh: () => void, validate: () => boolean}}
+ * @returns {{els: HTMLElement[], vat: () => string, partner: () => object|null, contactId: () => string|null, ekasaSale: () => boolean,
+ *   refresh: () => void, validate: () => boolean}}
  */
 export function voucherVatFields({ state, kind, date }) {
   let contactId = null;
@@ -40,6 +43,10 @@ export function voucherVatFields({ state, kind, date }) {
     ? selectField({ label: t('cash.voucher.vatRate'), options: choices.map(c => ({ value: c.value, label: vatChoiceLabel(c) })), value: 'O', onChange: () => update() })
     : null;
   const vat = () => (select ? select.value() : 'O');
+  // Only a sale with VAT of a company that uses eKasa can be in its turnover.
+  const ekasa = select && kind === 'CASH_IN' && !ekasaExempt(state.company)
+    ? checkboxField({ label: t('cash.voucher.ekasaSale'), checked: true, hint: t('cash.voucher.ekasaSaleHint') })
+    : null;
 
   function update() {
     const value = vat();
@@ -49,6 +56,7 @@ export function voucherVatFields({ state, kind, date }) {
     else hint.textContent = '';
     icDph.el.hidden = !select;
     icDph.setError(null);
+    if (ekasa) ekasa.el.hidden = category === 'AE' || category === 'O';
   }
 
   // New rates on another date: the same choice stays when it still exists.
@@ -95,7 +103,8 @@ export function voucherVatFields({ state, kind, date }) {
   };
 
   return {
-    els: [picker ? picker.el : null, name.el, select ? h('div', { class: 'voucher-vat' }, select.el, hint) : null, icDph.el].filter(Boolean),
-    vat, partner, contactId: () => contactId, refresh, validate
+    els: [picker ? picker.el : null, name.el, select ? h('div', { class: 'voucher-vat' }, select.el, hint) : null, icDph.el, ekasa ? ekasa.el : null].filter(Boolean),
+    vat, partner, contactId: () => contactId, refresh, validate,
+    ekasaSale: () => (ekasa ? ekasa.value() && !ekasa.el.hidden : false)
   };
 }

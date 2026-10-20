@@ -141,6 +141,8 @@ export default {
   "cash.voucher.vatRate": "USt",
   "cash.voucher.noVat": "Ohne USt",
   "cash.voucher.exemptHint": "Steuerfrei ({law}).",
+  "cash.voucher.ekasaSale": "In eKasa erfasster Verkauf",
+  "cash.voucher.ekasaSaleHint": "Die USt dieses Verkaufs ist bereits im eKasa-Umsatz (Abschnitt D.1 des Formulars Kontrolný výkaz), daher zählt die Übersicht Evidencia DPH sie nicht ein zweites Mal.",
   "cash.voucher.aeHint": "Steuerschuldnerschaft des Leistungsempfängers ({law}): Der Betrag ist ohne USt, die Steuer erklärt der Leistungsempfänger. Der Partner braucht eine slowakische USt-IdNr. (IČ DPH).",
   "cash.voucher.contactSearch": "Name, IČO oder USt-IdNr.",
   "cash.voucher.contact": "Partner aus den Kontakten",

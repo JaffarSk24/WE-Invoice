@@ -122,6 +122,26 @@ describe('VAT records screen', () => {
     expect(root.querySelectorAll('.tab-panel:not([hidden]) tbody tr')).toHaveLength(6);
   });
 
+  it('lists sales vouchers already in eKasa apart, with the same-day warning for the one counted', async () => {
+    const { show } = await setup('13-cash-vouchers-ekasa');
+    const root = await show('vat-records');
+    const block = root.querySelector('.tax-ekasa-covered');
+    expect(block.querySelector('h3').textContent).toBe('Predaje evidované v eKasa (nezapočítané)');
+    expect(block.textContent).toContain('1 pokladničný doklad predaja je už v obratoch eKasa');
+    expect(block.textContent).toContain('PPD20260001');
+    const counted = Array.from(root.querySelectorAll('.tab-panel:not([hidden]) tbody tr')).filter(tr => !tr.closest('.tax-ekasa-covered')).map(tr => tr.textContent).join(' ');
+    expect(counted).toContain('PPD20260002');
+    expect(counted).not.toContain('PPD20260001');
+    expect(root.querySelector('.tax-problem.is-warning').textContent).toContain('Pokladničný doklad PPD20260002 sa započítava samostatne');
+  });
+
+  it('shows no eKasa block for a company that does not use eKasa', async () => {
+    const { show } = await setup('14-cash-vouchers-no-ekasa');
+    const root = await show('vat-records');
+    expect(root.querySelector('.tax-ekasa-covered')).toBeNull();
+    expect(root.querySelector('.tax-checks-ok')).toBeTruthy();
+  });
+
   it('closes the period through the store and writes the audit entry', async () => {
     const { show, store } = await setup('01-monthly-domestic');
     const root = await show('vat-records');

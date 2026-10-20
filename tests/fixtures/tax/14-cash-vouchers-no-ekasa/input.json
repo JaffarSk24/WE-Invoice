@@ -1,0 +1,299 @@
+{
+  "title": "Cash vouchers of a company that does not use eKasa: every sale voucher goes to D.2, reverse charge A.2, an expense B.3",
+  "period": "2026-03",
+  "today": "2026-04-10",
+  "company": {
+    "id": "company-1",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "name": "Biela Orlica s. r. o.",
+    "legalForm": "SRO",
+    "taxpayerType": "PO",
+    "ico": "36835587",
+    "dic": "2020123457",
+    "icDph": "SK2020123457",
+    "vatMode": "PAYER",
+    "vatPeriod": "MONTH",
+    "cashBasis": false,
+    "oss": false,
+    "accountingMode": "EXTERNAL",
+    "address": {
+      "street": "Hlavná 12",
+      "city": "Bratislava",
+      "zip": "811 01",
+      "country": "SK"
+    },
+    "email": "uctaren@example.sk",
+    "phone": "+421 2 1234 5678",
+    "closedPeriods": [],
+    "ekasaExempt": true
+  },
+  "documents": [
+    {
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "id": "ppd1",
+      "kind": "CASH_IN",
+      "status": "ISSUED",
+      "seriesId": "series-CASH_IN",
+      "number": "PPD20260001",
+      "cashBookId": "book-1",
+      "issueDate": "2026-03-05",
+      "taxDate": "2026-03-05",
+      "receivedDate": null,
+      "currency": "EUR",
+      "contactId": null,
+      "buyer": {
+        "name": "Ján Novák",
+        "contactId": null,
+        "icDph": null,
+        "ico": null,
+        "dic": null
+      },
+      "seller": null,
+      "lines": [
+        {
+          "id": "line-1",
+          "kind": "ITEM",
+          "name": "Predaj za hotovosť",
+          "qty": "1",
+          "unitPrice": "123.00",
+          "priceType": "GROSS",
+          "vatCategory": "S",
+          "vatRate": "23",
+          "exemptionReasonCode": null,
+          "exemptionReasonText": null
+        }
+      ],
+      "payments": [],
+      "paymentMethod": "CASH",
+      "paysDocId": null,
+      "paymentId": null,
+      "ekasaSale": true,
+      "totals": {
+        "lineNet": "100.00",
+        "allowances": "0.00",
+        "charges": "0.00",
+        "net": "100.00",
+        "vat": "23.00",
+        "gross": "123.00",
+        "prepaid": "0.00",
+        "rounding": "0.00",
+        "payable": "123.00",
+        "breakdown": [
+          {
+            "category": "S",
+            "rate": "23",
+            "base": "100.00",
+            "vat": "23.00",
+            "allowance": "0.00",
+            "charge": "0.00",
+            "exemptionReasonCode": null,
+            "exemptionReasonText": null
+          }
+        ]
+      }
+    },
+    {
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "id": "ppd2",
+      "kind": "CASH_IN",
+      "status": "ISSUED",
+      "seriesId": "series-CASH_IN",
+      "number": "PPD20260002",
+      "cashBookId": "book-1",
+      "issueDate": "2026-03-05",
+      "taxDate": "2026-03-05",
+      "receivedDate": null,
+      "currency": "EUR",
+      "contactId": null,
+      "buyer": {
+        "name": "Eva Malá",
+        "contactId": null,
+        "icDph": null,
+        "ico": null,
+        "dic": null
+      },
+      "seller": null,
+      "lines": [
+        {
+          "id": "line-2",
+          "kind": "ITEM",
+          "name": "Predaj za hotovosť",
+          "qty": "1",
+          "unitPrice": "61.50",
+          "priceType": "GROSS",
+          "vatCategory": "S",
+          "vatRate": "23",
+          "exemptionReasonCode": null,
+          "exemptionReasonText": null
+        }
+      ],
+      "payments": [],
+      "paymentMethod": "CASH",
+      "paysDocId": null,
+      "paymentId": null,
+      "ekasaSale": false,
+      "totals": {
+        "lineNet": "50.00",
+        "allowances": "0.00",
+        "charges": "0.00",
+        "net": "50.00",
+        "vat": "11.50",
+        "gross": "61.50",
+        "prepaid": "0.00",
+        "rounding": "0.00",
+        "payable": "61.50",
+        "breakdown": [
+          {
+            "category": "S",
+            "rate": "23",
+            "base": "50.00",
+            "vat": "11.50",
+            "allowance": "0.00",
+            "charge": "0.00",
+            "exemptionReasonCode": null,
+            "exemptionReasonText": null
+          }
+        ]
+      }
+    },
+    {
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "id": "ppd3",
+      "kind": "CASH_IN",
+      "status": "ISSUED",
+      "seriesId": "series-CASH_IN",
+      "number": "PPD20260003",
+      "cashBookId": "book-1",
+      "issueDate": "2026-03-18",
+      "taxDate": "2026-03-18",
+      "receivedDate": null,
+      "currency": "EUR",
+      "contactId": null,
+      "buyer": {
+        "name": "Stavby Dunaj s. r. o.",
+        "ico": "35757442",
+        "icDph": "SK2021234567",
+        "address": {
+          "street": "Mlynská 5",
+          "city": "Košice",
+          "zip": "040 01",
+          "country": "SK"
+        },
+        "contactId": null,
+        "dic": null
+      },
+      "seller": null,
+      "lines": [
+        {
+          "id": "line-3",
+          "kind": "ITEM",
+          "name": "Predaj odpadu",
+          "qty": "1",
+          "unitPrice": "500.00",
+          "priceType": "GROSS",
+          "vatCategory": "AE",
+          "vatRate": null,
+          "exemptionReasonCode": "VATEX-EU-AE",
+          "exemptionReasonText": "§ 69 ods. 12 zákona o DPH"
+        }
+      ],
+      "payments": [],
+      "paymentMethod": "CASH",
+      "paysDocId": null,
+      "paymentId": null,
+      "ekasaSale": false,
+      "totals": {
+        "lineNet": "500.00",
+        "allowances": "0.00",
+        "charges": "0.00",
+        "net": "500.00",
+        "vat": "0.00",
+        "gross": "500.00",
+        "prepaid": "0.00",
+        "rounding": "0.00",
+        "payable": "500.00",
+        "breakdown": [
+          {
+            "category": "AE",
+            "rate": "0",
+            "base": "500.00",
+            "vat": "0.00",
+            "allowance": "0.00",
+            "charge": "0.00",
+            "exemptionReasonCode": "VATEX-EU-AE",
+            "exemptionReasonText": "§ 69 ods. 12 zákona o DPH"
+          }
+        ]
+      }
+    },
+    {
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "id": "vpd1",
+      "kind": "CASH_OUT",
+      "status": "ISSUED",
+      "seriesId": "series-CASH_OUT",
+      "number": "VPD20260001",
+      "cashBookId": "book-1",
+      "issueDate": "2026-03-10",
+      "taxDate": "2026-03-10",
+      "receivedDate": "2026-03-10",
+      "currency": "EUR",
+      "contactId": null,
+      "buyer": null,
+      "seller": {
+        "name": "Papiernictvo",
+        "contactId": null,
+        "icDph": null,
+        "ico": null,
+        "dic": null
+      },
+      "lines": [
+        {
+          "id": "line-4",
+          "kind": "ITEM",
+          "name": "Kancelárske potreby",
+          "qty": "1",
+          "unitPrice": "24.60",
+          "priceType": "GROSS",
+          "vatCategory": "S",
+          "vatRate": "23",
+          "exemptionReasonCode": null,
+          "exemptionReasonText": null
+        }
+      ],
+      "payments": [],
+      "paymentMethod": "CASH",
+      "paysDocId": null,
+      "paymentId": null,
+      "ekasaSale": false,
+      "totals": {
+        "lineNet": "20.00",
+        "allowances": "0.00",
+        "charges": "0.00",
+        "net": "20.00",
+        "vat": "4.60",
+        "gross": "24.60",
+        "prepaid": "0.00",
+        "rounding": "0.00",
+        "payable": "24.60",
+        "breakdown": [
+          {
+            "category": "S",
+            "rate": "23",
+            "base": "20.00",
+            "vat": "4.60",
+            "allowance": "0.00",
+            "charge": "0.00",
+            "exemptionReasonCode": null,
+            "exemptionReasonText": null
+          }
+        ]
+      }
+    }
+  ]
+}

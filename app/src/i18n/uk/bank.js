@@ -141,6 +141,8 @@ export default {
   "cash.voucher.vatRate": "ПДВ",
   "cash.voucher.noVat": "Без ПДВ",
   "cash.voucher.exemptHint": "Звільнено від податку ({law}).",
+  "cash.voucher.ekasaSale": "Продаж обліковано в eKasa",
+  "cash.voucher.ekasaSaleHint": "ПДВ цього продажу вже в оборотах eKasa (розділ D.1 форми Kontrolný výkaz), тому в реєстрі Evidencia DPH його вдруге не враховано.",
   "cash.voucher.aeHint": "Перенесення податкового обов'язку ({law}): сума без ПДВ, податок декларує покупець. Партнер повинен мати словацький IČ DPH.",
   "cash.voucher.contactSearch": "Назва, IČO або IČ DPH",
   "cash.voucher.contact": "Партнер із контактів",

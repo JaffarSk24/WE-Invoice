@@ -48,7 +48,7 @@ export function openVoucherDialog({ book, kind }) {
           m.close();
           const voucher = await guarded(store => createVoucher(store, {
             bookId: book.id, kind, date: when, amount: value, purpose: purpose.value(),
-            partner: vat.partner(), contactId: vat.contactId(), vat: vat.vat()
+            partner: vat.partner(), contactId: vat.contactId(), vat: vat.vat(), ekasaSale: vat.ekasaSale()
           }));
           if (voucher) showToast(t('cash.voucher.saved', { number: voucher.number }), { type: 'success' });
         }
@@ -75,6 +75,7 @@ export function openVoucherActions(voucherId) {
       h('p', {}, `${day(voucher.issueDate)}: ${money(voucher.totals?.payable, voucher.currency)}`),
       h('p', {}, voucher.lines?.[0]?.name || ''),
       voucherVatText(voucher) ? h('p', { class: 'muted' }, voucherVatText(voucher)) : null,
+      voucher.ekasaSale ? h('p', { class: 'muted voucher-ekasa-mark' }, t('cash.voucher.ekasaSale')) : null,
       party?.name ? h('p', { class: 'muted' }, [party.name, party.icDph].filter(Boolean).join(', ')) : null),
     actions: [
       { label: t('common.close'), onClick: (m) => m.close() },

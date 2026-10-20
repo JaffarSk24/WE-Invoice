@@ -141,6 +141,8 @@ export default {
   'cash.voucher.vatRate': 'DPH',
   'cash.voucher.noVat': 'Bez DPH',
   'cash.voucher.exemptHint': 'Oslobodené od dane ({law}).',
+  'cash.voucher.ekasaSale': 'Predaj evidovaný v eKasa',
+  'cash.voucher.ekasaSaleHint': 'DPH tohto predaja je už v obratoch eKasa (oddiel D.1 kontrolného výkazu), v evidencii DPH sa preto druhýkrát nezapočíta.',
   'cash.voucher.aeHint': 'Prenesenie daňovej povinnosti ({law}): suma je bez DPH, daň priznáva odberateľ. Partner musí mať slovenské IČ DPH.',
   'cash.voucher.contactSearch': 'Názov, IČO alebo IČ DPH',
   'cash.voucher.contact': 'Partner z kontaktov',

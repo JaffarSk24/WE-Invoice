@@ -141,6 +141,8 @@ export default {
   'cash.voucher.vatRate': 'VAT',
   'cash.voucher.noVat': 'No VAT',
   'cash.voucher.exemptHint': 'Exempt ({law}).',
+  'cash.voucher.ekasaSale': 'Sale recorded in eKasa',
+  'cash.voucher.ekasaSaleHint': 'The VAT of this sale is already in the eKasa turnover (section D.1 of the VAT control statement), so the VAT records do not count it again.',
   'cash.voucher.aeHint': 'Reverse charge ({law}): the amount is without VAT, the buyer accounts for the tax. The party needs a Slovak VAT ID (IČ DPH).',
   'cash.voucher.contactSearch': 'Name, IČO or VAT ID',
   'cash.voucher.contact': 'Party from contacts',
