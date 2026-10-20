@@ -11,11 +11,7 @@ import { readDate, readAmount, readRate, readText, readCountry } from './values.
 import { contactDraft, unitCode } from './records.js';
 import { isZero } from '../money/index.js';
 
-export const SF_MARKETS = Object.freeze({
-  sk: 'https://moja.superfaktura.sk',
-  cz: 'https://moje.superfaktura.cz',
-  at: 'https://meine.superfaktura.at'
-});
+export { SF_MARKETS } from './superfaktura-markets.js';
 export const SF_PAGE_SIZE = 100;
 export const SF_DETAIL_BATCH = 25;
 const LISTS = { clients: 'clients', items: 'stock_items', invoices: 'invoices' };

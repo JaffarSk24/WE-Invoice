@@ -1,0 +1,159 @@
+{
+  "$comment": "Peppol providers (digitálny poštár) offered in the connection wizard (04-peppol.md § 4.2). Updated by a release, without code changes. Tariffs as published by the providers on checkedAt; re-check before each release. null means not confirmed yet. api: AVAILABLE | ANNOUNCED | NONE | UNKNOWN. sapiSk: YES | ANNOUNCED | NO | UNKNOWN. adapter: the client adapter the app uses (sapi-sk, or the id of a native adapter), null while no API connection is possible. segment: SMALL (connect directly), ERP (used by larger firms through their ERP), FOREIGN (accredited abroad, for firms invoicing in several countries). The gateway keeps its own server-side copy of the hosts as the proxy allowlist.",
+  "checkedAt": "2026-10-18",
+  "sourcesNote": "baseUrl, pricingUrl and sapiSk are filled only from the provider's own documentation or SDK listed in sources; everything else stays null until confirmed.",
+  "source": "https://whiteeagles.sk/ru/blog/elektronnaya-faktura-peppol-2027/",
+  "verified": false,
+  "providers": [
+    {
+      "id": "epostak", "name": "ePošťák", "efsk": "012", "protocol": "NATIVE", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "epostak", "segment": "SMALL",
+      "auth": "OAUTH2_CLIENT_CREDENTIALS", "baseUrl": { "prod": "https://epostak.sk/api/v1", "sandbox": "https://dev.epostak.sk/api/v1" }, "sandboxCredentials": "on_request", "registerUrl": null, "pricingUrl": "https://epostak.sk/en/cennik",
+      "sources": ["https://www.npmjs.com/package/@epostak/sdk/v/4.4.0", "https://epostak.sk/api/docs"],
+      "tariff": {
+        "sk": "Zadarmo 500 prijatých a 5 odoslaných faktúr mesačne, archív 90 dní; od roku 2027 platené plány 8 € a 19 € mesačne; API bez paušálu od 0,04 € za doklad",
+        "en": "Free: 500 received and 5 sent invoices per month, 90-day archive; paid plans 8 € and 19 € per month from 2027; API without a monthly fee from 0.04 € per document"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "efaktura-sk", "name": "eFaktúra.sk", "efsk": null, "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": "https://api.efaktura.sk/sapi", "sandbox": null },
+      "sources": ["https://developers.efaktura.sk/docs/sapi-overview"], "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Zadarmo prijímanie a 5 eFaktúr mesačne; platený plán 4,90 € mesačne (zavádzacia cena), od roku 2027 9,80 € mesačne",
+        "en": "Free: receiving and 5 e-invoices per month; paid plan 4.90 € per month (introductory price), 9.80 € per month from 2027"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "efakturuj", "name": "eFakturuj", "efsk": null, "protocol": "SAPI_SK", "api": "UNKNOWN", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Zadarmo 50 dokladov mesačne spolu; od 9 € mesačne s neobmedzeným prijímaním; prepojenie s programom od 29 € mesačne",
+        "en": "Free: 50 documents per month in total; from 9 € per month with unlimited receiving; integration with a program from 29 € per month"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "fakturovo", "name": "Faktúrovo", "efsk": null, "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Zadarmo 3 faktúry mesačne, do konca roka 2026 všetko zadarmo; od 5,52 € mesačne pri ročnej platbe; API 100 požiadaviek mesačne zadarmo",
+        "en": "Free: 3 invoices per month, everything free until the end of 2026; from 5.52 € per month paid yearly; API 100 requests per month free"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": true, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "fakturix", "name": "Fakturix", "efsk": null, "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Neobmedzené prijímanie zadarmo, 3 odoslané mesačne, potom 0,50 € za faktúru; od 4,99 € mesačne; do 1. 12. 2026 zadarmo; REST API kompatibilné so SAPI-SK",
+        "en": "Unlimited receiving free, 3 sent per month, then 0.50 € per invoice; from 4.99 € per month; free until 1 December 2026; REST API compatible with SAPI-SK"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "postar-cloud", "name": "Postar Cloud (E-Works)", "efsk": null, "protocol": "NATIVE", "api": "AVAILABLE", "sapiSk": "UNKNOWN", "adapter": null, "segment": "SMALL",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Zadarmo prijímanie a 10 odoslaných mesačne; 4,90 €, 12,90 € a od 49 € mesačne; API od plánu 4,90 €",
+        "en": "Free: receiving and 10 sent per month; 4.90 €, 12.90 € and from 49 € per month; API from the 4.90 € plan"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "dativery", "name": "Dativery (Peppoš)", "efsk": "042", "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "API_KEY_HEADER", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": "account", "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Zadarmo s API: 5 odoslaných a 5 prijatých mesačne, potom 0,16 € za faktúru; od 12 € mesačne",
+        "en": "Free with API: 5 sent and 5 received per month, then 0.16 € per invoice; from 12 € per month"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": true, "cors": true, "primaryTest": false }
+    },
+    {
+      "id": "flowis", "name": "Flowis", "efsk": null, "protocol": "SAPI_SK", "api": "ANNOUNCED", "sapiSk": "YES", "adapter": null, "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Peppol Box na prijímanie zadarmo (pre neplatiteľov DPH); platené plány a API sa pripravujú",
+        "en": "Peppol Box for receiving free (for non-VAT payers); paid plans and API in preparation"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "doklado", "name": "Doklado", "efsk": null, "protocol": "NATIVE", "api": "AVAILABLE", "sapiSk": "UNKNOWN", "adapter": null, "segment": "SMALL",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "eFakturácia v bezplatnom pláne; 9,90 € mesačne s vyťažovaním dokladov",
+        "en": "E-invoicing on the free plan; 9.90 € per month with document recognition"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "verteco", "name": "Verteco", "efsk": "031", "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "verteco", "segment": "SMALL",
+      "auth": "API_KEY_TO_JWT", "baseUrl": { "prod": "https://peppol.verteco.digital/sapi", "sandbox": "https://test.peppol.verteco.digital/sapi" },
+      "sources": ["https://peppol.verteco.digital/en/faq"], "sandboxCredentials": "public", "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Prijímanie zadarmo (PDF a XML aj e-mailom); odosielanie z portálu, zo súboru alebo cez API; API 2 € mesačne za IČO len v mesiacoch s odoslaním",
+        "en": "Receiving free (PDF and XML also by e-mail); sending from the portal, from a file or via API; API 2 € per month per company only in months with sending"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": true }
+    },
+    {
+      "id": "ipostar", "name": "iPoštár", "efsk": "072", "protocol": "NATIVE", "api": "UNKNOWN", "sapiSk": "UNKNOWN", "adapter": null, "segment": "SMALL",
+      "auth": "API_KEY_HEADER", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": "account_starts_in_sandbox", "registerUrl": null, "pricingUrl": null,
+      "tariff": {
+        "sk": "Prijímanie zadarmo; 3 € mesačne za 300 odoslaní",
+        "en": "Receiving free; 3 € per month for 300 sent documents"
+      },
+      "flags": { "freeReceive": true, "apiOnFree": false, "cors": false, "primaryTest": false, "fallback": true }
+    },
+    {
+      "id": "digitalna-postarka", "name": "Digitálna poštárka (Codebase)", "efsk": null, "protocol": "NATIVE", "api": "AVAILABLE", "sapiSk": "UNKNOWN", "adapter": null, "segment": "SMALL",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Vlastné zdokumentované API; cenník neoverený", "en": "Own documented API; prices not verified" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "editel", "name": "Editel", "efsk": null, "protocol": "SAPI_SK", "api": "ANNOUNCED", "sapiSk": "ANNOUNCED", "adapter": "sapi-sk", "segment": "ERP",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Pre väčšie firmy cez ERP; podpora SAPI-SK ohlásená", "en": "For larger firms through their ERP; SAPI-SK support announced" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "softip", "name": "SOFTIP", "efsk": null, "protocol": "SAPI_SK", "api": "UNKNOWN", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "ERP",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Pre väčšie firmy cez ERP", "en": "For larger firms through their ERP" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "ecosio", "name": "ecosio", "efsk": null, "protocol": "NATIVE", "api": "UNKNOWN", "sapiSk": "UNKNOWN", "adapter": null, "segment": "ERP",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Pre väčšie firmy cez ERP", "en": "For larger firms through their ERP" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "seyfor", "name": "Seyfor", "efsk": null, "protocol": "NATIVE", "api": "UNKNOWN", "sapiSk": "UNKNOWN", "adapter": null, "segment": "ERP",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Pre väčšie firmy cez ERP", "en": "For larger firms through their ERP" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "billit", "name": "Billit", "efsk": null, "protocol": "NATIVE", "api": "UNKNOWN", "sapiSk": "UNKNOWN", "adapter": null, "segment": "FOREIGN",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Zahraničný akreditovaný poskytovateľ, od 6,90 € mesačne; pre firmy fakturujúce vo viacerých krajinách", "en": "Foreign accredited provider, from 6.90 € per month; for firms invoicing in several countries" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "qvalia", "name": "Qvalia", "efsk": null, "protocol": "NATIVE", "api": "UNKNOWN", "sapiSk": "UNKNOWN", "adapter": null, "segment": "FOREIGN",
+      "auth": null, "baseUrl": { "prod": null, "sandbox": null }, "sandboxCredentials": null, "registerUrl": null, "pricingUrl": null,
+      "tariff": { "sk": "Zahraničný akreditovaný poskytovateľ, od 9 € mesačne; pre firmy fakturujúce vo viacerých krajinách", "en": "Foreign accredited provider, from 9 € per month; for firms invoicing in several countries" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    },
+    {
+      "id": "sapi-sk", "name": "Iný poskytovateľ (SAPI-SK)", "efsk": null, "protocol": "SAPI_SK", "api": "AVAILABLE", "sapiSk": "YES", "adapter": "sapi-sk", "segment": "SMALL",
+      "auth": "CLIENT_CREDENTIALS_TO_JWT", "baseUrl": { "prod": null, "sandbox": null }, "customBaseUrl": true, "sandboxCredentials": null, "registerUrl": "https://www.sapi-sk.sk/", "pricingUrl": null,
+      "tariff": { "sk": "Podľa cenníka poskytovateľa", "en": "By the provider's price list" },
+      "flags": { "freeReceive": null, "apiOnFree": null, "cors": false, "primaryTest": false }
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { createTestApp, captureLogs, privateLookup } from './helpers.js';
 import { sfUpstreamUrl, sfUpstreamHeaders } from '../src/routes/superfaktura.js';
 import { SF_MARKETS } from '../src/upstream/superfaktura-markets.js';
-import { SF_MARKETS as CORE_SF_MARKETS } from '../../packages/core/imports/superfaktura-api.js';
+import { SF_MARKETS as CORE_SF_MARKETS } from '../../packages/core/imports/superfaktura-markets.js';
 
 const AUTH = 'SFAPI email=jana%40example.sk&apikey=SF-SECRET-KEY&company_id=42';
 const LIST = '/invoices/index.json/listinfo:1/page:1/per_page:100';

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WE Invoice: fakturácia a eFaktúra zadarmo</title>
+  <meta name="description" content="Fakturácia, eFaktúra cez Peppol, banka, upomienky, DPH výkazy a jednoduché účtovníctvo. Zadarmo, bez registrácie a bez limitov. Dáta šifrované vo vašom Google Drive.">
+  <link rel="canonical" href="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <link rel="alternate" hreflang="sk" href="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <link rel="alternate" hreflang="cs" href="https://jaffarsk24.github.io/WE-Invoice/cs/">
+  <link rel="alternate" hreflang="en" href="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <link rel="alternate" hreflang="de" href="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <link rel="alternate" hreflang="ru" href="https://jaffarsk24.github.io/WE-Invoice/ru/">
+  <link rel="alternate" hreflang="uk" href="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://jaffarsk24.github.io/WE-Invoice/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WE Invoice">
+  <meta property="og:title" content="Fakturácia a eFaktúra zadarmo">
+  <meta property="og:description" content="Všetko, za čo inde platíte 5 až 15&nbsp;€ mesačne. Bez registrácie, bez limitov. Vaše dáta šifrované vo vašom Google Drive.">
+  <meta property="og:url" content="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <meta property="og:image" content="https://jaffarsk24.github.io/WE-Invoice/assets/og/sk.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="sk_SK">
+  <meta property="og:locale:alternate" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="uk_UA">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#090b11" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/landing.css">
+  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/consent.js"></script>
+  <script type="module" src="../assets/waitlist.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/sk/","inLanguage":"sk","description":"Fakturácia, eFaktúra cez Peppol, banka, upomienky, DPH výkazy a jednoduché účtovníctvo. Zadarmo, bez registrácie a bez limitov. Dáta šifrované vo vašom Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Faktúry a doklady","eFaktúra (Peppol)","Banka a párovanie","Upomienky s úrokmi","Výdavky a skenovanie bločkov","DPH výkazy","Jednoduché účtovníctvo","Viac firiem zadarmo","Mobil aj počítač"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/sk.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"sk","mainEntity":[{"@type":"Question","name":"Je to naozaj zadarmo? Prečo?","acceptedAnswer":{"@type":"Answer","text":"Áno, bez balíkov, limitov a skúšobného obdobia. Nemáme takmer žiadne prevádzkové náklady: stránka beží na GitHub Pages, dáta sú vo vašom Google Drive a eFaktúry si platíte priamo svojmu poskytovateľovi. Aplikáciu vyvíja agentúra White Eagles ako ukážku svojej práce a ako cestu k majiteľom malých firiem."}},{"@type":"Question","name":"Kde sú moje dáta?","acceptedAnswer":{"@type":"Answer","text":"Vo vašom zariadení a vo vašom Google Drive, zašifrované kľúčom, ktorý poznáte len vy. Náš server je len brána k poskytovateľom eFaktúr, verejným registrom a kurzom: nič si neukladá. Vo webovej verzii cez ňu prechádza aj váš API kľúč poskytovateľa, lebo poskytovatelia neprijímajú požiadavky priamo z prehliadača; brána ho odovzdá len na čas požiadavky, nezapisuje ho a nekešuje. Desktopová verzia pre macOS a Windows komunikuje s poskytovateľom priamo z vášho počítača a bránu obchádza; ak chcete maximum súkromia, zvoľte ju."}},{"@type":"Question","name":"Čo ak stratím heslo?","acceptedAnswer":{"@type":"Answer","text":"Pri prvom spustení dostanete kľúč na obnovu. Uložte si ho mimo počítača, napríklad vytlačený. Bez hesla a bez kľúča na obnovu sa dáta dešifrovať nedajú, ani my to nedokážeme."}},{"@type":"Question","name":"Musím prijímať eFaktúry, aj keď nie som platiteľ DPH?","acceptedAnswer":{"@type":"Answer","text":"Áno. Od 1. 1. 2027 musí eFaktúry prijímať každý podnikateľ a každá právnická osoba na Slovensku. Vystavovať ich musia len platitelia DPH. Prijímanie je u viacerých poskytovateľov zadarmo."}},{"@type":"Question","name":"Koľko stojí digitálny poštár?","acceptedAnswer":{"@type":"Answer","text":"Prijímanie eFaktúr ponúka viacero poskytovateľov zadarmo. Odosielanie stojí od 0 do približne 3 € mesačne, alebo niekoľko centov za doklad, podľa poskytovateľa. Platíte priamo jemu, WE Invoice si nič nepridáva."}},{"@type":"Question","name":"Prečo Mac nechce aplikáciu otvoriť?","acceptedAnswer":{"@type":"Answer","text":"Aplikácia zatiaľ nie je notarizovaná spoločnosťou Apple, preto ju macOS po stiahnutí z prehliadača odmietne otvoriť. Pred prvým spustením raz zadajte v Termináli: xattr -cr \"/Applications/WE Invoice.app\". Potom sa otvára ako každá iná aplikácia a jej aktualizácie tento krok nepotrebujú."}},{"@type":"Question","name":"Nahradí to účtovníka?","acceptedAnswer":{"@type":"Answer","text":"Nie. Pripraví vám podklady: výkazy, denník, exporty v bežných formátoch. Za správnosť daňových dokladov a ich podanie zodpovedáte vy alebo váš účtovník. Dobrý účtovník s WE Invoice ušetrí čas, nie prácu."}},{"@type":"Question","name":"Čo nerobíme a prečo","acceptedAnswer":{"@type":"Answer","text":"Vlastnú pokladnicu eKasa ani priame prepojenie s virtuálnou pokladnicou VRP: zákon 384/2025 Z. z. zakazuje používať VRP cez iné aplikácie a vlastná pokladnica vyžaduje certifikáciu finančnej správy. Pri hotovostnej úhrade faktúry vám pripravíme údaje pre VRP a uložíme číslo dokladu. Banku v reálnom čase cez PSD2: vyžaduje licenciu a vaše dáta by šli cez cudzí server, preto importujeme výpisy. SMS upomienky: platený kanál, ktorý by sme museli účtovať. Namiesto toho e-mail a Peppol."}}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Preskočiť na obsah</a>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="../assets/icon.png" alt="" width="32" height="32">WE Invoice</a>
+      <nav class="links" aria-label="WE Invoice">
+        <a href="#features">Funkcie</a>
+        <a href="#efaktura">eFaktúra</a>
+        <a href="#compare">Porovnanie</a>
+        <a href="#faq">Otázky</a>
+        <a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">GitHub</a>
+        <a class="btn small primary" href="../app/">Otvoriť aplikáciu</a>
+      </nav>
+      <nav class="langs" aria-label="Jazyk stránky">
+        <ul>
+          <li><a href="../sk/index.html" hreflang="sk" lang="sk" aria-current="page">SK</a></li>
+          <li><a href="../cs/index.html" hreflang="cs" lang="cs">CS</a></li>
+          <li><a href="../en/index.html" hreflang="en" lang="en">EN</a></li>
+          <li><a href="../de/index.html" hreflang="de" lang="de">DE</a></li>
+          <li><a href="../ru/index.html" hreflang="ru" lang="ru">RU</a></li>
+          <li><a href="../uk/index.html" hreflang="uk" lang="uk">UK</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="wrap">
+        <h1>Fakturácia a eFaktúra zadarmo</h1>
+        <p class="lead">Všetko, za čo inde platíte 5 až 15&nbsp;€ mesačne. Bez registrácie, bez limitov. Vaše dáta šifrované vo vašom Google Drive.</p>
+        <div class="buttons">
+          <a class="btn primary" href="../app/">Otvoriť webovú aplikáciu</a>
+          <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Stiahnuť pre Mac / Windows</a>
+        </div>
+        <p class="hint">Otvorený kód (MIT). Fakturácia, výdavky a účtovníctvo pre všetkých, eFaktúra cez Peppol v uzavretej bete na pozvánky.</p>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="Obrazovka WE Invoice: zoznam faktúr so stavmi, čo je po splatnosti a náhľad faktúry s QR kódom na platbu" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
+      </div>
+    </section>
+    <section class="block efaktura" id="efaktura">
+      <div class="wrap">
+        <p class="badge">eFaktúra od 1.&nbsp;1.&nbsp;2027</p>
+        <h2>Od 1. januára 2027 sa faktúry medzi firmami posielajú elektronicky</h2>
+        <p class="intro">Zákon 385/2025 Z. z. zavádza povinnú eFaktúru cez sieť Peppol. Netýka sa len veľkých firiem.</p>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg></span>
+            <h3>Kto musí eFaktúry vystavovať</h3>
+            <p>Platitelia DPH, a to pri každej tuzemskej faktúre pre inú firmu alebo verejnú inštitúciu. Lehota na vystavenie je 15 dní od dodania.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg></span>
+            <h3>Kto musí eFaktúry prijímať</h3>
+            <p>Všetci podnikatelia a právnické osoby na Slovensku, vrátane živnostníkov, ktorí nie sú platiteľmi DPH. Výnimka pre prijímanie neexistuje.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <h3>Čo sa nemení</h3>
+            <p>Faktúry pre spotrebiteľov, zjednodušené doklady z eKasy do 400&nbsp;€ a dodávky oslobodené od dane ostávajú tak, ako sú.</p>
+          </div>
+        </div>
+        <p class="help">WE Invoice vám pomôže eFaktúry prijímať aj posielať. Prijatú faktúru načíta celú, so všetkými riadkami, a odoslanú uloží v pôvodnom XML na 10 rokov, ako žiada zákon.</p>
+        <p class="buttons"><a class="btn primary" href="#waitlist">Zapísať sa do bety eFaktúr</a></p>
+        <div class="waitlist-wrap" id="waitlist">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Odosielam..." data-msg-success="Hotovo. Ste na zozname a keď otvoríme ďalšiu vlnu, napíšeme vám osobne." data-msg-invalid-email="Zadajte platnú e-mailovú adresu." data-msg-consent="Bez súhlasu vás na zoznam nemôžeme zaradiť." data-msg-rate-limited="Príliš veľa pokusov. Skúste to o minútu." data-msg-bad-request="Server prihlášku odmietol. Skontrolujte e-mail a skúste to znova." data-msg-network="Nepodarilo sa spojiť so serverom. Skontrolujte pripojenie a skúste to znova.">
+            <h3 id="waitlist-title">Zapíšte sa do bety eFaktúr</h3>
+            <p>Betu otvárame po vlnách. Zapísaným posielame kód pozvánky a návod, ako si vybrať digitálneho poštára. Žiadny spam, odhlásenie jedným kliknutím.</p>
+            <input type="hidden" name="lang" value="sk">
+            <input type="hidden" name="source" value="site">
+            <input type="hidden" name="startedAt" value="">
+            <div class="field">
+              <label for="wl-email">E-mail</label>
+              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="meno@firma.sk">
+            </div>
+            <fieldset>
+              <legend>Čo vás zaujíma</legend>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> eFaktúra: odosielanie</label>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> eFaktúra: prijímanie</label>
+              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Jednoduché účtovníctvo</label>
+              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> DPH výkazy</label>
+            </fieldset>
+            <fieldset>
+              <legend>Som platiteľ DPH</legend>
+              <label class="check"><input type="radio" name="vatPayer" value="true"> Áno</label>
+              <label class="check"><input type="radio" name="vatPayer" value="false"> Nie</label>
+            </fieldset>
+            <div class="hp" aria-hidden="true">
+              <label for="wl-website">Website</label>
+              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Súhlasím so spracovaním e-mailu na účely zoznamu čakateľov podľa <a href="./privacy.html">zásad ochrany osobných údajov</a>.</span></label>
+            <button type="submit" class="btn primary">Zapísať sa</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="note">Žiadne automatické e-maily: keď otvoríme ďalšiu vlnu bety, napíšeme vám osobne.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="features">
+      <div class="wrap">
+        <h2>Čo WE Invoice robí</h2>
+        <p class="intro">Všetko v jednej aplikácii, bez platených doplnkov a bez verzie Premium.</p>
+        <div class="grid">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+            <h3>Faktúry a doklady</h3>
+            <p>Faktúry, zálohové faktúry, dobropisy, cenové ponuky, dodacie listy a predajky. PDF s QR kódom PAY by square, tlač v slovenčine, češtine, angličtine, nemčine alebo dvojjazyčne.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></span>
+            <h3>eFaktúra (Peppol)</h3>
+            <p>Odosielanie a prijímanie cez poskytovateľa, ktorého si vyberiete sami. Prijatá faktúra sa načíta celá, odoslaná sa archivuje v pôvodnom XML.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>
+            <h3>Banka a párovanie</h3>
+            <p>Import výpisov z ktorejkoľvek banky za ľubovoľné obdobie. Platby sa spárujú s faktúrami podľa variabilného symbolu, sumy a odberateľa.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/></svg></span>
+            <h3>Upomienky s úrokmi</h3>
+            <p>Tri úrovne upomienok, úroky z omeškania podľa zákona a paušálna náhrada 40&nbsp;€ za vymáhanie. Odosielanie e-mailom, aj keď aplikáciu práve neotvoríte.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span>
+            <h3>Výdavky a skenovanie bločkov</h3>
+            <p>Odfotíte bloček alebo načítate QR kód z eKasy a výdavok je zapísaný. Rozpoznávanie beží na vašom zariadení, zadarmo a bez limitu.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>
+            <h3>DPH výkazy</h3>
+            <p>Kontrolný výkaz, súhrnný výkaz a daňové priznanie k DPH v XML, pripravené na odoslanie cez portál finančnej správy.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg></span>
+            <h3>Jednoduché účtovníctvo</h3>
+            <p>Peňažný denník, kniha pohľadávok a záväzkov a podklady k daňovému priznaniu pre živnostníkov. Alebo len evidencia k paušálnym výdavkom.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
+            <h3>Viac firiem zadarmo</h3>
+            <p>Koľko firiem chcete, toľko ich máte. Bez príplatku za ďalšiu firmu, ďalšieho používateľa alebo ďalší doklad.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
+            <h3>Mobil aj počítač</h3>
+            <p>Webová aplikácia funguje v prehliadači aj na telefóne, desktopová verzia pre macOS a Windows pracuje offline a posiela opakované faktúry na pozadí.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="compare">
+      <div class="wrap">
+        <h2>WE Invoice vs. platené aplikácie</h2>
+        <p class="intro">Porovnanie s tým, čo bežné platené fakturačné aplikácie ponúkajú v základných balíkoch.</p>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col">Funkcia</th><th scope="col" class="us">WE Invoice</th><th scope="col">Bežná platená aplikácia</th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row">Cena</th>
+                <td data-label="WE Invoice">0&nbsp;€</td>
+                <td data-label="Bežná platená aplikácia">od 5&nbsp;€ mesačne, vyššie balíky 8 až 15&nbsp;€ mesačne</td>
+              </tr>
+              <tr>
+                <th scope="row">Kontakty a doklady</th>
+                <td data-label="WE Invoice">bez limitu</td>
+                <td data-label="Bežná platená aplikácia">zadarmo spravidla do 5 kontaktov</td>
+              </tr>
+              <tr>
+                <th scope="row">Ďalšia firma alebo používateľ</th>
+                <td data-label="WE Invoice">zadarmo</td>
+                <td data-label="Bežná platená aplikácia">samostatná licencia alebo príplatok okolo 5&nbsp;€ mesačne</td>
+              </tr>
+              <tr>
+                <th scope="row">Opakované faktúry</th>
+                <td data-label="WE Invoice">v cene</td>
+                <td data-label="Bežná platená aplikácia">platený doplnok alebo vyšší balík</td>
+              </tr>
+              <tr>
+                <th scope="row">Banka</th>
+                <td data-label="WE Invoice">import výpisov z ktorejkoľvek banky za ľubovoľné obdobie</td>
+                <td data-label="Bežná platená aplikácia">len niekoľko bánk, história 3 mesiace, súhlas sa obnovuje každých 180 dní</td>
+              </tr>
+              <tr>
+                <th scope="row">Upomienky</th>
+                <td data-label="WE Invoice">úrovne, úroky z omeškania, paušálna náhrada 40&nbsp;€</td>
+                <td data-label="Bežná platená aplikácia">bez úrovní, odosielajú sa len pri prihlásení</td>
+              </tr>
+              <tr>
+                <th scope="row">Kontrolný výkaz, súhrnný výkaz, priznanie DPH</th>
+                <td data-label="WE Invoice">v aplikácii, XML</td>
+                <td data-label="Bežná platená aplikácia">len v samostatnom desktopovom programe alebo vôbec</td>
+              </tr>
+              <tr>
+                <th scope="row">Jednoduché účtovníctvo</th>
+                <td data-label="WE Invoice">v aplikácii</td>
+                <td data-label="Bežná platená aplikácia">samostatný platený program</td>
+              </tr>
+              <tr>
+                <th scope="row">Prijatá eFaktúra</th>
+                <td data-label="WE Invoice">celý doklad so všetkými riadkami</td>
+                <td data-label="Bežná platená aplikácia">prenesie sa len hlavička</td>
+              </tr>
+              <tr>
+                <th scope="row">Rozpoznávanie bločkov</th>
+                <td data-label="WE Invoice">zadarmo, na vašom zariadení</td>
+                <td data-label="Bežná platená aplikácia">napríklad 20&nbsp;€ za 100 dokladov</td>
+              </tr>
+              <tr>
+                <th scope="row">Poskytovateľ eFaktúr</th>
+                <td data-label="WE Invoice">ktorýkoľvek, zmena bez straty dát</td>
+                <td data-label="Bežná platená aplikácia">len poskytovateľ danej aplikácie</td>
+              </tr>
+              <tr>
+                <th scope="row">Kde sú vaše dáta</th>
+                <td data-label="WE Invoice">šifrované vo vašom Google Drive</td>
+                <td data-label="Bežná platená aplikácia">na serveri prevádzkovateľa</td>
+              </tr>
+              <tr>
+                <th scope="row">Zdrojový kód</th>
+                <td data-label="WE Invoice">otvorený, licencia MIT</td>
+                <td data-label="Bežná platená aplikácia">uzavretý</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Stav k 10/2026 podľa verejných cenníkov a dokumentácie bežných fakturačných aplikácií na slovenskom trhu. Ceny pri ročnej platbe, bez DPH.</p>
+      </div>
+    </section>
+    <section class="block privacy-note" id="privacy">
+      <div class="wrap">
+        <h2>Súkromie a otvorenosť</h2>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>Žiadny náš server s vašimi dátami</h3>
+            <p>Faktúry, kontakty a účtovníctvo sú zašifrované vo vašom zariadení (AES-GCM 256) a uložené vo vašom Google Drive. Kľúč máte len vy.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+            <h3>Open source (MIT)</h3>
+            <p>Celý kód je verejný na GitHube. Každý si môže overiť, čo aplikácia robí a kam posiela dáta.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 7.5V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-1.5"/><path d="M2 13h10"/><path d="m5 10-3 3 3 3"/></svg></span>
+            <h3>Export kedykoľvek</h3>
+            <p>PDF, XML, CSV, Excel, ISDOC a UBL. Vaše dáta nie sú zamknuté a odísť môžete s kompletnou históriou.</p>
+          </div>
+        </div>
+        <p><a href="./privacy.html">Prečítajte si zásady ochrany osobných údajov</a></p>
+      </div>
+    </section>
+    <section class="block" id="connect">
+      <div class="wrap">
+        <h2>Ako si zapnúť eFaktúru v troch krokoch</h2>
+        <p class="intro">WE Invoice nie je poskytovateľ eFaktúr. Je to klient k poskytovateľovi, ktorého si vyberiete sami. Nikomu neplatíte dvakrát.</p>
+        <ol class="steps">
+          <li>
+            <h3>Vyberte si digitálneho poštára</h3>
+            <p>Certifikovaného poskytovateľa služieb eFaktúry. Prijímanie je u viacerých zadarmo, odosielanie stojí od 0 do približne 3&nbsp;€ mesačne.</p>
+          </li>
+          <li>
+            <h3>Zaregistrujte ho vo VPDS</h3>
+            <p>Na <a href="https://vpds.financnasprava.sk/" rel="noopener">vpds.financnasprava.sk</a> sa prihlásite občianskym preukazom s čipom a svojho poskytovateľa potvrdíte.</p>
+          </li>
+          <li>
+            <h3>Vložte API kľúč do WE Invoice</h3>
+            <p>Nastavenia, eFaktúra, poskytovateľ a kľúč. Od tej chvíle sa faktúry posielajú a prijímajú priamo z aplikácie.</p>
+          </li>
+        </ol>
+        <p class="note">Poskytovateľa môžete kedykoľvek vymeniť. Vaše faktúry a archív XML ostávajú u vás.</p>
+      </div>
+    </section>
+    <section class="block" id="faq">
+      <div class="wrap narrow">
+        <h2>Časté otázky</h2>
+        <details>
+          <summary>Je to naozaj zadarmo? Prečo?</summary>
+          <p>Áno, bez balíkov, limitov a skúšobného obdobia. Nemáme takmer žiadne prevádzkové náklady: stránka beží na GitHub Pages, dáta sú vo vašom Google Drive a eFaktúry si platíte priamo svojmu poskytovateľovi. Aplikáciu vyvíja agentúra White Eagles ako ukážku svojej práce a ako cestu k majiteľom malých firiem.</p>
+        </details>
+        <details>
+          <summary>Kde sú moje dáta?</summary>
+          <p>Vo vašom zariadení a vo vašom Google Drive, zašifrované kľúčom, ktorý poznáte len vy. Náš server je len brána k poskytovateľom eFaktúr, verejným registrom a kurzom: nič si neukladá. Vo webovej verzii cez ňu prechádza aj váš API kľúč poskytovateľa, lebo poskytovatelia neprijímajú požiadavky priamo z prehliadača; brána ho odovzdá len na čas požiadavky, nezapisuje ho a nekešuje. Desktopová verzia pre macOS a Windows komunikuje s poskytovateľom priamo z vášho počítača a bránu obchádza; ak chcete maximum súkromia, zvoľte ju.</p>
+        </details>
+        <details>
+          <summary>Čo ak stratím heslo?</summary>
+          <p>Pri prvom spustení dostanete kľúč na obnovu. Uložte si ho mimo počítača, napríklad vytlačený. Bez hesla a bez kľúča na obnovu sa dáta dešifrovať nedajú, ani my to nedokážeme.</p>
+        </details>
+        <details>
+          <summary>Musím prijímať eFaktúry, aj keď nie som platiteľ DPH?</summary>
+          <p>Áno. Od 1.&nbsp;1.&nbsp;2027 musí eFaktúry prijímať každý podnikateľ a každá právnická osoba na Slovensku. Vystavovať ich musia len platitelia DPH. Prijímanie je u viacerých poskytovateľov zadarmo.</p>
+        </details>
+        <details>
+          <summary>Koľko stojí digitálny poštár?</summary>
+          <p>Prijímanie eFaktúr ponúka viacero poskytovateľov zadarmo. Odosielanie stojí od 0 do približne 3&nbsp;€ mesačne, alebo niekoľko centov za doklad, podľa poskytovateľa. Platíte priamo jemu, WE Invoice si nič nepridáva.</p>
+        </details>
+        <details>
+          <summary>Prečo Mac nechce aplikáciu otvoriť?</summary>
+          <p>Aplikácia zatiaľ nie je notarizovaná spoločnosťou Apple, preto ju macOS po stiahnutí z prehliadača odmietne otvoriť. Pred prvým spustením raz zadajte v Termináli: xattr -cr &quot;/Applications/WE Invoice.app&quot;. Potom sa otvára ako každá iná aplikácia a jej aktualizácie tento krok nepotrebujú.</p>
+        </details>
+        <details>
+          <summary>Nahradí to účtovníka?</summary>
+          <p>Nie. Pripraví vám podklady: výkazy, denník, exporty v bežných formátoch. Za správnosť daňových dokladov a ich podanie zodpovedáte vy alebo váš účtovník. Dobrý účtovník s WE Invoice ušetrí čas, nie prácu.</p>
+        </details>
+        <details>
+          <summary>Čo nerobíme a prečo</summary>
+          <p>Vlastnú pokladnicu eKasa ani priame prepojenie s virtuálnou pokladnicou VRP: zákon 384/2025 Z. z. zakazuje používať VRP cez iné aplikácie a vlastná pokladnica vyžaduje certifikáciu finančnej správy. Pri hotovostnej úhrade faktúry vám pripravíme údaje pre VRP a uložíme číslo dokladu. Banku v reálnom čase cez PSD2: vyžaduje licenciu a vaše dáta by šli cez cudzí server, preto importujeme výpisy. SMS upomienky: platený kanál, ktorý by sme museli účtovať. Namiesto toho e-mail a Peppol.</p>
+        </details>
+      </div>
+    </section>
+    <section class="block agency" id="white-eagles">
+      <div class="wrap narrow">
+        <h2>Potrebujete web alebo reklamu?</h2>
+        <p>Aplikáciu vyvíja White Eagles: weby, reklama Google a Meta, analytika. Rovnako poctivo, ako staviame WE Invoice, staviame aj riešenia pre vašu firmu.</p>
+        <p><a class="btn" href="https://whiteeagles.sk/" rel="noopener">Pozrieť whiteeagles.sk</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <p><strong>White Eagles &amp; Co. s. r. o.</strong><br>Bohrova 1194/1, 851 01 Bratislava, Slovensko<br>IČO 57098581</p>
+          <p><a href="mailto:welcome@whiteeagles.sk">welcome@whiteeagles.sk</a></p>
+        </div>
+        <div>
+          <p><a href="./privacy.html">Ochrana osobných údajov</a><br><a href="./terms.html">Podmienky používania</a><br><a href="#" class="consent-open">Nastavenia cookies</a></p>
+        </div>
+        <div>
+          <p><a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">Zdrojový kód</a><br><a href="https://github.com/JaffarSk24/WE-Invoice/blob/main/LICENSE" rel="noopener">Licencia MIT</a></p>
+          <p>Ďalšie aplikácie WE:<br><a href="https://jaffarsk24.github.io/WE-Time-Tracker/" rel="noopener">WE Time Tracker</a> &middot; <a href="https://jaffarsk24.github.io/WE-Budget/" rel="noopener">WE Budget</a></p>
+        </div>
+      </div>
+      <p class="copy">&copy; 2026 <a href="https://whiteeagles.sk/" rel="noopener">White Eagles &amp; Co. s. r. o.</a></p>
+    </div>
+  </footer>
+  <div class="consent" id="consent" role="region" aria-labelledby="consent-title" hidden>
+    <div class="wrap">
+      <p class="consent-title" id="consent-title">Cookies a meranie návštevnosti</p>
+      <p>Používame Google Analytics, aby sme vedeli, ktoré časti stránky vám pomáhajú. Zapne sa až po vašom súhlase. Samotná aplikácia WE Invoice žiadnu analytiku nemá. <a href="./privacy.html">Viac o ochrane údajov</a></p>
+      <div class="consent-actions">
+        <button type="button" class="btn primary" data-consent="accept">Súhlasím</button>
+        <button type="button" class="btn" data-consent="reject">Odmietnuť</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

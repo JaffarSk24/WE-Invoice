@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WE Invoice: Rechnungen und E-Rechnung kostenlos</title>
+  <meta name="description" content="Rechnungen, E-Rechnung (eFaktúra) über Peppol, Bank, Mahnungen, Umsatzsteuer-Meldungen und einfache Buchführung. Kostenlos, ohne Registrierung und ohne Limits. Daten verschlüsselt in Ihrem Google Drive.">
+  <link rel="canonical" href="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <link rel="alternate" hreflang="sk" href="https://jaffarsk24.github.io/WE-Invoice/sk/">
+  <link rel="alternate" hreflang="cs" href="https://jaffarsk24.github.io/WE-Invoice/cs/">
+  <link rel="alternate" hreflang="en" href="https://jaffarsk24.github.io/WE-Invoice/en/">
+  <link rel="alternate" hreflang="de" href="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <link rel="alternate" hreflang="ru" href="https://jaffarsk24.github.io/WE-Invoice/ru/">
+  <link rel="alternate" hreflang="uk" href="https://jaffarsk24.github.io/WE-Invoice/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://jaffarsk24.github.io/WE-Invoice/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WE Invoice">
+  <meta property="og:title" content="Rechnungen und E-Rechnung kostenlos">
+  <meta property="og:description" content="Alles, wofür Sie anderswo 5 bis 15&nbsp;€ im Monat zahlen. Ohne Registrierung, ohne Limits. Ihre Daten verschlüsselt in Ihrem Google Drive.">
+  <meta property="og:url" content="https://jaffarsk24.github.io/WE-Invoice/de/">
+  <meta property="og:image" content="https://jaffarsk24.github.io/WE-Invoice/assets/og/de.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:locale:alternate" content="sk_SK">
+  <meta property="og:locale:alternate" content="cs_CZ">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="uk_UA">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#090b11" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/landing.css">
+  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/consent.js"></script>
+  <script type="module" src="../assets/waitlist.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/de/","inLanguage":"de","description":"Rechnungen, E-Rechnung (eFaktúra) über Peppol, Bank, Mahnungen, Umsatzsteuer-Meldungen und einfache Buchführung. Kostenlos, ohne Registrierung und ohne Limits. Daten verschlüsselt in Ihrem Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Rechnungen und Belege","E-Rechnung (Peppol)","Bank und Zahlungsabgleich","Mahnungen mit Verzugszinsen","Ausgaben und Belegscan","Umsatzsteuer-Meldungen","Einfache Buchführung (Einnahmen-Ausgaben-Rechnung)","Mehrere Firmen kostenlos","Handy und Computer"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/de.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"de","mainEntity":[{"@type":"Question","name":"Ist das wirklich kostenlos? Warum?","acceptedAnswer":{"@type":"Answer","text":"Ja, ohne Pakete, Limits und Testphase. Wir haben fast keine Betriebskosten: Die Website läuft auf GitHub Pages, die Daten liegen in Ihrem Google Drive, und E-Rechnungen zahlen Sie direkt an Ihren Provider. Die App entwickelt die Agentur White Eagles als Referenz ihrer Arbeit und als Weg zu Inhabern kleiner Firmen."}},{"@type":"Question","name":"Wo sind meine Daten?","acceptedAnswer":{"@type":"Answer","text":"Auf Ihrem Gerät und in Ihrem Google Drive, verschlüsselt mit einem Schlüssel, den nur Sie kennen. Unser Server ist nur ein Gateway zu E-Rechnungs-Providern, öffentlichen Registern und Wechselkursen: Er speichert nichts. In der Web-Version läuft auch Ihr API-Schlüssel des Providers über ihn, weil die Provider keine Anfragen direkt aus dem Browser annehmen; das Gateway reicht ihn nur für die Dauer der Anfrage weiter, schreibt ihn nicht ins Protokoll und cacht ihn nicht. Die Desktop-Version für macOS und Windows kommuniziert mit dem Provider direkt von Ihrem Computer aus und umgeht das Gateway; wenn Sie ein Maximum an Privatsphäre wollen, wählen Sie diese."}},{"@type":"Question","name":"Was, wenn ich mein Passwort verliere?","acceptedAnswer":{"@type":"Answer","text":"Beim ersten Start erhalten Sie einen Wiederherstellungsschlüssel. Bewahren Sie ihn außerhalb des Computers auf, zum Beispiel ausgedruckt. Ohne Passwort und ohne Wiederherstellungsschlüssel lassen sich die Daten nicht entschlüsseln, auch wir können das nicht."}},{"@type":"Question","name":"Muss ich E-Rechnungen empfangen, auch wenn ich nicht umsatzsteuerpflichtig bin?","acceptedAnswer":{"@type":"Answer","text":"Ja. Ab 1. 1. 2027 muss jeder Unternehmer und jede juristische Person in der Slowakei E-Rechnungen empfangen. Ausstellen müssen sie nur Umsatzsteuerzahler. Der Empfang ist bei mehreren Providern kostenlos."}},{"@type":"Question","name":"Was kostet ein E-Rechnungs-Provider?","acceptedAnswer":{"@type":"Answer","text":"Den Empfang von E-Rechnungen bieten mehrere Provider kostenlos an. Der Versand kostet je nach Provider 0 bis etwa 3 € im Monat oder ein paar Cent pro Beleg. Sie zahlen direkt an ihn, WE Invoice schlägt nichts auf."}},{"@type":"Question","name":"Warum öffnet der Mac die App nicht?","acceptedAnswer":{"@type":"Answer","text":"Die App ist noch nicht von Apple notarisiert, deshalb verweigert macOS nach dem Download aus dem Browser das Öffnen. Geben Sie vor dem ersten Start einmal im Terminal ein: xattr -cr \"/Applications/WE Invoice.app\". Danach öffnet sie sich wie jede andere App, und ihre Updates brauchen diesen Schritt nicht."}},{"@type":"Question","name":"Ersetzt das den Buchhalter?","acceptedAnswer":{"@type":"Answer","text":"Nein. Die App bereitet die Unterlagen vor: Meldungen, Kassenbuch, Exporte in gängigen Formaten. Für die Richtigkeit der Steuerbelege und deren Einreichung sind Sie oder Ihr Buchhalter verantwortlich. Ein guter Buchhalter spart mit WE Invoice Zeit, überflüssig wird er nicht."}},{"@type":"Question","name":"Was wir nicht machen und warum","acceptedAnswer":{"@type":"Answer","text":"Keine eigene eKasa-Registrierkasse und keine direkte Anbindung an die virtuelle Kasse VRP: Das slowakische Gesetz Nr. 384/2025 Z. z. verbietet die Nutzung der VRP über fremde Apps, und eine eigene Kasse bräuchte eine Zertifizierung der Finanzverwaltung. Bei Barzahlung einer Rechnung bereiten wir die Daten für die VRP vor und speichern die Belegnummer. Keine Bank in Echtzeit über PSD2: Das erfordert eine Lizenz, und Ihre Daten liefen über einen fremden Server, deshalb importieren wir Kontoauszüge. Keine SMS-Mahnungen: ein kostenpflichtiger Kanal, den wir berechnen müssten. Stattdessen E-Mail und Peppol."}}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./"><img src="../assets/icon.png" alt="" width="32" height="32">WE Invoice</a>
+      <nav class="links" aria-label="WE Invoice">
+        <a href="#features">Funktionen</a>
+        <a href="#efaktura">E-Rechnung</a>
+        <a href="#compare">Vergleich</a>
+        <a href="#faq">Fragen</a>
+        <a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">GitHub</a>
+        <a class="btn small primary" href="../app/">App öffnen</a>
+      </nav>
+      <nav class="langs" aria-label="Sprache der Website">
+        <ul>
+          <li><a href="../sk/index.html" hreflang="sk" lang="sk">SK</a></li>
+          <li><a href="../cs/index.html" hreflang="cs" lang="cs">CS</a></li>
+          <li><a href="../en/index.html" hreflang="en" lang="en">EN</a></li>
+          <li><a href="../de/index.html" hreflang="de" lang="de" aria-current="page">DE</a></li>
+          <li><a href="../ru/index.html" hreflang="ru" lang="ru">RU</a></li>
+          <li><a href="../uk/index.html" hreflang="uk" lang="uk">UK</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="wrap">
+        <h1>Rechnungen und E-Rechnung kostenlos</h1>
+        <p class="lead">Alles, wofür Sie anderswo 5 bis 15&nbsp;€ im Monat zahlen. Ohne Registrierung, ohne Limits. Ihre Daten verschlüsselt in Ihrem Google Drive.</p>
+        <div class="buttons">
+          <a class="btn primary" href="../app/">Web-App öffnen</a>
+          <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Für Mac / Windows herunterladen</a>
+        </div>
+        <p class="hint">Open Source (MIT). Rechnungen, Ausgaben und Buchführung für alle, E-Rechnung (eFaktúra) über Peppol in geschlossener Beta auf Einladung.</p>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
+            <img src="../assets/preview.png" width="1440" height="900" alt="Bildschirm von WE Invoice: Rechnungsliste mit Status, überfällige Posten und Rechnungsvorschau mit QR-Code zum Bezahlen" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
+      </div>
+    </section>
+    <section class="block efaktura" id="efaktura">
+      <div class="wrap">
+        <p class="badge">E-Rechnung ab 1.&nbsp;1.&nbsp;2027</p>
+        <h2>Ab 1. Januar 2027 werden Rechnungen zwischen Unternehmen in der Slowakei elektronisch versendet</h2>
+        <p class="intro">Das slowakische Gesetz Nr. 385/2025 Z. z. führt die verpflichtende E-Rechnung (eFaktúra) über das Peppol-Netz ein. Betroffen sind nicht nur große Firmen.</p>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg></span>
+            <h3>Wer E-Rechnungen ausstellen muss</h3>
+            <p>Umsatzsteuerzahler, und zwar bei jeder inländischen Rechnung an ein anderes Unternehmen oder eine öffentliche Einrichtung. Die Frist für die Ausstellung beträgt 15 Tage ab Lieferung.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg></span>
+            <h3>Wer E-Rechnungen empfangen muss</h3>
+            <p>Alle Unternehmer und juristischen Personen in der Slowakei, auch Gewerbetreibende, die nicht umsatzsteuerpflichtig sind. Eine Ausnahme für den Empfang gibt es nicht.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <h3>Was sich nicht ändert</h3>
+            <p>Rechnungen an Verbraucher, vereinfachte eKasa-Belege bis 400&nbsp;€ und steuerbefreite Lieferungen bleiben, wie sie sind.</p>
+          </div>
+        </div>
+        <p class="help">WE Invoice hilft Ihnen, E-Rechnungen zu empfangen und zu versenden. Eine empfangene Rechnung wird komplett eingelesen, mit allen Positionen, eine versendete wird 10 Jahre lang im Original-XML aufbewahrt, wie es das Gesetz verlangt.</p>
+        <p class="buttons"><a class="btn primary" href="#waitlist">Für die E-Rechnungs-Beta eintragen</a></p>
+        <div class="waitlist-wrap" id="waitlist">
+          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Wird gesendet..." data-msg-success="Fertig. Sie stehen auf der Liste, und wenn wir die nächste Welle öffnen, schreiben wir Ihnen persönlich." data-msg-invalid-email="Geben Sie eine gültige E-Mail-Adresse ein." data-msg-consent="Ohne Ihre Zustimmung können wir Sie nicht auf die Liste setzen." data-msg-rate-limited="Zu viele Versuche. Probieren Sie es in einer Minute noch einmal." data-msg-bad-request="Der Server hat die Anmeldung abgelehnt. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut." data-msg-network="Keine Verbindung zum Server. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.">
+            <h3 id="waitlist-title">Tragen Sie sich für die E-Rechnungs-Beta ein</h3>
+            <p>Wir öffnen die Beta in Wellen. Eingetragene erhalten einen Einladungscode und eine Anleitung zur Wahl eines E-Rechnungs-Providers (slowakisch: digitálny poštár). Kein Spam, Abmeldung mit einem Klick.</p>
+            <input type="hidden" name="lang" value="de">
+            <input type="hidden" name="source" value="site">
+            <input type="hidden" name="startedAt" value="">
+            <div class="field">
+              <label for="wl-email">E-Mail</label>
+              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="name@firma.sk">
+            </div>
+            <fieldset>
+              <legend>Was Sie interessiert</legend>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> E-Rechnung: Versand</label>
+              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> E-Rechnung: Empfang</label>
+              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Einfache Buchführung</label>
+              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> Umsatzsteuer-Meldungen</label>
+            </fieldset>
+            <fieldset>
+              <legend>Ich bin umsatzsteuerpflichtig</legend>
+              <label class="check"><input type="radio" name="vatPayer" value="true"> Ja</label>
+              <label class="check"><input type="radio" name="vatPayer" value="false"> Nein</label>
+            </fieldset>
+            <div class="hp" aria-hidden="true">
+              <label for="wl-website">Website</label>
+              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Ich bin mit der Verarbeitung meiner E-Mail-Adresse für die Warteliste gemäß der <a href="./privacy.html">Datenschutzerklärung</a> einverstanden.</span></label>
+            <button type="submit" class="btn primary">Eintragen</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="note">Keine automatischen E-Mails: Wenn wir die nächste Welle der Beta öffnen, schreiben wir Ihnen persönlich.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="features">
+      <div class="wrap">
+        <h2>Was WE Invoice kann</h2>
+        <p class="intro">Alles in einer App, ohne kostenpflichtige Zusatzmodule und ohne Premium-Version.</p>
+        <div class="grid">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+            <h3>Rechnungen und Belege</h3>
+            <p>Rechnungen, Anzahlungsrechnungen, Gutschriften, Angebote, Lieferscheine und Verkaufsbelege. PDF mit QR-Code PAY by square, Druck auf Slowakisch, Tschechisch, Englisch, Deutsch oder zweisprachig.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></span>
+            <h3>E-Rechnung (Peppol)</h3>
+            <p>Versand und Empfang über einen Provider, den Sie selbst wählen. Eine empfangene Rechnung wird komplett eingelesen, eine versendete im Original-XML archiviert.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>
+            <h3>Bank und Zahlungsabgleich</h3>
+            <p>Import von Kontoauszügen jeder Bank für beliebige Zeiträume. Zahlungen werden anhand von Zahlungsreferenz (variabilný symbol), Betrag und Kunde den Rechnungen zugeordnet.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/></svg></span>
+            <h3>Mahnungen mit Verzugszinsen</h3>
+            <p>Drei Mahnstufen, gesetzliche Verzugszinsen und die Pauschale von 40&nbsp;€ für Beitreibungskosten. Versand per E-Mail, auch wenn Sie die App gerade nicht öffnen.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span>
+            <h3>Ausgaben und Belegscan</h3>
+            <p>Kassenbon fotografieren oder den eKasa-QR-Code scannen, und die Ausgabe ist erfasst. Die Erkennung läuft auf Ihrem Gerät, kostenlos und ohne Limit.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></span>
+            <h3>Umsatzsteuer-Meldungen</h3>
+            <p>Kontrollmeldung (kontrolný výkaz), Zusammenfassende Meldung und Umsatzsteuererklärung als XML, fertig für die Einreichung über das Portal der slowakischen Finanzverwaltung.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg></span>
+            <h3>Einfache Buchführung (Einnahmen-Ausgaben-Rechnung)</h3>
+            <p>Kassenbuch, Forderungs- und Verbindlichkeitenbuch und Unterlagen für die Steuererklärung von Gewerbetreibenden. Oder nur die Aufzeichnungen für die Ausgabenpauschale.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
+            <h3>Mehrere Firmen kostenlos</h3>
+            <p>So viele Firmen, wie Sie wollen. Kein Aufpreis für eine weitere Firma, einen weiteren Nutzer oder einen weiteren Beleg.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
+            <h3>Handy und Computer</h3>
+            <p>Die Web-App läuft im Browser und auf dem Smartphone, die Desktop-Version für macOS und Windows arbeitet offline und versendet wiederkehrende Rechnungen im Hintergrund.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="block" id="compare">
+      <div class="wrap">
+        <h2>WE Invoice vs. kostenpflichtige Apps</h2>
+        <p class="intro">Vergleich mit dem, was gängige kostenpflichtige Rechnungs-Apps in ihren Basis-Paketen bieten.</p>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col">Funktion</th><th scope="col" class="us">WE Invoice</th><th scope="col">Gängige kostenpflichtige App</th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row">Preis</th>
+                <td data-label="WE Invoice">0&nbsp;€</td>
+                <td data-label="Gängige kostenpflichtige App">ab 5&nbsp;€ im Monat, größere Pakete 8 bis 15&nbsp;€ im Monat</td>
+              </tr>
+              <tr>
+                <th scope="row">Kontakte und Belege</th>
+                <td data-label="WE Invoice">ohne Limit</td>
+                <td data-label="Gängige kostenpflichtige App">kostenlos meist nur bis 5 Kontakte</td>
+              </tr>
+              <tr>
+                <th scope="row">Weitere Firma oder Nutzer</th>
+                <td data-label="WE Invoice">kostenlos</td>
+                <td data-label="Gängige kostenpflichtige App">eigene Lizenz oder Aufpreis von rund 5&nbsp;€ im Monat</td>
+              </tr>
+              <tr>
+                <th scope="row">Wiederkehrende Rechnungen</th>
+                <td data-label="WE Invoice">inklusive</td>
+                <td data-label="Gängige kostenpflichtige App">kostenpflichtiges Zusatzmodul oder größeres Paket</td>
+              </tr>
+              <tr>
+                <th scope="row">Bank</th>
+                <td data-label="WE Invoice">Import von Kontoauszügen jeder Bank für beliebige Zeiträume</td>
+                <td data-label="Gängige kostenpflichtige App">nur wenige Banken, 3 Monate Historie, Zustimmung alle 180 Tage erneuern</td>
+              </tr>
+              <tr>
+                <th scope="row">Mahnungen</th>
+                <td data-label="WE Invoice">Mahnstufen, Verzugszinsen, Pauschale 40&nbsp;€</td>
+                <td data-label="Gängige kostenpflichtige App">ohne Stufen, Versand nur beim Einloggen</td>
+              </tr>
+              <tr>
+                <th scope="row">Kontrollmeldung, Zusammenfassende Meldung, Umsatzsteuererklärung</th>
+                <td data-label="WE Invoice">in der App, XML</td>
+                <td data-label="Gängige kostenpflichtige App">nur in einem separaten Desktop-Programm oder gar nicht</td>
+              </tr>
+              <tr>
+                <th scope="row">Einfache Buchführung</th>
+                <td data-label="WE Invoice">in der App</td>
+                <td data-label="Gängige kostenpflichtige App">separates kostenpflichtiges Programm</td>
+              </tr>
+              <tr>
+                <th scope="row">Empfangene E-Rechnung</th>
+                <td data-label="WE Invoice">kompletter Beleg mit allen Positionen</td>
+                <td data-label="Gängige kostenpflichtige App">nur der Kopf wird übernommen</td>
+              </tr>
+              <tr>
+                <th scope="row">Belegerkennung</th>
+                <td data-label="WE Invoice">kostenlos, auf Ihrem Gerät</td>
+                <td data-label="Gängige kostenpflichtige App">zum Beispiel 20&nbsp;€ pro 100 Belege</td>
+              </tr>
+              <tr>
+                <th scope="row">E-Rechnungs-Provider</th>
+                <td data-label="WE Invoice">beliebig, Wechsel ohne Datenverlust</td>
+                <td data-label="Gängige kostenpflichtige App">nur der Provider der jeweiligen App</td>
+              </tr>
+              <tr>
+                <th scope="row">Wo Ihre Daten liegen</th>
+                <td data-label="WE Invoice">verschlüsselt in Ihrem Google Drive</td>
+                <td data-label="Gängige kostenpflichtige App">auf dem Server des Anbieters</td>
+              </tr>
+              <tr>
+                <th scope="row">Quellcode</th>
+                <td data-label="WE Invoice">offen, MIT-Lizenz</td>
+                <td data-label="Gängige kostenpflichtige App">geschlossen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Stand 10/2026 laut öffentlichen Preislisten und Dokumentationen gängiger Rechnungs-Apps auf dem slowakischen Markt. Preise bei jährlicher Zahlung, ohne Umsatzsteuer (DPH).</p>
+      </div>
+    </section>
+    <section class="block privacy-note" id="privacy">
+      <div class="wrap">
+        <h2>Datenschutz und Offenheit</h2>
+        <div class="grid three">
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>Kein Server von uns mit Ihren Daten</h3>
+            <p>Rechnungen, Kontakte und Buchführung werden auf Ihrem Gerät verschlüsselt (AES-GCM 256) und in Ihrem Google Drive gespeichert. Den Schlüssel haben nur Sie.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+            <h3>Open Source (MIT)</h3>
+            <p>Der gesamte Code ist öffentlich auf GitHub. Jeder kann prüfen, was die App tut und wohin sie Daten sendet.</p>
+          </div>
+          <div class="card">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 7.5V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-1.5"/><path d="M2 13h10"/><path d="m5 10-3 3 3 3"/></svg></span>
+            <h3>Export jederzeit</h3>
+            <p>PDF, XML, CSV, Excel, ISDOC und UBL. Ihre Daten sind nicht eingesperrt, und Sie können jederzeit mit der kompletten Historie gehen.</p>
+          </div>
+        </div>
+        <p><a href="./privacy.html">Datenschutzerklärung lesen</a></p>
+      </div>
+    </section>
+    <section class="block" id="connect">
+      <div class="wrap">
+        <h2>E-Rechnung in drei Schritten einrichten</h2>
+        <p class="intro">WE Invoice ist kein E-Rechnungs-Provider. Es ist der Client für den Provider, den Sie selbst wählen. Sie zahlen niemandem doppelt.</p>
+        <ol class="steps">
+          <li>
+            <h3>Wählen Sie einen Provider</h3>
+            <p>Einen zertifizierten Anbieter für E-Rechnungs-Dienste, auf Slowakisch digitálny poštár. Der Empfang ist bei mehreren kostenlos, der Versand kostet 0 bis etwa 3&nbsp;€ im Monat.</p>
+          </li>
+          <li>
+            <h3>Registrieren Sie ihn im VPDS</h3>
+            <p>Auf <a href="https://vpds.financnasprava.sk/" rel="noopener">vpds.financnasprava.sk</a>, dem Portal der slowakischen Finanzverwaltung, melden Sie sich mit Ihrem Ausweis mit Chip (eID) an und bestätigen Ihren Provider.</p>
+          </li>
+          <li>
+            <h3>API-Schlüssel in WE Invoice eintragen</h3>
+            <p>Einstellungen, E-Rechnung, Provider und Schlüssel. Ab diesem Moment werden Rechnungen direkt aus der App versendet und empfangen.</p>
+          </li>
+        </ol>
+        <p class="note">Den Provider können Sie jederzeit wechseln. Ihre Rechnungen und das XML-Archiv bleiben bei Ihnen.</p>
+      </div>
+    </section>
+    <section class="block" id="faq">
+      <div class="wrap narrow">
+        <h2>Häufige Fragen</h2>
+        <details>
+          <summary>Ist das wirklich kostenlos? Warum?</summary>
+          <p>Ja, ohne Pakete, Limits und Testphase. Wir haben fast keine Betriebskosten: Die Website läuft auf GitHub Pages, die Daten liegen in Ihrem Google Drive, und E-Rechnungen zahlen Sie direkt an Ihren Provider. Die App entwickelt die Agentur White Eagles als Referenz ihrer Arbeit und als Weg zu Inhabern kleiner Firmen.</p>
+        </details>
+        <details>
+          <summary>Wo sind meine Daten?</summary>
+          <p>Auf Ihrem Gerät und in Ihrem Google Drive, verschlüsselt mit einem Schlüssel, den nur Sie kennen. Unser Server ist nur ein Gateway zu E-Rechnungs-Providern, öffentlichen Registern und Wechselkursen: Er speichert nichts. In der Web-Version läuft auch Ihr API-Schlüssel des Providers über ihn, weil die Provider keine Anfragen direkt aus dem Browser annehmen; das Gateway reicht ihn nur für die Dauer der Anfrage weiter, schreibt ihn nicht ins Protokoll und cacht ihn nicht. Die Desktop-Version für macOS und Windows kommuniziert mit dem Provider direkt von Ihrem Computer aus und umgeht das Gateway; wenn Sie ein Maximum an Privatsphäre wollen, wählen Sie diese.</p>
+        </details>
+        <details>
+          <summary>Was, wenn ich mein Passwort verliere?</summary>
+          <p>Beim ersten Start erhalten Sie einen Wiederherstellungsschlüssel. Bewahren Sie ihn außerhalb des Computers auf, zum Beispiel ausgedruckt. Ohne Passwort und ohne Wiederherstellungsschlüssel lassen sich die Daten nicht entschlüsseln, auch wir können das nicht.</p>
+        </details>
+        <details>
+          <summary>Muss ich E-Rechnungen empfangen, auch wenn ich nicht umsatzsteuerpflichtig bin?</summary>
+          <p>Ja. Ab 1.&nbsp;1.&nbsp;2027 muss jeder Unternehmer und jede juristische Person in der Slowakei E-Rechnungen empfangen. Ausstellen müssen sie nur Umsatzsteuerzahler. Der Empfang ist bei mehreren Providern kostenlos.</p>
+        </details>
+        <details>
+          <summary>Was kostet ein E-Rechnungs-Provider?</summary>
+          <p>Den Empfang von E-Rechnungen bieten mehrere Provider kostenlos an. Der Versand kostet je nach Provider 0 bis etwa 3&nbsp;€ im Monat oder ein paar Cent pro Beleg. Sie zahlen direkt an ihn, WE Invoice schlägt nichts auf.</p>
+        </details>
+        <details>
+          <summary>Warum öffnet der Mac die App nicht?</summary>
+          <p>Die App ist noch nicht von Apple notarisiert, deshalb verweigert macOS nach dem Download aus dem Browser das Öffnen. Geben Sie vor dem ersten Start einmal im Terminal ein: xattr -cr &quot;/Applications/WE Invoice.app&quot;. Danach öffnet sie sich wie jede andere App, und ihre Updates brauchen diesen Schritt nicht.</p>
+        </details>
+        <details>
+          <summary>Ersetzt das den Buchhalter?</summary>
+          <p>Nein. Die App bereitet die Unterlagen vor: Meldungen, Kassenbuch, Exporte in gängigen Formaten. Für die Richtigkeit der Steuerbelege und deren Einreichung sind Sie oder Ihr Buchhalter verantwortlich. Ein guter Buchhalter spart mit WE Invoice Zeit, überflüssig wird er nicht.</p>
+        </details>
+        <details>
+          <summary>Was wir nicht machen und warum</summary>
+          <p>Keine eigene eKasa-Registrierkasse und keine direkte Anbindung an die virtuelle Kasse VRP: Das slowakische Gesetz Nr. 384/2025 Z. z. verbietet die Nutzung der VRP über fremde Apps, und eine eigene Kasse bräuchte eine Zertifizierung der Finanzverwaltung. Bei Barzahlung einer Rechnung bereiten wir die Daten für die VRP vor und speichern die Belegnummer. Keine Bank in Echtzeit über PSD2: Das erfordert eine Lizenz, und Ihre Daten liefen über einen fremden Server, deshalb importieren wir Kontoauszüge. Keine SMS-Mahnungen: ein kostenpflichtiger Kanal, den wir berechnen müssten. Stattdessen E-Mail und Peppol.</p>
+        </details>
+      </div>
+    </section>
+    <section class="block agency" id="white-eagles">
+      <div class="wrap narrow">
+        <h2>Brauchen Sie eine Website oder Werbung?</h2>
+        <p>Die App entwickelt White Eagles: Websites, Google- und Meta-Werbung, Analytics. So solide, wie wir WE Invoice bauen, bauen wir auch Lösungen für Ihr Unternehmen.</p>
+        <p><a class="btn" href="https://whiteeagles.sk/" rel="noopener">whiteeagles.sk ansehen</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <p><strong>White Eagles &amp; Co. s. r. o.</strong><br>Bohrova 1194/1, 851 01 Bratislava, Slowakei<br>Firmen-ID (IČO) 57098581</p>
+          <p><a href="mailto:welcome@whiteeagles.sk">welcome@whiteeagles.sk</a></p>
+        </div>
+        <div>
+          <p><a href="./privacy.html">Datenschutz</a><br><a href="./terms.html">Nutzungsbedingungen</a><br><a href="#" class="consent-open">Cookie-Einstellungen</a></p>
+        </div>
+        <div>
+          <p><a href="https://github.com/JaffarSk24/WE-Invoice" rel="noopener">Quellcode</a><br><a href="https://github.com/JaffarSk24/WE-Invoice/blob/main/LICENSE" rel="noopener">MIT-Lizenz</a></p>
+          <p>Weitere WE-Apps:<br><a href="https://jaffarsk24.github.io/WE-Time-Tracker/" rel="noopener">WE Time Tracker</a> &middot; <a href="https://jaffarsk24.github.io/WE-Budget/" rel="noopener">WE Budget</a></p>
+        </div>
+      </div>
+      <p class="copy">&copy; 2026 <a href="https://whiteeagles.sk/" rel="noopener">White Eagles &amp; Co. s. r. o.</a></p>
+    </div>
+  </footer>
+  <div class="consent" id="consent" role="region" aria-labelledby="consent-title" hidden>
+    <div class="wrap">
+      <p class="consent-title" id="consent-title">Cookies und Besuchsstatistik</p>
+      <p>Wir nutzen Google Analytics, um zu sehen, welche Teile der Website Ihnen helfen. Es startet erst nach Ihrer Zustimmung. Die App WE Invoice selbst enthält keinerlei Analytik. <a href="./privacy.html">Mehr zum Datenschutz</a></p>
+      <div class="consent-actions">
+        <button type="button" class="btn primary" data-consent="accept">Einverstanden</button>
+        <button type="button" class="btn" data-consent="reject">Ablehnen</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

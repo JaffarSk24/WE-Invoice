@@ -1,0 +1,76 @@
+# Copy to .env on the server. Never commit the real .env.
+HOST=127.0.0.1
+PORT=8787
+APP_VERSION=0.1.0
+LOG_LEVEL=info
+# Browser origins allowed by CORS (the site and the dev server)
+CORS_ORIGINS=https://jaffarsk24.github.io,http://localhost:5173
+# nginx sits in front: trust X-Forwarded-For
+# Proxies whose X-Forwarded-For is trusted (proxy-addr names or CIDRs); never "true"
+TRUST_PROXY=loopback,uniquelocal
+# Public address of this gateway (links in e-mails)
+PUBLIC_URL=https://invoice-api.whiteeagles.sk
+# The site (redirects after confirm and unsubscribe, app link in invites)
+SITE_URL=https://jaffarsk24.github.io/WE-Invoice
+
+# SQLite file (waitlist, invite codes, public data cache, counters)
+DATABASE_PATH=/data/gateway.sqlite
+
+# Waitlist e-mails (ask the owner which mail service whiteeagles.sk uses)
+# Waitlist mail. By default no e-mail goes to applicants: a sign-up is
+# stored at once and a notice goes to OWNER_NOTIFY_EMAIL. Set
+# WAITLIST_CONFIRM_EMAIL=true for a double opt-in e-mail instead.
+WAITLIST_CONFIRM_EMAIL=false
+OWNER_NOTIFY_EMAIL=welcome@whiteeagles.sk
+OWNER_NOTIFY_LANG=ru
+# Mailgun HTTP API (used when SMTP_HOST is empty); the key only here on the server.
+MAILGUN_API_KEY=
+MAILGUN_DOMAIN=mg.whiteeagles.sk
+MAILGUN_ENDPOINT=api.eu.mailgun.net
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=WE Invoice <welcome@mg.whiteeagles.sk>
+WAITLIST_CONFIRM_TTL_HOURS=48
+WAITLIST_MIN_FILL_SECONDS=3
+WAITLIST_RETENTION_MONTHS=24
+
+# Open data API of the Financial Administration (registered by the owner at
+# opendata.financnasprava.sk). Without the key company lookups answer
+# without DIČ and the VAT reliability check answers NOT_CONFIGURED.
+FS_OPENDATA_API_KEY=
+FS_OPENDATA_URL=https://iz.opendata.financnasprava.sk/api/lists
+# Identifiers of the lists on the portal; verify after registering the key
+FS_LIST_VAT_PAYERS=ds_dphs
+FS_LIST_CANCELLATION_REASONS=ds_dph_zrus
+FS_LIST_DELETED=ds_dph_vymaz
+FS_LIST_TAX_SUBJECTS=ds_dic
+
+# Owner's admin endpoints (waitlist CSV, stats): a long random string
+ADMIN_TOKEN=
+
+# Signs beta invite tokens: a long random string (openssl rand -base64 48)
+BETA_HMAC_SECRET=
+
+# Peppol proxy: the allow-list comes from packages/core/peppol/providers.json.
+# PROVIDERS_FILE overrides its location; PROVIDER_BASE_URLS adds or replaces
+# the base URL of a provider that published its API after the release,
+# as JSON {"providerId":"https://..."} ("<id>-sandbox" for the sandbox).
+PROVIDERS_FILE=
+PROVIDER_BASE_URLS=
+
+# Public upstreams (defaults are the current public addresses)
+RPO_URL=https://api.statistics.sk/rpo/v1
+ARES_URL=https://ares.gov.cz/ekonomicke-subjekty-v-be/rest
+VIES_URL=https://ec.europa.eu/taxation_customs/vies/rest-api
+ECB_URL=https://www.ecb.europa.eu/stats/eurofxref
+EKASA_RECEIPT_URL=https://ekasa.financnasprava.sk/mdu/api/v1/opd/receipt/find
+PEPPOL_SML_ZONE=edelivery.tech.ec.europa.eu
+# Also try the legacy "B-" + MD5 CNAME record of the SML (off by default)
+PEPPOL_SML_LEGACY_CNAME=false
+UPSTREAM_TIMEOUT_MS=15000
+UPSTREAM_MAX_CONCURRENT=8
+# Multiplies every per-route rate limit (0 disables, tests only)
+RATE_LIMIT_SCALE=1

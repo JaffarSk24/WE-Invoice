@@ -1,0 +1,225 @@
+{
+  "$comment": "VAT rates of EU member states for the OSS check (05-accounting-tax.md § 5.2): for each country the standard rate and every rate a supply may carry (reduced, super-reduced, parking). Zero rates are left out. Greece uses its VAT prefix EL. Rates in force on 28 September 2026, cross-checked against the Commission TEDB and national sources; re-check after every change of a national rate.",
+  "source": "https://ec.europa.eu/taxation_customs/tedb/ ; https://www.eurofiscalis.com/en/vat-rates-in-ue/",
+  "verified": true,
+  "verifiedAt": "2026-10-19",
+  "countries": {
+    "AT": {
+      "standard": "20",
+      "rates": [
+        "20",
+        "10",
+        "13",
+        "4.9"
+      ]
+    },
+    "BE": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "6",
+        "12"
+      ]
+    },
+    "BG": {
+      "standard": "20",
+      "rates": [
+        "20",
+        "9"
+      ]
+    },
+    "HR": {
+      "standard": "25",
+      "rates": [
+        "25",
+        "5",
+        "13"
+      ]
+    },
+    "CY": {
+      "standard": "19",
+      "rates": [
+        "19",
+        "5",
+        "9",
+        "3"
+      ]
+    },
+    "CZ": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "12"
+      ]
+    },
+    "DK": {
+      "standard": "25",
+      "rates": [
+        "25"
+      ]
+    },
+    "EE": {
+      "standard": "24",
+      "rates": [
+        "24",
+        "9",
+        "13"
+      ]
+    },
+    "FI": {
+      "standard": "25.5",
+      "rates": [
+        "25.5",
+        "10",
+        "13.5"
+      ]
+    },
+    "FR": {
+      "standard": "20",
+      "rates": [
+        "20",
+        "5.5",
+        "10",
+        "2.1"
+      ]
+    },
+    "DE": {
+      "standard": "19",
+      "rates": [
+        "19",
+        "7"
+      ]
+    },
+    "EL": {
+      "standard": "24",
+      "rates": [
+        "24",
+        "6",
+        "13",
+        "4"
+      ]
+    },
+    "HU": {
+      "standard": "27",
+      "rates": [
+        "27",
+        "5",
+        "18"
+      ]
+    },
+    "IE": {
+      "standard": "23",
+      "rates": [
+        "23",
+        "9",
+        "13.5",
+        "4.8"
+      ]
+    },
+    "IT": {
+      "standard": "22",
+      "rates": [
+        "22",
+        "5",
+        "10",
+        "4"
+      ]
+    },
+    "LV": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "5",
+        "12"
+      ]
+    },
+    "LT": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "5",
+        "12"
+      ]
+    },
+    "LU": {
+      "standard": "17",
+      "rates": [
+        "17",
+        "8",
+        "14",
+        "3"
+      ]
+    },
+    "MT": {
+      "standard": "18",
+      "rates": [
+        "18",
+        "5",
+        "7",
+        "12"
+      ]
+    },
+    "NL": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "9"
+      ]
+    },
+    "PL": {
+      "standard": "23",
+      "rates": [
+        "23",
+        "5",
+        "8"
+      ]
+    },
+    "PT": {
+      "standard": "23",
+      "rates": [
+        "23",
+        "6",
+        "13"
+      ]
+    },
+    "RO": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "11"
+      ]
+    },
+    "SK": {
+      "standard": "23",
+      "rates": [
+        "23",
+        "5",
+        "19"
+      ]
+    },
+    "SI": {
+      "standard": "22",
+      "rates": [
+        "22",
+        "5",
+        "9.5"
+      ]
+    },
+    "ES": {
+      "standard": "21",
+      "rates": [
+        "21",
+        "10",
+        "4"
+      ]
+    },
+    "SE": {
+      "standard": "25",
+      "rates": [
+        "25",
+        "6",
+        "12"
+      ]
+    }
+  }
+}

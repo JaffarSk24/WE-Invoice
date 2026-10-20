@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /WE-Invoice/*/thanks.html
+Disallow: /WE-Invoice/*/unsubscribed.html
+
+Sitemap: https://jaffarsk24.github.io/WE-Invoice/sitemap.xml
