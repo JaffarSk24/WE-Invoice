@@ -10,6 +10,27 @@ import { computeTotals } from '../vat/index.js';
 import { isPurchase } from '../exports/period.js';
 import { DOCUMENT_KINDS } from '../schema/enums.js';
 import { uuidv7 } from '../ids/uuid.js';
+import { getLegislation } from '../legislation/index.js';
+import { cmp } from '../money/index.js';
+
+/**
+ * Whether a document has a standard-rated line at a rate that is not one
+ * of the Slovak rates in force on its date (an OSS sale, a foreign
+ * supplier, or a mistake). A document without a date, or a date outside
+ * the legislation data, is not judged.
+ */
+export function hasNonSlovakRate(document) {
+  const date = document.taxDate || document.issueDate;
+  if (!date) return false;
+  let rates;
+  try {
+    rates = getLegislation('vatRates', date, 'SK').map(r => r.rate);
+  } catch {
+    return false;
+  }
+  return (document.lines || []).some(l => (!l.kind || l.kind === 'ITEM') && l.vatCategory === 'S' && l.vatRate !== null && l.vatRate !== undefined && l.vatRate !== ''
+    && !rates.some(r => cmp(r, l.vatRate) === 0));
+}
 
 export function contactKey(c) {
   const ico = readIco(c && c.ico);
@@ -42,9 +63,11 @@ const live = (list) => (list || []).filter(r => r && !r.deleted);
 
 /**
  * @param {{contacts: object[], items: object[], documents: object[], report: object}} parsed
- * @param {{contacts?: object[], items?: object[], documents?: object[]}} existing  the company's records
+ * @param {{contacts?: object[], items?: object[], documents?: object[], company?: object}} existing  the company's records and the company
  */
 export function buildImportPlan(parsed, existing = {}) {
+  // existing.company: a VAT payer is warned about rates that are not Slovak.
+  const payer = Boolean(existing.company && existing.company.vatMode === 'PAYER');
   const report = parsed.report;
   const known = new Map(live(existing.contacts).map(c => [contactKey(c), c.id]));
   const seen = new Set();
@@ -97,6 +120,7 @@ export function buildImportPlan(parsed, existing = {}) {
       continue;
     }
     if (!draft.lines.length) warn(report, 'documents', draft.number, 'NO_LINES');
+    if (payer && hasNonSlovakRate(draft)) warn(report, 'documents', draft.number || draft.orderReference, 'RATE_NOT_SK');
     knownDocs.add(key);
     if (orderKey(draft)) knownOrders.add(orderKey(draft));
     documents.push({ draft, key, action: 'add', contactKey: partnerOf(draft).name ? contactKey(partnerOf(draft)) : null });

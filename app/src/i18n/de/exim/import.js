@@ -171,5 +171,8 @@ export default {
   "errors.SF_PROXY_UNAVAILABLE": "Im Browser lassen sich Daten aus SuperFaktúra noch nicht laden. Verwenden Sie die Desktop-App oder einen Export in eine Datei.",
   "errors.SF_RATE_LIMITED": "SuperFaktúra hat die Zahl der Anfragen vorübergehend begrenzt. Versuchen Sie es in Kürze erneut.",
   "errors.SF_UNAVAILABLE": "SuperFaktúra ist vorübergehend nicht verfügbar.",
-  "errors.SF_CANCELLED": "Der Download ist angehalten. Nichts wurde gespeichert."
+  "errors.SF_CANCELLED": "Der Download ist angehalten. Nichts wurde gespeichert.",
+  "exim.reason.RATE_NOT_SK": "der USt-Satz ist kein am Belegdatum gültiger slowakischer Satz, vielleicht OSS oder ein Fehler, prüfen Sie ihn von Hand",
+  "exim.reason.COLUMN_IGNORED": "diese Spalte oder dieses Feld wurde nicht erkannt und wird nicht importiert",
+  "exim.reason.ITEM_WITHOUT_NAME": "eine Bestellposition ohne Namen wird nicht importiert"
 };

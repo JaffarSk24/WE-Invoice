@@ -171,5 +171,8 @@ export default {
   "errors.SF_PROXY_UNAVAILABLE": "SuperFaktúra cannot be read in the browser yet. Use the desktop app or an export to a file.",
   "errors.SF_RATE_LIMITED": "SuperFaktúra limited the number of requests for now. Try again in a while.",
   "errors.SF_UNAVAILABLE": "SuperFaktúra is temporarily unavailable.",
-  "errors.SF_CANCELLED": "The download is stopped. Nothing was saved."
+  "errors.SF_CANCELLED": "The download is stopped. Nothing was saved.",
+  "exim.reason.RATE_NOT_SK": "the VAT rate is not a Slovak rate in force on the document date, possibly OSS or a mistake, check it by hand",
+  "exim.reason.COLUMN_IGNORED": "this column or field was not recognised and is not imported",
+  "exim.reason.ITEM_WITHOUT_NAME": "an order item without a name is not imported"
 };

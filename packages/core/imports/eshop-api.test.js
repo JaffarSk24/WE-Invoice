@@ -124,3 +124,55 @@ describe('Shoptet spreadsheet export', () => {
     expect(r.documents.map(d => d.orderReference)).toEqual(['2026000201']);
   });
 });
+
+describe('nothing is dropped silently', () => {
+  it('lists unknown CSV columns, rows without an order code and items without a name', () => {
+    const csv = 'Code;DATE;itemName;itemAmount;itemUnitPriceWithVat;itemVatRate;loyaltyPoints;\r\n'
+      + '9001;2026-09-10;Hrnček;1;10,00;23;5;\r\n'
+      + ';2026-09-10;Bez kódu;1;5,00;23;;\r\n'
+      + '9001;2026-09-10;;1;2,00;23;;\r\n';
+    const r = importShoptet(csv, { company });
+    expect(r.documents.map(d => [d.orderReference, d.lines.length])).toEqual([['9001', 1]]);
+    expect(r.report.skipped).toEqual([{ entity: 'documents', ref: '#3', reason: 'MISSING_NUMBER' }]);
+    expect(r.report.warnings).toEqual([
+      { entity: 'documents', ref: 'loyaltyPoints', code: 'COLUMN_IGNORED' },
+      { entity: 'documents', ref: '9001', code: 'ITEM_WITHOUT_NAME' }
+    ]);
+  });
+
+  it('lists XML tags it does not read', () => {
+    const xml = text('shoptet/orders.xml').replace('<REMARK>', '<GIFT_WRAP>áno</GIFT_WRAP><REMARK>').replace('<EAN>8588000000017</EAN>', '<EAN>8588000000017</EAN><WEIGHT>1.2</WEIGHT>');
+    const codes = importShoptet(xml, { company }).report.warnings.filter(w => w.code === 'COLUMN_IGNORED').map(w => w.ref);
+    expect(codes).toEqual(['GIFT_WRAP', 'WEIGHT']);
+  });
+
+  it('reads columns in any order and case', () => {
+    const csv = 'ITEMNAME;itemvatrate;ItemUnitPriceWithVat;CODE;Date\r\nKáva;23;12,30;9100;2026-09-12\r\n';
+    const [doc] = importShoptet(csv, { company }).documents;
+    expect(doc).toMatchObject({ orderReference: '9100', issueDate: '2026-09-12' });
+    expect(payable(doc)).toBe('12.30');
+  });
+});
+
+describe('rates that are not Slovak', () => {
+  const xml = text('shoptet/orders.xml');
+
+  it('warn a VAT payer and import the document as it is', () => {
+    const plan = buildImportPlan(importShoptet(xml, { company }), { contacts: [], items: [], documents: [], company: { ...company, vatMode: 'PAYER' } });
+    expect(plan.documents.map(p => p.draft.orderReference)).toContain('2026000104');
+    expect(plan.documents.find(p => p.draft.orderReference === '2026000104').draft.lines[0].vatRate).toBe('21');
+    expect(plan.report.warnings.filter(w => w.code === 'RATE_NOT_SK')).toEqual([{ entity: 'documents', ref: '2026000104', code: 'RATE_NOT_SK' }]);
+  });
+
+  it('do not warn a company that is not a VAT payer, nor Slovak rates of the date', async () => {
+    const { hasNonSlovakRate } = await import('./plan.js');
+    const plan = buildImportPlan(importShoptet(xml, { company }), { contacts: [], items: [], documents: [], company: { ...company, vatMode: 'NONPAYER' } });
+    expect(plan.report.warnings.filter(w => w.code === 'RATE_NOT_SK')).toEqual([]);
+    const line = (vatRate, vatCategory = 'S') => ({ id: 'l', name: 'x', qty: '1', unitPrice: '1', vatCategory, vatRate });
+    expect(hasNonSlovakRate({ issueDate: '2026-09-01', lines: [line('23'), line('19'), line('5'), line(null, 'Z')] })).toBe(false);
+    expect(hasNonSlovakRate({ issueDate: '2024-06-01', lines: [line('20'), line('10')] })).toBe(false);
+    expect(hasNonSlovakRate({ issueDate: '2026-09-01', lines: [line('20')] })).toBe(true);
+    expect(hasNonSlovakRate({ issueDate: '2024-06-01', lines: [line('23')] })).toBe(true);
+    expect(hasNonSlovakRate({ issueDate: null, lines: [line('21')] })).toBe(false);
+  });
+});
