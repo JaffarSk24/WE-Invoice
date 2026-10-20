@@ -77,10 +77,12 @@ describe('language pages', () => {
     }
   });
 
-  it.each(CODES)('%s thank-you page is not indexed and offers the app', (code) => {
-    const html = read(pagePath(code, 'thanks.html'));
-    expect(html).toContain('<meta name="robots" content="noindex">');
-    expect(html).toContain('href="../app/"');
+  it.each(CODES)('%s thank-you and unsubscribed pages are not indexed and offer the app', (code) => {
+    for (const page of ['thanks.html', 'unsubscribed.html']) {
+      const html = read(pagePath(code, page));
+      expect(html).toContain('<meta name="robots" content="noindex">');
+      expect(html).toContain('href="../app/"');
+    }
   });
 
   it('the comparison table names no competitor', () => {

@@ -1,13 +1,13 @@
 // The settings sections this package owns: Interface (language, theme,
 // density, demo mode) and About (version, links). The other sections are
 // placeholders until their packages register a renderer.
-import { h, icon, selectEl } from '../../ui/dom.js';
+import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { t, currentLang, setLanguage } from '../../i18n/index.js';
 import { languageOptions } from '../../i18n/languages.js';
 import { getPrefs, setPref } from '../../prefs.js';
 import { setTheme, setDensity } from '../../ui/theme.js';
 import { emit } from '../../events.js';
-import { navigate } from '../../router.js';
+import { navigate, hasRoute } from '../../router.js';
 import { APP_VERSION } from '../../config.js';
 import { confirmDialog } from '../../ui/modal.js';
 import { isDemo, enableDemo, disableDemo } from '../shell/demo-mode.js';
@@ -53,9 +53,11 @@ const LINKS = [
 ];
 
 export function aboutSection(root) {
-  root.append(
+  append(root, [
     row(t('settings.about.version'), h('span', { class: 'num' }, APP_VERSION)),
     row(t('settings.about.updates'), h('span', { class: 'muted', id: 'settings-updates' }, t('settings.about.updatesHint'))),
+    // The desktop app registers its own screen (updates, backups, tray).
+    hasRoute('desktop') ? row(t('desktop.settings.title'), h('button', { type: 'button', class: 'btn', id: 'settings-desktop', onclick: () => navigate('desktop') }, t('settings.about.desktopSettings'))) : null,
     h('ul', { class: 'about-links' }, LINKS.map(l => h('li', {}, h('a', { href: l.href, target: '_blank', rel: 'noopener' }, icon(l.icon), t(l.key))))),
-    h('p', { class: 'muted small' }, t('settings.about.license')));
+    h('p', { class: 'muted small' }, t('settings.about.license'))]);
 }

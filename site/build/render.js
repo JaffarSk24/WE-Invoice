@@ -5,7 +5,7 @@ import { PAGES } from './config.js';
 import { loadAll } from './content.js';
 import { document } from './page.js';
 import { landingBody } from './landing.js';
-import { legalBody, thanksBody } from './legal.js';
+import { legalBody, thanksBody, unsubscribedBody } from './legal.js';
 import { softwareApplication, faqPage, sitemap, robots } from './seo.js';
 import { chooser, notFound } from './root.js';
 import { appsMarkdown, appsHtml } from './apps-block.js';
@@ -35,6 +35,15 @@ export function renderLanguage(c) {
       styles: ['base.css', 'doc.css'],
       noindex: true,
       body: thanksBody(common.thanks)
+    }),
+    'unsubscribed.html': document({
+      ...base,
+      page: 'unsubscribed.html',
+      title: `${common.unsubscribed.title}: WE Invoice`,
+      description: common.unsubscribed.description,
+      styles: ['base.css', 'doc.css'],
+      noindex: true,
+      body: unsubscribedBody(common.unsubscribed)
     }),
     'privacy.html': document({
       ...base,

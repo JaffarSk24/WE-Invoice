@@ -191,8 +191,8 @@
         "a": "Prijímanie eFaktúr ponúka viacero poskytovateľov zadarmo. Odosielanie stojí od 0 do približne 3 € mesačne, alebo niekoľko centov za doklad, podľa poskytovateľa. Platíte priamo jemu, WE Invoice si nič nepridáva."
       },
       {
-        "q": "Prečo Mac hlási neovereného vývojára?",
-        "a": "Desktopová aplikácia zatiaľ nie je podpísaná vývojárskym certifikátom Apple, ktorý stojí 99 USD ročne. Pri prvom spustení otvorte aplikáciu cez pravé tlačidlo a Otvoriť, alebo ju povoľte v Nastaveniach, Súkromie a bezpečnosť. Ďalšie aktualizácie už bežia bez upozornenia."
+        "q": "Prečo Mac nechce aplikáciu otvoriť?",
+        "a": "Aplikácia zatiaľ nie je notarizovaná spoločnosťou Apple, preto ju macOS po stiahnutí z prehliadača odmietne otvoriť. Pred prvým spustením raz zadajte v Termináli: xattr -cr \"/Applications/WE Invoice.app\". Potom sa otvára ako každá iná aplikácia a jej aktualizácie tento krok nepotrebujú."
       },
       {
         "q": "Nahradí to účtovníka?",

@@ -26,7 +26,9 @@ export const LANGUAGES = [
 export const DEFAULT_LANGUAGE = 'sk';
 
 // Pages rendered per language, with their file name.
-export const PAGES = ['index.html', 'thanks.html', 'privacy.html', 'terms.html'];
+export const PAGES = ['index.html', 'thanks.html', 'unsubscribed.html', 'privacy.html', 'terms.html'];
+// Pages reached only from a link in an e-mail: kept out of the sitemap.
+export const UNLISTED = ['thanks.html', 'unsubscribed.html'];
 
 // Values of the interest checkboxes, exactly as gateway/openapi.yaml lists them.
 export const INTERESTS = [

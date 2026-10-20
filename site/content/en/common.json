@@ -40,6 +40,15 @@
     "ctaBack": "Back to the homepage",
     "unsubscribe": "Changed your mind? Every e-mail we send has an unsubscribe link. We'll take you off the list straight away."
   },
+  "unsubscribed": {
+    "title": "You have unsubscribed",
+    "description": "We have removed your e-mail from the e-invoicing beta waiting list.",
+    "h1": "You have unsubscribed",
+    "lead": "We have deleted your e-mail and everything you sent with the sign-up from the waiting list. You won't get any more e-mails from us.",
+    "meanwhile": "The app stays yours to use: invoicing, expenses and bookkeeping work without sign-up and for free.",
+    "ctaApp": "Open the app",
+    "ctaBack": "Back to the homepage"
+  },
   "notFound": {
     "title": "Page not found",
     "h1": "Page not found",

@@ -49,7 +49,7 @@ export default async function waitlistRoutes(app, { config, waitlist, mailer }) 
     }
   }
 
-  const redirect = (reply, page, lang, status) => reply.redirect(`${config.siteUrl}/waitlist/${page}.html?lang=${encodeURIComponent(lang)}&status=${status}`, 302);
+  const redirect = (reply, page, lang) => reply.redirect(`${config.siteUrl}/${LANGS.includes(lang) ? lang : 'sk'}/${page}.html`, 302);
 
   app.post('/v1/waitlist', {
     config: { rateLimit: { max: 5, timeWindow: '1 minute' } },
@@ -92,7 +92,7 @@ export default async function waitlistRoutes(app, { config, waitlist, mailer }) 
     schema: { querystring: { type: 'object', required: ['token'], properties: { token: { type: 'string', minLength: 1, maxLength: 200 } } } }
   }, async (request, reply) => {
     const { result, record } = waitlist.confirm(request.query.token);
-    if (result === 'confirmed' || result === 'already') return redirect(reply, 'thanks', record.lang, result);
+    if (result === 'confirmed' || result === 'already') return redirect(reply, 'thanks', record.lang);
     if (result === 'expired') throw new HttpError(400, 'TOKEN_EXPIRED', 'The confirmation link has expired, sign up again');
     throw new HttpError(400, 'INVALID_TOKEN', 'Invalid confirmation link');
   });
@@ -101,7 +101,7 @@ export default async function waitlistRoutes(app, { config, waitlist, mailer }) 
     schema: { querystring: { type: 'object', required: ['token'], properties: { token: { type: 'string', minLength: 1, maxLength: 200 } } } }
   }, async (request, reply) => {
     const { result, record } = waitlist.unsubscribe(request.query.token);
-    if (result === 'deleted') return redirect(reply, 'unsubscribed', record.lang, 'deleted');
+    if (result === 'deleted') return redirect(reply, 'unsubscribed', record.lang);
     throw new HttpError(400, 'INVALID_TOKEN', 'Invalid unsubscribe link');
   });
 }

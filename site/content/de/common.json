@@ -40,6 +40,15 @@
     "ctaBack": "Zurück zur Startseite",
     "unsubscribe": "Wenn Sie es sich anders überlegen: Jede unserer E-Mails enthält einen Abmeldelink. Wir streichen Sie sofort von der Liste."
   },
+  "unsubscribed": {
+    "title": "Sie haben sich abgemeldet",
+    "description": "Wir haben Ihre E-Mail-Adresse von der Warteliste für die E-Rechnungs-Beta entfernt.",
+    "h1": "Sie haben sich abgemeldet",
+    "lead": "Wir haben Ihre E-Mail-Adresse und alle Angaben aus der Anmeldung von der Warteliste gelöscht. Sie erhalten keine weiteren E-Mails von uns.",
+    "meanwhile": "Die App steht Ihnen weiter zur Verfügung: Rechnungen, Ausgaben und Buchführung funktionieren ohne Registrierung und kostenlos.",
+    "ctaApp": "App öffnen",
+    "ctaBack": "Zurück zur Startseite"
+  },
   "notFound": {
     "title": "Seite nicht gefunden",
     "h1": "Seite nicht gefunden",
