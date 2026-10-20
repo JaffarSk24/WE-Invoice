@@ -83,7 +83,7 @@ describe('sync engine', () => {
     // Nothing changed: a second sync writes nothing.
     const writes = drive.writes;
     const again = await a.engine.sync('manual');
-    expect(again.outcome).toEqual(['unchanged', 'unchanged']);
+    expect(again.outcome).toEqual(['unchanged', 'unchanged', 'files']);
     expect(drive.writes).toBe(writes);
   });
 

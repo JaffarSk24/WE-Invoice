@@ -92,5 +92,15 @@ export default {
   "sync.banner.lockedTitle": "Die Daten sind gesperrt.",
   "sync.banner.lockedText": "Die Daten in Google Drive sind verschlüsselt. Geben Sie das Passwort oder den Wiederherstellungsschlüssel ein, dann wird die Synchronisierung fortgesetzt.",
   "sync.banner.unlock": "Entsperren",
-  "sync.banner.later": "Später"
+  "sync.banner.later": "Später",
+  "sync.attachments.state.pending": "Wartet auf Upload in Google Drive",
+  "sync.attachments.state.remote": "In Google Drive",
+  "sync.attachments.state.downloading": "Wird aus Google Drive geladen",
+  "sync.attachments.state.notUploaded": "Noch nicht in Google Drive",
+  "sync.attachments.state.offline": "Google Drive nicht erreichbar",
+  "sync.attachments.missing.notUploaded": "Die Datei des Anhangs {name} ist noch nicht in Google Drive. Das Gerät, auf dem sie hinzugefügt wurde, lädt sie bei der nächsten Synchronisierung hoch.",
+  "sync.attachments.missing.offline": "Die Datei des Anhangs {name} ist in Google Drive, kann aber gerade nicht geladen werden. Prüfen Sie die Verbindung und die Google-Anmeldung.",
+  "sync.attachments.preview.notUploaded": "Die Datei ist noch nicht in Google Drive. Das Gerät, das sie aufgenommen hat, lädt sie bei der nächsten Synchronisierung hoch.",
+  "sync.attachments.preview.offline": "Die Datei ist in Google Drive, kann aber gerade nicht geladen werden. Prüfen Sie die Verbindung und die Google-Anmeldung.",
+  "sync.attachments.pending": "{n, plural, one {# Anhangsdatei wartet} other {# Anhangsdateien warten}} auf den Upload in Google Drive."
 };

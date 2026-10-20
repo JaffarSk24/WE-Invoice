@@ -92,5 +92,15 @@ export default {
   "sync.banner.lockedTitle": "Your data is locked.",
   "sync.banner.lockedText": "The data in Google Drive is encrypted. Enter the password or the recovery key and sync continues.",
   "sync.banner.unlock": "Unlock",
-  "sync.banner.later": "Later"
+  "sync.banner.later": "Later",
+  "sync.attachments.state.pending": "Waiting for upload to Google Drive",
+  "sync.attachments.state.remote": "In Google Drive",
+  "sync.attachments.state.downloading": "Downloading from Google Drive",
+  "sync.attachments.state.notUploaded": "Not in Google Drive yet",
+  "sync.attachments.state.offline": "Google Drive unavailable",
+  "sync.attachments.missing.notUploaded": "The file of the attachment {name} is not in Google Drive yet. The device it was added on uploads it at its next sync.",
+  "sync.attachments.missing.offline": "The file of the attachment {name} is in Google Drive but cannot be downloaded now. Check the connection and the Google sign-in.",
+  "sync.attachments.preview.notUploaded": "The file is not in Google Drive yet. The device that took it in uploads it at its next sync.",
+  "sync.attachments.preview.offline": "The file is in Google Drive but cannot be downloaded now. Check the connection and the Google sign-in.",
+  "sync.attachments.pending": "{n, plural, one {# attachment file is} other {# attachment files are}} waiting for upload to Google Drive."
 };

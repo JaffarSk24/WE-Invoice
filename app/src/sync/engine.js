@@ -8,6 +8,9 @@
 //   - every root (the workspace, the active company's data) goes through
 //     cycle.js: content hashes decide what changed, a merge keeps both
 //     originals in backups/, a write never replaces an unseen version;
+//   - after the company data, the files of its attachments (attachments/
+//     files.js): uploaded when the sync may write, removed from Drive with
+//     the attachment, taken from Drive when someone opens one;
 //   - encryption is mandatory: a cloud workspace this device cannot open
 //     stops everything until the password (or the recovery key) is typed.
 // The state for the interface travels as the "sync:status" event.
@@ -17,14 +20,16 @@ import { Vault } from './vault.js';
 import { workspaceSpec, companySpec } from './roots.js';
 import { KEYS } from '../store/local.js';
 import { isEncrypted } from './keys.js';
+import { AttachmentFiles, memoryFiles } from './attachments/files.js';
 
 export const SYNC_STATUSES = ['unavailable', 'off', 'checking', 'setup', 'locked', 'idle', 'syncing', 'offline', 'renew', 'error'];
 export const IDLE_UPLOAD_MS = 10000;
 const RETRY_STATUSES = { RENEW_NEEDED: 'renew', NOT_SIGNED_IN: 'off', OFFLINE: 'offline', LOCKED: 'locked' };
 
 export class SyncEngine {
-  // `numbering` lets tests pass their own conflict finder (conflicts.js).
-  constructor({ store, transport, vault = null, emit = () => {}, now = () => new Date().toISOString(), idleMs = IDLE_UPLOAD_MS, intervalMs = 5 * 60 * 1000, readme = null, numbering = {} }) {
+  // `numbering` lets tests pass their own conflict finder (conflicts.js);
+  // `localFiles` is the device store of attachment files (purchase/file-store.js).
+  constructor({ store, transport, vault = null, emit = () => {}, now = () => new Date().toISOString(), idleMs = IDLE_UPLOAD_MS, intervalMs = 5 * 60 * 1000, readme = null, numbering = {}, localFiles = null }) {
     this.store = store;
     this.transport = transport;
     this.vault = vault || new Vault();
@@ -36,6 +41,15 @@ export class SyncEngine {
     this.numbering = numbering;
     this.remote = new Remote({ drive: transport.drive, vault: this.vault, now });
     this.signedIn = false;
+    this.files = new AttachmentFiles({
+      store, remote: this.remote, local: localFiles || memoryFiles(), emit,
+      isConnected: () => this.signedIn && !this.vault.locked,
+      loadState: async (companyId) => ((await this.savedState()).attachments || {})[companyId] || null,
+      saveState: async (companyId, state) => {
+        const saved = await this.savedState();
+        await this.remember({ attachments: { ...(saved.attachments || {}), [companyId]: state } });
+      }
+    });
     this.running = null;
     this.idleTimer = null;
     this.conflicts = [];
@@ -135,6 +149,7 @@ export class SyncEngine {
     await this.store.adapter.delete(KEYS.syncState);
     await this.vault.lock();
     this.signedIn = false;
+    this.files.reset();
     this.setState({ status: 'off', email: '', lastSyncAt: null, pending: false, locked: false, error: null });
   }
 
@@ -205,6 +220,8 @@ export class SyncEngine {
     if (companyId) {
       const spec = companySpec({ store: this.store, remote: this.remote, companyId, now: this.now, numbering: this.numbering, onConflicts: (r) => this.reportConflicts(r) });
       outcomes.push(await this.runRoot(spec, upload));
+      const files = await this.files.sync(companyId, { upload });
+      outcomes.push(files.pending ? 'local-ahead' : 'files');
     }
     return outcomes;
   }

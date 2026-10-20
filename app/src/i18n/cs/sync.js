@@ -92,5 +92,15 @@ export default {
   "sync.banner.lockedTitle": "Data jsou zamčená.",
   "sync.banner.lockedText": "Data v Google Drive jsou šifrovaná. Zadejte heslo nebo klíč pro obnovení a synchronizace bude pokračovat.",
   "sync.banner.unlock": "Odemknout",
-  "sync.banner.later": "Později"
+  "sync.banner.later": "Později",
+  "sync.attachments.state.pending": "Čeká na nahrání do Google Drive",
+  "sync.attachments.state.remote": "V Google Drive",
+  "sync.attachments.state.downloading": "Stahuje se z Google Drive",
+  "sync.attachments.state.notUploaded": "Zatím není v Google Drive",
+  "sync.attachments.state.offline": "Google Drive je nedostupný",
+  "sync.attachments.missing.notUploaded": "Soubor přílohy {name} zatím není v Google Drive. Zařízení, na kterém ho přidali, ho nahraje při nejbližší synchronizaci.",
+  "sync.attachments.missing.offline": "Soubor přílohy {name} je v Google Drive, ale teď ho nelze stáhnout. Zkontrolujte připojení a přihlášení přes Google.",
+  "sync.attachments.preview.notUploaded": "Soubor zatím není v Google Drive. Zařízení, které ho přijalo, ho nahraje při nejbližší synchronizaci.",
+  "sync.attachments.preview.offline": "Soubor je v Google Drive, ale teď ho nelze stáhnout. Zkontrolujte připojení a přihlášení přes Google.",
+  "sync.attachments.pending": "{n, plural, one {# soubor příloh čeká} few {# soubory příloh čekají} other {# souborů příloh čeká}} na nahrání do Google Drive."
 };

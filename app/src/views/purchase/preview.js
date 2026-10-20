@@ -3,13 +3,15 @@
 // button; the one the user clicks (with its neighbours on the line) fills
 // the chosen field and its place on the page is remembered for the
 // supplier. Pages come from this session's reading or are drawn again
-// from the file kept on the device.
+// from the file kept on the device (taken from Google Drive when another
+// device took it in).
 import { h, icon, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { phraseAt } from '../../ocr/text-layout.js';
 import { getFile } from './file-store.js';
 import { recentRead } from './intake.js';
+import { attachmentState } from '../../sync/attachments/registry.js';
 
 const PAGES = 3;
 const WIDTH = 1400;
@@ -52,6 +54,16 @@ async function loadPages(doc) {
     return [{ canvas: await imageToCanvas(new Blob([file.bytes], { type: file.type })), items: pages[0] || [] }];
   }
   return [];
+}
+
+// Why there is no file to show: not uploaded yet by the device that took
+// it in, Drive out of reach, or not kept anywhere.
+function noFileKey(doc) {
+  const attachment = (doc.attachments || [])[0];
+  const state = attachment ? attachmentState(attachment.id) : 'local';
+  if (state === 'notUploaded') return 'sync.attachments.preview.notUploaded';
+  if (state === 'offline') return 'sync.attachments.preview.offline';
+  return 'purchase.preview.noFile';
 }
 
 export function createPreview(doc, { onPicked }) {
@@ -106,7 +118,7 @@ export function createPreview(doc, { onPicked }) {
   loadPages(doc).then(loaded => {
     clear(body);
     pages = loaded || [];
-    if (!loaded) body.append(h('p', { class: 'muted' }, t('purchase.preview.noFile')));
+    if (!loaded) body.append(h('p', { class: 'muted' }, t(noFileKey(doc))));
     else if (!loaded.length) body.append(h('p', { class: 'muted' }, t('purchase.preview.structured')));
     else loaded.forEach(p => body.append(pageEl(p)));
     el.dataset.ready = '1';
