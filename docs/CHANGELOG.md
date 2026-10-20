@@ -42,6 +42,19 @@ All notable changes to this project are documented here. The format follows [Kee
 - `app/src/transport/web.js` and `desktop.js` implement `drive`, `auth` and `secrets` instead of the NOT_IMPLEMENTED stubs; the transport test checks that they refuse before sign-in and unlock.
 - `app/vite.config.js`, `vitest.config.js` and `eslint.config.js` know the `__GOOGLE_CLIENT_ID__` define; `pages.yml` passes the `GOOGLE_CLIENT_ID` repository variable to the build.
 
+#### Added (20 October)
+
+- Attachment files of documents (sales attachments and the original files of the Inbox) live in Google Drive under `<companyId>/attachments/<attachmentId>.enc`, sealed with the data key like the company data. The file name carries only the attachment id; the original name, type and the positioned text of its pages travel inside the encrypted content (`app/src/sync/attachments/codec.js`).
+- The sync uploads the files of the open company after its data, in the syncs that may write (closing, the Sync button, 10 seconds after a change). A file that a device knew as listed and that no live document lists after the merge (the attachment was removed, or its document was deleted as a tombstone) is removed from Drive and from the device; a device that never saw the reference removes nothing (`app/src/sync/attachments/files.js`).
+- A file this device lacks is taken from Drive when it is opened, previewed or sent by e-mail, and kept on the device as a cache. Attachments of received eFaktúry stored earlier as `<id>.<ext>.enc` open the same way.
+- States of an attachment file next to its name: waiting for the upload, in Google Drive, downloading, not uploaded yet by the other device, Google Drive out of reach. A file that cannot be opened says why; Settings, Synchronizácia counts the files waiting for their upload.
+- Texts in all six languages; unit tests on the content format, the file store and two devices over the mock Drive; an end-to-end test with two devices over the mocked Drive.
+
+#### Changed (20 October)
+
+- `views/purchase/file-store.js` keeps `putFile`, `getFile` and `deleteFile` as they were and gains `localFiles` and `setRemoteFiles`: the sync registers itself at start, so the editor, the Inbox, the preview and the e-mail need no change to read files from Drive.
+- The Slovak sync texts say "Google Drive" instead of "Google Disk", as the glossary keeps the name.
+
 ### Interface shell and components
 
 #### Added
@@ -345,6 +358,17 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Fixed (19 October, acceptance)
 
 - Cash vouchers with VAT now reach the Evidencia DPH and the reports built from it: a receipt as a sale (A.1, A.2 or D.2 of the kontrolný výkaz), an expense as a purchase received on its own date (B.3, or B.1 self-assessed for reverse charge). Vouchers that only record the cash payment of an invoice and vouchers without VAT stay out, so nothing is counted twice.
+
+#### Added (20 October)
+
+- "Predaj evidovaný v eKasa" on a cash receipt voucher (príjmový pokladničný doklad) of a sale with VAT, ticked by default when the company uses eKasa. Not offered for reverse charge, for an expense voucher or when the company does not use eKasa.
+- Evidencia DPH lists such vouchers apart, with their mark, and leaves them out of the totals, the kontrolný výkaz and the VAT return: their VAT reaches D.1 through the eKasa turnover entered separately.
+- Warnings in the Evidencia DPH checks: a sales voucher counted on its own on a day with eKasa turnover (a possible double count), and a voucher marked as recorded in eKasa on a day without eKasa turnover (its VAT is not reported yet).
+- Golden tax examples 13 and 14: cash vouchers of a company with and without eKasa, with the expected kontrolný výkaz, súhrnný výkaz and VAT return.
+
+#### Changed (20 October)
+
+- A sales voucher with VAT goes to D.2 of the kontrolný výkaz only when the company does not use eKasa or the mark is cleared.
 
 ### Contacts, price list, recurring invoices, reminders and e-mail
 
