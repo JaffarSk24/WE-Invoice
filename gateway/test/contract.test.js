@@ -6,7 +6,7 @@ import { parse } from 'yaml';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { createTestApp, json, fakeResolver } from './helpers.js';
-import { RPO_ENTITY, ARES_ENTITY, VIES_VALID, ECB_XML, EKASA_RECEIPT, SMP_XML, FS_TAX_SUBJECTS, FS_LIST, NAPTR_RECORD } from './fixtures.js';
+import { RPO_ENTITY, ARES_ENTITY, VIES_VALID, ECB_XML, EKASA_RECEIPT, SMP_XML, FS_TAX_SUBJECTS, FS_VAT_PAYERS, FS_LIST, NAPTR_RECORD } from './fixtures.js';
 import { naptrName } from '../src/upstream/peppol-sml.js';
 
 const spec = parse(readFileSync(new URL('../openapi.yaml', import.meta.url), 'utf8'));
@@ -28,8 +28,9 @@ beforeAll(async () => {
   ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k', ADMIN_TOKEN: 'admin', BETA_HMAC_SECRET: 's', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}' }, resolver });
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?fullName=Example' }).reply(200, { results: [RPO_ENTITY] }, json);
-  ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dic/ }).reply(200, FS_TAX_SUBJECTS, json);
-  ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dph/ }).reply(200, FS_LIST('SK2020317068'), json).times(3);
+  ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dsrdp/ }).reply(200, FS_TAX_SUBJECTS, json);
+  ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dphs\/search\?page=1&column=ico/ }).reply(200, FS_VAT_PAYERS, json);
+  ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dph/ }).reply(200, FS_LIST('SK2020317068'), json).times(6);
   ctx.pool('https://ares.gov.cz').intercept({ path: /27074358/ }).reply(200, ARES_ENTITY, json);
   ctx.pool('https://ec.europa.eu').intercept({ path: /vat\/2020317068/ }).reply(200, VIES_VALID, json);
   ctx.pool('https://www.ecb.europa.eu').intercept({ path: /eurofxref/ }).reply(200, ECB_XML);

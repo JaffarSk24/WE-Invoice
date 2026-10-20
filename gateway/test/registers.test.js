@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { createTestApp, json } from './helpers.js';
-import { RPO_ENTITY, ARES_ENTITY, VIES_VALID, FS_TAX_SUBJECTS, FS_LIST } from './fixtures.js';
+import { RPO_ENTITY, ARES_ENTITY, VIES_VALID, FS_TAX_SUBJECTS, FS_VAT_PAYERS, FS_LIST, FS_NOT_FOUND } from './fixtures.js';
 import { mapRpoEntity, currentValue } from '../src/upstream/rpo.js';
 import { mapAresEntity } from '../src/upstream/ares.js';
 import { mapViesAnswer } from '../src/upstream/vies.js';
@@ -57,7 +57,8 @@ describe('GET /v1/company/sk/{ico}', () => {
   it('combines RPO and FS open data and caches the answer', async () => {
     ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
     ctx.pool(RPO).intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);
-    ctx.pool(FS).intercept({ path: '/api/lists/ds_dic?ico=35763469&itemsPerPage=50', headers: { key: 'k' } }).reply(200, FS_TAX_SUBJECTS, json);
+    ctx.pool(FS).intercept({ path: '/api/data/ds_dsrdp/search?page=1&column=ico&search=35763469', headers: { key: 'k' } }).reply(200, FS_TAX_SUBJECTS, json);
+    ctx.pool(FS).intercept({ path: '/api/data/ds_dphs/search?page=1&column=ico&search=35763469', headers: { key: 'k' } }).reply(200, FS_VAT_PAYERS, json);
     let res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/35763469' });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toMatchObject({ name: 'Example s. r. o.', dic: '2020317068', icDph: 'SK2020317068', source: 'RPO' });
@@ -74,7 +75,8 @@ describe('GET /v1/company/sk/{ico}', () => {
     await ctx.app.close();
     ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
     ctx.pool(RPO).intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);
-    ctx.pool(FS).intercept({ path: /ds_dic/ }).reply(500, 'x');
+    ctx.pool(FS).intercept({ path: /ds_dsrdp/ }).reply(500, 'x');
+    ctx.pool(FS).intercept({ path: /ds_dphs/ }).reply(500, 'x');
     res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/35763469' });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toMatchObject({ name: 'Example s. r. o.', dic: null });
@@ -148,8 +150,8 @@ describe('GET /v1/vat/sk/{icdph}/reliability', () => {
   it('reads the three FS lists', async () => {
     ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
     const pool = ctx.pool(FS);
-    const q = (list, hit) => pool.intercept({ path: `/api/lists/${list}?ic_dph=SK2020317068&itemsPerPage=50` }).reply(200, FS_LIST(hit ? 'SK2020317068' : null), json);
-    q('ds_dph_vymaz', false); q('ds_dph_zrus', false); q('ds_dphs', true);
+    const q = (list, hit) => pool.intercept({ path: `/api/data/${list}/search?page=1&column=ic_dph&search=SK2020317068` }).reply(200, FS_LIST(hit ? 'SK2020317068' : null), json);
+    q('ds_dphv', false); q('ds_dphz', false); q('ds_dphs', true);
     let res = await ctx.app.inject({ method: 'GET', url: '/v1/vat/sk/SK2020317068/reliability' });
     expect(res.json()).toMatchObject({ status: 'OK', lists: ['vat-payers'] });
     res = await ctx.app.inject({ method: 'GET', url: '/v1/vat/sk/SK2020317068/reliability' });
@@ -157,16 +159,16 @@ describe('GET /v1/vat/sk/{icdph}/reliability', () => {
     await ctx.app.close();
     ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
     const p2 = ctx.pool(FS);
-    const q2 = (list, hit) => p2.intercept({ path: `/api/lists/${list}?ic_dph=SK2020317069&itemsPerPage=50` }).reply(200, FS_LIST(hit ? 'SK2020317069' : null), json);
-    q2('ds_dph_vymaz', false); q2('ds_dph_zrus', true); q2('ds_dphs', true);
+    const q2 = (list, hit) => p2.intercept({ path: `/api/data/${list}/search?page=1&column=ic_dph&search=SK2020317069` }).reply(200, FS_LIST(hit ? 'SK2020317069' : null), json);
+    q2('ds_dphv', false); q2('ds_dphz', true); q2('ds_dphs', true);
     res = await ctx.app.inject({ method: 'GET', url: '/v1/vat/sk/SK2020317069/reliability' });
     expect(res.json()).toMatchObject({ status: 'REASONS_FOR_CANCELLATION', lists: ['cancellation-reasons', 'vat-payers'] });
-    const q3 = (list, hit) => p2.intercept({ path: `/api/lists/${list}?ic_dph=SK2020317070&itemsPerPage=50` }).reply(200, hit ? [{ IC_DPH: 'SK2020317070' }] : { items: [] }, json);
-    q3('ds_dph_vymaz', true); q3('ds_dph_zrus', false); q3('ds_dphs', false);
+    const q3 = (list, hit) => p2.intercept({ path: `/api/data/${list}/search?page=1&column=ic_dph&search=SK2020317070` }).reply(200, hit ? [{ IC_DPH: 'SK2020317070' }] : { items: [] }, json);
+    q3('ds_dphv', true); q3('ds_dphz', false); q3('ds_dphs', false);
     res = await ctx.app.inject({ method: 'GET', url: '/v1/vat/sk/SK2020317070/reliability' });
     expect(res.json()).toMatchObject({ status: 'DELETED', lists: ['deleted'] });
-    const q4 = (list) => p2.intercept({ path: `/api/lists/${list}?ic_dph=SK2020317071&itemsPerPage=50` }).reply(200, { nothing: true }, json);
-    q4('ds_dph_vymaz'); q4('ds_dph_zrus'); q4('ds_dphs');
+    const q4 = (list) => p2.intercept({ path: `/api/data/${list}/search?page=1&column=ic_dph&search=SK2020317071` }).reply(404, FS_NOT_FOUND, json);
+    q4('ds_dphv'); q4('ds_dphz'); q4('ds_dphs');
     res = await ctx.app.inject({ method: 'GET', url: '/v1/vat/sk/SK2020317071/reliability' });
     expect(res.json()).toMatchObject({ status: 'NOT_REGISTERED', lists: [] });
   });

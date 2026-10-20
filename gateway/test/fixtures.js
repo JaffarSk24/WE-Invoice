@@ -44,7 +44,10 @@ export const SMP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 
 export const INVOICE_DOCTYPE = 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1';
 
-export const FS_TAX_SUBJECTS = { page: 1, pages: 1, itemsCount: 1, data: [{ ICO: '35763469', DIC: '2020317068', IC_DPH: 'SK2020317068', NAZOV: 'Example s. r. o.' }] };
-export const FS_LIST = (icdph) => ({ page: 1, pages: 1, itemsCount: icdph ? 1 : 0, data: icdph ? [{ IC_DPH: icdph }] : [] });
+// Answers of the FS Information Lists API 1.2 (/api/data/{list}/search)
+export const FS_TAX_SUBJECTS = { page: 1, pages: 1, itemsCount: 1, itemsPerPage: 1000, data: [{ id: 1, dic: '2020317068', ico: '35763469', nazov_ds: 'Example s. r. o.' }] };
+export const FS_VAT_PAYERS = { page: 1, pages: 1, itemsCount: 1, itemsPerPage: 1000, data: [{ id: 2, ic_dph: 'SK2020317068', ico: '35763469', nazov_ds: 'Example s. r. o.' }] };
+export const FS_LIST = (icdph) => ({ page: 1, pages: 1, itemsCount: icdph ? 1 : 0, data: icdph ? [{ ic_dph: icdph }] : [] });
+export const FS_NOT_FOUND = { status: 'error', code: '404', message: "Page doesn't exists" };
 
 export const NAPTR_RECORD = { flags: 'U', service: 'Meta:SMP', regexp: '!^.*$!https://smp.example.test!', replacement: '', order: 100, preference: 10 };

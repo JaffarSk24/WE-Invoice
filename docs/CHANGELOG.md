@@ -140,6 +140,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Fixed (20 October)
 
+- The open data of the Financial Administration are read through the real search of its Information Lists API 1.2 (`/api/data/{list}/search?page=1&column=..&search=..`, 404 when nothing matches) with the actual list identifiers: `ds_dphs` (VAT payers, also the IČ DPH of a company), `ds_dphz` (reasons for cancellation), `ds_dphv` (deleted payers) and `ds_dsrdp` (DIČ by IČO). Company look-ups now return DIČ and IČ DPH, and the VAT payer reliability check answers. `FS_OPENDATA_URL` is the API root; an older value ending in `/lists` still works.
 - Confirming and unsubscribing from the waiting list redirect to the site pages in the language of the sign-up (`/<lang>/thanks.html`, `/<lang>/unsubscribed.html`); the old `/waitlist/...` pages never existed.
 
 #### Added (20 October)

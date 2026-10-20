@@ -31,13 +31,14 @@ export function loadConfig(env = process.env) {
       viesUrl: env.VIES_URL || 'https://ec.europa.eu/taxation_customs/vies/rest-api',
       ecbUrl: env.ECB_URL || 'https://www.ecb.europa.eu/stats/eurofxref',
       ekasaReceiptUrl: env.EKASA_RECEIPT_URL || 'https://ekasa.financnasprava.sk/mdu/api/v1/opd/receipt/find',
-      fsOpenDataUrl: env.FS_OPENDATA_URL || 'https://iz.opendata.financnasprava.sk/api/lists',
+      // The API root; an older value ending in /lists is still accepted.
+      fsOpenDataUrl: (env.FS_OPENDATA_URL || 'https://iz.opendata.financnasprava.sk/api').replace(/\/+$/, '').replace(/\/lists$/, ''),
       fsOpenDataApiKey: env.FS_OPENDATA_API_KEY || '',
       fsLists: {
         vatPayers: env.FS_LIST_VAT_PAYERS || 'ds_dphs',
-        cancellationReasons: env.FS_LIST_CANCELLATION_REASONS || 'ds_dph_zrus',
-        deleted: env.FS_LIST_DELETED || 'ds_dph_vymaz',
-        taxSubjects: env.FS_LIST_TAX_SUBJECTS || 'ds_dic'
+        cancellationReasons: env.FS_LIST_CANCELLATION_REASONS || 'ds_dphz',
+        deleted: env.FS_LIST_DELETED || 'ds_dphv',
+        taxSubjects: env.FS_LIST_TAX_SUBJECTS || 'ds_dsrdp'
       },
       smlZone: env.PEPPOL_SML_ZONE || 'edelivery.tech.ec.europa.eu',
       smlLegacyCname: env.PEPPOL_SML_LEGACY_CNAME === 'true'
