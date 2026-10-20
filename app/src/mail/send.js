@@ -6,27 +6,30 @@
 import { CoreError } from '@we-invoice/core';
 import { invalidAddresses } from './compose.js';
 import { smtpAccount, documentPdf, sendViaSmtp, openMailClient, defaultOpenUrl, sendLogEntry, sendPatch } from './deliver.js';
+import { documentAttachments } from './attachments.js';
 
 /**
  * @param {{store: object, document: object, company: object, message: object, transport: object,
  *          win?: object, openUrl?: Function, attach?: boolean, pdf?: Function, now?: () => string,
- *          allowClient?: boolean}} input
- *   allowClient: false for automatic sending, which needs SMTP (no mail program to open)
+ *          allowClient?: boolean, attachments?: Function}} input
+ *   allowClient: false for automatic sending, which needs SMTP (no mail program to open);
+ *   attachments(document): the document's own files, sent with the PDF
  * @returns {Promise<{entry: object, url?: string}>}
  */
 export async function sendDocumentMail(input) {
   const { store, document, company, message, transport, win = typeof window !== 'undefined' ? window : null } = input;
-  const { openUrl = defaultOpenUrl, attach = true, pdf = documentPdf, now = () => new Date().toISOString(), allowClient = true } = input;
+  const { openUrl = defaultOpenUrl, attach = true, pdf = documentPdf, now = () => new Date().toISOString(), allowClient = true, attachments = documentAttachments } = input;
   if (!message.to.length) throw new CoreError('MAIL_BAD_RECIPIENT', 'No recipient');
   if (invalidAddresses([...message.to, ...message.cc, ...message.bcc]).length) throw new CoreError('MAIL_BAD_RECIPIENT', 'Invalid recipient');
   const account = smtpAccount(win);
   if (!account && !allowClient) throw new CoreError('MAIL_NO_SMTP', 'Automatic sending needs an SMTP account');
   const attachment = attach ? await pdf(document, company) : null;
+  const extras = attach ? (await attachments(document)).files : [];
   let outcome;
   try {
     outcome = account
-      ? await sendViaSmtp(win, account, message, attachment)
-      : await openMailClient({ transport, message, attachment, openUrl });
+      ? await sendViaSmtp(win, account, message, attachment, extras)
+      : await openMailClient({ transport, message, attachment, extras, openUrl });
   } catch (e) {
     const failed = sendLogEntry({ to: message.to, result: 'FAILED', purpose: message.purpose, at: now() });
     try {

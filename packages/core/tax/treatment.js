@@ -47,6 +47,8 @@ export function isEu(country) {
 /** The partner of a document seen from the company: the buyer of an issued one, the seller of a received one. */
 export function documentDirection(document, company) {
   if (isReceived(document.kind)) return 'IN';
+  // A výdavkový pokladničný doklad pays a supplier: a purchase.
+  if (document.kind === 'CASH_OUT') return 'IN';
   if (document.kind === 'SELF_BILLING') {
     // A self-billed invoice is drawn up by the buyer: when the company is
     // the buyer, it is a purchase.

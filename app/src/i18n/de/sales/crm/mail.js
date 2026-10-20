@@ -15,6 +15,8 @@ export default {
   "mail.dialog.opened": "Ihr E-Mail-Programm sollte sich jetzt öffnen, und das PDF ist heruntergeladen. Vergessen Sie nicht, es anzuhängen.",
   "mail.dialog.openAgain": "E-Mail erneut öffnen",
   "mail.dialog.attachment": "Anhang: Beleg als PDF",
+  "mail.dialog.extraAttachments": "Weitere Anhänge: {names}",
+  "mail.dialog.missingAttachments": "Diese Anhänge sind nicht auf diesem Gerät und werden nicht gesendet: {names}",
   "mail.dialog.send": "Senden",
   "mail.dialog.openClient": "Im E-Mail-Programm öffnen",
   "mail.error.recipients": "Prüfen Sie die Empfängeradressen: {list}",

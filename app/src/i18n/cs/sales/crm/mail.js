@@ -15,6 +15,8 @@ export default {
   "mail.dialog.opened": "E-mailový program by se měl otevřít a PDF je stažené. Nezapomeňte ho přiložit.",
   "mail.dialog.openAgain": "Otevřít e-mail znovu",
   "mail.dialog.attachment": "Příloha: doklad v PDF",
+  "mail.dialog.extraAttachments": "Další přílohy: {names}",
+  "mail.dialog.missingAttachments": "Tyto přílohy nejsou v tomto zařízení a neodešlou se: {names}",
   "mail.dialog.send": "Odeslat",
   "mail.dialog.openClient": "Otevřít v e-mailovém programu",
   "mail.error.recipients": "Zkontrolujte adresy příjemců: {list}",

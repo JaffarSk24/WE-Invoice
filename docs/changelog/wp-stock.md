@@ -2,11 +2,10 @@
 
 ## Added
 
-- Quick sale (predajka): every line has a VAT choice, as on an invoice line: each rate of the S category, the zero rate and the categories legislation gives an exemption reference for, reverse charge (AE, § 69 ods. 12 zákona o DPH) among them. A company that is not a VAT payer still sells outside VAT only.
-- A reverse-charge line or a supply to another member state (K) cannot be documented by a sales receipt, which is a simplified invoice (§ 74 ods. 3): the Financial Administration states that the domestic reverse charge does not apply when a simplified invoice (an eKasa receipt) is issued, and that a simplified invoice cannot be issued for a supply exempt under § 43. Such a quick sale is therefore issued as a full invoice, paid on the spot, numbered in the invoice series of the sales screens, with the buyer's name, address and IČ DPH and the text "prenesenie daňovej povinnosti" from legislation. The buyer is typed in or taken from the contacts that have an IČ DPH; reverse charge needs a valid Slovak IČ DPH, a supply to another member state the VAT ID of another member state.
-- Core functions in `packages/core/stock/receipt-vat.js`: `salesReceiptVatChoices`, `salesReceiptVatChoiceOf`, `salesReceiptVat`, `vatOfCategory`, `salesReceiptBuyerNeed`, `quickSaleKind`, `checkSalesReceiptBuyer` and `normalizeVatId`; `salesReceiptLine` and `issueSalesReceipt` take the VAT choice of each cart line, the buyer and the invoice series.
+- `quickSaleKind` in the core: the document a quick sale becomes, a sales receipt or a full invoice.
 
 ## Changed
 
-- A price with VAT on a line without VAT (reverse charge, exemption) becomes the price without VAT at the item's own rate.
-- The VRP2 summary (`vrpSummary`) names the VAT category of each line and of each VAT summary row, so reverse charge, exemptions and the zero rate are no longer all shown as 0 %. It gives the legal texts from legislation and the buyer's IČ DPH; for a sale issued as an invoice it says to record the payment of that invoice in VRP2 instead of the items.
+- A quick sale with a reverse-charge line (AE, § 69 ods. 12 zákona o DPH) or a supply to another member state (K) is now issued as a full invoice instead of a sales receipt. A sales receipt is a simplified invoice (§ 74 ods. 3): the Financial Administration states that the domestic reverse charge does not apply when a simplified invoice (an eKasa receipt) is issued, and that a simplified invoice cannot be issued for a supply exempt under § 43. The invoice is paid on the spot, numbered in the invoice series of the sales screens and carries the buyer's name, address and IČ DPH and the text "prenesenie daňovej povinnosti" from legislation.
+- The buyer fields of the quick sale ask for the address too, filled from the contact when one is picked; `checkSalesReceiptBuyer` refuses a buyer without a street or city (`SALES_RECEIPT_BUYER_ADDRESS`) and takes the country from the VAT number when none is given.
+- The VRP2 summary of a sale issued as an invoice (`vrpSummary` entry `INVOICE_PAYMENT`) says to record the payment of that invoice in VRP2 instead of the items; the separate reverse-charge note is gone.

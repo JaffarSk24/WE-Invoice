@@ -183,6 +183,17 @@ All notable changes to this project are documented here. The format follows [Kee
 - Stock moves follow documents on the `stock:document-issued` event and on every local change of a document, so cancelling or deleting a document takes its moves back. The quick sale emits `stock:sales-receipt-issued`.
 - Unit, DOM and end-to-end tests (receipt, quick sale, level drops) and a performance test of levels and valuation over 10 000 moves.
 
+#### Added (19 October, acceptance)
+
+- Quick sale (predajka): every line has a VAT choice, as on an invoice line: each rate of the S category, the zero rate and the categories legislation gives an exemption reference for, reverse charge (AE, § 69 ods. 12 zákona o DPH) among them. A company that is not a VAT payer still sells outside VAT only.
+- A reverse-charge line asks for the buyer: name and IČ DPH, typed in or taken from the contacts that have one. The receipt is refused until the IČ DPH is valid and Slovak, since reverse charge is possible only for a buyer who is a VAT payer; a supply to another member state (K) needs the VAT ID of another member state. The buyer is stored on the receipt.
+- Core functions in `packages/core/stock/receipt-vat.js`: `salesReceiptVatChoices`, `salesReceiptVatChoiceOf`, `salesReceiptVat`, `vatOfCategory`, `salesReceiptBuyerNeed`, `checkSalesReceiptBuyer` and `normalizeVatId`; `salesReceiptLine` and `issueSalesReceipt` take the VAT choice of each cart line and the buyer.
+
+#### Changed (19 October, acceptance)
+
+- A price with VAT on a line without VAT (reverse charge, exemption) becomes the price without VAT at the item's own rate.
+- The VRP2 summary (`vrpSummary`) names the VAT category of each line and of each VAT summary row, so reverse charge, exemptions and the zero rate are no longer all shown as 0 %. It also gives the legal texts from legislation, the buyer's IČ DPH and a note on how to enter reverse-charge items in VRP2.
+
 ### Export, import, migration and backup
 
 #### Added
@@ -299,6 +310,15 @@ All notable changes to this project are documented here. The format follows [Kee
 - Screens Bank, Cash desk and Payments with filters and phone cards, loaded on first use; events payment:record and payment:ekasa for other modules.
 - Synthetic fixtures for every format and profile, unit tests and an end to end test of import, matching and the paid invoice.
 
+#### Added (19 October, acceptance)
+
+- VAT choice on a cash voucher (príjmový and výdavkový pokladničný doklad): the rates valid on the voucher date, reverse charge (AE, § 69 ods. 12 zákona o DPH), an exemption (E) and no VAT, with the legal references from legislation. Offered to a VAT payer only.
+- Reverse charge on a cash voucher requires the partner's valid Slovak IČ DPH; the voucher stores the partner's IČ DPH and IČO, and a contact can be picked to fill them.
+
+#### Fixed (19 October, acceptance)
+
+- Cash vouchers with VAT now reach the Evidencia DPH and the reports built from it: a receipt as a sale (A.1, A.2 or D.2 of the kontrolný výkaz), an expense as a purchase received on its own date (B.3, or B.1 self-assessed for reverse charge). Vouchers that only record the cash payment of an invoice and vouchers without VAT stay out, so nothing is counted twice.
+
 ### Contacts, price list, recurring invoices, reminders and e-mail
 
 #### Added
@@ -352,6 +372,21 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Fixed (owner decisions, 19 October)
 
 - A test pins that a company that is not a VAT payer gets new lines outside the scope of VAT (category O, no rate) and issues them without VAT.
+
+#### Added (19 October, acceptance)
+
+- Attachments of sales documents in the editor and on the document card: any number of files, at most 10 MB each, kept on the device in the same store as the original files of the Inbox, with the id, name, type and size on the document. A file can be opened and removed; removing one from an issued document asks for a confirmation and writes an entry with the file name to the change log. Adding a file to an issued document is allowed.
+- The e-mail of a document carries its attachments with the PDF (SMTP), or downloads them with the PDF for the mail program; the send window lists them and names the files this device does not have.
+- Unit, screen and end to end tests of the attachment path, and a test that the e-invoice (UBL) is the same whatever the attachments and embeds the PDF only by attachPdfToEInvoice.
+
+#### Changed (19 October, acceptance)
+
+- The change log entries written by the sales screens name the record kind "Document", as the change log recorder does.
+- A copy of a document starts without attachments, so removing a file from the copy never deletes the original's file.
+
+#### Fixed (19 October, acceptance)
+
+- Opening a PDF or an attachment in a new tab no longer downloads it as well: window.open answers null when "noopener" is asked for, which was taken for a blocked tab.
 
 ### Purchases, Inbox and expenses
 
@@ -419,6 +454,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Settings, Sync: the account and the state of the sync, with sign in and out, sync now, turning encryption on, unlocking this device and changing the password.
 - The company switch on the More screen of phones.
 - `docs/COVERAGE.md` (feature coverage for the release) and `docs/qa/0.1.0.md` (release checklist).
+- Timing budgets of the end-to-end tests (`*.timing.spec.js`) run in their own Playwright project after all the others, alone, so the load of the machine during the parallel run does not decide them.
 
 ### Changed
 
