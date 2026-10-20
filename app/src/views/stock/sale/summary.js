@@ -2,7 +2,10 @@
 // (VRP2) by hand, since stage 1 has no eKasa link. Lines with their price
 // including VAT and their VAT category (reverse charge and exemptions by
 // name, not as a zero rate), the VAT summary per category, the buyer's
-// IČ DPH of a reverse-charge receipt, the rounding and the amount paid.
+// IČ DPH of a reverse-charge sale, the rounding and the amount paid. A sale
+// issued as an invoice (reverse charge, a supply to another member state)
+// is recorded in VRP2 as the payment of that invoice, which the summary
+// says first.
 import { vrpSummary } from '@we-invoice/core';
 import { h } from '../../../ui/dom.js';
 import { t } from '../../../i18n/index.js';
@@ -16,9 +19,11 @@ const rateText = (category, rate) => (category === 'O' ? t('stock.sale.outsideVa
 export function openSaleSummary(document, { warnings = [], itemName = () => '' } = {}) {
   const s = vrpSummary(document);
   const body = h('div', { class: 'stock-vrp', id: 'stock-vrp' },
-    h('p', { class: 'muted' }, t('stock.sale.vrpIntro')),
+    s.entry === 'INVOICE_PAYMENT'
+      ? h('p', { class: 'callout callout-warning', id: 'stock-vrp-invoice' }, t('stock.sale.invoicePaymentNote', { number: s.number || '', amount: moneyText(s.paid) }))
+      : h('p', { class: 'muted' }, t('stock.sale.vrpIntro')),
     h('dl', { class: 'stock-vrp-head' },
-      h('dt', {}, t('stock.sale.number')), h('dd', { id: 'stock-vrp-number' }, s.number || ''),
+      h('dt', {}, t(s.entry === 'INVOICE_PAYMENT' ? 'stock.sale.invoiceNumber' : 'stock.sale.number')), h('dd', { id: 'stock-vrp-number' }, s.number || ''),
       h('dt', {}, t('stock.sale.date')), h('dd', {}, formatDate(s.date)),
       h('dt', {}, t('stock.sale.method')), h('dd', {}, t(`stock.sale.method.${s.method}`)),
       s.buyer ? [h('dt', {}, t('stock.sale.buyerLabel')), h('dd', { id: 'stock-vrp-buyer' }, `${s.buyer.name}, ${s.buyer.icDph}`)] : null),
@@ -41,9 +46,9 @@ export function openSaleSummary(document, { warnings = [], itemName = () => '' }
       s.rounding !== '0.00' ? [h('dt', {}, t('stock.sale.rounding')), h('dd', {}, moneyText(s.rounding))] : null,
       h('dt', {}, t('stock.sale.payable')), h('dd', { id: 'stock-vrp-payable' }, moneyText(s.payable)),
       h('dt', {}, t('stock.sale.paid')), h('dd', {}, moneyText(s.paid))),
-    s.reverseCharge ? h('p', { class: 'callout callout-warning', id: 'stock-vrp-reverse-charge' }, t('stock.sale.reverseChargeNote')) : null,
+    s.texts.length ? h('p', { class: 'muted', id: 'stock-vrp-texts' }, s.texts.map(x => x.text).join(', ')) : null,
     warnings.length
       ? h('div', { class: 'callout callout-warning', role: 'status' }, warnings.map(w => h('p', {}, t('stock.warning.negative', { item: itemName(w.itemId), qty: qtyText(w.qty) }))))
       : null);
-  return openModal({ title: t('stock.sale.doneTitle'), body, wide: true, actions: [{ label: t('common.close'), kind: 'primary', onClick: (m) => m.close() }] });
+  return openModal({ title: t(s.entry === 'INVOICE_PAYMENT' ? 'stock.sale.doneInvoiceTitle' : 'stock.sale.doneTitle'), body, wide: true, actions: [{ label: t('common.close'), kind: 'primary', onClick: (m) => m.close() }] });
 }

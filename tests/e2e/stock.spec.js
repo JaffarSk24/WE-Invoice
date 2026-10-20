@@ -74,7 +74,7 @@ test('receipt, quick sale and the stock level drops', async ({ page }) => {
   await expect(page.locator('.data-table')).toContainText('Výdaj');
 });
 
-test('a reverse-charge line on the quick sale needs the buyer IČ DPH', async ({ page }) => {
+test('a reverse-charge line on the quick sale becomes an invoice with the buyer', async ({ page }) => {
   test.setTimeout(90_000);
   await createCompany(page);
 
@@ -104,8 +104,16 @@ test('a reverse-charge line on the quick sale needs the buyer IČ DPH', async ({
   await expect(page.locator('#sale-buyer-icdph-error')).toContainText('SK');
   await page.fill('#sale-buyer-icdph', 'SK2021000003');
   await page.locator('#sale-sell').click();
+  await expect(page.locator('#sale-buyer-street-error')).toBeVisible();
+  await expect(page.locator('#stock-vrp')).toHaveCount(0);
+  await page.fill('#sale-buyer-street', 'Nová 2');
+  await page.fill('#sale-buyer-city', 'Košice');
+  await page.fill('#sale-buyer-zip', '040 01');
+  await page.locator('#sale-sell').click();
+  await expect(page.locator('#stock-vrp-number')).toHaveText(/^FA\d{4}0001$/);
+  await expect(page.locator('#stock-vrp-invoice')).toContainText('úhradu tejto faktúry');
   await expect(page.locator('#stock-vrp-buyer')).toHaveText('Gama, s. r. o., SK2021000003');
   await expect(page.locator('#stock-vrp td[data-category="AE"]').first()).toHaveText('Prenesenie daňovej povinnosti');
-  await expect(page.locator('#stock-vrp-reverse-charge')).toBeVisible();
+  await expect(page.locator('#stock-vrp-texts')).toContainText('prenesenie daňovej povinnosti');
   await expect(page.locator('#stock-vrp-payable')).toContainText('100,00');
 });
