@@ -54,6 +54,15 @@ describe('mappers', () => {
 });
 
 describe('GET /v1/company/sk/{ico}', () => {
+  it('takes the entity in business when the IČO also names closed branches', async () => {
+    ctx = await createTestApp();
+    const branch = (name) => ({ identifiers: [{ value: '00151653' }], fullNames: [{ value: name, validFrom: '1995-05-30', validTo: '2002-07-24' }], addresses: [], termination: '2002-07-24' });
+    const bank = { identifiers: [{ value: '00151653' }], fullNames: [{ value: 'Slovenská sporiteľňa, a.s. v skratke SLSP, a.s.', validFrom: '1995-07-04', validTo: '2014-11-04' }, { value: 'Slovenská sporiteľňa, a.s.', validFrom: '2014-11-05' }], addresses: [] };
+    ctx.pool(RPO).intercept({ path: '/rpo/v1/search?identifier=00151653' }).reply(200, { results: [branch('Slovenská sporiteľňa, a.s. Mestská pobočka Trenčín'), bank, branch('Slovenská sporiteľňa, a.s., Mestská pobočka Dunajská Streda')] }, json);
+    const res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/00151653' });
+    expect(res.json()).toMatchObject({ name: 'Slovenská sporiteľňa, a.s.', ico: '00151653' });
+  });
+
   it('combines RPO and FS open data and caches the answer', async () => {
     ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
     ctx.pool(RPO).intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);

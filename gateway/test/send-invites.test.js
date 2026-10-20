@@ -27,7 +27,7 @@ describe('send-invites', () => {
     const results = await sendInvites({ rows: parseCsv(CSV), config, db, mailer, all: true, out });
     expect(results).toHaveLength(3);
     expect(sendMail).toHaveBeenCalledTimes(3);
-    expect(sendMail.mock.calls[1][0].subject).toBe('Jste v betě eFaktury WE Invoice');
+    expect(sendMail.mock.calls[1][0].subject).toBe('Jste v betě eFaktúra ve WE Invoice');
     expect(sendMail.mock.calls[0][0].text).toContain(results[0].code);
     expect(sendMail.mock.calls[0][0].text).toContain('https://site.test/app/');
     const { token } = createInvites(db, config).redeem(results[0].code);

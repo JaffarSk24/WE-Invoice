@@ -140,6 +140,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Fixed (20 October)
 
+- A company looked up by IČO in RPO is the entity still in business: an IČO can also return branches closed long ago, and their old name came first (for Slovenská sporiteľňa the name of a branch in Trenčín). The search by name lists entities in business first too.
+- The e-mails of the gateway (confirmation, beta invitation, the owner's notice of a sign-up) keep the name eFaktúra in its basic form in Czech, German, Russian and Ukrainian, as the app does, instead of "eFakturu", "E-Rechnung" or "э-счета".
 - The open data of the Financial Administration are read through the real search of its Information Lists API 1.2 (`/api/data/{list}/search?page=1&column=..&search=..`, 404 when nothing matches) with the actual list identifiers: `ds_dphs` (VAT payers, also the IČ DPH of a company), `ds_dphz` (reasons for cancellation), `ds_dphv` (deleted payers) and `ds_dsrdp` (DIČ by IČO). Company look-ups now return DIČ and IČ DPH, and the VAT payer reliability check answers. `FS_OPENDATA_URL` is the API root; an older value ending in `/lists` still works.
 - Confirming and unsubscribing from the waiting list redirect to the site pages in the language of the sign-up (`/<lang>/thanks.html`, `/<lang>/unsubscribed.html`); the old `/waitlist/...` pages never existed.
 

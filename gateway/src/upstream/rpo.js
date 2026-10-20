@@ -1,6 +1,9 @@
 // Register of legal entities of Slovakia (RPO, api.statistics.sk/rpo/v1):
 // company by IČO and search by name. Values carry validity ranges; the
-// current one is the entry without validTo, else the newest.
+// current one is the entry without validTo, else the newest. One IČO can
+// return several entities, among them branches closed long ago (with a
+// termination and only expired names), so the entity still in business
+// comes first.
 import { mapLegalForm, nullIfEmpty } from './legal-form.js';
 
 export function currentValue(entries) {
@@ -37,15 +40,26 @@ export function mapRpoEntity(entity, checkedAt = new Date().toISOString()) {
   };
 }
 
+// An entity in business: not terminated and with a name valid today.
+export function isActiveEntity(entity) {
+  const names = Array.isArray(entity && entity.fullNames) ? entity.fullNames : [];
+  return !entity.termination && names.some(n => n && !n.validTo);
+}
+
+// Entities in business first, the order of the register kept otherwise.
+function activeFirst(results) {
+  return [...results.filter(isActiveEntity), ...results.filter(e => !isActiveEntity(e))];
+}
+
 export async function fetchCompanySk(upstream, config, ico) {
   const data = await upstream.json('rpo', `${config.rpoUrl}/search?identifier=${encodeURIComponent(ico)}`);
   const results = Array.isArray(data.results) ? data.results : [];
-  const mapped = results.map(e => mapRpoEntity(e)).filter(Boolean);
+  const mapped = activeFirst(results).map(e => mapRpoEntity(e)).filter(Boolean);
   return mapped.find(c => c.ico === ico) || mapped[0] || null;
 }
 
 export async function searchCompaniesSk(upstream, config, query, limit = 20) {
   const data = await upstream.json('rpo', `${config.rpoUrl}/search?fullName=${encodeURIComponent(query)}`);
   const results = Array.isArray(data.results) ? data.results : [];
-  return results.map(e => mapRpoEntity(e)).filter(Boolean).slice(0, limit);
+  return activeFirst(results).map(e => mapRpoEntity(e)).filter(Boolean).slice(0, limit);
 }
