@@ -171,5 +171,8 @@ export default {
   "errors.SF_PROXY_UNAVAILABLE": "V prohlížeči zatím nelze údaje z aplikace SuperFaktúra načíst. Použijte aplikaci pro počítač nebo export do souboru.",
   "errors.SF_RATE_LIMITED": "SuperFaktúra dočasně omezila počet požadavků. Zkuste to za chvíli.",
   "errors.SF_UNAVAILABLE": "SuperFaktúra je dočasně nedostupná.",
-  "errors.SF_CANCELLED": "Stahování je zastaveno. Nic se neuložilo."
+  "errors.SF_CANCELLED": "Stahování je zastaveno. Nic se neuložilo.",
+  "exim.reason.RATE_NOT_SK": "sazba DPH není slovenská sazba platná k datu dokladu, možná jde o OSS nebo chybu, zkontrolujte ji ručně",
+  "exim.reason.COLUMN_IGNORED": "tento sloupec nebo údaj jsme nerozpoznali a neimportuje se",
+  "exim.reason.ITEM_WITHOUT_NAME": "položka objednávky bez názvu se neimportuje"
 };

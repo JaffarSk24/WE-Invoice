@@ -40,8 +40,19 @@ function methodOf(name) {
   return found ? found[1] : 'TRANSFER';
 }
 
+// Tags read from an order and from an item. Any other tag is listed once
+// in the report, so nothing in the file is dropped without a word.
+const ORDER_TAGS = new Set(['code', 'order_code', 'number', 'date', 'created', 'status', 'status_name', 'currency', 'customer', 'payment_method',
+  'billing_method', 'payment', 'shipping_method', 'remark', 'note', 'customer_remark', 'total_price', 'order_items', 'items']);
+const ITEM_TAGS = new Set(['type', 'item_type', 'name', 'variant_name', 'code', 'ean', 'amount', 'quantity', 'amount_unit', 'unit', 'unit_price', 'vat_rate', 'total_price']);
+
+function noteUnknownTags(node, known, ignored) {
+  (node ? node.children : []).forEach(c => { if (!known.has(c.name.toLowerCase())) ignored.add(c.qname); });
+}
+
 // One order in a neutral shape, from XML or from CSV rows.
-function orderFromXml(node) {
+function orderFromXml(node, ignored) {
+  noteUnknownTags(node, ORDER_TAGS, ignored);
   const customer = childNode(node, 'CUSTOMER');
   const billing = childNode(customer, 'BILLING_ADDRESS', 'INVOICE_ADDRESS') || customer;
   const currency = childNode(node, 'CURRENCY');
@@ -64,6 +75,7 @@ function orderFromXml(node) {
     note: pick(node, 'REMARK', 'NOTE', 'CUSTOMER_REMARK'),
     totalGross: total ? pick(total, 'WITH_VAT') : null,
     items: items.map(item => {
+      noteUnknownTags(item, ITEM_TAGS, ignored);
       const unit = childNode(item, 'UNIT_PRICE');
       return {
         type: (pick(item, 'TYPE', 'ITEM_TYPE') || '').toLowerCase(),
@@ -87,14 +99,21 @@ const CSV_FIELDS = {
   itemRate: ['itemvatrate'], total: ['totalpricewithvat'], payment: ['paymentmethodname', 'billingmethodname', 'paymentname'], note: ['remark', 'customerremark']
 };
 
-function ordersFromRows(rows) {
+// Columns are found by name in any order and case; a column no field
+// reads and a row without an order code are reported, not dropped silently.
+function ordersFromRows(rows, report, ignored) {
   const header = (rows[0] || []).map(normalizeKey);
   const col = Object.fromEntries(Object.entries(CSV_FIELDS).map(([f, names]) => [f, header.findIndex(h => names.includes(h))]));
+  const used = new Set(Object.values(col).filter(i => i >= 0));
+  (rows[0] || []).forEach((name, i) => { if (!used.has(i) && String(name || '').trim()) ignored.add(String(name).trim()); });
   const get = (row, f) => (col[f] >= 0 ? readText(row[col[f]]) : null);
   const orders = new Map();
-  rows.slice(1).forEach(row => {
+  rows.slice(1).forEach((row, i) => {
     const code = get(row, 'code');
-    if (!code) return;
+    if (!code) {
+      skip(report, 'documents', `#${i + 2}`, 'MISSING_NUMBER');
+      return;
+    }
     if (!orders.has(code)) {
       orders.set(code, {
         code, date: get(row, 'date'), status: get(row, 'status') || '', currency: get(row, 'currency') || 'EUR', rate: get(row, 'rate'),
@@ -138,12 +157,14 @@ function lineOf(item, i, date) {
  */
 export function importShoptet(input, ctx = {}) {
   const parsed = emptyParsed();
+  const ignored = new Set();
   let orders;
-  if (Array.isArray(input)) orders = ordersFromRows(input);
+  if (Array.isArray(input)) orders = ordersFromRows(input, parsed.report, ignored);
   else if (/^\s*(\ufeff)?\s*</.test(input)) {
     const root = parseXml(input);
-    orders = children(root, 'ORDER').concat(children(root, 'order')).map(orderFromXml);
-  } else orders = ordersFromRows(readCsv(input));
+    orders = children(root, 'ORDER').concat(children(root, 'order')).map(node => orderFromXml(node, ignored));
+  } else orders = ordersFromRows(readCsv(input), parsed.report, ignored);
+  ignored.forEach(name => warn(parsed.report, 'documents', name, 'COLUMN_IGNORED'));
   if (!orders.length) warn(parsed.report, 'documents', '', 'NOTHING_FOUND');
   const target = ctx.target === 'ORDER_IN' ? 'ORDER_IN' : 'INVOICE_DRAFT';
   const own = ctx.company || {};
@@ -154,6 +175,8 @@ export function importShoptet(input, ctx = {}) {
     if (CANCELLED.test(order.status)) return skip(parsed.report, 'documents', order.code, 'ORDER_CANCELLED');
     const date = readDate(order.date);
     if (!date) return skip(parsed.report, 'documents', order.code, 'MISSING_DATE');
+    const unnamed = order.items.filter(i => !i.name).length;
+    if (unnamed) warn(parsed.report, 'documents', order.code, 'ITEM_WITHOUT_NAME');
     const lines = order.items.filter(i => i.name).map((item, i) => lineOf(item, i, date));
     if (!lines.length) return skip(parsed.report, 'documents', order.code, 'NO_AMOUNT');
     const c = order.customer;

@@ -11,6 +11,8 @@ import { periodStats } from './export-panel.js';
 import { demoData } from '../shell/demo-mode.js';
 import { boot } from '../../boot/exim.js';
 import { settingsRenderer, resetSettingsRegistry } from '../settings/registry.js';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const fakePdf = {
   buildPdf: async (doc) => ({ arrayBuffer: async () => new TextEncoder().encode(`%PDF ${doc.number}`).buffer }),
@@ -77,6 +79,24 @@ describe('export and import screen', () => {
     expect(panel.querySelector('#exim-import-counts').textContent).toMatch(/1/);
     expect(panel.querySelector('#exim-import-apply').disabled).toBe(true);
     expect(panel.querySelector('.exim-map select')).not.toBeNull();
+  });
+});
+
+describe('Shoptet preview', () => {
+  it('lists cancelled orders, unknown fields and rates that are not Slovak before anything is written', async () => {
+    const xml = readFileSync(resolve('tests/fixtures/imports/shoptet/orders.xml'), 'utf8').replace('<REMARK>', '<GIFT_WRAP>áno</GIFT_WRAP><REMARK>');
+    const file = new File([xml], 'orders.xml', { type: 'text/xml' });
+    const panel = document.createElement('div');
+    renderImportPanel(panel, { transport: { files: { openFile: async () => [file] } } });
+    panel.querySelector('#exim-import-program').value = 'shoptet';
+    panel.querySelector('#exim-import-program').dispatchEvent(new Event('change'));
+    panel.querySelector('#exim-import-choose').click();
+    await vi.waitFor(() => expect(panel.querySelector('.exim-issues')).not.toBeNull());
+    const issues = panel.querySelector('.exim-issues').textContent;
+    expect(issues).toContain('2026000103');
+    expect(issues).toContain('GIFT_WRAP');
+    expect(issues).toContain('2026000104');
+    expect(panel.querySelectorAll('.exim-issues li').length).toBeGreaterThanOrEqual(3);
   });
 });
 
