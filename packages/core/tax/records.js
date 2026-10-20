@@ -21,7 +21,7 @@ import { parsePeriod, periodOf, periodKindOf, periodContains, isPeriodKey } from
 import { documentDirection, partnerOf, partnerCountry, treatmentOf, isSelfAssessed } from './treatment.js';
 import { documentGroups, documentSign, toEur, withoutAdvances, selfAssessedVat, paymentShares, signed } from './amounts.js';
 import { problem } from './problems.js';
-import { isTaxCashVoucher } from './vouchers.js';
+import { isTaxCashVoucher, isEkasaCoveredVoucher, isEkasaCoveredGroup, voucherEkasaProblems } from './vouchers.js';
 
 const OUT_KINDS = ['INVOICE', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'SELF_BILLING', 'SALES_RECEIPT'];
 const IN_KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'SELF_BILLING'];
@@ -40,7 +40,9 @@ export function isRecordable(document) {
  *   and corrected invoices are looked up among them)
  * @param {string} period  "2026-07" or "2026-Q3"
  * @param {object} company
- * @returns {{period: string, from: string, to: string, kind: string, mode: string, entries: Array<object>, problems: Array<object>, totals: object}}
+ * @returns {{period: string, from: string, to: string, kind: string, mode: string, entries: Array<object>, ekasaCovered: Array<object>,
+ *   problems: Array<object>, totals: object}}  ekasaCovered: groups of sales vouchers already in the eKasa
+ *   turnover, listed for the user and left out of the totals and every report
  */
 export function vatRecords(documents, period, company) {
   if (!isPeriodKey(period)) throw new CoreError('TAX_PERIOD_INVALID', `invalid period ${period}`);
@@ -49,20 +51,24 @@ export function vatRecords(documents, period, company) {
   const all = (documents || []).filter(d => d && !d.deleted);
   const byId = new Map(all.map(d => [d.id, d]));
   const entries = [];
+  const covered = [];
   const problems = [];
   if (mode !== 'NONPAYER') {
     for (const document of all) {
       if (!isRecordable(document)) continue;
       try {
-        collect(document, { p, company, mode, byId, entries, problems });
+        collect(document, { p, company, mode, byId, entries, covered, problems });
       } catch (e) {
         if (!(e instanceof CoreError)) throw e;
         problems.push(problem(e.code, document, { severity: 'error' }));
       }
     }
   }
-  entries.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : String(a.number || '').localeCompare(String(b.number || ''))));
-  return { period: p.key, from: p.from, to: p.to, kind: p.kind, mode, entries, problems: dedupe(problems), totals: recordTotals(entries) };
+  const byDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : String(a.number || '').localeCompare(String(b.number || '')));
+  entries.sort(byDate);
+  covered.sort(byDate);
+  problems.push(...voucherEkasaProblems(entries, covered, all));
+  return { period: p.key, from: p.from, to: p.to, kind: p.kind, mode, entries, ekasaCovered: covered, problems: dedupe(problems), totals: recordTotals(entries) };
 }
 
 function collect(document, ctx) {
@@ -129,6 +135,7 @@ function baseEntry(document, direction, partner, ctx) {
     // simplified invoice: B.3 of the kontrolný výkaz, like an expense receipt.
     simplified: document.kind === 'EXPENSE_RECEIPT' || document.kind === 'CASH_OUT',
     cashVoucher: isTaxCashVoucher(document),
+    ekasaCovered: isEkasaCoveredVoucher(document, ctx.company),
     paymentId: null
   };
 }
@@ -153,7 +160,9 @@ function push(ctx, document, base, group, treatment, sign) {
   }
   if (base.correction && !base.originalNumber) ctx.problems.push(problem('CORRECTION_ORIGINAL_MISSING', document, { severity: 'error' }));
   if (treatment === 'FOREIGN') ctx.problems.push(problem('FOREIGN_VAT', document, { severity: 'warning' }));
-  ctx.entries.push({ ...base, treatment, category: group.category, rate: rate ?? null, base: euroBase, vat, deductible });
+  const entry = { ...base, treatment, category: group.category, rate: rate ?? null, base: euroBase, vat, deductible };
+  if (base.ekasaCovered && isEkasaCoveredGroup(group.category)) ctx.covered.push(entry);
+  else ctx.entries.push({ ...entry, ekasaCovered: false });
 }
 
 // Where a document falls and the problems of its dates.

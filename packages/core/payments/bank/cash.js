@@ -100,11 +100,13 @@ function vatChoice(input) {
  * A new voucher and the counter update of its series. The amount is what
  * changes hands: VAT included for a rate, the base for AE, E and O. A
  * reverse charge voucher needs the partner's Slovak IČ DPH. An expense is
- * received on its own date, which places it in the VAT records.
+ * received on its own date, which places it in the VAT records. A sale
+ * (a receipt that pays no invoice) keeps `ekasaSale`: true when the sale
+ * is also recorded in eKasa, so the VAT records do not count it twice.
  * @param {{book: object, kind: string, date: string, amount: string, purpose: string,
  *   partner?: {name?: string, icDph?: string|null, ico?: string|null, dic?: string|null}|null,
  *   contactId?: string|null, series: object, taken?: string[], vat?: string, vatRate?: string|null,
- *   paysDocId?: string|null, paymentId?: string|null, id?: string}} input
+ *   paysDocId?: string|null, paymentId?: string|null, ekasaSale?: boolean, id?: string}} input
  * @returns {{voucher: object, series: object}}
  */
 export function buildCashVoucher(input) {
@@ -125,7 +127,8 @@ export function buildCashVoucher(input) {
     issueDate: date, taxDate: date, receivedDate: kind === 'CASH_OUT' ? date : null, currency: book.currency, contactId: input.contactId || null,
     buyer: kind === 'CASH_IN' ? party : null, seller: kind === 'CASH_OUT' ? party : null,
     lines: [line], payments: [], paymentMethod: 'CASH',
-    paysDocId: input.paysDocId || null, paymentId: input.paymentId || null
+    paysDocId: input.paysDocId || null, paymentId: input.paymentId || null,
+    ekasaSale: kind === 'CASH_IN' && !input.paysDocId && vat.vatCategory !== 'AE' ? input.ekasaSale !== false : false
   };
   const totals = computeTotals(voucher);
   voucher.totals = { lineNet: totals.lineNet, allowances: totals.allowances, charges: totals.charges, net: totals.net, vat: totals.vat, gross: totals.gross, prepaid: totals.prepaid, rounding: totals.rounding, payable: totals.payable, breakdown: totals.breakdown };

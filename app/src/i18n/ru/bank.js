@@ -141,6 +141,8 @@ export default {
   "cash.voucher.vatRate": "НДС",
   "cash.voucher.noVat": "Без НДС",
   "cash.voucher.exemptHint": "Освобождено от налога ({law}).",
+  "cash.voucher.ekasaSale": "Продажа учтена в eKasa",
+  "cash.voucher.ekasaSaleHint": "НДС этой продажи уже в оборотах eKasa (раздел D.1 формы Kontrolný výkaz), поэтому в реестре Evidencia DPH он второй раз не учитывается.",
   "cash.voucher.aeHint": "Перенос налоговой обязанности ({law}): сумма без НДС, налог декларирует покупатель. У партнёра должен быть словацкий IČ DPH.",
   "cash.voucher.contactSearch": "Название, IČO или IČ DPH",
   "cash.voucher.contact": "Партнёр из контактов",

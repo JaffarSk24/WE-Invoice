@@ -18,6 +18,8 @@ All parties are synthetic: the Slovak VAT ids have valid checksums but belong to
 | 10-ekasa-simplified | eKasa sales (D.1) and simplified invoices over the per-supplier threshold (B.3.2) |
 | 11-problems | missing dates and VAT ids, a broken advance link, stored totals that do not match, a change after export |
 | 12-registered-7 | person registered under § 7a: VAT on a service from abroad without deduction, SV for services supplied |
+| 13-cash-vouchers-ekasa | cash vouchers of a company that uses eKasa: a sale marked as recorded in eKasa is listed apart and left out (its VAT is in D.1 through the eKasa turnover), a sale with the mark cleared goes to D.2 with a same-day warning, reverse charge A.2, an expense B.3.1 |
+| 14-cash-vouchers-no-ekasa | the same vouchers of a company that does not use eKasa: every sale voucher goes to D.2, no warning |
 
 The expected values were computed by hand for the totals and rows and are waiting for the review of a qualified accountant before the tax modules are released (05-accounting-tax.md § 5.5). After a deliberate change of the reports, regenerate with `UPDATE_TAX_GOLDEN=1 npx vitest run packages/core/tax/golden.test.js` and review the diff.
 

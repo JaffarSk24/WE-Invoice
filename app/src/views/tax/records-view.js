@@ -3,7 +3,7 @@
 // documents of the period by VAT group, the checks before filing, the
 // closing of the period, the registration limit for a person that is not a
 // full payer, and the OSS data of a quarter as CSV.
-import { h, icon, clear } from '../../ui/dom.js';
+import { h, icon, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { vatRecords, exportChecks, isPeriodClosed, registrationTurnover, ossData, ossCsv, parseTaxPeriod } from '@we-invoice/core';
@@ -32,6 +32,15 @@ function entriesTable(entries, direction) {
   const rows = entries.filter(e => e.direction === direction);
   if (!rows.length) return h('p', { class: 'muted' }, t('tax.records.none'));
   return simpleTable(columns(direction), rows);
+}
+
+// Sales vouchers already in the eKasa turnover: shown with their mark, not added.
+function ekasaCoveredBlock(covered) {
+  if (!covered || !covered.length) return null;
+  return h('section', { class: 'tax-ekasa-covered', 'aria-labelledby': 'tax-ekasa-covered-title' },
+    h('h3', { id: 'tax-ekasa-covered-title' }, t('tax.records.ekasaCovered.title')),
+    h('p', { class: 'muted' }, t('tax.records.ekasaCovered.text', { n: new Set(covered.map(e => e.docId)).size })),
+    simpleTable(columns('OUT'), covered));
 }
 
 function thresholdBlock(documents, today) {
@@ -123,7 +132,7 @@ export function renderRecordsBody(body, { src, period, ctx, redraw }) {
     problemList(problems),
     createTabs({
       tabs: [
-        { id: 'out', label: t('tax.records.issued'), render: (panel) => panel.append(entriesTable(records.entries, 'OUT')) },
+        { id: 'out', label: t('tax.records.issued'), render: (panel) => append(panel, [entriesTable(records.entries, 'OUT'), ekasaCoveredBlock(records.ekasaCovered)]) },
         { id: 'in', label: t('tax.records.received'), render: (panel) => panel.append(entriesTable(records.entries, 'IN')) }
       ]
     }).el);

@@ -31,12 +31,14 @@ describe('cash vouchers in the VAT records', () => {
     expect(buildKv(records, { company }).sections.B3.total).toMatchObject({ base: '100.00', deductible: '23.00' });
   });
 
-  it('a receipt with VAT is a sale: A.1 for a Slovak payer, D.2 otherwise', () => {
+  it('a receipt with VAT of a company without eKasa is a sale: A.1 for a Slovak payer, D.2 otherwise', () => {
     const toPayer = voucher('CASH_IN', 'S:23', '246.00', { partner: PAYER });
     const toPerson = voucher('CASH_IN', 'S:5', '10.50', { partner: { name: 'Jan' } });
-    const records = vatRecords([toPayer, toPerson], '2026-03', company);
+    const noEkasa = { ...company, ekasaExempt: true };
+    const records = vatRecords([toPayer, toPerson], '2026-03', noEkasa);
     expect(records.totals.outputVat).toBe('46.50');
-    const kv = buildKv(records, { company });
+    expect(records.ekasaCovered).toEqual([]);
+    const kv = buildKv(records, { company: noEkasa });
     expect(kv.sections.A1).toEqual([expect.objectContaining({ docId: toPayer.id, buyer: 'SK2021234567', base: '200.00', vat: '46.00' })]);
     expect(kv.sections.D2).toEqual([expect.objectContaining({ rate: '5', base: '10.00', vat: '0.50' })]);
   });
@@ -59,7 +61,7 @@ describe('cash vouchers in the VAT records', () => {
   });
 
   it('an exempt voucher is listed without VAT', () => {
-    const v = voucher('CASH_IN', 'E', '80.00', { partner: { name: 'Jan' } });
+    const v = voucher('CASH_IN', 'E', '80.00', { partner: { name: 'Jan' }, ekasaSale: false });
     expect(v.lines[0]).toMatchObject({ vatCategory: 'E', vatRate: '0', exemptionReasonCode: 'VATEX-EU-132' });
     const [entry] = vatRecords([v], '2026-03', company).entries;
     expect(entry).toMatchObject({ treatment: 'EXEMPT', base: '80.00', vat: '0.00' });
@@ -84,5 +86,58 @@ describe('cash vouchers in the VAT records', () => {
   it('a company that is not a VAT payer keeps no records', () => {
     const v = voucher('CASH_OUT', 'S:23', '123.00');
     expect(vatRecords([v], '2026-03', { ...company, vatMode: 'NONPAYER' }).entries).toEqual([]);
+  });
+});
+
+const receipt = (id, date, gross) => ({
+  id, kind: 'SALES_RECEIPT', status: 'ISSUED', number: id, issueDate: date, taxDate: date, currency: 'EUR', buyer: { name: '' },
+  lines: [{ id: 'l', name: 'Obrat', qty: '1', unitPrice: gross, priceType: 'GROSS', vatCategory: 'S', vatRate: '23' }]
+});
+
+describe('sales vouchers of a company that uses eKasa', () => {
+  it('are marked as in eKasa by default, listed apart and never added', () => {
+    const v = voucher('CASH_IN', 'S:23', '123.00', { partner: { name: 'Jan' } });
+    expect(v.ekasaSale).toBe(true);
+    const records = vatRecords([v, receipt('EK-1', '2026-03-12', '123.00')], '2026-03', company);
+    expect(records.ekasaCovered).toEqual([expect.objectContaining({ docId: v.id, base: '100.00', vat: '23.00', ekasaCovered: true })]);
+    expect(records.entries.map(e => e.docId)).toEqual(['EK-1']);
+    expect(records.totals.outputVat).toBe('23.00');
+    const kv = buildKv(records, { company });
+    expect(kv.sections.D1).toEqual([expect.objectContaining({ rate: '23', base: '100.00', vat: '23.00' })]);
+    expect(kv.sections.D2).toEqual([]);
+    expect(kv.sections.A1).toEqual([]);
+    expect(buildVatReturn(records, { company }).amounts).toMatchObject({ 'supply.STANDARD.vat': '23.00' });
+    expect(records.problems).toEqual([]);
+  });
+
+  it('go to D.2 when the mark is cleared, with a warning next to eKasa turnover of the same day', () => {
+    const v = voucher('CASH_IN', 'S:23', '123.00', { partner: { name: 'Jan' }, ekasaSale: false });
+    const records = vatRecords([v, receipt('EK-1', '2026-03-12', '61.50')], '2026-03', company);
+    expect(records.ekasaCovered).toEqual([]);
+    expect(records.totals.outputVat).toBe('34.50');
+    const kv = buildKv(records, { company });
+    expect(kv.sections.D2).toEqual([expect.objectContaining({ rate: '23', base: '100.00', vat: '23.00' })]);
+    expect(records.problems).toEqual([expect.objectContaining({ code: 'CASH_VOUCHER_EKASA_SAME_DAY', severity: 'warning', docId: v.id, params: { date: '2026-03-12' } })]);
+  });
+
+  it('a marked voucher on a day without eKasa turnover is a warning: its VAT is nowhere yet', () => {
+    const v = voucher('CASH_IN', 'S:23', '123.00');
+    const records = vatRecords([v, receipt('EK-1', '2026-03-13', '61.50')], '2026-03', company);
+    expect(records.problems).toEqual([expect.objectContaining({ code: 'CASH_VOUCHER_EKASA_MISSING', severity: 'warning', docId: v.id })]);
+  });
+
+  it('a company that does not use eKasa counts its sales vouchers in D.2 whatever the mark says', () => {
+    const exempt = { ...company, ekasaExempt: true };
+    const v = voucher('CASH_IN', 'S:23', '123.00');
+    const records = vatRecords([v], '2026-03', exempt);
+    expect(records.ekasaCovered).toEqual([]);
+    expect(buildKv(records, { company: exempt }).sections.D2).toEqual([expect.objectContaining({ base: '100.00', vat: '23.00' })]);
+    expect(records.problems).toEqual([]);
+  });
+
+  it('reverse charge sales and payment vouchers are never marked', () => {
+    expect(voucher('CASH_IN', 'AE', '500.00', { partner: PAYER }).ekasaSale).toBe(false);
+    expect(voucher('CASH_IN', 'S:23', '10.00', { paysDocId: 'inv', paymentId: 'p' }).ekasaSale).toBe(false);
+    expect(voucher('CASH_OUT', 'S:23', '10.00').ekasaSale).toBe(false);
   });
 });

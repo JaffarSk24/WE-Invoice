@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dokument>
+  <hlavicka>
+    <identifikacneCislo>
+      <kodStatu>SK</kodStatu>
+      <dic>2020123457</dic>
+    </identifikacneCislo>
+    <danovyUrad></danovyUrad>
+    <druhSV>
+      <riadny>1</riadny>
+      <opravny>0</opravny>
+      <dodatocny>0</dodatocny>
+    </druhSV>
+    <obdobie>
+      <mesiac>3</mesiac>
+      <stvrtrok></stvrtrok>
+      <rok>2026</rok>
+    </obdobie>
+    <obchodneMeno>
+      <riadok>Biela Orlica s. r. o.</riadok>
+      <riadok></riadok>
+      <riadok></riadok>
+      <riadok></riadok>
+    </obchodneMeno>
+    <adresa>
+      <ulica>Hlavná</ulica>
+      <cislo>12</cislo>
+      <psc>81101</psc>
+      <obec>Bratislava</obec>
+      <tel>+421 2 1234 5678</tel>
+      <email>uctaren@example.sk</email>
+    </adresa>
+    <celkovaHodnota>0.00</celkovaHodnota>
+    <konatel>Biela Orlica s. r. o.</konatel>
+    <datumVyhlasenia>
+      <den>10</den>
+      <mesiac>04</mesiac>
+      <rok>2026</rok>
+    </datumVyhlasenia>
+  </hlavicka>
+  <telo/>
+</dokument>
