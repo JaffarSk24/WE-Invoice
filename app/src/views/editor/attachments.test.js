@@ -47,8 +47,9 @@ describe('attachment rules', () => {
 
   it('counts a draft with only attachments as content and never copies them', () => {
     expect(hasContent({ lines: [], attachments: [{ id: 'a' }] })).toBe(true);
-    const copy = duplicateDocument({ ...newDraft({ kind: 'INVOICE', company: COMPANY, today: TODAY }), attachments: [{ id: 'a', name: 'x' }] }, { today: TODAY });
+    const copy = duplicateDocument({ ...newDraft({ kind: 'INVOICE', company: COMPANY, today: TODAY }), attachments: [{ id: 'a', name: 'x' }], removedAttachments: [{ id: 'b', name: 'y', removedAt: '2026-10-20T10:00:00.000Z' }] }, { today: TODAY });
     expect(copy.attachments).toEqual([]);
+    expect(copy.removedAttachments).toEqual([]);
   });
 });
 
@@ -83,6 +84,18 @@ describe('attachments in the store', () => {
       action: 'UPDATE', entity: 'Document', entityId: doc.id, changes: [{ field: 'attachments', from: 'zmluva.pdf', to: null }]
     });
     expect(await removeAttachment(store, doc.id, 'unknown', files)).toBeNull();
+  });
+
+  it('keeps the file of an attachment removed from an issued document in its archive', async () => {
+    const { store } = await memoryStore();
+    const files = fakeFiles();
+    const doc = await issuedInvoice(store);
+    const [a] = await addAttachments(store, doc.id, [file('zmluva.pdf', 3)], files);
+    await removeAttachment(store, doc.id, a.id, { ...files, now: () => '2026-10-20T10:00:00.000Z' });
+    const stored = store.get('documents', doc.id);
+    expect(stored.attachments).toEqual([]);
+    expect(stored.removedAttachments).toEqual([{ id: a.id, name: 'zmluva.pdf', mime: 'application/pdf', size: 3, removedAt: '2026-10-20T10:00:00.000Z', reason: 'REMOVED_BY_USER' }]);
+    expect(files.map.has(a.id)).toBe(true);
   });
 
   it('keeps a file another document still lists', async () => {

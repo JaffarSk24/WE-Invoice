@@ -8,11 +8,15 @@
 //   - a file that a live document lists, that this device has and that
 //     Drive lacks is uploaded (only in a sync that may write: closing, the
 //     Sync button, 10 seconds after a change);
-//   - a file this device knew as listed at its last pass and that no live
-//     document lists after the merge is removed from Drive and from this
-//     device: the document was deleted (tombstone) or the attachment was
-//     removed. A device that never saw the reference removes nothing, so a
-//     file another device has just added is never taken for an orphan.
+//   - a file this device knew as kept at its last pass and that the data
+//     no longer keeps after the merge (retention.js: an attachment removed
+//     from a draft, a deleted Inbox record, a draft removed for good from
+//     the recycle bin) is removed from Drive and from this device, unless
+//     the archive period recorded for it is not over yet. Attachments
+//     removed from issued or received documents, and documents in the bin,
+//     keep their files. A device that never saw the reference removes
+//     nothing, so a file another device has just added is never taken for
+//     an orphan.
 // A file is taken from Drive only when someone opens or sends it (fetch()).
 //
 // The states people see, per attachment id (state()):
@@ -27,7 +31,9 @@
 //                signed out, data locked)
 // Every change of a state is announced as "attachments:status".
 import { TRANSPORT_CODES } from '../remote.js';
-import { attachmentFileName, parseAttachmentName, encodePayload, decodePayload, referencedAttachmentIds, attachmentRecordOf } from './codec.js';
+import { attachmentFileName, parseAttachmentName, encodePayload, decodePayload, attachmentRecordOf } from './codec.js';
+import { keptAttachments, mayRemove } from './retention.js';
+import { todayLocal } from '../../components/dates.js';
 
 export const ATTACHMENT_STATES = Object.freeze(['local', 'synced', 'pending', 'remote', 'downloading', 'notUploaded', 'offline']);
 const UNREACHABLE = new Set([...TRANSPORT_CODES, 'LOCKED']);
@@ -46,6 +52,13 @@ export function memoryFiles() {
   };
 }
 
+// The files known at the last pass: { id: last day to keep or null }; an
+// older record was a plain list of ids, with no archive period.
+function knownMap(value) {
+  if (Array.isArray(value)) return new Map(value.map(id => [id, null]));
+  return new Map(Object.entries(value && typeof value === 'object' ? value : {}));
+}
+
 function unreachable(error) {
   return Boolean(error && UNREACHABLE.has(error.code));
 }
@@ -56,8 +69,10 @@ export class AttachmentFiles {
    *   isConnected?: () => boolean, loadState?: Function, saveState?: Function}} deps
    *   isConnected: signed in with the data key on this device
    *   loadState(companyId) / saveState(companyId, state): the per-device record of the last pass
+   *   today(): the local date ('YYYY-MM-DD') the archive periods are measured against
+   *   yearsOn(date): the archive period valid on a date (retention.js; tests pass their own)
    */
-  constructor({ store, remote, local, emit = () => {}, isConnected = () => true, loadState = async () => null, saveState = async () => {} }) {
+  constructor({ store, remote, local, emit = () => {}, isConnected = () => true, loadState = async () => null, saveState = async () => {}, today = () => todayLocal(), yearsOn = undefined }) {
     this.store = store;
     this.remote = remote;
     this.local = local;
@@ -65,6 +80,8 @@ export class AttachmentFiles {
     this.isConnected = isConnected;
     this.loadState = loadState;
     this.saveState = saveState;
+    this.today = today;
+    this.retention = yearsOn ? { yearsOn } : {};
     this.localIds = new Set();
     this.remoteIds = new Map();   // id -> { path, ext } of the active company's folder
     this.listed = null;           // companyId whose folder remoteIds holds
@@ -123,7 +140,7 @@ export class AttachmentFiles {
     const data = this.store.data;
     if (!data) return 0;
     let n = 0;
-    referencedAttachmentIds(data).forEach(id => { if (this.localIds.has(id) && !this.remoteIds.has(id)) n += 1; });
+    keptAttachments(data, this.retention).forEach((until, id) => { if (this.localIds.has(id) && !this.remoteIds.has(id)) n += 1; });
     return n;
   }
 
@@ -161,16 +178,19 @@ export class AttachmentFiles {
     const data = await this.store.companyData(companyId);
     if (!data) return { pending: 0, uploaded: 0, deleted: 0 };
     await this.refreshLocal();
-    const referenced = referencedAttachmentIds(data);
+    const referenced = keptAttachments(data, this.retention);
     const saved = (await this.loadState(companyId)) || {};
-    const known = new Set(saved.known || []);
+    const known = knownMap(saved.known);
     const remoteIds = await this.list(companyId);
-    const keep = new Set(referenced);
+    const keep = new Map(referenced);
+    const today = this.today();
     let uploaded = 0;
     let deleted = 0;
 
-    for (const id of known) {
+    for (const [id, until] of known) {
       if (referenced.has(id)) continue;
+      // Gone from the data while its archive period runs: the file stays.
+      if (!mayRemove(until, today)) { keep.set(id, until); continue; }
       if (this.localIds.has(id)) {
         try {
           await this.local.delete(id);
@@ -181,7 +201,7 @@ export class AttachmentFiles {
       }
       const entry = remoteIds.get(id);
       if (!entry) continue;
-      if (!upload) { keep.add(id); continue; }
+      if (!upload) { keep.set(id, until); continue; }
       try {
         await this.remote.removeAt(entry.path);
         remoteIds.delete(id);
@@ -189,11 +209,11 @@ export class AttachmentFiles {
       } catch (e) {
         if (unreachable(e)) throw e;
         console.error(`The file of removed attachment ${id} could not be removed from Drive`, e);
-        keep.add(id);
+        keep.set(id, until);
       }
     }
 
-    for (const id of referenced) {
+    for (const id of referenced.keys()) {
       if (!this.localIds.has(id) || remoteIds.has(id) || !upload) continue;
       try {
         if (await this.upload(companyId, id)) uploaded += 1;
@@ -203,8 +223,8 @@ export class AttachmentFiles {
       }
     }
 
-    await this.saveState(companyId, { known: Array.from(keep) });
-    referenced.forEach(id => { if (this.failed.get(id) === 'notUploaded' && remoteIds.has(id)) this.failed.delete(id); });
+    await this.saveState(companyId, { known: Object.fromEntries(keep) });
+    referenced.forEach((until, id) => { if (this.failed.get(id) === 'notUploaded' && remoteIds.has(id)) this.failed.delete(id); });
     this.emit('attachments:status', { id: null, state: null });
     return { pending: this.pendingCount(), uploaded, deleted };
   }

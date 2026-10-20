@@ -8,6 +8,7 @@ import { applyValues } from './review-values.js';
 import { rememberSupplier } from './supplier.js';
 import { withPayment, receivedStatus } from './data.js';
 import { deleteFile } from './file-store.js';
+import { archivesFiles } from '../../sync/attachments/retention.js';
 import { assertPeriodOpen } from '../documents/period-guard.js';
 
 /** A blank received document of a kind, for typing one in by hand. */
@@ -48,6 +49,9 @@ export async function recordPayment(store, doc, payment, today) {
 
 export async function deleteDocument(store, doc) {
   await store.remove('documents', doc.id);
+  // A received document in the bin keeps its files for the archive
+  // (sync/attachments/retention.js); only an Inbox record drops them.
+  if (archivesFiles(doc)) return;
   for (const a of doc.attachments || []) {
     try { await deleteFile(a.id); } catch (e) { console.warn('Inbox file was not removed', e); }
   }

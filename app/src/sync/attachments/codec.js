@@ -97,10 +97,10 @@ export function referencedAttachmentIds(data) {
   return ids;
 }
 
-/** The attachment record (name, mime) of an id in the data, or null. */
+/** The attachment record (name, mime) of an id in the data, archived ones included, or null. */
 export function attachmentRecordOf(data, id) {
   for (const doc of (data && data.documents) || []) {
-    const record = (doc.attachments || []).find(a => a && a.id === id);
+    const record = [...(doc.attachments || []), ...(doc.removedAttachments || [])].find(a => a && a.id === id);
     if (record) return record;
   }
   return null;
