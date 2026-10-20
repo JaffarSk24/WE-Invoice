@@ -17,11 +17,14 @@ export function canFrameBlobs(doc = typeof document !== 'undefined' ? document :
   return cspAllowsBlobFrames(meta ? meta.getAttribute('content') : null);
 }
 
-/** Opens a PDF in a new tab, or downloads it when the tab is blocked. */
-export function openPdf(blob, name = 'document.pdf') {
+/** Opens a file in a new tab (the browser shows PDFs and images, downloads the rest), or downloads it when the tab is blocked. */
+export function openBlob(blob, name = 'file') {
   const url = URL.createObjectURL(blob);
-  const tab = window.open(url, '_blank', 'noopener');
-  if (!tab) {
+  // Without "noopener" in the features: with it window.open answers null
+  // even when the tab opened, and the file would be downloaded as well.
+  const tab = window.open(url, '_blank');
+  if (tab) tab.opener = null;
+  else {
     const a = document.createElement('a');
     a.href = url;
     a.download = name;
@@ -30,4 +33,9 @@ export function openPdf(blob, name = 'document.pdf') {
     a.remove();
   }
   setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+/** Opens a PDF in a new tab, or downloads it when the tab is blocked. */
+export function openPdf(blob, name = 'document.pdf') {
+  openBlob(blob, name);
 }

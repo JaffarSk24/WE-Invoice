@@ -109,10 +109,12 @@ jobs:
           pattern: installers-*
           merge-multiple: true
           path: release
-      - name: Release notes from the changelog
+      - name: Release notes (docs/release-notes/<version>.md, else the changelog)
         run: |
           node -e "
             const fs = require('fs');
+            const notes = 'docs/release-notes/${{ inputs.version }}.md';
+            if (fs.existsSync(notes)) { fs.copyFileSync(notes, 'notes.md'); process.exit(0); }
             const text = fs.readFileSync('docs/CHANGELOG.md', 'utf8');
             const m = text.split(/^## /m).find(s => s.startsWith('[${{ inputs.version }}]') || s.startsWith('${{ inputs.version }}'));
             fs.writeFileSync('notes.md', m ? '## ' + m.trim() + '\n' : 'WE Invoice ${{ inputs.version }}\n');

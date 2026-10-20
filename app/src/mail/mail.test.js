@@ -7,6 +7,7 @@ import { documentVars, periodLabel, formatMailDate } from './placeholders.js';
 import { composeMail, mailtoUrl, documentLanguage, splitAddresses, invalidAddresses, mailSettings } from './compose.js';
 import { sendPatch, sendLogEntry, smtpAccount } from './deliver.js';
 import { sendDocumentMail } from './send.js';
+import { documentAttachments } from './attachments.js';
 import { setDesktopPref } from '../desktop/prefs.js';
 import { resetPrefsCache } from '../prefs.js';
 
@@ -154,6 +155,24 @@ describe('sendDocumentMail', () => {
     expect(url.startsWith('mailto:inv%40beta.sk?')).toBe(true);
     expect(entry.result).toBe('CLIENT_OPENED');
     expect(store.doc().status).toBe('SENT');
+  });
+
+  it('sends the document attachments with the PDF through SMTP and downloads them without it', async () => {
+    const files = new Map([['a1', { name: 'zmluva.pdf', type: 'application/pdf', bytes: new Uint8Array([1, 2]) }]]);
+    const withFiles = invoice({ attachments: [{ id: 'a1', name: 'zmluva.pdf', mime: 'application/pdf', size: 2 }, { id: 'gone', name: 'foto.jpg', mime: 'image/jpeg', size: 9 }] });
+    const attachments = (doc) => documentAttachments(doc, { get: async (id) => files.get(id) || null });
+    expect(await attachments(withFiles)).toEqual({ files: [{ fileName: 'zmluva.pdf', blob: files.get('a1').bytes, contentType: 'application/pdf' }], missing: ['foto.jpg'] });
+
+    setDesktopPref('smtp', { host: 'smtp.alfa.sk', port: 587, security: 'starttls', user: 'u', from: 'alfa@alfa.sk', fromName: '' });
+    const win = { weMail: { send: vi.fn(async () => ({ ok: true, messageId: 'm1' })) } };
+    await sendDocumentMail({ store: memoryStore(withFiles), document: withFiles, company, message, transport: {}, win, pdf, attachments });
+    const [, sent] = win.weMail.send.mock.calls[0];
+    expect(sent.attachments.map(a => [a.filename, a.contentType])).toEqual([['Faktura_2026001.pdf', 'application/pdf'], ['zmluva.pdf', 'application/pdf']]);
+
+    setDesktopPref('smtp', null);
+    const saveAs = vi.fn(async () => true);
+    await sendDocumentMail({ store: memoryStore(withFiles), document: withFiles, company, message, transport: { files: { saveAs } }, win: {}, pdf, openUrl: () => {}, attachments });
+    expect(saveAs.mock.calls.map(c => c[0])).toEqual(['Faktura_2026001.pdf', 'zmluva.pdf']);
   });
 
   it('refuses automatic sending without SMTP and bad recipients', async () => {

@@ -3,7 +3,7 @@
 // generated documents (totals, payment state, eFaktura duty) built and
 // sorted within 200 ms, filtered by a typed query within 100 ms. Drawing
 // the table is measured in components.perf.test.js, and the whole opening
-// of the list in the browser in tests/e2e/large-list.spec.js.
+// of the list in the browser in tests/e2e/large-list.timing.spec.js.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { documentRows, filterRows, byNewest } from '../../app/src/views/documents/rows.js';
 import { listColumns } from '../../app/src/views/documents/list-columns.js';

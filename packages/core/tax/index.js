@@ -25,3 +25,4 @@ export {
   isPeriodKey as isTaxPeriod,
   filingDueDate
 } from './periods.js';
+export { isTaxCashVoucher, CASH_VOUCHER_KINDS } from './vouchers.js';

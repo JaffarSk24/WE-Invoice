@@ -131,6 +131,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - README: installing on macOS (`xattr -cr`) and Windows (SmartScreen).
 - Tests for every pure part of the main process (backups, data checks, window bounds, network policy and requests, update utils, tray menu, scheduler, deep links, mail, secrets, packaging check) and the app side (transport, close handshake, tray state, updates, boot).
 
+#### Fixed (19 October)
+
+- The universal macOS build failed: the ad-hoc signing ran on the x64 and arm64 halves before they were merged, so their signature files differed. Only the merged app is signed now; the dmg and zip build, carry both architectures and start.
+
 ### Website, waitlist, privacy and terms
 
 #### Added
@@ -179,6 +183,17 @@ All notable changes to this project are documented here. The format follows [Kee
 - Stock moves follow documents on the `stock:document-issued` event and on every local change of a document, so cancelling or deleting a document takes its moves back. The quick sale emits `stock:sales-receipt-issued`.
 - Unit, DOM and end-to-end tests (receipt, quick sale, level drops) and a performance test of levels and valuation over 10 000 moves.
 
+#### Added (19 October, acceptance)
+
+- Quick sale (predajka): every line has a VAT choice, as on an invoice line: each rate of the S category, the zero rate and the categories legislation gives an exemption reference for, reverse charge (AE, § 69 ods. 12 zákona o DPH) among them. A company that is not a VAT payer still sells outside VAT only.
+- A reverse-charge line asks for the buyer: name and IČ DPH, typed in or taken from the contacts that have one. The receipt is refused until the IČ DPH is valid and Slovak, since reverse charge is possible only for a buyer who is a VAT payer; a supply to another member state (K) needs the VAT ID of another member state. The buyer is stored on the receipt.
+- Core functions in `packages/core/stock/receipt-vat.js`: `salesReceiptVatChoices`, `salesReceiptVatChoiceOf`, `salesReceiptVat`, `vatOfCategory`, `salesReceiptBuyerNeed`, `checkSalesReceiptBuyer` and `normalizeVatId`; `salesReceiptLine` and `issueSalesReceipt` take the VAT choice of each cart line and the buyer.
+
+#### Changed (19 October, acceptance)
+
+- A price with VAT on a line without VAT (reverse charge, exemption) becomes the price without VAT at the item's own rate.
+- The VRP2 summary (`vrpSummary`) names the VAT category of each line and of each VAT summary row, so reverse charge, exemptions and the zero rate are no longer all shown as 0 %. It also gives the legal texts from legislation, the buyer's IČ DPH and a note on how to enter reverse-charge items in VRP2.
+
 ### Export, import, migration and backup
 
 #### Added
@@ -193,6 +208,18 @@ All notable changes to this project are documented here. The format follows [Kee
 - WE Budget: the payments of a period as a CSV the WE Budget statement import reads.
 - Full backup of the open company in one JSON file with a checksum, optionally sealed with a password (PBKDF2 and AES-GCM from the sync package). Restore shows what the file holds, can save the current data first, needs an explicit confirmation, migrates older schema versions, refuses newer and damaged files, and wins over the copies on other devices at the next sync.
 - The "Export a import" screen at `#/exim` with the tabs Export, Import, WE Time Tracker and Backup, and the backup in Settings, Export a import.
+
+#### Added (19 October)
+
+- Migration reads old Excel 97-2003 files (.xls, BIFF8) with its own small reader: the compound file container, the shared string table across CONTINUE records, dates by number format and cached formula results. Excel 95 files and files protected by a password are refused with their own messages.
+- Shoptet orders: the XML and the CSV order export become draft invoices (numbered when issued, the order code kept as the order reference) or received orders, with the customers as contacts and the products as price list items. Lines link to the price list by product code, prices are taken with VAT so the totals equal the orders, cancelled orders are skipped, and an order imported before is not imported again.
+- SuperFaktura API: with the account e-mail and the API key, clients, the price list and invoices with their lines and payments are downloaded page by page with a progress line and a stop button, then shown in the import preview like a file. The credentials can be kept on the device in the transport secrets. On the desktop the API is called directly; in the browser a request the API refuses is sent through the gateway route `/v1/proxy/superfaktura/{market}/{path}`.
+
+#### Changed (19 October)
+
+- The export, import and backup dictionaries are split into two files per language.
+- Two kind lists of the export modules are written out instead of spread, so the export code no longer loads with the start of the app.
+- The screen builds its DOM only through the helpers of `ui/dom.js`.
 
 ### Bookkeeping for sole traders
 
@@ -283,6 +310,15 @@ All notable changes to this project are documented here. The format follows [Kee
 - Screens Bank, Cash desk and Payments with filters and phone cards, loaded on first use; events payment:record and payment:ekasa for other modules.
 - Synthetic fixtures for every format and profile, unit tests and an end to end test of import, matching and the paid invoice.
 
+#### Added (19 October, acceptance)
+
+- VAT choice on a cash voucher (príjmový and výdavkový pokladničný doklad): the rates valid on the voucher date, reverse charge (AE, § 69 ods. 12 zákona o DPH), an exemption (E) and no VAT, with the legal references from legislation. Offered to a VAT payer only.
+- Reverse charge on a cash voucher requires the partner's valid Slovak IČ DPH; the voucher stores the partner's IČ DPH and IČO, and a contact can be picked to fill them.
+
+#### Fixed (19 October, acceptance)
+
+- Cash vouchers with VAT now reach the Evidencia DPH and the reports built from it: a receipt as a sale (A.1, A.2 or D.2 of the kontrolný výkaz), an expense as a purchase received on its own date (B.3, or B.1 self-assessed for reverse charge). Vouchers that only record the cash payment of an invoice and vouchers without VAT stay out, so nothing is counted twice.
+
 ### Contacts, price list, recurring invoices, reminders and e-mail
 
 #### Added
@@ -337,6 +373,21 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - A test pins that a company that is not a VAT payer gets new lines outside the scope of VAT (category O, no rate) and issues them without VAT.
 
+#### Added (19 October, acceptance)
+
+- Attachments of sales documents in the editor and on the document card: any number of files, at most 10 MB each, kept on the device in the same store as the original files of the Inbox, with the id, name, type and size on the document. A file can be opened and removed; removing one from an issued document asks for a confirmation and writes an entry with the file name to the change log. Adding a file to an issued document is allowed.
+- The e-mail of a document carries its attachments with the PDF (SMTP), or downloads them with the PDF for the mail program; the send window lists them and names the files this device does not have.
+- Unit, screen and end to end tests of the attachment path, and a test that the e-invoice (UBL) is the same whatever the attachments and embeds the PDF only by attachPdfToEInvoice.
+
+#### Changed (19 October, acceptance)
+
+- The change log entries written by the sales screens name the record kind "Document", as the change log recorder does.
+- A copy of a document starts without attachments, so removing a file from the copy never deletes the original's file.
+
+#### Fixed (19 October, acceptance)
+
+- Opening a PDF or an attachment in a new tab no longer downloads it as well: window.open answers null when "noopener" is asked for, which was taken for a blocked tab.
+
 ### Purchases, Inbox and expenses
 
 #### Added
@@ -389,6 +440,37 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Ukrainian texts keep the Slovak names of forms and books in their basic form, never translated or declined: eFaktúra, Kontrolný výkaz, Súhrnný výkaz, Priznanie k DPH, Evidencia DPH, Peňažný denník. 26 existing texts in the parts common, core, desktop and ui (onboarding, overview, settings, help) now use these names, and the sentences are built around the name (an invoice in the eFaktúra format, the Kontrolný výkaz form, the Peňažný denník book). The cash desk book (pokladničná kniha) is still translated as an ordinary Ukrainian term.
 - eFaktúra status labels and network errors in Ukrainian use neutral forms and no longer speak in the first person.
+
+### End-to-end testing and acceptance
+
+### Added
+
+- End-to-end scenarios of the test plan on desktop, iPhone 14 and Pixel 7 with the network mocked: the first minute from the sample data to the PDF of the first invoice, totals with two rates and two discounts equal on the screen, in the PDF and in the UBL, a partial credit note, a proforma with its tax document for the payment and the final invoice, a recurring invoice over three periods, encryption with the recovery key and a password change, two devices syncing through a mocked Google Drive, two companies kept apart, a quick invoice from the FAB on a phone, six interface languages and four print languages, eFaktura with a mocked SAPI-SK provider, a CAMT.053 statement matched to invoices, an eKasa receipt read from its QR code, the KV of a month against its golden XML, a year of the cash book with the closing, and the migration from another invoicing app.
+- End-to-end scenarios for the seams between the packages: an issued invoice moves the stock, lands in the VAT records and, once paid, in the cash book, with the price of the client's price level; bank payments change the statuses and the aging report; a closed VAT period keeps a document out of the editor; the card sends by e-mail and Peppol and starts a recurring invoice; an Inbox invoice reaches the VAT records and the Pohoda export.
+- Accessibility audit with axe of every menu screen in both themes and of the main dialogs, and the main path with the keyboard only.
+- Seeded generator of synthetic companies, contacts, items and documents with valid IČO, DIČ and IBAN (`tests/gen`), performance budgets over 10 000 documents in `npm run test:perf`, and the opening time of the invoice list measured in the browser.
+- `npm run test:coverage` with the V8 provider of Vitest; more unit tests that bring the tax and UBL modules of the core to full line coverage.
+- In-memory Google Drive and Peppol provider for the end-to-end tests (`tests/e2e/support`).
+- Settings, Sync: the account and the state of the sync, with sign in and out, sync now, turning encryption on, unlocking this device and changing the password.
+- The company switch on the More screen of phones.
+- `docs/COVERAGE.md` (feature coverage for the release) and `docs/qa/0.1.0.md` (release checklist).
+- Timing budgets of the end-to-end tests (`*.timing.spec.js`) run in their own Playwright project after all the others, alone, so the load of the machine during the parallel run does not decide them.
+
+### Changed
+
+- The document list builds its rows about three times faster: one collator for the sort, no arithmetic for documents without payments, and the eFaktura rules looked up once per date.
+
+### Fixed
+
+- Turning encryption on never finished: closing the recovery words on the way to the word check counted as a refusal, so nothing was uploaded and no confirmation was shown.
+- A document of a closed VAT period could still be edited and saved, and a draft could be issued into a closed period.
+- Two devices that issued their first document before syncing numbered it in two different series, so the merge kept the same number twice.
+- The sync line of the menu read "Synchronizované" on a device that was not signed in or needed the password.
+- Phones had no way to switch the company.
+- Fields given their own id lost their label (editor dates, payment amount, the company wizard and settings), and the quick sale item box was a list without items when empty.
+- A long receipt id in a title made the review screen wider than a phone and covered the Save button.
+- The eFaktura duty of a document dated before the e-invoicing rules threw an error for every such row of a list.
+- A document without any date left the VAT records without a word; every period now lists it as an error.
 
 ### Interface translations
 

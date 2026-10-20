@@ -21,6 +21,7 @@ import { parsePeriod, periodOf, periodKindOf, periodContains, isPeriodKey } from
 import { documentDirection, partnerOf, partnerCountry, treatmentOf, isSelfAssessed } from './treatment.js';
 import { documentGroups, documentSign, toEur, withoutAdvances, selfAssessedVat, paymentShares, signed } from './amounts.js';
 import { problem } from './problems.js';
+import { isTaxCashVoucher } from './vouchers.js';
 
 const OUT_KINDS = ['INVOICE', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'SELF_BILLING', 'SALES_RECEIPT'];
 const IN_KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'SELF_BILLING'];
@@ -31,7 +32,7 @@ const SKIPPED_STATUSES = ['DRAFT', 'CANCELLED'];
 export function isRecordable(document) {
   if (!document || document.deleted) return false;
   if (SKIPPED_STATUSES.includes(document.status)) return false;
-  return OUT_KINDS.includes(document.kind) || IN_KINDS.includes(document.kind);
+  return OUT_KINDS.includes(document.kind) || IN_KINDS.includes(document.kind) || isTaxCashVoucher(document);
 }
 
 /**
@@ -67,8 +68,9 @@ export function vatRecords(documents, period, company) {
 function collect(document, ctx) {
   const { company } = ctx;
   const direction = documentDirection(document, company);
-  if (direction === 'IN' && !IN_KINDS.includes(document.kind)) return;
-  if (direction === 'OUT' && !OUT_KINDS.includes(document.kind)) return;
+  const voucher = isTaxCashVoucher(document);
+  if (!voucher && direction === 'IN' && !IN_KINDS.includes(document.kind)) return;
+  if (!voucher && direction === 'OUT' && !OUT_KINDS.includes(document.kind)) return;
   const partner = partnerOf(document, direction);
   let groups = documentGroups(document);
   if (direction === 'OUT' && document.kind === 'INVOICE') groups = withoutAdvances(groups, advancesOf(document, ctx.byId));
@@ -123,7 +125,10 @@ function baseEntry(document, direction, partner, ctx) {
     originalDocId: original ? original.id : null,
     originalNumber: original ? original.number || null : null,
     ekasa: document.kind === 'SALES_RECEIPT',
-    simplified: document.kind === 'EXPENSE_RECEIPT',
+    // An expense paid from the cash desk rests on the supplier's receipt or
+    // simplified invoice: B.3 of the kontrolný výkaz, like an expense receipt.
+    simplified: document.kind === 'EXPENSE_RECEIPT' || document.kind === 'CASH_OUT',
+    cashVoucher: isTaxCashVoucher(document),
     paymentId: null
   };
 }
@@ -177,7 +182,8 @@ function placement(document, direction, treatment, ctx) {
     if (!document.taxDate) problems.push(problem('TAX_DATE_MISSING', document, { severity: 'error' }));
     return { inside: inside(date), date, problems };
   }
-  const received = document.receivedDate || null;
+  // An expense voucher is received on the day it is paid.
+  const received = document.receivedDate || (document.kind === 'CASH_OUT' ? document.issueDate || null : null);
   if (!received) problems.push(problem('RECEIVED_DATE_MISSING', document, { severity: 'error' }));
   const date = received || document.issueDate || document.taxDate;
   if (!date) return { inside: false, undated: true, problems };

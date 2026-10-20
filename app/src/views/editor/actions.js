@@ -24,9 +24,10 @@ function patchOf(doc) {
   return patch;
 }
 
-async function audit(store, action, entityId, extra = {}) {
+// entity names the record kind as the change log does (AUDITED_COLLECTIONS).
+export async function audit(store, action, entityId, extra = {}) {
   try {
-    await store.insert('auditLog', { at: new Date().toISOString(), actor: null, device: null, action, entity: 'document', entityId, changes: [], reason: null, ...extra });
+    await store.insert('auditLog', { at: new Date().toISOString(), actor: null, device: null, action, entity: 'Document', entityId, changes: [], reason: null, ...extra });
   } catch (e) {
     console.error(`Audit entry ${action} for ${entityId} could not be written`, e);
   }

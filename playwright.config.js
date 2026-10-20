@@ -20,9 +20,12 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120_000
   },
+  // Timing budgets (*.timing.spec.js) run in their own project after the
+  // others, alone, so the machine's load does not decide the result.
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
-    { name: 'iphone-14', use: { ...devices['iPhone 14'], browserName: 'chromium' } },
-    { name: 'pixel-7', use: { ...devices['Pixel 7'] } }
+    { name: 'desktop', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+    { name: 'iphone-14', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['iPhone 14'], browserName: 'chromium' } },
+    { name: 'pixel-7', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['Pixel 7'] } },
+    { name: 'timing', testMatch: /\.timing\.spec\.js$/, dependencies: ['desktop', 'iphone-14', 'pixel-7'], use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } }
   ]
 });

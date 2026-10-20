@@ -205,6 +205,8 @@ export function duplicateDocument(doc, { today, id = uuidv7(), now = new Date().
     validUntil: copy.kind === 'QUOTE' ? addDays(today, QUOTE_VALID_DAYS) : null,
     seller: null, totals: null, payments: [], links: copy.kind === 'CREDIT_NOTE' || copy.kind === 'DEBIT_NOTE' ? copy.links || [] : [],
     peppol: null, pdfFileId: null, sendLog: [], exportedAt: null, lockedAt: null, deleted: false,
+    // The files belong to the original: a copy sharing their ids would delete them with its own.
+    attachments: [],
     lines: (copy.lines || []).map(l => ({ ...l, id: uuidv7() })), recurringTemplateId: null, recurringPeriodStart: null
   };
 }

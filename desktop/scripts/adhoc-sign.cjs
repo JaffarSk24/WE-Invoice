@@ -6,6 +6,11 @@ const path = require('path');
 
 module.exports = async function adhocSign(context) {
   if (context.electronPlatformName !== 'darwin') return;
+  // A universal build packs x64 and arm64 into "<out>-x64-temp" and
+  // "<out>-arm64-temp" first and merges them; signing the halves makes their
+  // signature files differ and the merge refuses. The hook runs again on the
+  // merged app, which is the one to sign.
+  if (/-temp$/.test(context.appOutDir)) return;
 
   const appName = `${context.packager.appInfo.productFilename}.app`;
   const appPath = path.join(context.appOutDir, appName);

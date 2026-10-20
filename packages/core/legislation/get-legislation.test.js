@@ -72,8 +72,9 @@ describe('validOn', () => {
 describe('unverifiedLegislation', () => {
   it('lists every entry that is not verified, by section, code and date', () => {
     const list = unverifiedLegislation();
-    expect(list).toContain('vatRates/STANDARD/2025-01-01');
-    expect(list).toContain('deadlines/2014-01-01');
+    // Every value was verified on 2026-10-19 (docs/legislation-sources.md);
+    // a new entry starts unverified and shows up here.
+    expect(list.every(e => typeof e === 'string' && e.includes('/'))).toBe(true);
     const total = Object.entries(LEGISLATION.SK).filter(([k, v]) => Array.isArray(v) && !k.startsWith('$')).reduce((n, [, v]) => n + v.length, 0);
     const verified = Object.values(LEGISLATION.SK).filter(Array.isArray).flat().filter(e => e.verified === true).length;
     expect(list.length).toBe(total - verified);

@@ -81,7 +81,7 @@ export function renderBackupPanel(panel, deps = {}) {
       showRestore(await readBackup(text, pass), deps);
     } catch (e) {
       console.error('Backup file refused', e);
-      restoreInfo.append(h('p', { class: 'callout callout-danger', role: 'alert' }, errorText(e, 'errors.BACKUP_DAMAGED'), ' ', t('exim.backup.untouched')));
+      append(restoreInfo, [h('p', { class: 'callout callout-danger', role: 'alert' }, errorText(e, 'errors.BACKUP_DAMAGED'), ' ', t('exim.backup.untouched'))]);
     }
   });
 

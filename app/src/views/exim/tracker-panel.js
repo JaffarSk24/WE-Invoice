@@ -53,7 +53,7 @@ export function renderTrackerPanel(panel, deps = {}) {
         vatRate: standardRate(source.company), label: lineName
       });
     } catch (e) {
-      area.append(h('p', { class: 'callout callout-danger', role: 'alert' }, errorText(e, 'errors.IMPORT_FAILED')));
+      append(area, [h('p', { class: 'callout callout-danger', role: 'alert' }, errorText(e, 'errors.IMPORT_FAILED'))]);
       return;
     }
     const r = state.result;
@@ -93,7 +93,7 @@ export function renderTrackerPanel(panel, deps = {}) {
       state.clientId = clients.length ? clients[0].id : null;
       const select = selectEl(clients.map(c => ({ value: c.id || '', label: `${c.name || c.id || t('exim.tracker.noClient')} (${c.count})` })), state.clientId || '', { id: 'exim-tracker-client' });
       select.addEventListener('change', () => { state.clientId = select.value || null; update(); });
-      clientSelect.replaceChildren(h('label', { for: 'exim-tracker-client' }, t('exim.tracker.client')), select);
+      append(clear(clientSelect), [h('label', { for: 'exim-tracker-client' }, t('exim.tracker.client')), select]);
       update();
     } catch (e) {
       showError(e, 'errors.IMPORT_FAILED');
@@ -104,12 +104,12 @@ export function renderTrackerPanel(panel, deps = {}) {
   const unpaid = h('input', { type: 'checkbox', id: 'exim-tracker-unpaid', checked: true });
   unpaid.addEventListener('change', () => { state.unpaidOnly = unpaid.checked; update(); });
 
-  panel.append(h('section', { class: 'card exim-card' },
+  append(panel, [h('section', { class: 'card exim-card' },
     h('h2', {}, t('exim.tracker.title')),
     h('p', { class: 'muted' }, t('exim.tracker.text')),
     h('div', { class: 'exim-actions' }, choose),
     clientSelect, picker.el,
     h('div', { class: 'field' }, h('label', { for: 'exim-tracker-group' }, t('exim.tracker.groupBy')), groupBy),
     h('label', { for: 'exim-tracker-unpaid', class: 'checkbox-label' }, unpaid, h('span', {}, t('exim.tracker.unpaid'))),
-    area));
+    area)]);
 }

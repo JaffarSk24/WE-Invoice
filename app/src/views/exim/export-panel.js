@@ -2,7 +2,7 @@
 // reads, one ZIP. After the file is saved the documents are marked
 // exported (and locked), so a later change shows as "zmenené po exporte".
 // The WE Budget CSV of the same period sits below.
-import { h, clear } from '../../ui/dom.js';
+import { h, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
@@ -82,8 +82,8 @@ export function renderExportPanel(panel, deps = {}) {
       if (state.mark && source.writable && out.documents.length) await markExported(source.store, out.documents);
       showToast(source.demo ? t('exim.export.doneDemo') : t('exim.export.done', { n: out.documents.length }), { type: 'success' });
       if (out.skipped.length || out.warnings.length) {
-        result.append(h('div', { class: 'callout callout-warning' }, h('p', {}, t('exim.export.notes')),
-          h('ul', {}, [...out.skipped.map(s => `${s.number || s.id} (${t(`exim.format.${s.format}`)}): ${reasonText(s.reason)}`), ...new Set(out.warnings.map(reasonText))].map(x => h('li', {}, x)))));
+        append(result, [h('div', { class: 'callout callout-warning' }, h('p', {}, t('exim.export.notes')),
+          h('ul', {}, [...out.skipped.map(s => `${s.number || s.id} (${t(`exim.format.${s.format}`)}): ${reasonText(s.reason)}`), ...new Set(out.warnings.map(reasonText))].map(x => h('li', {}, x))))]);
       }
     } catch (e) {
       showError(e, 'errors.EXPORT_FAILED');
@@ -108,7 +108,7 @@ export function renderExportPanel(panel, deps = {}) {
     }
   });
 
-  panel.append(
+  append(panel, [
     h('section', { class: 'card exim-card' },
       h('h2', {}, t('exim.export.title')),
       h('p', { class: 'muted' }, t('exim.export.text')),
@@ -118,7 +118,7 @@ export function renderExportPanel(panel, deps = {}) {
     h('section', { class: 'card exim-card' },
       h('h2', {}, t('exim.budget.title')),
       h('p', { class: 'muted' }, t('exim.budget.text')),
-      h('div', { class: 'exim-actions' }, budgetButton)));
+      h('div', { class: 'exim-actions' }, budgetButton))]);
   update();
   refreshIcons(panel);
 }

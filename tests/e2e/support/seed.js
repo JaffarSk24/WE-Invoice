@@ -109,7 +109,8 @@ export async function seed(page, files, { hash = '#/dashboard', prefs = {}, acti
   await putFiles(page, [['workspace', JSON.stringify(workspace)], ...list.map(({ company: co, ...records }) => [`company:${co.id}`, JSON.stringify(companyFile(co, records))])]);
   await page.goto(`./${hash}`);
   await page.reload();
-  await expect(page.locator('#company-switcher option:checked')).toHaveText(workspace.companies.find(c => c.id === workspace.activeCompanyId).name);
+  // Opening 10 000 documents takes a while when every test runs at once.
+  await expect(page.locator('#company-switcher option:checked')).toHaveText(workspace.companies.find(c => c.id === workspace.activeCompanyId).name, { timeout: 30_000 });
 }
 
 /** The stored data file of a company. */

@@ -173,3 +173,12 @@ describe('WE Budget CSV', () => {
     expect(result.skipped).toEqual([{ id: czk.id, number: 'FA2026002', reason: 'CURRENCY' }]);
   });
 });
+
+describe('kind lists written out', () => {
+  it('match the maps and lists they are made of', async () => {
+    const { POHODA_KINDS } = await import('./pohoda.js');
+    const { ACCOUNTING_KINDS, SALES_KINDS, PURCHASE_KINDS } = await import('./period.js');
+    expect(ACCOUNTING_KINDS).toEqual([...SALES_KINDS, ...PURCHASE_KINDS]);
+    expect(new Set(POHODA_KINDS)).toEqual(new Set(['INVOICE', 'SELF_BILLING', 'CREDIT_NOTE', 'DEBIT_NOTE', 'PROFORMA', 'RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'SALES_RECEIPT', 'CASH_IN', 'EXPENSE_RECEIPT', 'CASH_OUT']));
+  });
+});

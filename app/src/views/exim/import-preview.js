@@ -2,7 +2,7 @@
 // column of every field, editable), then what the plan would do: new
 // contacts, items and documents, contacts linked to existing ones, and
 // every skipped record with its reason. Nothing is written here.
-import { h, selectEl } from '../../ui/dom.js';
+import { h, selectEl, append, clear } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { importFields } from './core-bridge.js';
 import { reasonText } from './labels.js';
@@ -20,7 +20,7 @@ export function mappingEditors(tables, onChange) {
     const entity = selectEl(ENTITIES.map(e => ({ value: e, label: t(`exim.entity.${e}`) })), table.entity, { id: `exim-map-${n}-entity`, 'aria-label': t('exim.import.entity') });
     const fields = h('div', { class: 'exim-map-fields' });
     const draw = (current, mapping) => {
-      fields.replaceChildren(...importFields(current).map(field => {
+      append(clear(fields), [...importFields(current).map(field => {
         const id = `exim-map-${n}-${field}`;
         const select = selectEl(columns, mapping[field] !== undefined ? String(mapping[field]) : '', { id });
         select.addEventListener('change', () => {
@@ -29,7 +29,7 @@ export function mappingEditors(tables, onChange) {
           onChange(table.name, { entity: current, mapping: next });
         });
         return h('div', { class: 'exim-map-field' }, h('label', { for: id }, t(`exim.field.${field}`)), select);
-      }));
+      })]);
     };
     entity.addEventListener('change', () => onChange(table.name, { entity: entity.value, mapping: {} }));
     draw(table.entity, table.mapping);

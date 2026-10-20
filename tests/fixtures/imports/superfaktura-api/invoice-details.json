@@ -1,0 +1,21 @@
+{
+  "501": {
+    "Invoice": {"id": "501", "type": "regular", "invoice_no_formatted": "2026001", "created": "2026-09-02 10:00:00", "delivery": "2026-09-01", "due": "2026-09-16", "variable": "2026001", "constant": "0308", "specific": "", "invoice_currency": "EUR", "exchange_rate": "1", "payment_type": "transfer", "order_no": "OBJ-77", "header_comment": "Fakturujeme Vám za september", "comment": "Ďakujeme", "internal_comment": ""},
+    "Client": {"id": "101", "name": "Kaviareň u Moniky, s. r. o.", "ico": "44556677", "dic": "2022000018", "ic_dph": "SK2022000018", "address": "Štúrova 1", "city": "Žilina", "zip": "010 01", "country_iso_id": "SK", "email": "fakturacia@example.sk"},
+    "InvoiceItem": [
+      {"name": "Káva zrnková 1 kg", "description": "", "quantity": "2", "unit": "ks", "unit_price": "18.0000", "tax": "23", "discount": "0", "sku": "KAVA-1KG"},
+      {"name": "Školenie baristov", "description": "Úvodný kurz", "quantity": "1.5", "unit": "hod", "unit_price": "40", "tax": "23", "discount": "10"}
+    ],
+    "InvoicePayment": [{"amount": "110.70", "created": "2026-09-10 08:00:00", "payment_type": "transfer", "currency": "EUR"}]
+  },
+  "502": {
+    "Invoice": {"id": "502", "type": "cancel", "invoice_no_formatted": "D2026001", "created": "2026-09-20", "delivery": "2026-09-20", "due": "2026-10-04", "variable": "2026101", "invoice_currency": "EUR", "payment_type": "transfer"},
+    "Client": {"id": "101", "name": "Kaviareň u Moniky, s. r. o.", "ico": "44556677", "country_iso_id": "SK"},
+    "InvoiceItem": [{"name": "Zľava", "quantity": "1", "unit": "", "unit_price": "-10", "tax": "23"}]
+  },
+  "503": {
+    "Invoice": {"id": "503", "type": "regular", "invoice_no_formatted": "2026002", "created": "2026-09-15", "due": "2026-09-29", "invoice_currency": "CZK", "exchange_rate": "25.120", "payment_type": "cash"},
+    "Client": {"id": "102", "name": "Česká kavárna s.r.o.", "ico": "27082440", "dic": "CZ27082440", "ic_dph": "CZ27082440", "country_iso_id": "CZ"},
+    "InvoiceItem": [{"name": "Mlynček", "quantity": "1", "unit": "ks", "unit_price": "1000", "tax": "0"}]
+  }
+}

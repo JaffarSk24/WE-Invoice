@@ -3,7 +3,7 @@
 // integration and the full backup. Loaded lazily, with its own styles, so
 // none of it weighs on the start of the app.
 import '../../style/exim.css';
-import { h } from '../../ui/dom.js';
+import { h, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { createTabs } from '../../components/tabs.js';
@@ -31,9 +31,9 @@ export function renderExim(root, deps = {}) {
       if (typeof window !== 'undefined' && window.location.hash !== next) window.history.replaceState(null, '', next);
     }
   });
-  root.append(
+  append(root, [
     h('header', { class: 'view-header' }, h('h1', {}, t('exim.title'))),
     h('p', { class: 'muted exim-intro' }, t('exim.intro')),
-    tabs.el);
+    tabs.el]);
   refreshIcons(root);
 }

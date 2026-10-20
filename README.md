@@ -22,7 +22,9 @@
 
 WE Invoice is the third free app of the WE line by [White Eagles](https://whiteeagles.sk/), after [WE Time Tracker](https://github.com/JaffarSk24/WE-Time-Tracker) and [WE Budget](https://github.com/JaffarSk24/WE-Budget). It does what paid Slovak invoicing services charge 5 to 15 € a month for, with no plans, no limits on contacts, documents or companies, and no registration.
 
-> **Status: in active development.** The foundation, the domain core, encryption and sync, the interface shell, PDF and QR payments, the gateway, the desktop app and the website are in place. The document editor, eFaktúra, bank import, VAT reports and bookkeeping are being built now. Nothing is released yet; follow the [releases](https://github.com/JaffarSk24/WE-Invoice/releases).
+> **Status: the first version is being prepared for release.** Every feature of the first version is built and covered by unit and end-to-end tests on desktop and phone screens; the tax reports validate against the official schemas and are being checked by an accountant. Nothing is released yet; follow the [releases](https://github.com/JaffarSk24/WE-Invoice/releases).
+
+Slovenská verzia: [README.sk.md](README.sk.md).
 
 ## Why WE Invoice
 
@@ -112,7 +114,7 @@ Full details are in the [privacy policy](https://jaffarsk24.github.io/WE-Invoice
 ### Windows (10 or newer, 64-bit)
 
 1. Download `WE-Invoice-<version>-win-x64.exe` and run it. It installs for the current user only, without administrator rights, with shortcuts on the desktop and in the Start menu.
-2. The installer is not signed with a paid certificate, so SmartScreen shows "Windows protected your PC". Click "More info", then "Run anyway". Updates installed by the app itself do not show this screen.
+2. The installer is not signed with a paid certificate, so SmartScreen shows "Windows protected your PC". Click "More info", then "Run anyway". Updates installed by the app itself do not show this screen. Windows 11 with Smart App Control turned on does not run unsigned apps at all, so WE Invoice cannot be installed there until the installer is signed.
 
 Data of the desktop app lives in `we-invoice-data` inside the user's application data folder (`~/Library/Application Support` on macOS, `%APPDATA%` on Windows), with a daily local backup of the last 14 days in `backups/`.
 

@@ -18,7 +18,7 @@ import { missingCallout } from './missing.js';
 
 /** True when a draft holds anything worth storing. */
 export function hasContent(draft) {
-  if (draft.contactId || (draft.buyer && draft.buyer.name)) return true;
+  if (draft.contactId || (draft.buyer && draft.buyer.name) || (draft.attachments || []).length) return true;
   return (draft.lines || []).some(l => (l.name && l.name.trim()) || (l.unitPrice && Number(l.unitPrice) !== 0));
 }
 

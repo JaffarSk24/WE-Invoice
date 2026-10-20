@@ -15,6 +15,8 @@ export default {
   "mail.dialog.opened": "Почтовая программа должна открыться, а PDF уже скачан. Не забудьте его приложить.",
   "mail.dialog.openAgain": "Открыть письмо снова",
   "mail.dialog.attachment": "Вложение: документ в PDF",
+  "mail.dialog.extraAttachments": "Другие вложения: {names}",
+  "mail.dialog.missingAttachments": "Этих вложений нет на этом устройстве, они не будут отправлены: {names}",
   "mail.dialog.send": "Отправить",
   "mail.dialog.openClient": "Открыть в почтовой программе",
   "mail.error.recipients": "Проверьте адреса получателей: {list}",
