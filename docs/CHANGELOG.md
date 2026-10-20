@@ -55,6 +55,18 @@ All notable changes to this project are documented here. The format follows [Kee
 - `views/purchase/file-store.js` keeps `putFile`, `getFile` and `deleteFile` as they were and gains `localFiles` and `setRemoteFiles`: the sync registers itself at start, so the editor, the Inbox, the preview and the e-mail need no change to read files from Drive.
 - The Slovak sync texts say "Google Drive" instead of "Google Disk", as the glossary keeps the name.
 
+#### Added (20 October)
+
+- `removedAttachments` on a document (contract change of the Document schema): the attachments removed from an issued or received document, with id, name, type, size, the time and the reason of the removal. The screens do not list them; the change log still records the removal.
+- Retention rules of attachment files in Google Drive (`app/src/sync/attachments/retention.js`), with the archive period from the legislation value `archiveYears` (§ 76 zákona o DPH): an attachment removed from a draft, and the file of a deleted Inbox record that is not a document yet, leave Drive and the devices as before; an attachment removed from an issued or received document stays in Drive as an archived reference; a document in the recycle bin keeps its files, which may go only when it is removed for good and it was a draft or its archive period is over.
+- The sync records the last day each known file must be kept, so a file of an archived document that disappears from the data stays in Drive until its archive period ends. A device that never saw a reference still removes nothing.
+
+#### Changed (20 October)
+
+- Removing an attachment from an issued or received document moves it to `removedAttachments` and keeps the file on the device and in Drive; removing it from a draft still drops the file.
+- Deleting a received document from the purchase screens keeps its files (the document can be restored from the bin); deleting an Inbox record that is not a document yet still drops its file. Received eFaktúry waiting in the Inbox count as received documents.
+- A copy of a document starts without `removedAttachments`, as it starts without attachments.
+
 ### Interface shell and components
 
 #### Added
@@ -135,6 +147,16 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Fixed (20 October)
 
 - Confirming and unsubscribing from the waiting list redirect to the site pages in the language of the sign-up (`/<lang>/thanks.html`, `/<lang>/unsubscribed.html`); the old `/waitlist/...` pages never existed.
+
+#### Added (20 October)
+
+- Gateway route GET /v1/proxy/superfaktura/{market}/{path} for the SuperFaktúra import in the web app: markets sk, cz and at map to the fixed API hosts (the same table as SF_MARKETS in packages/core, checked by a test), the path is limited to the characters of the API paths and cannot leave the host, X-Upstream-Authorization is sent upstream as Authorization, the answer is streamed with Cache-Control: no-store, redirects are followed only on the same host, and 60 requests a minute per IP. Other methods answer 405 METHOD_NOT_ALLOWED. The credential, path, query and bodies never reach the logs or the counters.
+- The route in gateway/openapi.yaml and its tests (proxied GET with a mocked upstream, unknown market, path traversal, refused writes, log masking, no-store, CORS, private address refusal).
+- Privacy policy in all six languages: the SuperFaktúra API key passes through the gateway in the web version only for the duration of a read request and is never logged, cached or stored; the desktop app calls the API directly.
+
+#### Changed (20 October)
+
+- The path guard of the Peppol proxy is shared with the new route and also refuses mixed plain and encoded dot segments and an encoded backslash.
 
 ### Desktop app
 
