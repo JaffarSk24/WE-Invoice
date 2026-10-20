@@ -14,18 +14,22 @@ export default defineConfig({
     trace: 'retain-on-failure',
     locale: 'sk-SK'
   },
+  // The e2e build (dist-e2e) is the web build with a light key derivation,
+  // so the encryption scenarios test the flow, not the CPU; it is never
+  // published.
   webServer: {
-    command: `npm run build:web && npx vite preview --config app/vite.config.js --mode web --port ${PORT} --strictPort`,
+    command: `npx vite build --config app/vite.config.js --mode e2e && npx vite preview --config app/vite.config.js --mode e2e --port ${PORT} --strictPort`,
     port: PORT,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000
   },
   // Timing budgets (*.timing.spec.js) run in their own project after the
-  // others, alone, so the machine's load does not decide the result.
+  // others, one at a time (workers: 1), so the machine's load does not
+  // decide the result.
   projects: [
     { name: 'desktop', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'iphone-14', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['iPhone 14'], browserName: 'chromium' } },
     { name: 'pixel-7', testIgnore: /\.timing\.spec\.js$/, use: { ...devices['Pixel 7'] } },
-    { name: 'timing', testMatch: /\.timing\.spec\.js$/, dependencies: ['desktop', 'iphone-14', 'pixel-7'], use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } }
+    { name: 'timing', testMatch: /\.timing\.spec\.js$/, dependencies: ['desktop', 'iphone-14', 'pixel-7'], workers: 1, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } }
   ]
 });

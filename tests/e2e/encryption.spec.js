@@ -43,6 +43,19 @@ test('encryption: on, sign out, password, new password, recovery key', async ({ 
   await check.getByRole('button', { name: 'Potvrdiť' }).click();
   await expect(a.page.locator('.toast', { hasText: 'Šifrovanie je zapnuté' })).toBeVisible({ timeout: 15_000 });
 
+  // The e2e build derives the keys with few PBKDF2 rounds (app/vite.config.js,
+  // mode e2e); the header records them, as it would 600 000 in a real build.
+  const header = await a.page.evaluate(() => new Promise((resolve, reject) => {
+    const req = indexedDB.open('we-invoice', 1);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => {
+      const get = req.result.transaction('files').objectStore('files').get('workspace');
+      get.onsuccess = () => { resolve(JSON.parse(get.result).keys); req.result.close(); };
+      get.onerror = () => reject(get.error);
+    };
+  }));
+  expect(header).toMatchObject({ kdf: 'PBKDF2-SHA256', iterations: 1000 });
+
   const stored = drive.contents();
   expect(stored.some(f => f.path.endsWith('.enc'))).toBe(true);
   expect(stored.filter(f => /Biela Orlica|Beta Obchod|FA20260001/.test(f.text)).map(f => f.path)).toEqual([]);
