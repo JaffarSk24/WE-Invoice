@@ -29,15 +29,15 @@ English version: [README.md](README.md).
 
 ## Funkcie
 
-- **Faktúry a ďalšie doklady:** faktúry, zálohové faktúry, daňové doklady k prijatej platbe, dobropisy a ťarchopisy, cenové ponuky, objednávky, dodacie listy a predajky s prevodmi medzi nimi.
+- **Faktúry a ďalšie doklady:** faktúry, zálohové faktúry, daňové doklady k prijatej platbe, dobropisy a ťarchopisy, cenové ponuky, objednávky, dodacie listy a predajky s prevodmi medzi nimi a s prílohami.
 - **PDF a QR platby:** štyri šablóny s vaším logom, pečiatkou a podpisom, tlač po slovensky, česky, anglicky, nemecky alebo dvojjazyčne, PAY by square na každej faktúre.
 - **Klienti a ceny:** klienti z obchodného registra podľa IČO, kontrola VIES a spoľahlivosti platiteľa DPH, cenník s cenovými hladinami, pravidelné faktúry a upomienky odoslané v správny deň.
 - **Banka a pokladňa:** import výpisov slovenských a českých bánk (CSV, CAMT.053, MT940, ABO/GPC) s automatickým párovaním, príkazy SEPA, pokladničná kniha a zápočet.
 - **Nákup:** prijaté faktúry a výdavky z PDF, QR kódov, fotiek (OCR priamo v zariadení) a bločkov eKasa.
-- **eFaktúra (beta):** odosielanie a prijímanie cez certifikovaného poskytovateľa vo formáte Peppol BIS 3.0 so slovenskými pravidlami.
+- **eFaktúra (beta):** odosielanie a prijímanie cez certifikovaného poskytovateľa vo formáte Peppol BIS 3.0 so slovenskými pravidlami, prílohy dokladu idú priamo v eFaktúre.
 - **DPH a účtovníctvo:** Evidencia DPH, Kontrolný výkaz, Súhrnný výkaz a Priznanie k DPH ako XML podľa oficiálnych schém, jednoduché účtovníctvo živnostníka s majetkom, odpismi a uzávierkou.
 - **Sklad a prehľady:** sklady a pohyby z dokladov, prehľady predaja a cash-flow, vekové členenie pohľadávok, vyhľadávanie, kôš a denník zmien.
-- **Pre účtovníka:** export pre Pohodu, Money S3, Omegu, ISDOC a XLSX v jednom ZIP, migrácia z iných fakturačných aplikácií, úplná záloha s heslom.
+- **Pre účtovníka:** export pre Pohodu, Money S3, Omegu, ISDOC a XLSX v jednom ZIP, migrácia z iných fakturačných aplikácií (aj SuperFaktúra cez API a objednávky zo Shoptetu), úplná záloha s heslom.
 - **Všade:** aplikácia pre macOS a Windows s ikonou v lište a automatickými aktualizáciami a webová aplikácia, ktorú si nainštalujete do iPhonu aj Androidu a ktorá funguje offline. Rozhranie po slovensky, česky, anglicky, nemecky, rusky a ukrajinsky.
 
 ## Inštalácia

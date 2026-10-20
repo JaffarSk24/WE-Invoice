@@ -39,24 +39,24 @@ Slovenská verzia: [README.sk.md](README.sk.md).
 | Area | What you get | State |
 |---|---|---|
 | **Start** | "My company" wizard with lookup by IČO in the business register, VAT and bookkeeping modes, bank account with IBAN check, sample data to try everything | Ready |
-| **Documents** | Invoices, proforma invoices, tax documents for received payments, credit and debit notes, quotes, orders, delivery notes, cash receipts; conversions between them with links | Ready |
+| **Documents** | Invoices, proforma invoices, tax documents for received payments, credit and debit notes, quotes, orders, delivery notes, cash receipts; conversions between them with links; file attachments | Ready |
 | **Totals** | Totals by EN 16931: several VAT rates, line and document discounts at the same time, reverse charge, exemptions, foreign currency, advance deduction, cash rounding to 0.05 € | Ready |
 | **Numbering** | Several series per document kind, masks such as `FA{YYYY}{N:4}`, yearly or monthly reset, variable symbol from the number, duplicate numbers resolved after sync | Ready |
 | **PDF** | Four templates (Classic, Modern, Minimal, Compact), your logo, stamp and signature, print in Slovak, Czech, English, German or two languages at once, PDF/A-3 with the e-invoice inside | Ready |
 | **QR payments** | PAY by square on every invoice, QR Platba for Czech koruna accounts | Ready |
-| **eFaktúra (Peppol)** | Sending and receiving through your own certified provider: one universal SAPI-SK adapter plus native adapters, full import of received invoices with all lines, validated against the Peppol and EN 16931 Schematron in CI | Beta |
+| **eFaktúra (Peppol)** | Sending and receiving through your own certified provider: one universal SAPI-SK adapter plus native adapters, document attachments travel inside the e-invoice, full import of received invoices with all lines, validated against the Peppol and EN 16931 Schematron in CI | Beta |
 | **Payments** | Payment state, partial payments, late payment interest by law and the 40 € flat recovery cost | Ready |
 | **Bank** | Statement import (CSV of Slovak banks, CAMT.053, MT940, ABO/GPC), smart matching by VS, IBAN, amount and message, SEPA payment orders, cash book and set-off | Ready |
 | **Reminders** | Three reminder levels with their own texts, reminders before the due date, sent even when the app is closed (desktop tray) | Ready |
 | **Purchases** | Received invoices and expenses, Inbox with QR, PDF text and local OCR recognition, eKasa receipts by QR | Ready |
 | **VAT** | VAT records, control statement (KV), EC sales list (SV) and VAT return as XML for the Financial Administration, period closing | Ready, being checked by an accountant |
 | **Bookkeeping** | Jednoduché účtovníctvo for sole traders: cash journal, books, fixed assets and depreciation, year-end closing; flat-rate expenses | Ready, being checked by an accountant |
-| **Accountant** | Exports for Pohoda, Money S3, Omega, ISDOC, UBL, XLSX and a ZIP for the accountant; migration from iDoklad, SuperFaktúra and KROS; full backup with a password | Ready |
+| **Accountant** | Exports for Pohoda, Money S3, Omega, ISDOC, UBL, XLSX and a ZIP for the accountant; migration from iDoklad, SuperFaktúra (files or API), KROS and Shoptet orders, old .xls files; full backup with a password | Ready |
 | **Contacts** | Clients by IČO from the business register, VIES and VAT payer reliability lights, print language and terms per client, history and balance | Ready |
 | **Recurring** | Recurring invoices issued or drafted on their day and sent by e-mail; SMTP on the desktop, mailto on the web | Ready |
-| **Stock** | Warehouses, receipts and issues from documents, average cost or FIFO, price levels for clients, quick sale with the data for the VRP cash register | Ready |
+| **Stock** | Warehouses, receipts and issues from documents, average cost or FIFO, price levels for clients, quick sale with the data for the VRP cash register (a reverse-charge sale becomes a full invoice) | Ready |
 | **Reports** | Sales, receivables and payables by age, cash flow forecast, profitability; global search, recycle bin and change log | Ready |
-| **Sync** | End-to-end encryption with a password and a 24-word recovery key, Google Drive sync between devices, several companies | Ready |
+| **Sync** | End-to-end encryption with a password and a 24-word recovery key, Google Drive sync between devices, attachment files included and kept for the 10-year archive period, several companies | Ready |
 | **Platforms** | Web app that installs on iPhone and Android (PWA, works offline), desktop app for macOS (Intel and Apple silicon) and Windows with a tray icon | Ready |
 | **Languages** | Interface in Slovak, Czech, English, German, Russian and Ukrainian, chosen per device; documents print in their own language (Slovak by default, the client's language when set on their card) | Ready |
 
