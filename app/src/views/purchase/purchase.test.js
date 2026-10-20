@@ -144,11 +144,19 @@ describe('confirming, paying and deleting', () => {
     expect(receivedStatus({ ...saved, status: 'BOOKED' }, today)).toBe('BOOKED');
   });
 
-  it('deletes the document and its file', async () => {
+  it('deletes a received document to the bin and keeps its file for the archive', async () => {
     const saved = await confirmed();
     await deleteDocument(store, saved);
     expect(store.get('documents', saved.id)).toBeNull();
-    expect(await getFile(saved.attachments[0].id)).toBeNull();
+    expect(await getFile(saved.attachments[0].id)).not.toBeNull();
+  });
+
+  it('deletes an Inbox record that is not a document yet together with its file', async () => {
+    const { doc } = await intakeFile(fileOf('skica.pdf', 'x'), { store, today, lineName: 'Nákup', readFile: textReader(read('text/sk-invoice-simple.txt')) });
+    expect(doc.status).toBe('TO_PROCESS');
+    await deleteDocument(store, doc);
+    expect(store.get('documents', doc.id)).toBeNull();
+    expect(await getFile(doc.attachments[0].id)).toBeNull();
   });
 
   it('inserts a document typed in by hand', async () => {

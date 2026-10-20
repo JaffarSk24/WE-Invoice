@@ -4,10 +4,15 @@
 // the document holds its id, name, type and size (schema attachments), so
 // the data file stays small. Adding is allowed on any document; removing
 // one from an issued document needs a confirmation (the screen asks) and
-// leaves an entry in the change log with the file name.
+// leaves an entry in the change log with the file name. The file of an
+// attachment removed from an issued or received document stays in the
+// archive (removedAttachments, sync/attachments/retention.js): the screens
+// no longer show it, its file stays in Google Drive. Only a draft's file
+// is dropped.
 import { uuidv7, CoreError } from '@we-invoice/core';
 import { putFile, getFile, deleteFile } from '../purchase/file-store.js';
 import { audit } from './actions.js';
+import { archivesFiles, removedAttachmentEntry } from '../../sync/attachments/retention.js';
 
 export const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024;
 const NAME_MAX = 500;
@@ -58,17 +63,23 @@ export async function addAttachments(store, docId, files, deps) {
 }
 
 /**
- * Removes an attachment from a document in the store and drops its file.
- * An issued document gets a change log entry naming the file.
+ * Removes an attachment from a document in the store. A draft's file is
+ * dropped; an issued or received document keeps it in its archive of
+ * removed attachments. An issued document gets a change log entry naming
+ * the file.
  */
-export async function removeAttachment(store, docId, attachmentId, { remove = deleteFile } = {}) {
+export async function removeAttachment(store, docId, attachmentId, { remove = deleteFile, now = () => new Date().toISOString() } = {}) {
   const doc = store.get('documents', docId);
   const record = (doc.attachments || []).find(a => a.id === attachmentId);
   if (!record) return null;
-  await store.update('documents', docId, { attachments: (doc.attachments || []).filter(a => a.id !== attachmentId) });
+  const patch = { attachments: (doc.attachments || []).filter(a => a.id !== attachmentId) };
+  const archived = archivesFiles(doc);
+  if (archived) patch.removedAttachments = [...(doc.removedAttachments || []), removedAttachmentEntry(record, now())];
+  await store.update('documents', docId, patch);
   if (removalNeedsConfirmation(doc)) {
     await audit(store, 'UPDATE', docId, { changes: [{ field: 'attachments', from: record.name, to: null }], reason: 'attachment removed' });
   }
+  if (archived) return record;
   // A file another document still lists (a copy made elsewhere) stays.
   const shared = store.list('documents').some(d => d.id !== docId && (d.attachments || []).some(a => a.id === attachmentId));
   if (shared) return record;

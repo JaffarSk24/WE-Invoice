@@ -12,6 +12,10 @@ import { memoryKeyring } from '../keyring.js';
 import { Vault } from '../vault.js';
 import { memoryFiles, attachmentsFolder, attachmentPath } from './files.js';
 import { encodePayload } from './codec.js';
+import { removeAttachment } from '../../views/editor/attachments.js';
+import { purgeRecord } from '../../views/reports/trash-store.js';
+
+const ISSUED = { status: 'ISSUED', number: 'FA20260001', issueDate: '2026-10-01' };
 
 const PASSWORD = 'correct horse battery';
 let tick = 0;
@@ -142,13 +146,17 @@ describe('attachment files in Drive', () => {
     expect(b.files.state(id)).toBe('notUploaded');
   });
 
-  it('removes the file when its document is deleted (tombstone), on the next sync that may write', async () => {
+  it('a draft in the bin keeps its files; removed for good, they leave Drive and the other device', async () => {
     const { drive, a, b, companyId } = await pair();
     const { id, doc } = await attach(b, pdf('draft'));
     await b.engine.flush();
     await a.engine.sync('startup');
-    expect(drive.paths()).toContain(attachmentPath(companyId, id));
     await a.store.remove('documents', doc.id);
+    await a.engine.flush();
+    expect(drive.paths()).toContain(attachmentPath(companyId, id));
+    await b.engine.sync('startup');
+    expect(await b.local.get(id)).not.toBeNull();
+    await purgeRecord(a.store, 'documents', doc.id);
     // A pull-only pass keeps the file, the next writing one removes it.
     await a.engine.sync('interval');
     expect(drive.paths()).toContain(attachmentPath(companyId, id));
@@ -156,6 +164,63 @@ describe('attachment files in Drive', () => {
     expect(drive.paths()).not.toContain(attachmentPath(companyId, id));
     await b.engine.sync('startup');
     expect(await b.local.get(id)).toBeNull();
+  });
+
+  it('an issued document keeps the file of a removed attachment as an archived reference', async () => {
+    const { drive, a, b, companyId } = await pair();
+    const { id, doc } = await attach(a, pdf('contract'), ISSUED);
+    await a.engine.flush();
+    await b.engine.sync('startup');
+    await b.files.fetch(id);
+    await removeAttachment(a.store, doc.id, id, { remove: (x) => a.local.delete(x), now: () => '2026-10-20T10:00:00.000Z' });
+    const stored = a.store.get('documents', doc.id);
+    expect(stored.attachments).toEqual([]);
+    expect(stored.removedAttachments).toEqual([{ id, name: 'Zmluva o dielo.pdf', mime: 'application/pdf', size: pdf('contract').bytes.length, removedAt: '2026-10-20T10:00:00.000Z', reason: 'REMOVED_BY_USER' }]);
+    expect(a.store.list('auditLog').find(e => e.reason === 'attachment removed').changes).toEqual([{ field: 'attachments', from: 'Zmluva o dielo.pdf', to: null }]);
+    await a.engine.flush();
+    expect(drive.paths()).toContain(attachmentPath(companyId, id));
+    expect(await a.local.get(id)).not.toBeNull();
+    await b.engine.sync('startup');
+    expect(b.store.get('documents', doc.id).attachments).toEqual([]);
+    expect(b.store.get('documents', doc.id).removedAttachments).toHaveLength(1);
+    expect(await b.local.get(id)).not.toBeNull();
+    expect(b.files.state(id)).toBe('synced');
+    // Still a live reference: a device that has it locally but not yet in Drive uploads it.
+    expect(a.files.pendingCount()).toBe(0);
+  });
+
+  it('an issued document in the bin keeps its files, even without its record, until the archive period ends', async () => {
+    const { drive, a, companyId } = await pair();
+    const { id, doc } = await attach(a, pdf('archive'), ISSUED);
+    await a.engine.flush();
+    await a.store.remove('documents', doc.id);
+    await a.engine.flush();
+    expect(drive.paths()).toContain(attachmentPath(companyId, id));
+    // The app never removes an issued document for good; should its record
+    // vanish anyway, the day recorded at the last pass still protects it.
+    const records = a.store.list('documents', { includeDeleted: true });
+    const bare = { id: doc.id, createdAt: doc.createdAt, updatedAt: now(), deleted: true, purgedAt: now(), kind: 'INVOICE', status: 'ISSUED', currency: 'EUR', lines: [] };
+    await a.store.commit('documents', { data: { ...a.store.data, documents: records.map(r => (r.id === doc.id ? bare : r)) }, record: bare });
+    await a.engine.flush();
+    expect(drive.paths()).toContain(attachmentPath(companyId, id));
+    a.files.today = () => '2036-10-01';
+    await a.engine.flush();
+    expect(drive.paths()).toContain(attachmentPath(companyId, id));
+    a.files.today = () => '2036-10-02';
+    await a.engine.flush();
+    expect(drive.paths()).not.toContain(attachmentPath(companyId, id));
+  });
+
+  it('a deleted Inbox record drops its file, a received eFaktura in the Inbox keeps it', async () => {
+    const { drive, a, companyId } = await pair();
+    const scan = await attach(a, pdf('scan'), { kind: 'RECEIVED_INVOICE', status: 'TO_PROCESS' });
+    const einvoice = await attach(a, pdf('ubl'), { kind: 'RECEIVED_INVOICE', status: 'TO_PROCESS', receivedDate: '2026-10-19', peppol: { direction: 'IN', status: 'RECEIVED' } });
+    await a.engine.flush();
+    await a.store.remove('documents', scan.doc.id);
+    await a.store.remove('documents', einvoice.doc.id);
+    await a.engine.flush();
+    expect(drive.paths()).not.toContain(attachmentPath(companyId, scan.id));
+    expect(drive.paths()).toContain(attachmentPath(companyId, einvoice.id));
   });
 
   it('never removes a file it did not know, and keeps a file another document still lists', async () => {
