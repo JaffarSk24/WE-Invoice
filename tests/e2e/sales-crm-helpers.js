@@ -1,7 +1,8 @@
-// Shared steps of the WP-CRM end-to-end tests: a company set up through
-// the wizard with the register mocked, so the store holds a real company
+// Shared steps of the WP-CRM end-to-end tests: a company as the wizard
+// makes it, with the register mocked, so the store holds a real company
 // to write contacts, documents and templates to.
 import { expect } from '@playwright/test';
+import { seed, company } from './support/seed.js';
 
 export const COMPANY = {
   name: 'Alfa Stavby, s. r. o.', ico: '12345679', dic: '2020000004', icDph: 'SK2020000004', legalForm: 'SRO', legalFormText: 'Spoločnosť s ručením obmedzeným',
@@ -28,28 +29,28 @@ export async function mockGateway(page) {
   await page.route('**/v1/peppol/lookup/**', route => route.fulfill(json({ registered: true, documentTypes: [], checkedAt: new Date().toISOString() })));
 }
 
-const next = (page) => page.locator('#ob-next').click();
+// The company the "My company" wizard makes from the register lookup above
+// (onboarding/state.js draftToCompany: VAT payer from the IČ DPH, invoicing
+// only, the IBAN typed in), written straight into the device store. The
+// wizard itself is tested in onboarding.spec.js; here it would only cost
+// twenty seconds of every phone test.
+export function wizardCompany() {
+  return company({
+    id: 'e2e-wizard-company', name: COMPANY.name, legalForm: 'SRO', taxpayerType: 'PO', ico: COMPANY.ico, dic: COMPANY.dic, icDph: COMPANY.icDph,
+    vatMode: 'PAYER', vatPeriod: 'MONTH', accountingMode: 'NONE', registerEntry: COMPANY.registerEntry, address: { ...COMPANY.address }, email: null,
+    bankAccounts: [{ id: 'e2e-wizard-company-bank-1', name: '', iban: 'SK3112000000198742637541', bic: null, currency: 'EUR', isDefault: true }],
+    defaults: {
+      dueDays: 14, currency: 'EUR', language: 'sk', secondLanguage: null, template: 'CLASSIC', brandColor: null,
+      texts: { intro: null, outro: null, footer: null }, paymentMethod: 'TRANSFER', roundingCash: false,
+      pdfFileMask: '{number}', showMadeWith: true, attachPdfToEInvoice: true
+    }
+  });
+}
 
-// Runs the "My company" wizard to its end.
+// A company in the store, as after the wizard, with the gateway mocked.
 export async function setUpCompany(page) {
   await mockGateway(page);
-  await page.goto('./#/onboarding');
-  await next(page);
-  await page.locator('label.radio-card', { hasText: 'Vyskúšať bez prihlásenia' }).click();
-  await next(page);
-  await page.fill('#ob-ico', COMPANY.ico);
-  await page.locator('#ob-lookup').click();
-  await expect(page.locator('#ob-name')).toHaveValue(COMPANY.name);
-  await next(page);
-  await next(page);
-  await next(page);
-  await page.fill('#ob-iban', 'SK31 1200 0000 1987 4263 7541');
-  await page.locator('#ob-iban').blur();
-  await next(page);
-  await next(page);
-  await next(page);
-  await page.locator('#ob-first-invoice').click();
-  await expect(page.locator('#company-switcher option:checked')).toHaveText(COMPANY.name);
+  await seed(page, { company: wizardCompany() }, { hash: '#/invoices' });
 }
 
 // Adds the client from the register through the contacts screen.

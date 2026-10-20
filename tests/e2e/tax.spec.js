@@ -3,7 +3,7 @@
 // the súhrnný výkaz and the VAT return, without serious accessibility
 // issues.
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { seriousIssues, auditTimeout } from './support/axe.js';
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -40,12 +40,12 @@ test('the súhrnný výkaz and the VAT return open', async ({ page }) => {
 });
 
 test('tax screens have no serious or critical axe issues', async ({ page }) => {
-  for (const hash of ['#/vat-records', '#/kv', '#/sv', '#/vat-return']) {
+  const screens = ['#/vat-records', '#/kv', '#/sv', '#/vat-return'];
+  test.setTimeout(auditTimeout(screens.length));
+  for (const hash of screens) {
     await page.goto(`./${hash}`);
     await expect(page.locator('.tax-body')).toBeVisible();
-    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-    const bad = result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
-      .map(v => `${hash} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
+    const bad = await seriousIssues(page, hash);
     expect(bad).toEqual([]);
   }
 });

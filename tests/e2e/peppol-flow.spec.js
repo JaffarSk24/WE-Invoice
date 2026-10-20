@@ -38,11 +38,11 @@ test('connect a provider, send, see a refusal and receive an e-invoice', async (
   // eFaktúra is a closed beta: without the invite the card says so.
   const send = async (doc) => {
     await a.page.goto(`./#/invoices/${doc.id}`);
-    // The card redraws when a background round finishes; open the menu again then.
-    await expect(async () => {
-      if (!(await a.page.locator('#detail-peppol').isVisible())) await a.page.locator('.more-actions > summary').click();
-      await a.page.locator('#detail-peppol').click({ timeout: 2000 });
-    }).toPass({ timeout: 15_000 });
+    await expect(a.page.locator('main h1')).toContainText(doc.number);
+    // The card redraws (and closes its "More" menu) whenever a background
+    // Peppol round ends, so the button is pressed once, by its own click
+    // event, instead of racing the redraw; seams-card.spec.js opens the menu.
+    await a.page.locator('#detail-peppol').dispatchEvent('click');
   };
   await send(first);
   await expect(a.page.locator('.toast', { hasText: 'eFaktúry sú v bete.' })).toBeVisible({ timeout: 20_000 });

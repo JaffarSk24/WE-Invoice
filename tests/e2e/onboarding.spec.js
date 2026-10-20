@@ -1,8 +1,8 @@
 // The "My company" wizard end to end with the gateway mocked: register
 // lookup fills the form, the company lands in the store and survives a
 // reload, the wizard can be left and resumed, a lookup
-// failure allows manual entry, demo mode fills the dashboard. The whole
-// path to "Issue the first invoice" stays well under 60 seconds.
+// failure allows manual entry, demo mode fills the dashboard. The 60 second
+// budget of the first invoice is measured alone in first-run.timing.spec.js.
 import { test, expect } from '@playwright/test';
 
 const LOOKUP = {
@@ -19,8 +19,9 @@ async function mockGateway(page, status = 200, body = LOOKUP) {
 
 const next = (page) => page.locator('#ob-next').click();
 
-test('register lookup to the first invoice in under 60 seconds', async ({ page }) => {
-  const started = Date.now();
+test('register lookup to the first invoice', async ({ page }) => {
+  // The whole wizard takes about twenty seconds on the emulated phones.
+  test.setTimeout(90_000);
   await mockGateway(page);
   await page.goto('./');
   await page.locator('.empty-state .btn-brand').click();
@@ -48,7 +49,6 @@ test('register lookup to the first invoice in under 60 seconds', async ({ page }
   await page.locator('#ob-first-invoice').click();
   await expect(page).toHaveURL(/#\/invoices/);
   await expect(page.locator('#company-switcher option:checked')).toHaveText('Alfa Stavby, s. r. o.');
-  expect(Date.now() - started).toBeLessThan(60_000);
   // The company lives in the store (synced to Drive), not only on the device.
   await expect.poll(() => page.evaluate(() => localStorage.getItem('we-invoice-local-company'))).toBe(null);
   await page.reload();

@@ -2,7 +2,9 @@
 // from the menu to a new invoice, the client picked from the suggestions,
 // a line typed in, the invoice issued and its PDF downloaded, without a
 // mouse. Every step moves the focus with Tab and acts with Enter or the
-// arrows, and the focused element is always visible.
+// arrows, and the focused element is always visible. Like a person who
+// knows the page, the test takes the "skip to content" link before tabbing
+// into a screen, instead of walking through the whole menu each time.
 import { test, expect } from '@playwright/test';
 import { seed, company, contact, live, offline } from './support/seed.js';
 
@@ -20,6 +22,15 @@ async function tabTo(page, selector, max = 120) {
   throw new Error(`${selector} was not reached with Tab`);
 }
 
+// From the top of the page: the first Tab reaches the skip link, Enter puts
+// the focus on the main content.
+async function skipToContent(page) {
+  await page.locator('body').focus();
+  await tabTo(page, '.skip-link', 3);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main#main')).toBeFocused();
+}
+
 test('new invoice, issue and PDF with the keyboard only', async ({ page, isMobile }) => {
   test.skip(isMobile, 'a keyboard path of the desktop');
   test.setTimeout(90_000);
@@ -32,6 +43,7 @@ test('new invoice, issue and PDF with the keyboard only', async ({ page, isMobil
   await page.keyboard.press('Enter');
   await expect(page.locator('#editor-issue')).toBeVisible();
 
+  await skipToContent(page);
   await tabTo(page, '#editor-contact');
   await page.keyboard.type('Beta');
   await expect(page.locator('.editor-party .ac-item').first()).toBeVisible();
@@ -53,6 +65,7 @@ test('new invoice, issue and PDF with the keyboard only', async ({ page, isMobil
   await page.keyboard.press('Enter');
   await expect(page.locator('main h1')).toHaveText(/Faktúra FA\d{8}/);
 
+  await skipToContent(page);
   await tabTo(page, '#detail-pdf');
   const [download] = await Promise.all([page.waitForEvent('download'), page.keyboard.press('Enter')]);
   expect(download.suggestedFilename()).toMatch(/\.pdf$/);
