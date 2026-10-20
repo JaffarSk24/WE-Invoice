@@ -65,7 +65,7 @@
   <main id="main">
     <article class="doc">
       <h1>Datenschutz</h1>
-      <p class="meta">Web- und Desktop-App WE Invoice und diese Website. Gültig ab 19. Oktober 2026.</p>
+      <p class="meta">Web- und Desktop-App WE Invoice und diese Website. Gültig ab 20. Oktober 2026.</p>
       <p>WE Invoice wird von White Eagles &amp; Co. s. r. o. (im Folgenden „wir“) entwickelt. Dieses Dokument erklärt, welche Daten die App und die Website verarbeiten, wo sie gespeichert sind und wie Sie sie löschen. Wir schreiben es so, dass Sie es lesen und nicht überspringen.</p>
       <section>
         <h2>Kurz gesagt</h2>
@@ -91,8 +91,10 @@
           <li>Öffentliche Firmenregister (Slowakei, Tschechien) und die Prüfung der USt-IdNr. im VIES-System: Abfragen nach Firmen-ID (IČO) oder USt-IdNr.</li>
           <li>Prüfung eines eKasa-Belegs anhand seines QR-Codes.</li>
           <li>Wechselkurse der Europäischen Zentralbank.</li>
+          <li>Import aus SuperFaktúra in der Web-Version: Leseanfragen nach Ihren Kunden, Ihrer Preisliste und Ihren Rechnungen laufen über das Gateway zur API von SuperFaktúra und zurück. Sie werden weder gespeichert noch gelesen noch analysiert.</li>
         </ul>
         <p><strong>API-Schlüssel und Tokens des E-Rechnungs-Providers.</strong> Die Provider nehmen keine Anfragen direkt aus dem Browser an (CORS-Beschränkung), deshalb läuft in der Web-Version auch Ihr API-Schlüssel oder Token des Providers (SAPI-SK wie auch native Schnittstellen) über das Gateway. Das Gateway reicht ihn nur für die Dauer der jeweiligen Anfrage an den Provider weiter: Es schreibt ihn nicht ins Protokoll, cacht ihn nicht und speichert ihn nicht. Dasselbe gilt für die Inhalte der Dokumente: Sie werden weder gespeichert noch protokolliert.</p>
+        <p><strong>Ihr SuperFaktúra-API-Schlüssel beim Import.</strong> Auch SuperFaktúra nimmt keine Anfragen direkt aus dem Browser an, deshalb läuft in der Web-Version auch Ihr Zugang zu deren API (E-Mail, API-Schlüssel und Firmen-ID) über das Gateway. Das Gateway reicht ihn nur für die Dauer der jeweiligen Anfrage an SuperFaktúra weiter, und es laufen nur Leseanfragen durch: Es schreibt den Schlüssel nicht ins Protokoll, speichert ihn nicht zwischen und bewahrt ihn nicht auf, ebenso wenig die importierten Daten. In der Desktop-Version ruft die App die API von SuperFaktúra direkt von Ihrem Computer aus auf.</p>
         <p><strong>Die Desktop-Version geht direkt.</strong> Die App für macOS und Windows kommuniziert mit dem E-Rechnungs-Provider direkt von Ihrem Computer aus, umgeht das Gateway, und der Schlüssel verlässt Ihr Gerät nie. Wenn Sie das Höchstmaß an Privatsphäre wollen, empfehlen wir die Desktop-Version.</p>
         <p>Das Gateway führt ein technisches Protokoll (Zeit, IP-Adresse, aufgerufener Dienst, Ergebnis) zum Schutz vor Missbrauch und zur Fehlerbehebung. Das Protokoll enthält keine Schlüssel, Tokens oder Dokumentinhalte. Die Einträge werden spätestens nach 30 Tagen gelöscht.</p>
       </section>

@@ -4,7 +4,7 @@
     "description": "Jaké údaje WE Invoice zpracovává, kde jsou uložené, co prochází přes naši bránu bez ukládání a jaká máte práva podle GDPR."
   },
   "h1": "Ochrana osobních údajů",
-  "effective": "Webová a desktopová aplikace WE Invoice a tato stránka. Platné od 19. října 2026.",
+  "effective": "Webová a desktopová aplikace WE Invoice a tato stránka. Platné od 20. října 2026.",
   "intro": "WE Invoice vyvíjí White Eagles & Co. s. r. o. (dále „my“). Tento dokument vysvětluje, jaké údaje aplikace a stránka zpracovávají, kde jsou uložené a jak je odstranit. Píšeme ho tak, abyste ho přečetli, ne přeskočili.",
   "sections": [
     {
@@ -35,9 +35,11 @@
           "Poskytovatelé eFaktur (Peppol): odesílané a přijímané faktury v XML procházejí přes bránu k vašemu poskytovateli a zpět. Neukládají se, nečtou se a neanalyzují se.",
           "Veřejné rejstříky firem (Slovensko, Česko) a ověření IČ DPH (v Česku DIČ) v systému VIES: dotazy podle IČO nebo IČ DPH.",
           "Ověření dokladu eKasa podle jeho QR kódu.",
-          "Kurzovní lístek Evropské centrální banky."
+          "Kurzovní lístek Evropské centrální banky.",
+          "Import ze SuperFaktury ve webové verzi: požadavky na čtení vašich klientů, ceníku a faktur procházejí přes bránu k API SuperFaktury a zpět. Neukládají se, nečtou se a neanalyzují se."
         ] },
         { "p": "**API klíče a tokeny poskytovatele eFaktur.** Poskytovatelé nepřijímají požadavky přímo z prohlížeče (omezení CORS), proto ve webové verzi prochází přes bránu i váš API klíč nebo token poskytovatele (SAPI-SK i nativní rozhraní). Brána ho předá poskytovateli pouze na dobu dané požadavky: nezapisuje ho do záznamů, nekešuje ho a neukládá. Totéž platí pro těla dokumentů: neukládají se ani nelogují." },
+        { "p": "**API klíč SuperFaktury při importu.** SuperFaktura také nepřijímá požadavky přímo z prohlížeče, proto ve webové verzi prochází přes bránu i přístup k jejímu API (e-mail, API klíč a ID firmy). Brána ho předá SuperFaktuře pouze na dobu dané požadavky a přes bránu jdou jen požadavky na čtení: klíč nezapisuje do záznamů, nekešuje ho a neukládá a neukládá ani importovaná data. V desktopové verzi aplikace volá API SuperFaktury přímo z vašeho počítače." },
         { "p": "**Desktopová verze jde přímo.** Aplikace pro macOS a Windows komunikuje s poskytovatelem eFaktur přímo z vašeho počítače, bránu obchází a klíč z vašeho zařízení nikdy neodejde. Pokud chcete nejvyšší míru soukromí, doporučujeme desktopovou verzi." },
         { "p": "Brána vede technický záznam (čas, IP adresa, volaná služba, výsledek) na ochranu před zneužitím a pro řešení poruch. Záznam neobsahuje klíče, tokeny ani obsah dokumentů. Záznamy se mažou nejpozději po 30 dnech." }
       ]

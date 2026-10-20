@@ -4,7 +4,7 @@
     "description": "What data WE Invoice processes, where it is stored, what passes through our gateway without being stored, and your rights under the GDPR."
   },
   "h1": "Privacy policy",
-  "effective": "The WE Invoice web and desktop app and this website. Effective from 19 October 2026.",
+  "effective": "The WE Invoice web and desktop app and this website. Effective from 20 October 2026.",
   "intro": "WE Invoice is developed by White Eagles & Co. s. r. o. (“we”). This document explains what data the app and the website process, where it is stored and how to delete it. We wrote it to be read, not skipped.",
   "sections": [
     {
@@ -35,9 +35,11 @@
           "E-invoicing providers (Peppol): sent and received invoices in XML pass through the gateway to your provider and back. They are not stored, read or analysed.",
           "Public business registers (Slovakia, Czech Republic) and VAT number checks in VIES: lookups by company ID or VAT number.",
           "Verification of an eKasa receipt by its QR code.",
-          "The European Central Bank's exchange rates."
+          "The European Central Bank's exchange rates.",
+          "Import from SuperFaktúra in the web version: read requests for your clients, price list and invoices pass through the gateway to the SuperFaktúra API and back. They are not stored, read or analysed."
         ] },
         { "p": "**API keys and tokens of your e-invoicing provider.** Providers do not accept requests straight from a browser (a CORS restriction), so in the web version your provider API key or token (SAPI-SK as well as native interfaces) also passes through the gateway. The gateway hands it to the provider only for the duration of that one request: it is never logged, cached or stored. The same applies to document bodies: they are neither stored nor logged." },
+        { "p": "**Your SuperFaktúra API key during an import.** SuperFaktúra does not accept requests straight from a browser either, so in the web version your access to its API (e-mail, API key and company ID) also passes through the gateway. The gateway hands it to SuperFaktúra only for the duration of that one request, and only read requests pass: the key is never logged, cached or stored, and neither is the imported data. In the desktop version the app calls the SuperFaktúra API directly from your computer." },
         { "p": "**The desktop version goes direct.** The app for macOS and Windows talks to your e-invoicing provider directly from your computer, bypasses the gateway, and your key never leaves your device. If you want the highest level of privacy, we recommend the desktop version." },
         { "p": "The gateway keeps a technical log (time, IP address, service called, result) to protect against abuse and to troubleshoot faults. The log contains no keys, tokens or document content. Logs are deleted after 30 days at the latest." }
       ]
