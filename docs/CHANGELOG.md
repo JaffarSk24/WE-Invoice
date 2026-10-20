@@ -226,6 +226,16 @@ All notable changes to this project are documented here. The format follows [Kee
 - A price with VAT on a line without VAT (reverse charge, exemption) becomes the price without VAT at the item's own rate.
 - The VRP2 summary (`vrpSummary`) names the VAT category of each line and of each VAT summary row, so reverse charge, exemptions and the zero rate are no longer all shown as 0 %. It also gives the legal texts from legislation, the buyer's IČ DPH and a note on how to enter reverse-charge items in VRP2.
 
+#### Added (20 October)
+
+- `quickSaleKind` in the core: the document a quick sale becomes, a sales receipt or a full invoice.
+
+#### Changed (20 October)
+
+- A quick sale with a reverse-charge line (AE, § 69 ods. 12 zákona o DPH) or a supply to another member state (K) is now issued as a full invoice instead of a sales receipt. A sales receipt is a simplified invoice (§ 74 ods. 3): the Financial Administration states that the domestic reverse charge does not apply when a simplified invoice (an eKasa receipt) is issued, and that a simplified invoice cannot be issued for a supply exempt under § 43. The invoice is paid on the spot, numbered in the invoice series of the sales screens and carries the buyer's name, address and IČ DPH and the text "prenesenie daňovej povinnosti" from legislation.
+- The buyer fields of the quick sale ask for the address too, filled from the contact when one is picked; `checkSalesReceiptBuyer` refuses a buyer without a street or city (`SALES_RECEIPT_BUYER_ADDRESS`) and takes the country from the VAT number when none is given.
+- The VRP2 summary of a sale issued as an invoice (`vrpSummary` entry `INVOICE_PAYMENT`) says to record the payment of that invoice in VRP2 instead of the items; the separate reverse-charge note is gone.
+
 ### Export, import, migration and backup
 
 #### Added
@@ -252,6 +262,11 @@ All notable changes to this project are documented here. The format follows [Kee
 - The export, import and backup dictionaries are split into two files per language.
 - Two kind lists of the export modules are written out instead of spread, so the export code no longer loads with the start of the app.
 - The screen builds its DOM only through the helpers of `ui/dom.js`.
+
+#### Added (20 October)
+
+- An imported document with a standard-rated line at a rate that is not a Slovak rate in force on its date (from the legislation data) is imported as it is, and a VAT payer gets a warning in the import report: possibly OSS or a mistake, to check by hand.
+- The Shoptet import lists every column or XML field it does not read, every row without an order code and every order item without a name in the import report, so nothing in the file is dropped without a word.
 
 ### Bookkeeping for sole traders
 
@@ -493,6 +508,17 @@ All notable changes to this project are documented here. The format follows [Kee
 - eFaktúra status labels and network errors in Ukrainian use neutral forms and no longer speak in the first person.
 
 ### End-to-end testing and acceptance
+
+#### End-to-end testing and acceptance (WP-QA), follow-up (20 October)
+
+#### Fixed (20 October)
+
+- A received e-invoice whose XML referred to a character that XML does not allow (such as `&#0;` or a lone surrogate) was read anyway, and the character then reached the exports for the accountant and made their XML invalid; such a document is now refused as invalid XML.
+
+#### Changed (20 October)
+
+- The reports and the stock valuation meet their budgets over 10 000 documents and moves: the aging, sales, profitability and cash flow reports keep their sums as exact decimal numbers until the end and read only the amounts they need, rounding skips amounts that are already written with the wanted places, and the FIFO valuation keeps the stock on hand as a running total instead of adding up every layer after each move. Every result is the same as before.
+- The feature coverage counts the Shoptet order import as done.
 
 ### Added
 
