@@ -15,8 +15,8 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-05T10:00:00+02:00'));
   await offline(page);
   await seed(page, { company: company(), contacts: [contact()], documents: [SEPTEMBER] }, { hash: CARD });
-  await expect(page.locator('main h1')).toHaveText('Faktúra FA20260009');
   await cardSettled(page, 'FA20260009');
+  await expect(page.locator('main h1')).toHaveText('Faktúra FA20260009');
 });
 
 async function more(page, selector) {
