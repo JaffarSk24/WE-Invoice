@@ -2,28 +2,27 @@
 // finds no serious or critical issue on any screen of the menu with a real
 // company and its documents, nor in the main dialogs: the editor, the card
 // of a document, the payment, the statement import, the company wizard.
+// The menu screens are audited one menu group per test, so each test stays
+// short and the groups spread over the workers.
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
-import { ALL_ROUTES } from '../../app/src/views/shell/nav.js';
+import { NAV } from '../../app/src/views/shell/nav.js';
 import { seed, company, contact, invoice, offline } from './support/seed.js';
-
-test.describe.configure({ timeout: 180_000 });
+import { seriousIssues as serious, auditTimeout } from './support/axe.js';
 
 const DOC = invoice();
 
-async function serious(page, name) {
-  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-  return result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
-    .map(v => `${name} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
-}
+// The routes of the menu by group, the phone's More screen with the last.
+const GROUPS = NAV.map((g, i) => ({ name: g.title ? g.title.replace('nav.group.', '') : `group-${i + 1}`, routes: g.items.map(item => item.route) }));
+GROUPS[GROUPS.length - 1].routes.push('more');
 
-for (const theme of ['light', 'dark']) {
-  test(`every menu screen with a real company (${theme})`, async ({ page, isMobile }) => {
+for (const theme of ['light', 'dark']) for (const group of GROUPS) {
+  test(`menu screens of ${group.name} with a real company (${theme})`, async ({ page, isMobile }) => {
     test.skip(isMobile, 'the screens are checked once, on the desktop; the phone layout below');
+    test.setTimeout(auditTimeout(group.routes.length));
     await offline(page);
     await seed(page, { company: company(), contacts: [contact()], documents: [DOC] }, { prefs: { theme } });
     const bad = [];
-    for (const route of ALL_ROUTES) {
+    for (const route of group.routes) {
       await page.goto(`./#/${route}`);
       await expect(page.locator('main#main h1').first()).toBeVisible();
       await page.waitForTimeout(400);
@@ -34,6 +33,7 @@ for (const theme of ['light', 'dark']) {
 }
 
 test('the main dialogs', async ({ page }) => {
+  test.setTimeout(auditTimeout(8));
   await offline(page);
   await seed(page, { company: company(), contacts: [contact()], documents: [DOC] }, { hash: '#/invoices/new?contact=e2e-contact-1' });
   const bad = [];

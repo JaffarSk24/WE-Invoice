@@ -56,7 +56,8 @@ const browserGlobals = {
   __APP_VERSION__: 'readonly',
   __WEB_BUILD__: 'readonly',
   __GATEWAY_URL__: 'readonly',
-  __GOOGLE_CLIENT_ID__: 'readonly'
+  __GOOGLE_CLIENT_ID__: 'readonly',
+  __KDF_ITERATIONS__: 'readonly'
 };
 
 const nodeGlobals = {
@@ -121,7 +122,7 @@ export default [
     rules: commonRules
   },
   {
-    ignores: ['dist/**', 'dist-web/**', 'release/**', 'release.nosync/**', '**/node_modules/**', '**/*.nosync/**', 'coverage/**',
+    ignores: ['dist/**', 'dist-web/**', 'dist-e2e/**', 'release/**', 'release.nosync/**', '**/node_modules/**', '**/*.nosync/**', 'coverage/**',
       'test-results/**', 'playwright-report/**', 'private/**', 'docs/tz/**']
   }
 ];

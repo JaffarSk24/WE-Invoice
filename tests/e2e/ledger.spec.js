@@ -3,7 +3,7 @@
 // register explains itself when empty, the closing shows both statements,
 // and axe finds no serious issue on them.
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { seriousIssues, auditTimeout } from './support/axe.js';
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -38,12 +38,12 @@ test('asset register and year closing', async ({ page }) => {
 
 test('no serious or critical axe issues on the bookkeeping screens', async ({ page, isMobile }) => {
   test.skip(isMobile, 'checked once on the desktop');
-  for (const hash of ['#/cash-journal', '#/assets', '#/closing']) {
+  const screens = ['#/cash-journal', '#/assets', '#/closing'];
+  test.setTimeout(auditTimeout(screens.length));
+  for (const hash of screens) {
     await page.goto(`./${hash}`);
     await expect(page.locator('main#main h1').first()).toBeVisible();
-    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-    const bad = result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
-      .map(v => `${hash} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
+    const bad = await seriousIssues(page, hash);
     expect(bad).toEqual([]);
   }
 });

@@ -7,6 +7,7 @@
 import { test, expect } from '@playwright/test';
 import { FakeDrive, newDevice, turnOnEncryption, unlockWith, syncNow } from './support/fake-drive.js';
 import { seed, company, contact, invoice, live } from './support/seed.js';
+import { cardSettled } from './support/card.js';
 
 test.describe.configure({ timeout: 150_000 });
 
@@ -40,6 +41,7 @@ async function shared(browser, testInfo, drive, doc) {
   await turnOnEncryption(a.page, PASSWORD, expect);
 
   await a.page.goto(`./#/invoices/${doc.id}`);
+  await cardSettled(a.page, doc.number);
   const panelA = a.page.locator('main .attachment-list').locator('..');
   await panelA.locator('input[type="file"]').setInputFiles([{ name: 'foto zmluvy.png', mimeType: 'image/png', buffer: PNG }]);
   const rowA = a.page.locator('main .attachment-row', { hasText: 'foto zmluvy.png' });
@@ -59,6 +61,7 @@ async function shared(browser, testInfo, drive, doc) {
   await unlockWith(b.page, PASSWORD, expect);
   await expect(b.page.locator('#company-switcher option:checked')).toHaveText('Biela Orlica s.r.o.', { timeout: 15_000 });
   await b.page.goto(`./#/invoices/${doc.id}`);
+  await cardSettled(b.page, doc.number);
   const rowB = b.page.locator('main .attachment-row', { hasText: 'foto zmluvy.png' });
   await expect(rowB.locator('.attachment-state')).toHaveText('V Google Drive');
   expect(await deviceFiles(b.page)).toEqual([]);
@@ -80,6 +83,7 @@ test('an attachment of a draft goes to Drive, opens on the other device and leav
 
   // A draft asks nothing: the attachment goes, and its file with it.
   await a.page.goto(`./#/invoices/${DRAFT.id}`);
+  await cardSettled(a.page, DRAFT.number);
   await a.page.locator('main .attachment-row', { hasText: 'foto zmluvy.png' }).locator('.attachment-remove').click();
   await expect(a.page.locator('main .attachment-name')).toHaveCount(0);
   await syncNow(a.page, drive, expect);
@@ -98,6 +102,7 @@ test('an attachment removed from an issued invoice leaves the screens but its fi
   const { a, b, stored } = await shared(browser, testInfo, drive, DOC);
 
   await a.page.goto(`./#/invoices/${DOC.id}`);
+  await cardSettled(a.page, DOC.number);
   await a.page.locator('main .attachment-row', { hasText: 'foto zmluvy.png' }).locator('.attachment-remove').click();
   await expect(a.page.locator('.modal-content')).toContainText('foto zmluvy.png');
   await a.page.locator('.modal-content .btn-danger').click();

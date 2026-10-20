@@ -80,6 +80,9 @@ async function importStatement(page) {
 
 test('import a CSV statement, match it and the invoice is paid', async ({ page }) => {
   await page.goto('./');
+  // Wait until the app has started: its first run writes an empty workspace,
+  // which would otherwise land over the seed.
+  await expect(page.locator('main#main h1')).toBeVisible();
   const { workspace, data } = seed();
   await putFiles(page, [['workspace', JSON.stringify(workspace)], [`company:${COMPANY_ID}`, JSON.stringify(data)]]);
   await page.goto('./#/bank');

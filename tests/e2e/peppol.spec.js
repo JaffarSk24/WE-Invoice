@@ -1,10 +1,13 @@
 // The eFaktúra wizard end to end with the gateway and the provider mocked:
-// a company from the "My company" wizard opens Settings > eFaktúra, picks
+// a company as the "My company" wizard makes it opens Settings > eFaktúra, picks
 // Verteco, tests the connection through the gateway proxy, checks the
 // Peppol registration, and the two e-invoice screens open. Without Google
 // Drive the key cannot be kept (secrets are sealed with the Drive data
 // key), which the wizard says.
 import { test, expect } from '@playwright/test';
+import { seed } from './support/seed.js';
+import { seriousIssues, auditTimeout } from './support/axe.js';
+import { wizardCompany } from './sales-crm-helpers.js';
 
 const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'GET, POST, OPTIONS' };
 const LOOKUP = {
@@ -34,24 +37,10 @@ async function mockGateway(page, seen) {
   });
 }
 
+// The company as the "My company" wizard makes it (that wizard has its own
+// tests), straight in the device store.
 async function createCompany(page) {
-  const next = () => page.locator('#ob-next').click();
-  await page.goto('./#/onboarding');
-  await next();
-  await page.locator('label.radio-card', { hasText: 'Vyskúšať bez prihlásenia' }).click();
-  await next();
-  await page.fill('#ob-ico', '12345679');
-  await page.locator('#ob-lookup').click();
-  await expect(page.locator('#ob-name')).toHaveValue('Alfa Stavby, s. r. o.');
-  await next();
-  await next();
-  await next();
-  await page.fill('#ob-iban', 'SK31 1200 0000 1987 4263 7541');
-  await page.locator('#ob-iban').blur();
-  await next();
-  await next();
-  await next();
-  await page.locator('#ob-first-invoice').click();
+  await seed(page, { company: wizardCompany() }, { hash: '#/invoices' });
   await expect(page.locator('#company-switcher option:checked')).toHaveText('Alfa Stavby, s. r. o.');
 }
 
@@ -88,15 +77,14 @@ test('the eFaktúra wizard connects a provider through the gateway', async ({ pa
 });
 
 test('the e-invoice screens have no serious axe issues and stay read-only in demo mode', async ({ page }) => {
-  const AxeBuilder = (await import('@axe-core/playwright')).default;
   await page.addInitScript(() => localStorage.setItem('we-invoice-prefs', JSON.stringify({ theme: 'dark', demo: true, onboardingDone: true })));
-  for (const hash of ['#/settings/peppol', '#/efaktury-out', '#/efaktury-in']) {
+  const screens = ['#/settings/peppol', '#/efaktury-out', '#/efaktury-in'];
+  test.setTimeout(auditTimeout(screens.length));
+  for (const hash of screens) {
     await page.goto(`./${hash}`);
     await expect(page.locator('main#main h1, main#main h2').first()).toBeVisible();
     await expect(page.locator('.peppol-step, .peppol-list').first()).toBeVisible();
-    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-    const bad = result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
-      .map(v => `${hash} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
+    const bad = await seriousIssues(page, hash);
     expect(bad).toEqual([]);
   }
   await page.locator('[data-action="receive-now"]').click();

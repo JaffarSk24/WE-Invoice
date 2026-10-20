@@ -3,7 +3,7 @@
 // preview ("Vybrať"), confirmed and listed among received invoices; a
 // PDF with an embedded Factur-X XML needs no confirmation notice.
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { seriousIssues, auditTimeout } from './support/axe.js';
 import { fileURLToPath } from 'node:url';
 
 const pdf = (name) => fileURLToPath(new URL(`../fixtures/inbox/pdf/${name}.pdf`, import.meta.url));
@@ -113,11 +113,9 @@ test('a photo of a receipt is read by OCR on the device', async ({ page }) => {
 });
 
 for (const theme of ['light', 'dark']) test(`the purchase screens have no serious accessibility issues (${theme})`, async ({ page }) => {
+  test.setTimeout(auditTimeout(3));
   await seedCompany(page, theme);
-  const axe = async (name) => {
-    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-    return result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical').map(v => `${name} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
-  };
+  const axe = (name) => seriousIssues(page, name);
   const bad = [...await axe('inbox')];
   await page.locator('.inbox-drop input[type="file"][multiple]').setInputFiles(pdf('sk-invoice-multirate'));
   await expect(page).toHaveURL(/#\/inbox\/[^/]+$/, { timeout: 20_000 });

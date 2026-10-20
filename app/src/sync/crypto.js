@@ -13,8 +13,11 @@
 // damaged file are both detected (and told apart by keys.js).
 
 // OWASP's figure for PBKDF2-SHA256. Raising it later needs no new format:
-// the count is stored in the header next to the salt.
-export const ITERATIONS = 600000;
+// the count is stored in the header next to the salt. Only the build for
+// the end-to-end tests (vite mode "e2e", built to dist-e2e and never
+// published) lowers it through __KDF_ITERATIONS__, so a test does not wait
+// on key derivation; every other build and the unit tests keep 600 000.
+export const ITERATIONS = typeof __KDF_ITERATIONS__ !== 'undefined' && __KDF_ITERATIONS__ ? __KDF_ITERATIONS__ : 600000;
 export const MIN_PASSWORD = 8;
 export const KDF = 'PBKDF2-SHA256';
 

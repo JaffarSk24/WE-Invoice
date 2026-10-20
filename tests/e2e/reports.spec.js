@@ -2,7 +2,7 @@
 // reports, search, recycle bin and change log screens have no serious or
 // critical axe issue (WCAG 2.1 AA) in either theme.
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { seriousIssues, auditTimeout } from './support/axe.js';
 
 const SCREENS = ['#/reports', '#/search?q=a', '#/trash', '#/audit'];
 
@@ -24,15 +24,14 @@ test('the reports draw every tab from the sample data', async ({ page }) => {
 
 for (const theme of ['dark', 'light']) {
   test(`reports screens have no serious or critical axe issues (${theme})`, async ({ page }) => {
+    test.setTimeout(auditTimeout(SCREENS.length));
     await page.addInitScript((t) => {
       localStorage.setItem('we-invoice-prefs', JSON.stringify({ theme: t, demo: true, onboardingDone: true }));
     }, theme);
     for (const hash of SCREENS) {
       await page.goto(`./${hash}`);
       await expect(page.locator('main#main h1').first()).toBeVisible();
-      const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-      const bad = result.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
-        .map(v => `${hash} ${v.id}: ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(', ')}`);
+      const bad = await seriousIssues(page, hash);
       expect(bad).toEqual([]);
     }
   });
