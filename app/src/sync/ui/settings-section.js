@@ -29,6 +29,11 @@ export function syncActions(state) {
   return actions;
 }
 
+// Attachment files of the open company still waiting for their upload.
+function pendingFiles(engine) {
+  return engine.files && engine.signedIn ? engine.files.pendingCount() : 0;
+}
+
 export function createSyncSection({ engine, transport }) {
   return function syncSection(container) {
     const body = h('div', { class: 'sync-settings' });
@@ -56,6 +61,7 @@ export function createSyncSection({ engine, transport }) {
         h('p', { class: 'sync-settings-status', id: 'settings-sync-status' }, t(syncTextKey(normalizeSyncStatus(state).status))),
         state.email ? h('p', { class: 'muted' }, t('sync.signedInAs', { email: state.email })) : null,
         state.lastSyncAt ? h('p', { class: 'muted small' }, t('sync.lastSync', { time: formatDateTime(state.lastSyncAt) })) : null,
+        pendingFiles(engine) ? h('p', { class: 'muted small', id: 'settings-sync-files' }, t('sync.attachments.pending', { n: pendingFiles(engine) })) : null,
         h('p', { class: 'muted' }, t('sync.signIn.text')),
         h('div', { class: 'exim-actions' }, syncActions(state).map(a => button(`settings-sync-${a}`, labels[a], handlers[a], a === 'signIn' || a === 'sync')))
       ]);
@@ -65,6 +71,10 @@ export function createSyncSection({ engine, transport }) {
     container.append(body);
     const off = on('sync:status', () => {
       if (!body.isConnected) { off(); return; }
+      draw();
+    });
+    const offFiles = on('attachments:status', () => {
+      if (!body.isConnected) { offFiles(); return; }
       draw();
     });
   };

@@ -17,6 +17,8 @@ import { createSyncSection } from '../sync/ui/settings-section.js';
 import { registerSettingsSection } from '../views/settings/registry.js';
 import '../style/update-banner.css';
 import { topBanner } from '../ui/top-banners.js';
+import { localFiles, setRemoteFiles } from '../views/purchase/file-store.js';
+import { setAttachmentFiles } from '../sync/attachments/registry.js';
 
 const DISMISSED = 'we-invoice-signin-dismissed';
 
@@ -44,8 +46,13 @@ export async function boot(ctx) {
   }
   const vault = new Vault(deviceKeyring(transport));
   if (transport.secrets && typeof transport.secrets.useKey === 'function') transport.secrets.useKey(() => vault.key);
-  const engine = new SyncEngine({ store, transport, vault, emit, readme: t('sync.drive.readme') });
+  const engine = new SyncEngine({ store, transport, vault, emit, readme: t('sync.drive.readme'), localFiles });
   setEngine(engine);
+  // Attachment files: a file this device lacks is taken from Drive when it
+  // is read through the file store (purchase/file-store.js).
+  setAttachmentFiles(engine.files);
+  setRemoteFiles({ fetch: (id) => engine.files.fetch(id), added: (id) => engine.files.added(id), removed: (id) => engine.files.removed(id) });
+  engine.files.refreshLocal();
   registerSettingsSection('sync', createSyncSection({ engine, transport }));
 
   // A banner that stays while sync cannot run, as in WE Budget.

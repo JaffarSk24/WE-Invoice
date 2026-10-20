@@ -92,5 +92,15 @@ export default {
   "sync.banner.lockedTitle": "Данные заблокированы.",
   "sync.banner.lockedText": "Данные на Google Drive зашифрованы. Введите пароль или ключ восстановления, и синхронизация продолжится.",
   "sync.banner.unlock": "Разблокировать",
-  "sync.banner.later": "Позже"
+  "sync.banner.later": "Позже",
+  "sync.attachments.state.pending": "Ожидает выгрузки в Google Drive",
+  "sync.attachments.state.remote": "В Google Drive",
+  "sync.attachments.state.downloading": "Загружается из Google Drive",
+  "sync.attachments.state.notUploaded": "Ещё не в Google Drive",
+  "sync.attachments.state.offline": "Google Drive недоступен",
+  "sync.attachments.missing.notUploaded": "Файла вложения {name} ещё нет в Google Drive. Устройство, на котором его добавили, выгрузит его при следующей синхронизации.",
+  "sync.attachments.missing.offline": "Файл вложения {name} есть в Google Drive, но сейчас его не удаётся загрузить. Проверьте подключение и вход через Google.",
+  "sync.attachments.preview.notUploaded": "Файла ещё нет в Google Drive. Устройство, которое его приняло, выгрузит его при следующей синхронизации.",
+  "sync.attachments.preview.offline": "Файл есть в Google Drive, но сейчас его не удаётся загрузить. Проверьте подключение и вход через Google.",
+  "sync.attachments.pending": "{n, plural, one {# файл вложений ожидает} few {# файла вложений ожидают} many {# файлов вложений ожидают} other {# файла вложений ожидают}} выгрузки в Google Drive."
 };

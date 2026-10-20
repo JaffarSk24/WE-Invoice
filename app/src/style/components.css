@@ -63,3 +63,12 @@
 .sync-words li { padding: 2px 0; }
 .sync-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
 @media (max-width: 480px) { .sync-words { grid-template-columns: repeat(2, 1fr); } }
+
+/* Where the file of an attachment is (WP-SYNC, sync/ui/attachment-badge.js). */
+.attachment-state { display: inline-flex; align-items: center; gap: 4px; color: var(--text-muted); }
+.attachment-state svg { width: 14px; height: 14px; }
+.attachment-state[data-state="pending"], .attachment-state[data-state="notUploaded"] { color: var(--warning); }
+.attachment-state[data-state="offline"] { color: var(--danger); }
+.attachment-state[data-state="downloading"] svg { animation: attachment-spin 1s linear infinite; }
+@keyframes attachment-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .attachment-state[data-state="downloading"] svg { animation: none; } }

@@ -92,5 +92,15 @@ export default {
   "sync.banner.lockedTitle": "Дані заблоковано.",
   "sync.banner.lockedText": "Дані на Google Drive зашифровано. Введіть пароль або ключ відновлення, і синхронізація продовжиться.",
   "sync.banner.unlock": "Розблокувати",
-  "sync.banner.later": "Пізніше"
+  "sync.banner.later": "Пізніше",
+  "sync.attachments.state.pending": "Очікує вивантаження в Google Drive",
+  "sync.attachments.state.remote": "У Google Drive",
+  "sync.attachments.state.downloading": "Завантажується з Google Drive",
+  "sync.attachments.state.notUploaded": "Ще не в Google Drive",
+  "sync.attachments.state.offline": "Google Drive недоступний",
+  "sync.attachments.missing.notUploaded": "Файлу вкладення {name} ще немає в Google Drive. Пристрій, на якому його додали, вивантажить його під час наступної синхронізації.",
+  "sync.attachments.missing.offline": "Файл вкладення {name} є в Google Drive, але зараз його не вдається завантажити. Перевірте з'єднання та вхід через Google.",
+  "sync.attachments.preview.notUploaded": "Файлу ще немає в Google Drive. Пристрій, який його прийняв, вивантажить його під час наступної синхронізації.",
+  "sync.attachments.preview.offline": "Файл є в Google Drive, але зараз його не вдається завантажити. Перевірте з'єднання та вхід через Google.",
+  "sync.attachments.pending": "{n, plural, one {# файл вкладень очікує} few {# файли вкладень очікують} many {# файлів вкладень очікують} other {# файлу вкладень очікують}} вивантаження в Google Drive."
 };

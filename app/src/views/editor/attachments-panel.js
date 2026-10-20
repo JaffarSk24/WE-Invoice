@@ -1,7 +1,8 @@
 // The attachments of a document on screen, the same in the editor and on
 // the card: the list with name and size, opening a file, removing one
 // (confirmed and logged once the document is issued) and adding files
-// with a file picker that takes several at once. The caller passes the
+// with a file picker that takes several at once; each file says where it
+// is (on this device, in Google Drive, on its way). The caller passes the
 // document and what to do; this module only draws and asks.
 import { h, icon, append } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
@@ -10,6 +11,8 @@ import { confirmDialog } from '../../ui/modal.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { openBlob } from '../documents/pdf-frame.js';
 import { MAX_ATTACHMENT_BYTES, attachmentBlob, removalNeedsConfirmation } from './attachments.js';
+import { attachmentBadge } from '../../sync/ui/attachment-badge.js';
+import { attachmentMissingKey } from '../../sync/attachments/registry.js';
 
 const KB = 1024;
 const MB = 1024 * 1024;
@@ -24,7 +27,7 @@ export function sizeText(bytes) {
 export async function openAttachment(record, deps) {
   try {
     const blob = await attachmentBlob(record, deps);
-    if (!blob) { showToast(t('documents.attachments.missing', { name: record.name }), { type: 'error' }); return false; }
+    if (!blob) { showToast(t(attachmentMissingKey(record.id), { name: record.name }), { type: 'error' }); return false; }
     openBlob(blob, record.name);
     return true;
   } catch (e) {
@@ -53,6 +56,7 @@ export function attachmentsPanel(ctx) {
     icon('file-text'),
     h('span', { class: 'attachment-name' }, record.name),
     h('span', { class: 'muted small' }, sizeText(record.size)),
+    attachmentBadge(record),
     h('span', { class: 'attachment-tools' },
       h('button', { type: 'button', class: 'btn btn-ghost btn-sm attachment-open', onclick: () => openAttachment(record) }, icon('eye'), t('documents.attachments.open')),
       readOnly ? null : h('button', {
