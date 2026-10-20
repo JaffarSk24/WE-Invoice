@@ -42,6 +42,22 @@ paths:
     post: { tags: [proxy], summary: Proxy POST to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
     put: { tags: [proxy], summary: Proxy PUT to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
     delete: { tags: [proxy], summary: Proxy DELETE to the provider, responses: { '200': { description: Upstream response as is }, '400': { $ref: '#/components/responses/Error' }, '502': { $ref: '#/components/responses/Error' } } }
+  /v1/proxy/superfaktura/{market}/{path}:
+    parameters:
+      - { name: market, in: path, required: true, description: 'SuperFaktura market: sk (moja.superfaktura.sk), cz (moje.superfaktura.cz), at (meine.superfaktura.at). Any other value answers 400 HOST_NOT_ALLOWED.', schema: { type: string, enum: [sk, cz, at] } }
+      - { name: path, in: path, required: true, description: 'Rest of the API path (wildcard), for example invoices/index.json/listinfo:1/page:1/per_page:100. Only letters, digits and _ . : , ~ - in segments; dot segments, empty segments and percent-encoding answer 400 BAD_REQUEST.', schema: { type: string } }
+      - { name: X-Upstream-Authorization, in: header, required: true, description: 'Authorization value of the SuperFaktura API (SFAPI email=...&apikey=...&company_id=...), moved to Authorization of the upstream request. Never logged, cached or stored.', schema: { type: string } }
+    x-rate-limit: 60/min per IP; read only; answer streamed with Cache-Control no-store, never stored
+    get:
+      tags: [proxy]
+      summary: Proxy a read request to the SuperFaktura API (import in the web app)
+      responses:
+        '200': { description: Upstream response as is (JSON) }
+        '400': { $ref: '#/components/responses/Error' }
+        '502': { $ref: '#/components/responses/Error' }
+    post: { tags: [proxy], summary: Refused, the proxy is read only, responses: { '405': { $ref: '#/components/responses/Error' } } }
+    put: { tags: [proxy], summary: Refused, the proxy is read only, responses: { '405': { $ref: '#/components/responses/Error' } } }
+    delete: { tags: [proxy], summary: Refused, the proxy is read only, responses: { '405': { $ref: '#/components/responses/Error' } } }
   /v1/company/sk/{ico}:
     get:
       tags: [registers]
@@ -334,7 +350,7 @@ components:
           type: object
           required: [code, message]
           properties:
-            code: { type: string, pattern: '^[A-Z_]+$', examples: [BAD_REQUEST, NOT_FOUND, RATE_LIMITED, UPSTREAM_UNAVAILABLE, HOST_NOT_ALLOWED, INVALID_TOKEN] }
+            code: { type: string, pattern: '^[A-Z_]+$', examples: [BAD_REQUEST, NOT_FOUND, RATE_LIMITED, UPSTREAM_UNAVAILABLE, HOST_NOT_ALLOWED, INVALID_TOKEN, METHOD_NOT_ALLOWED] }
             message: { type: string }
     Health:
       type: object

@@ -26,13 +26,27 @@ export function upstreamHeaders(headers) {
 // Rest of the path after the providerId, taken from the raw URL so the
 // client's percent-encoding reaches the provider unchanged.
 export function upstreamPath(rawUrl, providerId) {
-  const prefix = `/v1/proxy/peppol/${providerId}/`;
-  const rest = rawUrl.slice(rawUrl.indexOf(prefix) + prefix.length);
+  return restAfter(rawUrl, `/v1/proxy/peppol/${providerId}/`);
+}
+
+// Rest of the raw URL after a route prefix, path and query. A dot segment
+// (plain or percent-encoded), a backslash, an empty segment or a leading
+// slash is refused, so the request cannot leave the upstream base path.
+export function restAfter(rawUrl, prefix) {
+  const at = rawUrl.indexOf(prefix);
+  if (at < 0) throw new HttpError(400, 'BAD_REQUEST', 'Invalid upstream path');
+  const rest = rawUrl.slice(at + prefix.length);
   const path = rest.split('?')[0];
-  if (path.split('/').some(seg => seg === '..' || seg === '.' || seg === '%2e%2e' || seg === '%2E%2E') || /^\/|\\|\/\//.test(path)) {
+  if (path.split('/').some(isDotSegment) || /^\/|\\|%5c|\/\//i.test(path)) {
     throw new HttpError(400, 'BAD_REQUEST', 'Invalid upstream path');
   }
   return rest;
+}
+
+// "." and ".." in any mix of plain and percent-encoded dots.
+function isDotSegment(segment) {
+  const plain = segment.replace(/%2e/gi, '.');
+  return plain === '.' || plain === '..';
 }
 
 // Counts bytes and fails the stream once the limit is passed.
@@ -78,7 +92,9 @@ export default async function proxyRoutes(app, { config, dispatcher, lookup, all
   });
 }
 
-async function forward(url, method, headers, body, { dispatcher, config, lookup }, hops = 0) {
+// Sends the request; a redirect is followed only for GET, only on the same
+// https host and at most three times. Any network failure is a 502.
+export async function forward(url, method, headers, body, { dispatcher, config, lookup }, hops = 0) {
   let response;
   try {
     response = await undiciRequest(url, { method, headers, body, dispatcher, headersTimeout: config.upstream.timeoutMs, bodyTimeout: config.upstream.timeoutMs * 4 });

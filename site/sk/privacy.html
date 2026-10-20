@@ -65,7 +65,7 @@
   <main id="main">
     <article class="doc">
       <h1>Ochrana osobných údajov</h1>
-      <p class="meta">Webová a desktopová aplikácia WE Invoice a táto stránka. Platné od 19. októbra 2026.</p>
+      <p class="meta">Webová a desktopová aplikácia WE Invoice a táto stránka. Platné od 20. októbra 2026.</p>
       <p>WE Invoice vyvíja White Eagles &amp; Co. s. r. o. (ďalej „my“). Tento dokument vysvetľuje, aké údaje aplikácia a stránka spracúvajú, kde sú uložené a ako ich odstrániť. Píšeme ho tak, aby ste ho prečítali, nie preskočili.</p>
       <section>
         <h2>V skratke</h2>
@@ -91,8 +91,10 @@
           <li>Verejné registre firiem (Slovensko, Česko) a overenie IČ DPH v systéme VIES: dopyty podľa IČO alebo IČ DPH.</li>
           <li>Overenie dokladu eKasa podľa jeho QR kódu.</li>
           <li>Kurzový lístok Európskej centrálnej banky.</li>
+          <li>Import zo SuperFaktúry vo webovej verzii: požiadavky na čítanie vašich klientov, cenníka a faktúr prechádzajú cez bránu k API SuperFaktúry a späť. Neukladajú sa, nečítajú sa a neanalyzujú sa.</li>
         </ul>
         <p><strong>API kľúče a tokeny poskytovateľa eFaktúr.</strong> Poskytovatelia neprijímajú požiadavky priamo z prehliadača (obmedzenie CORS), preto vo webovej verzii prechádza cez bránu aj váš API kľúč alebo token poskytovateľa (SAPI-SK aj natívne rozhrania). Brána ho odovzdá poskytovateľovi iba na čas danej požiadavky: nezapisuje ho do záznamov, nekešuje ho a neukladá. To isté platí pre telá dokumentov: neukladajú sa ani nelogujú.</p>
+        <p><strong>API kľúč SuperFaktúry pri importe.</strong> SuperFaktúra tiež neprijíma požiadavky priamo z prehliadača, preto vo webovej verzii prechádza cez bránu aj prístup k jej API (e-mail, API kľúč a ID firmy). Brána ho odovzdá SuperFaktúre iba na čas danej požiadavky a cez bránu idú len požiadavky na čítanie: kľúč nezapisuje do záznamov, nekešuje ho a neukladá a neukladá ani importované údaje. V desktopovej verzii aplikácia volá API SuperFaktúry priamo z vášho počítača.</p>
         <p><strong>Desktopová verzia ide priamo.</strong> Aplikácia pre macOS a Windows komunikuje s poskytovateľom eFaktúr priamo z vášho počítača, bránu obchádza a kľúč z vášho zariadenia nikdy neodíde. Ak chcete najvyššiu mieru súkromia, odporúčame desktopovú verziu.</p>
         <p>Brána vedie technický záznam (čas, IP adresa, volaná služba, výsledok) na ochranu pred zneužitím a na riešenie porúch. Záznam neobsahuje kľúče, tokeny ani obsah dokumentov. Záznamy sa mažú najneskôr po 30 dňoch.</p>
       </section>

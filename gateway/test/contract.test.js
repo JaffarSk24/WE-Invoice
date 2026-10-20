@@ -70,7 +70,7 @@ describe('responses match openapi.yaml', () => {
   });
 
   it.each([
-    ['/v1/company/sk/x'], ['/v1/nope'], ['/v1/admin/stats'], ['/v1/proxy/peppol/nope/x'], ['/v1/proxy/peppol/verteco/x'], ['/v1/waitlist/confirm?token=bad'], ['/v1/rates/ecb?date=3000-01-01']
+    ['/v1/company/sk/x'], ['/v1/nope'], ['/v1/admin/stats'], ['/v1/proxy/peppol/nope/x'], ['/v1/proxy/peppol/verteco/x'], ['/v1/proxy/superfaktura/de/x'], ['/v1/proxy/superfaktura/sk/a%5cb'], ['/v1/waitlist/confirm?token=bad'], ['/v1/rates/ecb?date=3000-01-01']
   ])('error of %s has the Error shape', async (url) => {
     const res = await ctx.app.inject({ method: 'GET', url });
     expect(res.statusCode).toBeGreaterThanOrEqual(400);

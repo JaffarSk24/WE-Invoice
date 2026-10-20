@@ -17,6 +17,7 @@ import { createWaitlist } from './waitlist/service.js';
 import { createInvites } from './waitlist/invites.js';
 import healthRoutes from './routes/health.js';
 import proxyRoutes from './routes/proxy.js';
+import superfakturaRoutes from './routes/superfaktura.js';
 import registerRoutes from './routes/registers.js';
 import publicDataRoutes from './routes/public-data.js';
 import waitlistRoutes from './routes/waitlist.js';
@@ -71,6 +72,7 @@ export async function buildApp(config, { logger = true, dispatcher, lookup, reso
   const deps = { config, upstream, cache, stats, waitlist, invites, mailer, lookup, resolver };
   await app.register(healthRoutes, deps);
   await app.register(proxyRoutes, { config, dispatcher: proxyDispatcher, lookup });
+  await app.register(superfakturaRoutes, { config, dispatcher: proxyDispatcher, lookup });
   await app.register(registerRoutes, deps);
   await app.register(publicDataRoutes, deps);
   await app.register(waitlistRoutes, deps);
