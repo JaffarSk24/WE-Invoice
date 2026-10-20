@@ -2,11 +2,13 @@
 // password) sealed by the operating system's keychain through Electron's
 // safeStorage and kept as files under userData/secrets/. When the keychain
 // is not usable (some Linux desktops fall back to a fixed key), nothing is
-// written and the page asks the user each session.
+// written and the page asks the user each session. Names may carry ":" as
+// the page builds them ("peppol:<company>:<provider>"); the file name puts
+// "~" in its place, because Windows does not allow ":" in a file name.
 const fs = require('fs');
 const path = require('path');
 
-const NAME = /^[a-z][a-z0-9._-]{0,63}$/i;
+const NAME = /^[a-z][a-z0-9._:-]{0,127}$/i;
 const MAX_VALUE = 64 * 1024;
 
 function keychainUsable(safeStorage, platform = process.platform) {
@@ -22,7 +24,7 @@ function keychainUsable(safeStorage, platform = process.platform) {
 }
 
 function createSecrets({ safeStorage, dir, platform = process.platform }) {
-  const fileOf = (name) => path.join(dir, `${name}.bin`);
+  const fileOf = (name) => path.join(dir, `${name.replace(/:/g, '~')}.bin`);
   const valid = (name) => typeof name === 'string' && NAME.test(name);
 
   return {
@@ -42,7 +44,8 @@ function createSecrets({ safeStorage, dir, platform = process.platform }) {
 
     // { ok, stored } where stored is false when the keychain is not usable.
     set(name, value) {
-      if (!valid(name) || typeof value !== 'string' || value.length > MAX_VALUE) return { ok: false, error: 'BAD_VALUE' };
+      if (!valid(name)) return { ok: false, error: 'BAD_NAME' };
+      if (typeof value !== 'string' || value.length > MAX_VALUE) return { ok: false, error: 'BAD_VALUE' };
       if (!keychainUsable(safeStorage, platform)) return { ok: true, stored: false };
       try {
         fs.mkdirSync(dir, { recursive: true, mode: 0o700 });

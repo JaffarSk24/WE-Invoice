@@ -157,6 +157,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Fixed (20 October, 0.1.2)
+
+- The desktop app could not store any secret whose name the page builds with ":" (the e-invoicing provider's client id and secret, the beta invitation, the SuperFaktúra API key): the keychain store refused the name and the wizard answered "Invalid key value" whatever key was entered. Names may now carry ":" (stored as "~" in the file name, which Windows needs) and be up to 128 characters; a refused name reports BAD_NAME instead of BAD_VALUE. A test stores the real names the page uses.
+
 #### Added
 
 - Desktop main process, ported from WE Budget and split into small modules: data file in `we-invoice-data` with atomic writes, a daily local backup named by the local calendar day (last 14 kept) and copies that are never rotated away; a corrupt or unreadable data file is kept as a copy and never overwritten with an empty one.

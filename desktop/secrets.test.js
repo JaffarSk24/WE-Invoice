@@ -45,10 +45,28 @@ describe('weSecrets', () => {
     expect(secrets.get('peppol.verteco.apiKey').value).toBe(null);
   });
 
+  it('takes the names the page builds, with ":" and a company id', async () => {
+    const { secretName } = await import('../app/src/peppol/credentials.js');
+    const { BETA_SECRET } = await import('../app/src/peppol/beta.js');
+    const secrets = createSecrets({ safeStorage: fakeSafeStorage(), dir, platform: 'win32' });
+    const names = [secretName('0192e4a1-7b2c-7d3e-8f40-123456789abc', 'sapi-sk-sandbox'), BETA_SECRET, 'exim:superfaktura:0192e4a1-7b2c-7d3e-8f40-123456789abc', 'dek', 'smtp.password'];
+    for (const name of names) {
+      expect(secrets.set(name, '{"clientId":"a","clientSecret":"b"}')).toEqual({ ok: true, stored: true });
+      expect(secrets.get(name)).toEqual({ ok: true, value: '{"clientId":"a","clientSecret":"b"}' });
+    }
+    expect(fs.readdirSync(dir).filter(f => f.includes(':'))).toEqual([]);
+    expect(fs.existsSync(path.join(dir, 'peppol~beta.bin'))).toBe(true);
+    expect(fs.existsSync(path.join(dir, 'smtp.password.bin'))).toBe(true);
+    expect(secrets.delete(names[0])).toEqual({ ok: true });
+    expect(secrets.get(names[0]).value).toBe(null);
+  });
+
   it('refuses bad names and values', () => {
     const secrets = createSecrets({ safeStorage: fakeSafeStorage(), dir, platform: 'darwin' });
     expect(secrets.get('../etc/passwd').ok).toBe(false);
-    expect(secrets.set('x y', 'v').ok).toBe(false);
+    expect(secrets.set('x y', 'v')).toEqual({ ok: false, error: 'BAD_NAME' });
+    expect(secrets.set('a~b', 'v').ok).toBe(false);
+    expect(secrets.set('a/b:c', 'v').ok).toBe(false);
     expect(secrets.set('ok', 42).ok).toBe(false);
     expect(secrets.set('ok', 'x'.repeat(70000)).ok).toBe(false);
     expect(secrets.delete('').ok).toBe(false);
