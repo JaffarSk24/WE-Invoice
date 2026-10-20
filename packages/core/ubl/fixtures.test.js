@@ -19,7 +19,7 @@ describe('UBL fixtures', () => {
 
   it.each(UBL_CASES.map(c => [c.id, c]))('%s reads back (build, parse, build)', (_id, c) => {
     const xml = buildUbl(c.document, c.company, c.options);
-    const { document, warnings } = parseUbl(xml);
+    const { document, warnings, attachments } = parseUbl(xml);
     expect(warnings).toEqual([]);
     expect(document.number).toBe(c.document.number);
     expect(document.currency).toBe(c.document.currency);
@@ -30,9 +30,12 @@ describe('UBL fixtures', () => {
     expect(document.totals.vat).toBe(abs(totals.vat));
     // What was read is enough to write the same e-invoice again.
     // The rate is not in the XML (only BT-111 is), so it comes from the case.
+    // The embedded files read back become the PDF (id = document number) and the user's files again.
+    const pdf = attachments.find(a => a.id === document.number);
+    const files = attachments.filter(a => a !== pdf).map(a => ({ name: a.name, mime: a.mime, base64: a.base64, description: a.description }));
     const again = buildUbl({ ...document, fxRate: c.document.fxRate ?? null }, {}, {
       preceding: document.preceding, prepaid: document.totals.prepaid,
-      pdf: c.options.pdf, note: document.textIntro, noLegalNotes: true
+      pdf: pdf ? { base64: pdf.base64, name: pdf.name } : undefined, attachments: files, note: document.textIntro, noLegalNotes: true
     });
     expect(again).toBe(xml);
   });

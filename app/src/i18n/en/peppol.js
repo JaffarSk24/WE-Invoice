@@ -188,5 +188,14 @@ export default {
   "errors.UBL_XML_DOCTYPE": "The received file contains a DOCTYPE declaration, which is not allowed.",
   "errors.UBL_ROOT_UNKNOWN": "The received file is neither an invoice nor a credit note.",
   "errors.UBL_REQUIRED_MISSING": "A required field is missing in the received e-invoice.",
-  "errors.UBL_AMOUNT_INVALID": "The received e-invoice contains an invalid amount."
+  "errors.UBL_AMOUNT_INVALID": "The received e-invoice contains an invalid amount.",
+  "peppol.send.title": "Send e-invoice {number}",
+  "peppol.send.skipped": "{n, plural, one {This attachment is not added to the e-invoice} other {These # attachments are not added to the e-invoice}}, because Peppol accepts only PDF, PNG, JPEG, CSV, XLSX and ODS files:",
+  "peppol.send.skippedHint": "If the customer needs them, send them by e-mail.",
+  "peppol.send.confirm": "Send without them",
+  "peppol.detail.skipped": "Attachments left out (file type Peppol does not accept)",
+  "peppol.issue.MESSAGE_TOO_LARGE": "The e-invoice with its attachments is {size} MB; the provider accepts at most {limit} MB. Remove or shrink some attachments.",
+  "peppol.issue.ATTACHMENT_TYPE_SKIPPED": "{n, plural, one {An attachment is left out} other {Attachments are left out}} because Peppol does not accept that file type: {names}",
+  "peppol.issue.ATTACHMENT_MISSING": "{n, plural, one {The attachment file is not on this device} other {The attachment files are not on this device}}: {names}. Open the document on the device where you added them, or add them again.",
+  "errors.PEPPOL_ATTACHMENT_MISSING": "An attachment file of the document is not on this device; add it again."
 };

@@ -17,6 +17,7 @@ import { createArchive } from '../../peppol/archive.js';
 import { efakturyData } from './data.js';
 import { outRows, filterOut } from './rows.js';
 import { peppolBadge, openPeppolDetail } from './common.js';
+import { confirmSend, reportSendResult } from './send-dialog.js';
 
 const FILTERS = ['all', 'waiting', 'problems', 'delivered'];
 
@@ -46,20 +47,18 @@ export async function sendDocuments(rows, { demo }) {
   }
   const service = await getPeppolService();
   if (!service) return;
-  const ids = rows.filter(r => r.sendable).map(r => r.id);
+  const sendable = rows.filter(r => r.sendable);
+  const ids = sendable.map(r => r.id);
   if (!ids.length) return;
+  // One document: the window names the attachments Peppol does not take. Several: they stay listed in each detail.
+  if (ids.length === 1 && !(await confirmSend(sendable[0].document))) return;
   if (ids.length > 1) showToast(t('peppol.out.sending', { n: ids.length }), { type: 'info' });
   const results = await service.sendMany(ids);
   const ok = results.filter(r => r.document && ['ACCEPTED', 'DELIVERED'].includes(r.document.peppol?.status));
   if (ids.length === 1) {
     const r = results[0];
     if (r.error) return showError(r.error);
-    const number = r.document.number || '';
-    const status = r.document.peppol?.status;
-    if (ok.length) showToast(t('peppol.out.sent', { number }), { type: 'success' });
-    else if (status === 'FAILED' && r.document.peppol.nextAttemptAt) showToast(t('peppol.out.failed', { number }), { type: 'info' });
-    else if (status === 'FAILED') showError({ code: r.document.peppol.errors?.[0]?.code });
-    else showToast(t('peppol.out.invalid', { number }), { type: 'error' });
+    reportSendResult(r.document, { showToast, showError });
     return;
   }
   showToast(t('peppol.out.sentMany', { ok: ok.length, failed: ids.length - ok.length }), { type: ok.length === ids.length ? 'success' : 'info' });

@@ -9,6 +9,11 @@
     "byKind": { "INVOICE": "380", "CREDIT_NOTE": "381", "DEBIT_NOTE": "383", "ADVANCE_TAX_DOC": "388", "SELF_BILLING": "389" },
     "allowed": ["380", "381", "383", "386", "388", "389"]
   },
+  "attachments": {
+    "$comment": "BT-125 embedded attachments: the MIME codes Peppol BIS Billing 3.0 allows (code list MimeCode) and the message size used when a provider states no limit.",
+    "mimeTypes": ["application/pdf", "image/png", "image/jpeg", "text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.oasis.opendocument.spreadsheet"],
+    "maxMessageBytes": 10485760
+  },
   "exemptionReasonRequired": ["E", "AE", "K", "G", "O"],
   "exemptionReasonForbidden": ["S", "Z"],
   "rules": [
@@ -30,6 +35,8 @@
     { "id": "SK-16", "bt": "BT-9", "severity": "error", "code": "DUE_DATE_MISSING", "text": "A document with an amount due needs the due date." },
     { "id": "SK-17", "bt": "-", "severity": "error", "code": "CLASSIFIED_SUPPLY", "text": "A classified supply must not be sent as an e-invoice." },
     { "id": "SK-18", "bt": "BT-125", "severity": "warning", "code": "ATTACHMENT_TOO_LARGE", "text": "The PDF attachment is optional; it is left out when larger than the provider allows." },
-    { "id": "SK-19", "bt": "BT-129", "severity": "error", "code": "NO_LINES", "text": "A document has at least one line." }
+    { "id": "SK-19", "bt": "BT-129", "severity": "error", "code": "NO_LINES", "text": "A document has at least one line." },
+    { "id": "SK-20", "bt": "BT-125", "severity": "error", "code": "MESSAGE_TOO_LARGE", "text": "The e-invoice with its embedded attachments must fit the provider's message size limit (attachments.maxMessageBytes when the provider gives none)." },
+    { "id": "SK-21", "bt": "BT-125", "severity": "warning", "code": "ATTACHMENT_TYPE_SKIPPED", "text": "Only the file types of the Peppol BIS 3 MIME code list are embedded; other attachments of the document are left out." }
   ]
 }

@@ -35,6 +35,18 @@ describe('parseUbl', () => {
     expect(attachments).toEqual([{ id: 'FA2027024', name: 'FA2027024.pdf', mime: 'application/pdf', description: null, base64: 'JVBERi0xLjQKJSBXRSBJbnZvaWNlIGZpeHR1cmUKJSVFT0YK' }]);
   });
 
+  it('returns the PDF and the files of the user with their own ids, types and names', () => {
+    const { attachments } = parseUbl(fixture('29-user-attachments'));
+    expect(attachments.map(a => [a.id, a.mime, a.name])).toEqual([
+      ['FA2027029', 'application/pdf', 'FA2027029.pdf'],
+      ['FA2027029-1', 'application/pdf', 'dodaci-protokol.pdf'],
+      ['FA2027029-2', 'image/png', 'foto.png'],
+      ['FA2027029-3', 'text/csv', 'rozpis.csv'],
+      ['FA2027029-4', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'vykaz.xlsx']
+    ]);
+    expect(attachments[1].description).toBe('Dodací protokol');
+  });
+
   it('keeps the stated totals and reports a difference instead of fixing it', () => {
     const xml = fixture('01-basic-23').replace('<cbc:TaxAmount currencyID="EUR">103.50</cbc:TaxAmount>\n    <cac:TaxSubtotal>', '<cbc:TaxAmount currencyID="EUR">103.51</cbc:TaxAmount>\n    <cac:TaxSubtotal>');
     const { document, warnings } = parseUbl(xml);

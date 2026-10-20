@@ -188,5 +188,14 @@ export default {
   "errors.UBL_XML_DOCTYPE": "Отриманий файл містить недозволене оголошення DOCTYPE.",
   "errors.UBL_ROOT_UNKNOWN": "Отриманий файл не є ні рахунком, ні кредит-нотою.",
   "errors.UBL_REQUIRED_MISSING": "В отриманому рахунку eFaktúra бракує обов’язкового реквізиту.",
-  "errors.UBL_AMOUNT_INVALID": "Отримана eFaktúra містить недійсну суму."
+  "errors.UBL_AMOUNT_INVALID": "Отримана eFaktúra містить недійсну суму.",
+  "peppol.send.title": "Надіслати eFaktúra {number}",
+  "peppol.send.skipped": "{n, plural, one {Цей додаток не буде додано до eFaktúra} few {Ці # додатки не буде додано до eFaktúra} many {Ці # додатків не буде додано до eFaktúra} other {Ці # додатка не буде додано до eFaktúra}}: мережа Peppol приймає лише файли PDF, PNG, JPEG, CSV, XLSX і ODS:",
+  "peppol.send.skippedHint": "Якщо вони потрібні покупцю, надішліть їх електронною поштою.",
+  "peppol.send.confirm": "Надіслати без них",
+  "peppol.detail.skipped": "Недодані додатки (тип файлу, який Peppol не приймає)",
+  "peppol.issue.MESSAGE_TOO_LARGE": "Розмір eFaktúra з додатками {size} МБ, провайдер приймає щонайбільше {limit} МБ. Видаліть або зменште деякі додатки.",
+  "peppol.issue.ATTACHMENT_TYPE_SKIPPED": "{n, plural, one {Додаток не буде додано} other {Додатки не буде додано}}: мережа Peppol не приймає такий тип файлу: {names}",
+  "peppol.issue.ATTACHMENT_MISSING": "{n, plural, one {Файлу додатка немає на цьому пристрої} other {Файлів додатків немає на цьому пристрої}}: {names}. Відкрийте документ на пристрої, де ви їх додали, або додайте їх знову.",
+  "errors.PEPPOL_ATTACHMENT_MISSING": "Одного з файлів додатків документа немає на цьому пристрої; додайте його знову."
 };

@@ -72,7 +72,8 @@ export const PEPPOL_STATE = object({
   receivedAt: NULLABLE_DATE_TIME,
   acknowledgedAt: NULLABLE_DATE_TIME,
   mls: { type: ['object', 'null'] },
-  errors: { type: 'array', items: object({ code: SHORT_TEXT, message: TEXT, field: { type: ['string', 'null'] } }) },
+  // params: what an error text needs, e.g. {bytes, limit} of a message over the size limit.
+  errors: { type: 'array', items: object({ code: SHORT_TEXT, message: TEXT, field: { type: ['string', 'null'] }, params: { type: 'object' } }) },
   xmlFileId: NULLABLE_ID,
   revision: { type: 'integer', minimum: 0 },
   // Send queue: attempts of the current revision and when to retry after a
@@ -80,7 +81,9 @@ export const PEPPOL_STATE = object({
   attempts: { type: 'integer', minimum: 0 },
   nextAttemptAt: NULLABLE_DATE_TIME,
   statusChecks: { type: 'integer', minimum: 0 },
-  nextCheckAt: NULLABLE_DATE_TIME
+  nextCheckAt: NULLABLE_DATE_TIME,
+  // Attachments of the document not embedded because Peppol does not accept their file type.
+  skippedAttachments: STRING_LIST
 }, ['direction', 'status']);
 
 export const SEND_LOG_ENTRY = object({

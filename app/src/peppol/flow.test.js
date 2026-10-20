@@ -25,7 +25,7 @@ const invoice = (fields = {}) => ({
   buyer: BUYER, lines: [{ id: 'l1', name: 'Služba', qty: '1', unitPrice: '100', vatCategory: 'S', vatRate: '23' }], ...fields
 });
 
-async function setup({ inbox = [], beta = true, platform = 'web' } = {}) {
+async function setup({ inbox = [], beta = true, platform = 'web', files: deviceFiles = {} } = {}) {
   dropAllTokens();
   const store = new Store({ adapter: memoryAdapter() });
   await store.open();
@@ -41,7 +41,8 @@ async function setup({ inbox = [], beta = true, platform = 'web' } = {}) {
   };
   const events = [];
   let clock = '2027-01-16T08:00:00.000Z';
-  const service = createPeppolService({ getStore: () => store, transport, emit: (name, payload) => events.push([name, payload]), archive, now: () => clock });
+  const loadAttachment = async (id) => deviceFiles[id] || null;
+  const service = createPeppolService({ getStore: () => store, transport, emit: (name, payload) => events.push([name, payload]), archive, loadAttachment, now: () => clock });
   return { store, server, transport, service, files, events, company, setClock: (c) => { clock = c; } };
 }
 
@@ -111,6 +112,49 @@ describe('sending', () => {
     expect(result.peppol.status).toBe('FAILED');
     expect(result.peppol.errors[0].code).toBe('PEPPOL_BETA_REQUIRED');
     expect(await off.service.ready()).toBe(false);
+  });
+});
+
+describe('sending with attachments', () => {
+  const bytes = (text) => new TextEncoder().encode(text);
+  const attachments = [
+    { id: 'a1', name: 'protokol.pdf', mime: 'application/pdf', size: 9 },
+    { id: 'a2', name: 'foto.jpg', mime: '', size: 4 },
+    { id: 'a3', name: 'zmluva.docx', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', size: 4 }
+  ];
+
+  it('embeds the accepted files with their own ids and records the ones left out', async () => {
+    const env = await setup({ files: { a1: { bytes: bytes('%PDF-1.4\n') }, a2: { bytes: bytes('JPEG') } } });
+    const doc = await env.store.insert('documents', invoice({ attachments }));
+    const sent = await env.service.send(doc.id);
+    expect(sent.peppol.status).toBe('ACCEPTED');
+    expect(sent.peppol.skippedAttachments).toEqual(['zmluva.docx']);
+    const xml = env.server.state.sent[0].body.payload;
+    expect(xml).toContain('<cbc:ID>FA2027100-1</cbc:ID>');
+    expect(xml).toContain('mimeCode="application/pdf" filename="protokol.pdf"');
+    expect(xml).toContain('mimeCode="image/jpeg" filename="foto.jpg"');
+    expect(xml).not.toContain('zmluva.docx');
+  });
+
+  it('stops before sending when a file is not on this device, naming it', async () => {
+    const env = await setup({ files: { a1: { bytes: bytes('%PDF-1.4\n') } } });
+    const doc = await env.store.insert('documents', invoice({ attachments }));
+    const result = await env.service.send(doc.id);
+    expect(result.peppol).toMatchObject({ status: 'INVALID', errors: [{ code: 'ATTACHMENT_MISSING', message: 'foto.jpg', field: 'attachments' }] });
+    expect(env.server.state.sent).toHaveLength(0);
+    expect(env.files.size).toBe(0);
+  });
+
+  it('stops before sending when the message is over the 10 MB default, with both sizes', async () => {
+    const big = new Uint8Array(8 * 1024 * 1024).fill(65);
+    const env = await setup({ files: { a1: { bytes: big }, a2: { bytes: bytes('JPEG') } } });
+    const doc = await env.store.insert('documents', invoice({ attachments }));
+    const result = await env.service.send(doc.id);
+    expect(result.peppol.status).toBe('INVALID');
+    const error = result.peppol.errors.find(e => e.code === 'MESSAGE_TOO_LARGE');
+    expect(error.params.limit).toBe(10 * 1024 * 1024);
+    expect(error.params.bytes).toBeGreaterThan(10 * 1024 * 1024);
+    expect(env.server.state.sent).toHaveLength(0);
   });
 });
 

@@ -188,5 +188,14 @@ export default {
   "errors.UBL_XML_DOCTYPE": "Полученный файл содержит недопустимое объявление DOCTYPE.",
   "errors.UBL_ROOT_UNKNOWN": "Полученный файл не является ни счётом, ни кредит-нотой.",
   "errors.UBL_REQUIRED_MISSING": "В полученном счёте eFaktúra нет обязательного реквизита.",
-  "errors.UBL_AMOUNT_INVALID": "В полученном счёте eFaktúra неверная сумма."
+  "errors.UBL_AMOUNT_INVALID": "В полученном счёте eFaktúra неверная сумма.",
+  "peppol.send.title": "Отправить eFaktúra {number}",
+  "peppol.send.skipped": "{n, plural, one {Это вложение не будет приложено к eFaktúra} few {Эти # вложения не будут приложены к eFaktúra} many {Эти # вложений не будут приложены к eFaktúra} other {Эти # вложения не будут приложены к eFaktúra}}: сеть Peppol принимает только файлы PDF, PNG, JPEG, CSV, XLSX и ODS:",
+  "peppol.send.skippedHint": "Если они нужны покупателю, отправьте их по электронной почте.",
+  "peppol.send.confirm": "Отправить без них",
+  "peppol.detail.skipped": "Неприложенные вложения (тип файла, который Peppol не принимает)",
+  "peppol.issue.MESSAGE_TOO_LARGE": "Размер eFaktúra с вложениями {size} МБ, провайдер принимает не более {limit} МБ. Удалите или уменьшите некоторые вложения.",
+  "peppol.issue.ATTACHMENT_TYPE_SKIPPED": "{n, plural, one {Вложение не будет приложено} other {Вложения не будут приложены}}: сеть Peppol не принимает такой тип файла: {names}",
+  "peppol.issue.ATTACHMENT_MISSING": "{n, plural, one {Файла вложения нет на этом устройстве} other {Файлов вложений нет на этом устройстве}}: {names}. Откройте документ на устройстве, где вы их добавили, или добавьте их снова.",
+  "errors.PEPPOL_ATTACHMENT_MISSING": "Одного из файлов вложений документа нет на этом устройстве; добавьте его снова."
 };
