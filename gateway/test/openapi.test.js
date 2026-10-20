@@ -6,7 +6,7 @@ const spec = parse(readFileSync(new URL('../openapi.yaml', import.meta.url), 'ut
 
 // Every endpoint of 06-gateway-server.md § 6.3 is in the contract.
 const EXPECTED = [
-  ['get', '/v1/health'], ['post', '/v1/proxy/peppol/{providerId}/{path}'], ['get', '/v1/company/sk/{ico}'],
+  ['get', '/v1/health'], ['post', '/v1/proxy/peppol/{providerId}/{path}'], ['get', '/v1/proxy/superfaktura/{market}/{path}'], ['get', '/v1/company/sk/{ico}'],
   ['get', '/v1/company/sk/search'], ['get', '/v1/company/cz/{ico}'], ['get', '/v1/vat/vies/{cc}/{number}'],
   ['get', '/v1/vat/sk/{icdph}/reliability'], ['get', '/v1/rates/ecb'], ['post', '/v1/ekasa/receipt'],
   ['get', '/v1/peppol/lookup/{scheme}/{id}'], ['post', '/v1/waitlist'], ['get', '/v1/waitlist/confirm'],
