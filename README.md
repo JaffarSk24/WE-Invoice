@@ -13,7 +13,7 @@
   <a href="https://github.com/JaffarSk24/WE-Invoice/actions/workflows/ci.yml"><img src="https://github.com/JaffarSk24/WE-Invoice/actions/workflows/ci.yml/badge.svg?branch=develop" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/platforms-web%20%7C%20iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Windows-0891b2.svg" alt="Platforms">
-  <img src="https://img.shields.io/badge/version-0.1.1-16a34a.svg" alt="Version 0.1.1">
+  <img src="https://img.shields.io/badge/version-0.1.2-16a34a.svg" alt="Version 0.1.2">
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@ WE Invoice is the third free app of the WE line by [White Eagles](https://whitee
 
 **Get it:** [web app](https://jaffarsk24.github.io/WE-Invoice/app/) (also installs on iPhone and Android) · [macOS and Windows](https://github.com/JaffarSk24/WE-Invoice/releases/latest) · [website](https://jaffarsk24.github.io/WE-Invoice/)
 
-> **Version 0.1.1.** Every feature below is covered by unit and end-to-end tests on desktop and phone screens. The tax reports validate against the official schemas of the Financial Administration and are being checked by an accountant, so check them before you file. eFaktúra is a beta, opened in waves to people from the waiting list.
+> **Version 0.1.2.** Every feature below is covered by unit and end-to-end tests on desktop and phone screens. The tax reports validate against the official schemas of the Financial Administration and are being checked by an accountant, so check them before you file. eFaktúra is a beta, opened in waves to people from the waiting list.
 
 Slovenská verzia: [README.sk.md](README.sk.md).
 

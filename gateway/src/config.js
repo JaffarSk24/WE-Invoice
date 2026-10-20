@@ -8,7 +8,7 @@ export function loadConfig(env = process.env) {
   return {
     host: env.HOST || '127.0.0.1',
     port: num(env.PORT, 8787),
-    version: env.APP_VERSION || '0.1.1',
+    version: env.APP_VERSION || '0.1.2',
     logLevel: env.LOG_LEVEL || 'info',
     corsOrigins: list(env.CORS_ORIGINS, 'https://jaffarsk24.github.io,http://localhost:5173'),
     // Trust only local proxies (nginx on loopback or on the Docker bridge):
