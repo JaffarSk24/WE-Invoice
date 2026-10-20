@@ -6,7 +6,7 @@
 // counted as they are and reported in `unconverted`.
 import Big from 'big.js';
 import { add, cmp, sub, div, mul, round, isZero } from '../money/index.js';
-import { isSaleDoc, isPurchaseDoc, counts, eurAmounts, partyOf, reportDate, signOf, bump, byAmountDesc, fixed2 } from './amounts.js';
+import { isSaleDoc, isPurchaseDoc, counts, eurAmounts, partyOf, reportDate, signOf, bump, asText, byAmountDesc, fixed2 } from './amounts.js';
 import { periodKey, periodKeys, previousYearKey, shiftYear, within } from './periods.js';
 import { fastLineNet, itemKey } from './lines.js';
 import { CoreError } from '../errors.js';
@@ -110,7 +110,9 @@ export function salesReport(documents, ctx = {}) {
   const byPeriod = keys.map(key => {
     const row = periods.get(key) || { net: '0', gross: '0', count: 0 };
     const prev = periods.get(previousYearKey(key)) || { net: '0', gross: '0', count: 0 };
-    return { key, net: row.net, gross: row.gross, count: row.count, prevNet: prev.net, prevGross: prev.gross, change: changePct(row.net, prev.net) };
+    const net = asText(row.net);
+    const prevNet = asText(prev.net);
+    return { key, net, gross: asText(row.gross), count: row.count, prevNet, prevGross: asText(prev.gross), change: changePct(net, prevNet) };
   });
   fixed2(byPeriod, ['net', 'gross', 'prevNet', 'prevGross']);
   fixed2([total], ['net', 'vat', 'gross']);

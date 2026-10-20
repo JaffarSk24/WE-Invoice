@@ -55,9 +55,26 @@ export function div(a, b, p) {
 /** @param {string|number} a @param {string|number} b @returns {-1|0|1} */
 export function cmp(a, b) { return big(a).cmp(big(b)); }
 
+// A decimal string already written with exactly the wanted places, without
+// leading zeros and not a negative zero, rounds to itself. Stored amounts
+// are such strings, and the reports round tens of thousands of them, so
+// they skip big.js; the result is the same string big.js would give.
+const SAME_WHEN_ROUNDED = new Map();
+function roundsToItself(value, p) {
+  if (typeof value !== 'string') return false;
+  let re = SAME_WHEN_ROUNDED.get(p);
+  if (!re) {
+    re = new RegExp(`^-?(0|[1-9]\\d*)${p ? `\\.\\d{${p}}` : ''}$`);
+    SAME_WHEN_ROUNDED.set(p, re);
+  }
+  return re.test(value) && !(value[0] === '-' && /^-[0.]+$/.test(value));
+}
+
 /** Half-up rounding (away from zero on a tie). @param {string|number} value @param {number} [places=2] @returns {string} */
 export function round(value, p = 2) {
-  return big(value).round(places(p, 2), Big.roundHalfUp).toFixed(places(p, 2));
+  const n = places(p, 2);
+  if (roundsToItself(value, n)) return value;
+  return big(value).round(n, Big.roundHalfUp).toFixed(n);
 }
 
 /** Sum of a list of amounts, "0" for an empty list. @param {Iterable<string|number>} values @returns {string} */

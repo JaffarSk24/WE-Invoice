@@ -54,11 +54,15 @@ function averagePool() {
   };
 }
 
-// FIFO: layers of receipts, the oldest consumed first.
+// FIFO: layers of receipts, the oldest consumed first. The quantity and
+// the exact value of the layers are kept as running totals, so the balance
+// after a move does not add up every layer again.
 function fifoPool() {
   const layers = [];
   let shortfall = '0';
   let last = null;
+  let onHand = '0';
+  let onHandValue = '0';
   const current = () => (layers.length ? layers[0].cost : last || '0');
   return {
     current,
@@ -70,7 +74,11 @@ function fifoPool() {
         shortfall = sub(shortfall, covered);
         rest = sub(rest, covered);
       }
-      if (cmp(rest, '0') > 0) layers.push({ qty: rest, cost: c });
+      if (cmp(rest, '0') > 0) {
+        layers.push({ qty: rest, cost: c });
+        onHand = add(onHand, rest);
+        onHandValue = add(onHandValue, mul(rest, c));
+      }
       last = c;
       return { unitCost: round(c, 4), value: round(mul(q, c), 2) };
     },
@@ -80,7 +88,10 @@ function fifoPool() {
       while (cmp(rest, '0') > 0 && layers.length) {
         const layer = layers[0];
         const taken = min(rest, layer.qty);
-        value = add(value, mul(taken, layer.cost));
+        const takenValue = mul(taken, layer.cost);
+        value = add(value, takenValue);
+        onHand = sub(onHand, taken);
+        onHandValue = sub(onHandValue, takenValue);
         layer.qty = sub(layer.qty, taken);
         rest = sub(rest, taken);
         last = layer.cost;
@@ -93,10 +104,7 @@ function fifoPool() {
       return { unitCost: unit(value, q), value: round(value, 2) };
     },
     balance() {
-      let qty = '0';
-      let value = '0';
-      for (const layer of layers) { qty = add(qty, layer.qty); value = add(value, mul(layer.qty, layer.cost)); }
-      return { qty: sub(qty, shortfall), value: round(value, 2) };
+      return { qty: sub(onHand, shortfall), value: round(onHandValue, 2) };
     }
   };
 }

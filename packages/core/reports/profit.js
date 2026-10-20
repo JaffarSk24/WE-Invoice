@@ -8,7 +8,7 @@
 //     (documents with the same projectRef).
 // Everything in EUR, signed as in the sales report.
 import Big from 'big.js';
-import { isSaleDoc, isPurchaseDoc, counts, eurAmounts, partyOf, reportDate, signOf } from './amounts.js';
+import { isSaleDoc, isPurchaseDoc, counts, eurNet, partyOf, reportDate, signOf } from './amounts.js';
 import { within } from './periods.js';
 import { fastLineNet, itemKey } from './lines.js';
 
@@ -72,7 +72,7 @@ export function profitability(documents, ctx = {}) {
   for (const doc of documents || []) {
     const sale = isSaleDoc(doc);
     if ((!sale && !isPurchaseDoc(doc)) || !counts(doc) || !within(reportDate(doc), from, to)) continue;
-    const net = new Big(eurAmounts(doc).net);
+    const net = new Big(eurNet(doc));
     if (doc.projectRef) {
       const p = row(projects, doc.projectRef, { key: doc.projectRef });
       if (sale) p.revenue = p.revenue.plus(net); else p.cost = p.cost.plus(net);

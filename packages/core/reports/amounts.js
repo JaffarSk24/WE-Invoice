@@ -3,7 +3,8 @@
 // not), its signed amounts in EUR and the party it belongs to. Every
 // report goes through these helpers, so a credit note lowers the sales in
 // all of them the same way. Amounts are decimal strings (money module).
-import { add, sub, div, round, cmp, sum, abs, neg, isZero } from '../money/index.js';
+import Big from 'big.js';
+import { sub, div, round, cmp, sum, abs, neg, isZero } from '../money/index.js';
 import { computeTotals } from '../vat/index.js';
 
 // Sales: the tax documents and receipts the company issues. A proforma is
@@ -66,6 +67,23 @@ function paidOf(doc) {
   return sum(payments.map(p => p.amount || '0'));
 }
 
+// What is still due in the document's currency, never below zero.
+function dueOf(payable, paid) {
+  const rawDue = sub(abs(payable), abs(paid));
+  return cmp(rawDue, '0') > 0 ? rawDue : '0';
+}
+
+/** Signed net amount of a document in EUR (2 places): profitability needs only this. */
+export function eurNet(doc) {
+  return toEur(signed(totalsOf(doc).net, signOf(doc)), doc).amount;
+}
+
+/** What is still due on a document in EUR (2 places, never below zero): aging and cash flow need only this. */
+export function eurDue(doc) {
+  const totals = totalsOf(doc);
+  return toEur(dueOf(totals.payable ?? totals.gross, paidOf(doc)), doc).amount;
+}
+
 /**
  * Signed amounts of a document in EUR: net, vat, gross, the payable total,
  * what has been paid and what is still due (never below zero).
@@ -75,14 +93,14 @@ export function eurAmounts(doc) {
   const totals = totalsOf(doc);
   const sign = signOf(doc);
   const payable = totals.payable ?? totals.gross;
-  const rawDue = sub(abs(payable), abs(paidOf(doc)));
+  const paid = paidOf(doc);
   const parts = {
     net: toEur(signed(totals.net, sign), doc),
     vat: toEur(signed(totals.vat, sign), doc),
     gross: toEur(signed(totals.gross, sign), doc),
     payable: toEur(signed(payable, sign), doc),
-    paid: toEur(signed(paidOf(doc), sign), doc),
-    due: toEur(cmp(rawDue, '0') > 0 ? rawDue : '0', doc)
+    paid: toEur(signed(paid, sign), doc),
+    due: toEur(dueOf(payable, paid), doc)
   };
   return {
     net: parts.net.amount, vat: parts.vat.amount, gross: parts.gross.amount, payable: parts.payable.amount,
@@ -98,16 +116,30 @@ export function partyOf(doc) {
   return { id, name, key: id || (name ? `name:${name.toLowerCase()}` : 'unknown') };
 }
 
-/** Adds an amount to a named total of a map entry, creating it when missing. */
+/** A running sum (big.js number or decimal string) as a decimal string. */
+export function asText(value) {
+  if (typeof value === 'string') return value;
+  const s = value.toFixed();
+  return s === '-0' ? '0' : s;
+}
+
+/**
+ * Adds an amount to a named total of a map entry, creating it when missing.
+ * Decimal totals are kept as big.js numbers until fixed2 (or asText) writes
+ * them out, so a report over many documents does not parse every total
+ * again for each one; the arithmetic is exact, the result the same.
+ */
 export function bump(map, key, init, fields) {
   let entry = map.get(key);
   if (!entry) {
     entry = init();
     map.set(key, entry);
   }
-  Object.entries(fields).forEach(([field, value]) => {
-    entry[field] = typeof value === 'number' ? (entry[field] || 0) + value : add(entry[field] || '0', value);
-  });
+  for (const field in fields) {
+    const value = fields[field];
+    if (typeof value === 'number') entry[field] = (entry[field] || 0) + value;
+    else entry[field] = (entry[field] instanceof Big ? entry[field] : new Big(entry[field] || '0')).plus(value);
+  }
   return entry;
 }
 

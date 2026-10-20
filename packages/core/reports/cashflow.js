@@ -7,7 +7,7 @@
 import { add, sub, cmp, neg, round } from '../money/index.js';
 import { addDays, diffDays } from '../documents/dates.js';
 import { computeTotals } from '../vat/index.js';
-import { isReceivableDoc, isPayableDoc, counts, eurAmounts, partyOf, toEur, fixed2 } from './amounts.js';
+import { isReceivableDoc, isPayableDoc, counts, eurDue, partyOf, toEur, fixed2 } from './amounts.js';
 import { CoreError } from '../errors.js';
 
 export const DEFAULT_DUE_DAYS = 14;
@@ -84,7 +84,7 @@ export function cashflowForecast(data = {}, ctx = {}) {
   for (const doc of documents) {
     const incoming = isReceivableDoc(doc);
     if ((!incoming && !isPayableDoc(doc)) || !counts(doc)) continue;
-    const { due } = eurAmounts(doc);
+    const due = eurDue(doc);
     if (cmp(due, '0') <= 0) continue;
     const party = partyOf(doc);
     const dueDate = doc.dueDate || doc.issueDate || today;
