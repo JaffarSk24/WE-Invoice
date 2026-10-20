@@ -129,6 +129,8 @@ jobs:
           ls -la release
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$tag" release/* --repo "$GITHUB_REPOSITORY" --clobber
+            # A rebuilt draft must point at the code it was built from.
+            gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --notes-file notes.md
           else
             gh release create "$tag" release/* --repo "$GITHUB_REPOSITORY" --draft --title "WE Invoice $tag" --notes-file notes.md --target "$GITHUB_SHA"
           fi
