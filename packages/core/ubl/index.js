@@ -8,6 +8,7 @@ import { validateUblLocal, hasBlockingIssues } from './validate.js';
 
 export { parseUbl } from './parse.js';
 export { validateUblLocal, hasBlockingIssues } from './validate.js';
+export { EMBEDDABLE_MIME_TYPES, DEFAULT_MAX_MESSAGE_BYTES, attachmentMime, isEmbeddableMime, splitAttachments } from './attachments.js';
 export { CUSTOMIZATION_ID as UBL_CUSTOMIZATION_ID, PROFILE_ID as UBL_PROFILE_ID } from './codes.js';
 
 /**

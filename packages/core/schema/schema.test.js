@@ -83,6 +83,10 @@ describe('schemas', () => {
     expect(vd({ ...invoice, peppol: { ...state, statusChecks: 1.5 } })).toBe(false);
     expect(vd({ ...invoice, peppol: { ...state, nextAttemptAt: 'tomorrow' } })).toBe(false);
     expect(vd({ ...invoice, peppol: { ...state, nextCheckAt: 5 } })).toBe(false);
+    const invalid = { ...state, status: 'INVALID', skippedAttachments: ['zmluva.docx'], errors: [{ code: 'MESSAGE_TOO_LARGE', message: 'BT-125', field: 'attachments', params: { bytes: 11000000, limit: 10485760 } }] };
+    expect(vd({ ...invoice, peppol: invalid }), JSON.stringify(vd.errors)).toBe(true);
+    expect(vd({ ...invoice, peppol: { ...invalid, skippedAttachments: 'zmluva.docx' } })).toBe(false);
+    expect(vd({ ...invoice, peppol: { ...invalid, errors: [{ ...invalid.errors[0], params: 'big' }] } })).toBe(false);
   });
 
   it('knows every document kind of the specification', () => {

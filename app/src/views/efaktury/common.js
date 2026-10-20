@@ -3,7 +3,7 @@
 // peppol.status.*), the messages of a document's errors and the detail
 // dialog of one e-invoice.
 import { h } from '../../ui/dom.js';
-import { t } from '../../i18n/index.js';
+import { t, currentLang } from '../../i18n/index.js';
 import { statusBadge } from '../../components/status-badge.js';
 import { openModal } from '../../ui/modal.js';
 import { formatDateTime } from '../../components/dates.js';
@@ -20,10 +20,23 @@ export function peppolBadge(status) {
   return el;
 }
 
+const megabytes = (bytes) => new Intl.NumberFormat(currentLang(), { maximumFractionDigits: 1 }).format(Number(bytes || 0) / (1024 * 1024));
+
+// Placeholders of an error text: the stored message as {detail}, the file
+// names of attachment errors as {names} with their count {n}, and the sizes
+// of a message over the limit in MB.
+function errorParams(error) {
+  const params = { detail: error.message || '' };
+  const names = error.params?.names || (error.code === 'ATTACHMENT_MISSING' ? String(error.message || '').split(', ').filter(Boolean) : null);
+  if (names) Object.assign(params, { names: names.join(', '), n: names.length });
+  if (error.params?.bytes) Object.assign(params, { size: megabytes(error.params.bytes), limit: megabytes(error.params.limit) });
+  return params;
+}
+
 /** Readable text of one stored error: a rule, a provider answer or an app error. */
 export function errorText(error) {
   const issueKey = `peppol.issue.${error.code}`;
-  const issue = t(issueKey, { detail: error.message || '' });
+  const issue = t(issueKey, errorParams(error));
   if (issue !== issueKey) return issue;
   const appKey = `errors.${error.code}`;
   const app = t(appKey);
@@ -49,6 +62,9 @@ export function openPeppolDetail(document, { actions = [] } = {}) {
     errors.length ? h('div', { class: 'callout callout-warning' },
       h('strong', {}, t('peppol.detail.errors')),
       h('ul', {}, errors.map(e => h('li', {}, errorText(e))))) : null,
+    p.skippedAttachments?.length ? h('div', { class: 'callout' },
+      h('strong', {}, t('peppol.detail.skipped')),
+      h('ul', {}, p.skippedAttachments.map(name => h('li', {}, name)))) : null,
     p.status === 'REJECTED' ? h('p', { class: 'callout callout-danger' }, t('peppol.out.rejectedHint')) : null,
     p.direction === 'OUT' && document.lockedAt ? h('p', { class: 'muted small' }, t('peppol.out.locked')) : null);
   return openModal({

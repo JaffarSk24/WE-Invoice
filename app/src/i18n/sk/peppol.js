@@ -188,5 +188,14 @@ export default {
   "errors.UBL_XML_DOCTYPE": "Prijatý súbor obsahuje nepovolenú deklaráciu DOCTYPE.",
   "errors.UBL_ROOT_UNKNOWN": "Prijatý súbor nie je faktúra ani dobropis.",
   "errors.UBL_REQUIRED_MISSING": "V prijatej eFaktúre chýba povinný údaj.",
-  "errors.UBL_AMOUNT_INVALID": "Prijatá eFaktúra obsahuje neplatnú sumu."
+  "errors.UBL_AMOUNT_INVALID": "Prijatá eFaktúra obsahuje neplatnú sumu.",
+  "peppol.send.title": "Odoslať eFaktúru {number}",
+  "peppol.send.skipped": "{n, plural, one {Táto príloha sa k eFaktúre nepriloží} few {Tieto # prílohy sa k eFaktúre nepriložia} other {Týchto # príloh sa k eFaktúre nepriloží}}, lebo sieť Peppol prijíma len súbory PDF, PNG, JPEG, CSV, XLSX a ODS:",
+  "peppol.send.skippedHint": "Ak ich odberateľ potrebuje, pošlite mu ich e-mailom.",
+  "peppol.send.confirm": "Odoslať bez nich",
+  "peppol.detail.skipped": "Nepriložené prílohy (typ súboru, ktorý Peppol neprijíma)",
+  "peppol.issue.MESSAGE_TOO_LARGE": "eFaktúra s prílohami má {size} MB, poskytovateľ prijme najviac {limit} MB. Odoberte alebo zmenšite niektoré prílohy.",
+  "peppol.issue.ATTACHMENT_TYPE_SKIPPED": "{n, plural, one {Príloha sa nepriloží} few {Prílohy sa nepriložia} other {Prílohy sa nepriložia}}, lebo sieť Peppol taký typ súboru neprijíma: {names}",
+  "peppol.issue.ATTACHMENT_MISSING": "{n, plural, one {Súbor prílohy nie je na tomto zariadení} few {Súbory príloh nie sú na tomto zariadení} other {Súbory príloh nie sú na tomto zariadení}}: {names}. Otvorte doklad na zariadení, kde ste prílohy pridali, alebo ich pridajte znova.",
+  "errors.PEPPOL_ATTACHMENT_MISSING": "Niektorý súbor prílohy dokladu nie je na tomto zariadení; pridajte ho znova."
 };

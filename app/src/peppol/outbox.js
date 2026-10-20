@@ -15,9 +15,10 @@ const NEW_CONTENT = new Set(['INVALID', 'REJECTED']);
 
 /**
  * @param {{store: object, archive: object, connect: () => Promise<object>, buildPdf?: Function, pdfName?: Function,
- *   emit?: Function, now?: () => string}} deps
+ *   loadAttachment?: (id: string) => Promise<object|null>, emit?: Function, now?: () => string}} deps
+ *   loadAttachment reads the file of a document attachment kept on this device
  */
-export function createOutbox({ store, archive, connect, buildPdf = null, pdfName = null, emit = () => {}, now = () => new Date().toISOString() }) {
+export function createOutbox({ store, archive, connect, buildPdf = null, pdfName = null, loadAttachment = null, emit = () => {}, now = () => new Date().toISOString() }) {
   async function setState(document, peppol, extra = {}) {
     const next = { direction: 'OUT', errors: [], ...(document.peppol || {}), ...peppol };
     const saved = await store.update('documents', document.id, { peppol: next, ...extra });
@@ -55,8 +56,13 @@ export function createOutbox({ store, archive, connect, buildPdf = null, pdfName
     try {
       connection = await connect();
       const caps = connection.adapter.capabilities();
-      prepared = await prepareUbl({ store, document, company, buildPdf, pdfName, maxAttachmentBytes: caps.maxAttachmentBytes });
+      // The message limit: the adapter's, else the provider's from providers.json, else 10 MB (core default).
+      const maxMessageBytes = caps.maxMessageBytes || connection.provider.maxMessageBytes || null;
+      prepared = await prepareUbl({ store, document, company, buildPdf, pdfName, maxAttachmentBytes: caps.maxAttachmentBytes, maxMessageBytes, loadAttachment });
     } catch (error) {
+      if (error.code === 'PEPPOL_ATTACHMENT_MISSING') {
+        return setState(document, { status: 'INVALID', errors: [{ code: 'ATTACHMENT_MISSING', message: error.detail || '', field: 'attachments' }] });
+      }
       if (error.code === 'PEPPOL_NOT_ALLOWED' || error.code === 'PEPPOL_NO_PROVIDER' || error.code === 'PEPPOL_NO_CREDENTIALS') {
         return setState(document, { status: 'INVALID', errors: [{ code: error.code, message: error.detail || '', field: null }] });
       }
@@ -65,9 +71,11 @@ export function createOutbox({ store, archive, connect, buildPdf = null, pdfName
       }
       return fail(document, error, attempts);
     }
+    const skippedAttachments = prepared.skippedAttachments;
     if (!prepared.xml) {
-      const errors = prepared.issues.filter(i => i.severity === 'error').map(i => ({ code: i.code, message: i.bt, field: i.field }));
-      return setState(document, { status: 'INVALID', errors });
+      const errors = prepared.issues.filter(i => i.severity === 'error')
+        .map(i => ({ code: i.code, message: i.bt, field: i.field, ...(i.detail ? { params: i.detail } : {}) }));
+      return setState(document, { status: 'INVALID', errors, skippedAttachments });
     }
 
     const contact = prepared.options.contact;
@@ -77,7 +85,7 @@ export function createOutbox({ store, archive, connect, buildPdf = null, pdfName
         const check = await connection.adapter.validate(prepared.xml, { receiverId });
         if (!check.ok) return setState(document, { status: 'INVALID', errors: check.errors.map(m => ({ code: 'PEPPOL_VALIDATION', message: String(m), field: null })) });
       }
-      document = await setState(document, { status: 'READY', providerId: connection.provider.id });
+      document = await setState(document, { status: 'READY', providerId: connection.provider.id, skippedAttachments });
       const xmlFileId = await archive.saveXml(company.id, document.issueDate, document.id, prepared.xml);
       document = await setState(document, { status: 'SENDING', xmlFileId });
       const result = await connection.adapter.send({

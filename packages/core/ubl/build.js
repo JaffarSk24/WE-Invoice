@@ -28,6 +28,15 @@ function headerDates(m) {
   return [leaf('cbc:IssueDate', d.issueDate), leaf('cbc:DueDate', d.dueDate), typeCode, note, taxPoint];
 }
 
+// BT-122 to BT-125: one reference per embedded file, each with its own id.
+function embedded(id, filename, mimeCode, base64, description) {
+  return node('cac:AdditionalDocumentReference', [
+    leaf('cbc:ID', id),
+    leaf('cbc:DocumentDescription', description),
+    node('cac:Attachment', [leaf('cbc:EmbeddedDocumentBinaryObject', base64, { mimeCode, filename })])
+  ]);
+}
+
 function references(m) {
   const d = m.document;
   // PEPPOL-EN16931-R003: a buyer reference or an order reference is required; the invoice number stands in.
@@ -40,12 +49,8 @@ function references(m) {
       node('cac:InvoiceDocumentReference', [leaf('cbc:ID', p.number), leaf('cbc:IssueDate', p.issueDate)])
     ])),
     node('cac:ContractDocumentReference', [leaf('cbc:ID', d.contractReference)]),
-    m.pdf ? node('cac:AdditionalDocumentReference', [
-      leaf('cbc:ID', d.number),
-      node('cac:Attachment', [leaf('cbc:EmbeddedDocumentBinaryObject', m.pdf.base64, {
-        mimeCode: 'application/pdf', filename: m.pdf.name || `${d.number}.pdf`
-      })])
-    ]) : null
+    m.pdf ? embedded(d.number, m.pdf.name || `${d.number}.pdf`, 'application/pdf', m.pdf.base64, null) : null,
+    m.attachments.map(a => embedded(a.id, a.name, a.mime, a.base64, a.description))
   ];
 }
 

@@ -36,7 +36,9 @@ const BREAKS = {
   DUE_DATE_MISSING: () => [base({ dueDate: null })],
   CLASSIFIED_SUPPLY: () => [base({ classified: true })],
   ATTACHMENT_TOO_LARGE: () => [base(), company, { pdf: { base64: 'A'.repeat(4000) }, maxAttachmentBytes: 1000 }],
-  NO_LINES: () => [base({ lines: [{ id: 't', kind: 'TEXT', name: 'x', qty: '0', unitPrice: '0', vatCategory: 'S' }] })]
+  NO_LINES: () => [base({ lines: [{ id: 't', kind: 'TEXT', name: 'x', qty: '0', unitPrice: '0', vatCategory: 'S' }] })],
+  MESSAGE_TOO_LARGE: () => [base(), company, { attachments: [{ name: 'scan.png', mime: 'image/png', base64: 'A'.repeat(3000) }], maxMessageBytes: 4000 }],
+  ATTACHMENT_TYPE_SKIPPED: () => [base(), company, { attachments: [{ name: 'zmluva.docx', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', base64: 'UEs=' }] }]
 };
 
 describe('Slovak rules (sk-rules.json)', () => {
@@ -89,6 +91,36 @@ describe('Slovak rules (sk-rules.json)', () => {
     const xml = buildUbl(base({ buyer: { name: 'AT', icDph: 'ATU12345675', peppolId: '9914:ATU12345675', address: { country: 'AT' } }, lines: [line({ vatCategory: 'K', vatRate: null })] }), company);
     expect(xml).toContain('<cbc:EndpointID schemeID="9914">ATU12345675</cbc:EndpointID>');
     expect(xml).toContain('<cbc:EndpointID schemeID="0245">2020000004</cbc:EndpointID>');
+  });
+
+  it('SK-21 embeds the allowed files next to the PDF with unique ids and names the files left out', () => {
+    const pdf = { base64: 'JVBERi0xLjQK', name: 'FA1.pdf' };
+    const attachments = [
+      { name: 'foto.jpg', mime: '', base64: '/9j/4AA=' },
+      { name: 'rozpis.csv', mime: 'text/csv', base64: 'YSxiCg==', description: 'Rozpis prác' },
+      { name: 'zmluva.docx', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', base64: 'UEs=' },
+      { name: 'archiv.zip', mime: 'application/zip', base64: 'UEs=' }
+    ];
+    const xml = buildUbl(base(), company, { pdf, attachments });
+    expect(xml.match(/<cac:AdditionalDocumentReference>/g)).toHaveLength(3);
+    expect([...xml.matchAll(/<cac:AdditionalDocumentReference>\s*<cbc:ID>([^<]+)<\/cbc:ID>/g)].map(m => m[1])).toEqual(['FA1', 'FA1-1', 'FA1-2']);
+    expect(xml).toContain('mimeCode="image/jpeg" filename="foto.jpg"');
+    expect(xml).toContain('<cbc:DocumentDescription>Rozpis prác</cbc:DocumentDescription>');
+    expect(xml).not.toContain('zmluva.docx');
+    const skipped = validateUblLocal(base(), company, { pdf, attachments }).find(i => i.code === 'ATTACHMENT_TYPE_SKIPPED');
+    expect(skipped).toMatchObject({ rule: 'SK-21', severity: 'warning', detail: { names: ['zmluva.docx', 'archiv.zip'] } });
+  });
+
+  it('SK-20 measures the whole message against the limit, 10 MB when the provider gives none', () => {
+    const attachments = [{ name: 'scan.png', mime: 'image/png', base64: 'A'.repeat(3000) }];
+    const tooLarge = validateUblLocal(base(), company, { attachments, maxMessageBytes: 4000 }).find(i => i.code === 'MESSAGE_TOO_LARGE');
+    expect(tooLarge.severity).toBe('error');
+    expect(tooLarge.detail.limit).toBe(4000);
+    expect(tooLarge.detail.bytes).toBeGreaterThan(4000);
+    expect(validateUblLocal(base(), company, { attachments }).map(i => i.code)).not.toContain('MESSAGE_TOO_LARGE');
+    const big = [{ name: 'big.pdf', mime: 'application/pdf', base64: 'A'.repeat(10 * 1024 * 1024) }];
+    expect(validateUblLocal(base(), company, { attachments: big }).map(i => i.code)).toContain('MESSAGE_TOO_LARGE');
+    expect(() => buildUbl(base(), company, { attachments: big })).toThrow(expect.objectContaining({ code: 'UBL_INVALID' }));
   });
 
   it('the tax document to a payment uses type code 388', () => {

@@ -11,6 +11,7 @@ import { isNegative, neg, abs } from '../money/index.js';
 import { localDate } from '../documents/dates.js';
 import { TYPE_CODES, CREDIT_NOTE_CODES } from './codes.js';
 import { sellerOf, buyerOf, endpointOf } from './parties.js';
+import { splitAttachments, attachmentIds } from './attachments.js';
 import skRules from './sk-rules.json' with { type: 'json' };
 
 const negate = (value) => (value === null || value === undefined || value === '' ? value : neg(value));
@@ -52,8 +53,10 @@ function defaultReason(category, date) {
  * @param {object} document
  * @param {object} company
  * @param {{contact?: object, preceding?: Array<{number: string, issueDate?: string}>, pdf?: {base64: string, name?: string},
- *   attachPdf?: boolean, maxAttachmentBytes?: number, note?: string, prepaid?: string, cashRounding?: boolean}} options
- *   prepaid and cashRounding are passed to computeTotals (BT-113, BT-114)
+ *   attachments?: Array<{name: string, mime?: string, base64: string, description?: string}>,
+ *   attachPdf?: boolean, maxAttachmentBytes?: number, maxMessageBytes?: number, note?: string, prepaid?: string, cashRounding?: boolean}} options
+ *   prepaid and cashRounding are passed to computeTotals (BT-113, BT-114); attachments are the
+ *   user's files, embedded next to the PDF when their type is in the Peppol MIME code list
  */
 export function ublModel(document, company = {}, options = {}) {
   const typeCode = TYPE_CODES[document.kind] || null;
@@ -89,6 +92,11 @@ export function ublModel(document, company = {}, options = {}) {
   const attachWanted = options.attachPdf ?? company.defaults?.attachPdfToEInvoice ?? true;
   const pdfTooLarge = Boolean(options.maxAttachmentBytes && pdfBytes > options.maxAttachmentBytes);
 
+  const pdf = attachWanted && options.pdf?.base64 && !pdfTooLarge ? options.pdf : null;
+  const { embeddable, skipped } = splitAttachments((options.attachments || []).filter(a => a && a.base64));
+  const ids = attachmentIds(doc.number, embeddable.length, pdf ? [doc.number] : []);
+  const files = embeddable.map((a, i) => ({ id: ids[i], name: a.name, mime: a.mime, base64: a.base64, description: a.description || null }));
+
   const lines = totals.lines.map((amounts, i) => {
     const source = (doc.lines || []).filter(l => !l.kind || l.kind === 'ITEM')[i];
     const negativePrice = isNegative(amounts.unitNet);
@@ -119,8 +127,10 @@ export function ublModel(document, company = {}, options = {}) {
     defaultedReasons: defaulted,
     note: notes.filter(Boolean).join('\n'),
     preceding: (options.preceding || []).filter(p => p && p.number),
-    pdf: attachWanted && options.pdf?.base64 && !pdfTooLarge ? options.pdf : null,
+    pdf,
     pdfTooLarge: attachWanted && pdfTooLarge,
+    attachments: files,
+    skippedAttachments: skipped.map(a => a.name),
     bankAccount: bankAccountOf(doc, company)
   };
 }

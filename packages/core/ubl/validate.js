@@ -7,12 +7,16 @@ import { isTaxDocument } from '../documents/kinds.js';
 import skRules from './sk-rules.json' with { type: 'json' };
 import { ublModel } from './model.js';
 import { isDic } from './parties.js';
+import { writeUbl } from './build.js';
+import { DEFAULT_MAX_MESSAGE_BYTES, messageBytes } from './attachments.js';
 
 const RULES = new Map(skRules.rules.map(r => [r.code, r]));
 
-function issue(code, field) {
+function issue(code, field, detail = null) {
   const rule = RULES.get(code);
-  return { rule: rule.id, code, bt: rule.bt, severity: rule.severity, field: field || null };
+  const out = { rule: rule.id, code, bt: rule.bt, severity: rule.severity, field: field || null };
+  if (detail) out.detail = detail;
+  return out;
 }
 
 const VAT_ID_CATEGORIES = ['S', 'AE', 'K'];
@@ -25,6 +29,17 @@ function documentIssues(document) {
   if (!document.number) out.push(issue('NUMBER_MISSING', 'number'));
   if (!document.issueDate) out.push(issue('ISSUE_DATE_MISSING', 'issueDate'));
   if (!(document.lines || []).some(l => !l.kind || l.kind === 'ITEM')) out.push(issue('NO_LINES', 'lines'));
+  return out;
+}
+
+// SK-20, SK-21: what is left out of the message, and whether the message with its files fits the limit.
+function attachmentIssues(m, options, blocked) {
+  const out = [];
+  if (m.skippedAttachments.length) out.push(issue('ATTACHMENT_TYPE_SKIPPED', 'attachments', { names: m.skippedAttachments }));
+  if (blocked || (!m.pdf && !m.attachments.length)) return out;
+  const limit = options.maxMessageBytes || DEFAULT_MAX_MESSAGE_BYTES;
+  const bytes = messageBytes(writeUbl(m));
+  if (bytes > limit) out.push(issue('MESSAGE_TOO_LARGE', 'attachments', { bytes, limit }));
   return out;
 }
 
@@ -50,14 +65,18 @@ function modelIssues(m, document) {
  * Local checks before sending (SK rules, required BTs).
  * @param {object} document
  * @param {object} [company]
- * @param {object} [options]  as for buildUbl
- * @returns {Array<{rule: string, code: string, bt: string, severity: 'error'|'warning', field: string|null}>}
- *   code is translated by the interface as peppol.issue.<code>
+ * @param {object} [options]  as for buildUbl, plus maxMessageBytes (the provider's limit, 10 MB by default)
+ * @returns {Array<{rule: string, code: string, bt: string, severity: 'error'|'warning', field: string|null, detail?: object}>}
+ *   code is translated by the interface as peppol.issue.<code>; detail carries
+ *   {names} for ATTACHMENT_TYPE_SKIPPED and {bytes, limit} for MESSAGE_TOO_LARGE
  */
 export function validateUblLocal(document, company = {}, options = {}) {
   const out = documentIssues(document);
   if (out.some(i => i.code === 'TYPE_CODE_NOT_ALLOWED' || i.code === 'NO_LINES')) return out;
-  return [...out, ...modelIssues(ublModel(document, company, options), document)];
+  const m = ublModel(document, company, options);
+  const issues = [...out, ...modelIssues(m, document)];
+  // The size is measured on the written XML, which needs a complete model.
+  return [...issues, ...attachmentIssues(m, options, hasBlockingIssues(issues))];
 }
 
 /** True when no issue blocks sending. */

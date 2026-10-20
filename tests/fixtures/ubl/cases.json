@@ -104,7 +104,17 @@
       { "id": "l1", "name": "Poistenie", "qty": "1", "unitPrice": "40", "vatCategory": "E" },
       { "id": "l2", "name": "Servis", "qty": "1", "unitPrice": "60", "vatCategory": "S", "vatRate": "23" } ] } },
     { "id": "28-buyer-non-payer", "company": "payer", "buyer": "skNonPayer", "document": { "number": "FA2027028", "lines": [
-      { "id": "l1", "name": "Školenie", "qty": "2", "unit": { "code": "DAY" }, "unitPrice": "380", "vatCategory": "S", "vatRate": "23" } ] } }
+      { "id": "l1", "name": "Školenie", "qty": "2", "unit": { "code": "DAY" }, "unitPrice": "380", "vatCategory": "S", "vatRate": "23" } ] } },
+    { "id": "29-user-attachments", "company": "payer", "buyer": "sk", "options": {
+      "pdf": { "base64": "JVBERi0xLjQKJSBXRSBJbnZvaWNlIGZpeHR1cmUKJSVFT0YK", "name": "FA2027029.pdf" },
+      "attachments": [
+        { "name": "dodaci-protokol.pdf", "mime": "application/pdf", "base64": "JVBERi0xLjQKJSBwcm90b2tvbAolJUVPRgo=", "description": "Dodací protokol" },
+        { "name": "foto.png", "mime": "", "base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" },
+        { "name": "rozpis.csv", "mime": "text/csv", "base64": "cG9sb3prYTtob2RpbnkKYW5hbHl6YTs0Cg==" },
+        { "name": "vykaz.xlsx", "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "base64": "UEsDBBQAAAAIAA==" },
+        { "name": "zmluva.docx", "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "base64": "UEsDBBQAAAAIAA==" }
+      ] }, "document": { "number": "FA2027029", "lines": [
+      { "id": "l1", "name": "Montáž", "qty": "1", "unitPrice": "480", "vatCategory": "S", "vatRate": "23" } ] } }
   ],
   "invalid": [
     { "id": "x-buyer-without-dic", "company": "payer", "buyer": { "name": "Bez DIČ s.r.o.", "address": { "country": "SK" } }, "document": { "number": "X1", "lines": [ { "id": "l1", "name": "a", "qty": "1", "unitPrice": "1", "vatCategory": "S", "vatRate": "23" } ] }, "expect": ["BUYER_ENDPOINT_MISSING"] },

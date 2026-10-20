@@ -31,15 +31,6 @@ function lazyView(ctx, load) {
   });
 }
 
-function reportSend(ctx, document) {
-  const status = document?.peppol?.status;
-  const number = document?.number || '';
-  if (status === 'ACCEPTED' || status === 'DELIVERED') ctx.showToast(ctx.t('peppol.out.sent', { number }), { type: 'success' });
-  else if (status === 'FAILED' && document.peppol.nextAttemptAt) ctx.showToast(ctx.t('peppol.out.failed', { number }), { type: 'info' });
-  else if (status === 'FAILED') ctx.showError({ code: document.peppol.errors?.[0]?.code });
-  else if (status === 'INVALID') ctx.showToast(ctx.t('peppol.out.invalid', { number }), { type: 'error' });
-}
-
 function reportRound(ctx, round) {
   for (const document of round.changed || []) {
     if (document.peppol?.status !== 'REJECTED') continue;
@@ -59,7 +50,9 @@ export async function boot(ctx) {
       // The PDF module (with the payment QR library) loads together with
       // the service, not at start.
       loading = Promise.all([import('../peppol/service.js'), import('../pdf/index.js')]).then(([m, pdf]) => m.createPeppolService({
-        getStore: () => (hasStore() ? getStore() : null), transport, emit, buildPdf: pdf.buildPdf, pdfName: pdf.pdfFileNameFor
+        getStore: () => (hasStore() ? getStore() : null), transport, emit, buildPdf: pdf.buildPdf, pdfName: pdf.pdfFileNameFor,
+        // Attachment files live on the device, in the file store of the editor and the Inbox.
+        loadAttachment: (id) => import('../views/purchase/file-store.js').then(files => files.getFile(id))
       }));
       loading.catch(() => { loading = null; });
     }
@@ -90,7 +83,12 @@ export async function boot(ctx) {
   };
   on('peppol:send', ({ documentId } = {}) => {
     if (!documentId || demoGuard()) return;
-    service.send(documentId).then(document => reportSend(ctx, document)).catch(error => {
+    const document = hasStore() ? getStore().get('documents', documentId) : null;
+    // The window before sending names the attachments Peppol does not take; it loads on the first send.
+    import('../views/efaktury/send-dialog.js').then(async dialog => {
+      if (document && !(await dialog.confirmSend(document))) return;
+      dialog.reportSendResult(await service.send(documentId), { showToast, showError });
+    }).catch(error => {
       showError(error);
       emit('peppol:status', { documentId, status: 'FAILED' });
     });

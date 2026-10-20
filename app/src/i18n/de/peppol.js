@@ -172,5 +172,14 @@ export default {
   "errors.UBL_XML_DOCTYPE": "Die empfangene Datei enthält eine unzulässige DOCTYPE-Deklaration.",
   "errors.UBL_ROOT_UNKNOWN": "Die empfangene Datei ist weder eine Rechnung noch eine Rechnungskorrektur.",
   "errors.UBL_REQUIRED_MISSING": "In der empfangenen eFaktúra fehlt eine Pflichtangabe.",
-  "errors.UBL_AMOUNT_INVALID": "Die empfangene eFaktúra enthält einen ungültigen Betrag."
+  "errors.UBL_AMOUNT_INVALID": "Die empfangene eFaktúra enthält einen ungültigen Betrag.",
+  "peppol.send.title": "eFaktúra {number} senden",
+  "peppol.send.skipped": "{n, plural, one {Dieser Anhang wird der eFaktúra nicht beigefügt} other {Diese # Anhänge werden der eFaktúra nicht beigefügt}}, weil Peppol nur PDF-, PNG-, JPEG-, CSV-, XLSX- und ODS-Dateien annimmt:",
+  "peppol.send.skippedHint": "Wenn der Kunde sie braucht, senden Sie sie per E-Mail.",
+  "peppol.send.confirm": "Ohne sie senden",
+  "peppol.detail.skipped": "Nicht beigefügte Anhänge (Dateityp, den Peppol nicht annimmt)",
+  "peppol.issue.MESSAGE_TOO_LARGE": "Die eFaktúra mit Anhängen hat {size} MB, der Anbieter nimmt höchstens {limit} MB an. Entfernen oder verkleinern Sie einige Anhänge.",
+  "peppol.issue.ATTACHMENT_TYPE_SKIPPED": "{n, plural, one {Ein Anhang wird nicht beigefügt} other {Anhänge werden nicht beigefügt}}, weil Peppol diesen Dateityp nicht annimmt: {names}",
+  "peppol.issue.ATTACHMENT_MISSING": "{n, plural, one {Die Datei des Anhangs ist nicht auf diesem Gerät} other {Die Dateien der Anhänge sind nicht auf diesem Gerät}}: {names}. Öffnen Sie den Beleg auf dem Gerät, auf dem Sie sie hinzugefügt haben, oder fügen Sie sie erneut hinzu.",
+  "errors.PEPPOL_ATTACHMENT_MISSING": "Eine Anhangsdatei des Belegs ist nicht auf diesem Gerät; fügen Sie sie erneut hinzu."
 };

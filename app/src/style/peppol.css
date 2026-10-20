@@ -45,3 +45,5 @@
   .peppol-providers { grid-template-columns: 1fr; }
   .peppol-step { padding: 12px 14px; }
 }
+
+.peppol-skipped { margin: 8px 0; padding-left: 20px; overflow-wrap: anywhere; }

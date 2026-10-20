@@ -12,9 +12,9 @@ import { createInbox } from './inbox.js';
 
 /**
  * @param {{getStore: () => object|null, transport: object, emit: Function, buildPdf?: Function, pdfName?: Function,
- *   archive?: object, now?: () => string}} deps
+ *   loadAttachment?: Function, archive?: object, now?: () => string}} deps
  */
-export function createPeppolService({ getStore, transport, emit, buildPdf = null, pdfName = null, archive = createArchive(), now = () => new Date().toISOString() }) {
+export function createPeppolService({ getStore, transport, emit, buildPdf = null, pdfName = null, loadAttachment = null, archive = createArchive(), now = () => new Date().toISOString() }) {
   const sending = new Map();
   let receiving = null;
   let ticking = null;
@@ -33,7 +33,7 @@ export function createPeppolService({ getStore, transport, emit, buildPdf = null
     return openConnection({ transport, company });
   }
 
-  const outbox = () => createOutbox({ store: store(), archive, connect, buildPdf, pdfName, emit, now });
+  const outbox = () => createOutbox({ store: store(), archive, connect, buildPdf, pdfName, loadAttachment, emit, now });
   const inbox = () => createInbox({ store: store(), archive, connect, emit, now });
 
   /** Sends one document; a second call for the same document waits for the first. */
