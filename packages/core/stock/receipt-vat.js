@@ -3,9 +3,15 @@
 // the categories legislation gives an exemption reference for), and the
 // buyer such a line needs. Reverse charge (AE, § 69 ods. 12 zákona o DPH)
 // shifts the tax to the buyer, so it is allowed only for a buyer who is a
-// Slovak VAT payer and the receipt then carries the buyer's IČ DPH; an
-// intra-Community supply (K, § 43) needs the IČ DPH of another member
-// state. A company that is not a VAT payer sells outside VAT only.
+// Slovak VAT payer; an intra-Community supply (K, § 43) needs the IČ DPH of
+// another member state. Neither may be documented by a simplified invoice
+// (§ 74 ods. 3): the Financial Administration states that the domestic
+// reverse charge does not apply when a simplified invoice (an eKasa
+// receipt) is issued, and that a simplified invoice cannot be issued for a
+// supply exempt under § 43. Such a sale is therefore issued as a full
+// invoice (§ 74 ods. 1) with the buyer's name, address and IČ DPH, paid on
+// the spot (quickSaleKind). A company that is not a VAT payer sells
+// outside VAT only.
 import { CoreError } from '../errors.js';
 import { getLegislation, exemptionReasonsOn } from '../legislation/index.js';
 import { isValidVatId } from '../ids/validate.js';
@@ -92,16 +98,35 @@ export function salesReceiptBuyerNeed(lines) {
   return Object.keys(BUYER_VAT_ID_CATEGORIES).find(c => categories.has(c)) || null;
 }
 
+/**
+ * The document a quick sale becomes: a sales receipt (simplified invoice)
+ * when no line needs the buyer, a full invoice otherwise.
+ * @returns {'SALES_RECEIPT'|'INVOICE'}
+ */
+export function quickSaleKind(lines) {
+  return salesReceiptBuyerNeed(lines) ? 'INVOICE' : 'SALES_RECEIPT';
+}
+
+// Country of a VAT number as an address country (Greece uses EL in VAT
+// numbers, Northern Ireland XI).
+const VAT_COUNTRY = Object.freeze({ EL: 'GR', XI: 'GB' });
+
+function filled(value) {
+  return value !== null && value !== undefined && String(value).trim() !== '';
+}
+
 /** IČ DPH as stored: without spaces and dots, upper case. */
 export function normalizeVatId(value) {
   return String(value ?? '').replace(/[\s.-]/g, '').toUpperCase();
 }
 
 /**
- * Checks the buyer of a receipt whose lines need one and returns the
- * buyer snapshot to store; null when no buyer is needed and none given.
- * Throws CoreError with details.field ('name' or 'icDph'):
+ * Checks the buyer of a sale whose lines need one (the full invoice of
+ * quickSaleKind) and returns the buyer snapshot to store; null when no
+ * buyer is needed. Throws CoreError with details.field ('name', 'icDph'
+ * or 'address'):
  *   SALES_RECEIPT_BUYER_REQUIRED  the name or the IČ DPH is missing
+ *   SALES_RECEIPT_BUYER_ADDRESS  the address (street or city) is missing
  *   SALES_RECEIPT_BUYER_VAT_ID_INVALID  the IČ DPH fails its check
  *   SALES_RECEIPT_BUYER_NOT_SK  reverse charge needs a Slovak IČ DPH
  *   SALES_RECEIPT_BUYER_NOT_EU  a supply to another member state needs its IČ DPH
@@ -120,8 +145,15 @@ export function checkSalesReceiptBuyer(lines, buyer) {
   const domestic = icDph.startsWith('SK');
   if (BUYER_VAT_ID_CATEGORIES[need] === 'SK' && !domestic) throw new CoreError('SALES_RECEIPT_BUYER_NOT_SK', 'reverse charge needs a Slovak VAT payer', { field: 'icDph', category: need });
   if (BUYER_VAT_ID_CATEGORIES[need] === 'OTHER_EU' && domestic) throw new CoreError('SALES_RECEIPT_BUYER_NOT_EU', 'an intra-Community supply needs a VAT number of another member state', { field: 'icDph', category: need });
+  const given = buyer?.address || {};
+  if (!filled(given.street) && !filled(given.city)) throw new CoreError('SALES_RECEIPT_BUYER_ADDRESS', 'the buyer address is missing', { field: 'address', category: need });
+  const prefix = icDph.slice(0, 2);
+  const address = {
+    street: String(given.street ?? '').trim(), city: String(given.city ?? '').trim(), zip: String(given.zip ?? '').trim(),
+    country: filled(given.country) ? String(given.country).trim().toUpperCase() : (VAT_COUNTRY[prefix] || prefix)
+  };
   return {
-    contactId: buyer?.contactId || null, name, ico: buyer?.ico || null, dic: domestic ? icDph.slice(2) : null, icDph,
-    address: buyer?.address || {}, vatPayer: true
+    contactId: buyer?.contactId || null, name, ico: buyer?.ico || null, dic: buyer?.dic || (domestic ? icDph.slice(2) : null), icDph,
+    address, vatPayer: true
   };
 }

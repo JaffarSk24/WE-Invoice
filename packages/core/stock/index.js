@@ -13,6 +13,6 @@ export { inventoryDifferences, hasShortage } from './inventory.js';
 export { SALES_RECEIPT_METHODS, salesReceiptSeries, salesReceiptLine, issueSalesReceipt, vrpSummary } from './receipt.js';
 export {
   BUYER_VAT_ID_CATEGORIES, salesReceiptVatChoices, salesReceiptVatChoiceOf, vatOfCategory, salesReceiptVat, salesReceiptBuyerNeed,
-  normalizeVatId, checkSalesReceiptBuyer
+  normalizeVatId, checkSalesReceiptBuyer, quickSaleKind
 } from './receipt-vat.js';
 export { stockCsv } from './csv.js';

@@ -1,19 +1,23 @@
-// VAT choices of a predajka line, reverse charge (AE, § 69 ods. 12) with
-// the buyer's IČ DPH, exemptions from legislation and the VRP2 summary of
-// such a receipt.
+// VAT choices of a predajka line, reverse charge (AE, § 69 ods. 12) and
+// supplies to another member state (K) issued as a full invoice with the
+// buyer, exemptions from legislation and the VRP2 summary of such a sale.
 import { describe, it, expect } from 'vitest';
 import {
-  salesReceiptVatChoices, salesReceiptVatChoiceOf, salesReceiptVat, salesReceiptBuyerNeed, checkSalesReceiptBuyer, normalizeVatId,
+  salesReceiptVatChoices, salesReceiptVatChoiceOf, salesReceiptVat, salesReceiptBuyerNeed, checkSalesReceiptBuyer, normalizeVatId, quickSaleKind,
   salesReceiptSeries, salesReceiptLine, issueSalesReceipt, vrpSummary, missingParticulars
 } from '../index.js';
 
 const DATE = '2026-10-18';
 const NOW = '2026-10-18T08:30:00.000Z';
-const payer = { id: 'c1', name: 'Alfa, s. r. o.', vatMode: 'PAYER', icDph: 'SK2020000004', defaults: { currency: 'EUR', language: 'sk' }, series: [] };
+const payer = {
+  id: 'c1', name: 'Alfa, s. r. o.', vatMode: 'PAYER', ico: '12345679', dic: '2020000004', icDph: 'SK2020000004', registerEntry: 'OR OS Bratislava I, oddiel Sro, vložka 1/B',
+  address: { street: 'Hlavná 1', city: 'Bratislava', zip: '811 01', country: 'SK' }, defaults: { currency: 'EUR', language: 'sk' }, series: []
+};
 const phone = { id: 'i1', name: 'Mobilný telefón', price: '123.00', priceType: 'GROSS', vatCategory: 'S', vatRate: '23', stockTracked: true, unit: { code: 'C62', label: 'ks' } };
 const cable = { id: 'i2', name: 'Kábel', price: '10', priceType: 'NET', vatCategory: 'S', vatRate: '23', stockTracked: true, unit: { code: 'C62', label: 'ks' } };
-const buyer = { name: 'Beta, s. r. o.', icDph: 'sk 2020 0000 04', contactId: 'k1' };
+const buyer = { name: 'Beta, s. r. o.', icDph: 'sk 2021 0000 03', contactId: 'k1', address: { street: 'Nová 2', city: 'Košice', zip: '040 01' } };
 const series = () => salesReceiptSeries(payer, { id: 's1' }).series;
+const invoiceSeries = { id: 'fa', name: '', kind: 'INVOICE', mask: 'FA{YYYY}{N:4}', vsMask: null, reset: 'YEARLY', isDefault: true, counters: {} };
 
 describe('salesReceiptVatChoices', () => {
   it('offers the rates, the zero rate and the categories of legislation to a VAT payer', () => {
@@ -70,15 +74,22 @@ describe('the buyer of a reverse-charge receipt', () => {
   });
 
   it('must be a Slovak VAT payer for reverse charge', () => {
-    expect(checkSalesReceiptBuyer(ae, buyer)).toMatchObject({ name: 'Beta, s. r. o.', icDph: 'SK2020000004', dic: '2020000004', contactId: 'k1', vatPayer: true });
+    expect(checkSalesReceiptBuyer(ae, buyer)).toMatchObject({
+      name: 'Beta, s. r. o.', icDph: 'SK2021000003', dic: '2021000003', contactId: 'k1', vatPayer: true, address: { street: 'Nová 2', city: 'Košice', zip: '040 01', country: 'SK' }
+    });
     expect(() => checkSalesReceiptBuyer(ae, null)).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_REQUIRED', details: expect.objectContaining({ field: 'name' }) }));
     expect(() => checkSalesReceiptBuyer(ae, { name: 'Beta' })).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_REQUIRED', details: expect.objectContaining({ field: 'icDph' }) }));
     expect(() => checkSalesReceiptBuyer(ae, { name: 'Beta', icDph: 'SK2020000005' })).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_VAT_ID_INVALID' }));
     expect(() => checkSalesReceiptBuyer(ae, { name: 'Gamma', icDph: 'CZ12345679' })).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_NOT_SK' }));
   });
 
+  it('must have an address, since the sale becomes a full invoice', () => {
+    expect(() => checkSalesReceiptBuyer(ae, { ...buyer, address: { zip: '040 01' } })).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_ADDRESS', details: expect.objectContaining({ field: 'address' }) }));
+  });
+
   it('must have the VAT number of another member state for K', () => {
-    expect(checkSalesReceiptBuyer([{ vatCategory: 'K' }], { name: 'Gamma', icDph: 'CZ12345679' })).toMatchObject({ icDph: 'CZ12345679', dic: null });
+    expect(checkSalesReceiptBuyer([{ vatCategory: 'K' }], { name: 'Gamma', icDph: 'CZ12345679', address: { city: 'Brno' } })).toMatchObject({ icDph: 'CZ12345679', dic: null, address: { city: 'Brno', country: 'CZ' } });
+    expect(checkSalesReceiptBuyer([{ vatCategory: 'K' }], { name: 'Delta', icDph: 'EL123456789', address: { city: 'Athens' } }).address.country).toBe('GR');
     expect(() => checkSalesReceiptBuyer([{ vatCategory: 'K' }], buyer)).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_NOT_EU' }));
   });
 
@@ -87,40 +98,57 @@ describe('the buyer of a reverse-charge receipt', () => {
   });
 });
 
-describe('issueSalesReceipt with reverse charge', () => {
+describe('a quick sale with reverse charge', () => {
   const cart = [{ item: phone, qty: '2', vat: 'AE' }, { item: cable, qty: '1' }];
+  const ctx = (extra = {}) => ({ company: payer, series: series(), invoiceSeries, now: NOW, method: 'CARD', buyer, ...extra });
 
-  it('refuses a reverse-charge receipt without the buyer IČ DPH', () => {
-    expect(() => issueSalesReceipt(cart, { company: payer, series: series(), now: NOW })).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_REQUIRED' }));
+  it('becomes a full invoice, since a simplified invoice cannot carry it', () => {
+    expect(quickSaleKind([{ vatCategory: 'S' }, { vatCategory: 'E' }])).toBe('SALES_RECEIPT');
+    expect(quickSaleKind([{ vatCategory: 'S' }, { vatCategory: 'AE' }])).toBe('INVOICE');
+    expect(quickSaleKind([{ vatCategory: 'K' }])).toBe('INVOICE');
   });
 
-  it('issues it with the buyer and no VAT on the AE line', () => {
-    const { document } = issueSalesReceipt(cart, { company: payer, series: series(), now: NOW, method: 'CARD', buyer });
-    expect(document.buyer).toMatchObject({ name: 'Beta, s. r. o.', icDph: 'SK2020000004' });
-    expect(document.contactId).toBe('k1');
+  it('is refused without the buyer or without an invoice series', () => {
+    expect(() => issueSalesReceipt(cart, ctx({ buyer: null }))).toThrow(expect.objectContaining({ code: 'SALES_RECEIPT_BUYER_REQUIRED' }));
+    expect(() => issueSalesReceipt(cart, ctx({ invoiceSeries: null }))).toThrow(expect.objectContaining({ code: 'ISSUE_CONTEXT_REQUIRED' }));
+  });
+
+  it('is refused when the seller lacks a particular of a full invoice', () => {
+    const { registerEntry, ...seller } = payer;
+    void registerEntry;
+    expect(() => issueSalesReceipt(cart, ctx({ company: seller }))).toThrow(expect.objectContaining({ code: 'DOCUMENT_INCOMPLETE' }));
+  });
+
+  it('issues a paid invoice with the buyer and no VAT on the AE line', () => {
+    const { document, series: used } = issueSalesReceipt(cart, ctx());
+    expect(document).toMatchObject({ kind: 'INVOICE', number: 'FA20260001', status: 'PAID', taxDate: DATE, dueDate: DATE, contactId: 'k1' });
+    expect(used).toMatchObject({ id: 'fa', counters: { 2026: 2 } });
+    expect(document.buyer).toMatchObject({ name: 'Beta, s. r. o.', icDph: 'SK2021000003', address: { city: 'Košice', country: 'SK' } });
     expect(document.totals.breakdown).toEqual([
       expect.objectContaining({ category: 'AE', rate: '0', base: '200.00', vat: '0.00' }),
       expect.objectContaining({ category: 'S', rate: '23', base: '10.00', vat: '2.30' })
     ]);
     expect(document.totals.payable).toBe('212.30');
+    expect(document.payments).toEqual([expect.objectContaining({ amount: '212.30', method: 'CARD' })]);
     expect(missingParticulars(document, payer, DATE)).toEqual([]);
   });
 
-  it('gives VRP2 the category, the legal text and the buyer IČ DPH', () => {
-    const { document } = issueSalesReceipt(cart, { company: payer, series: series(), now: NOW, method: 'CASH', buyer });
+  it('tells VRP2 to record the payment of the invoice, with the category, legal text and buyer', () => {
+    const { document } = issueSalesReceipt(cart, ctx({ method: 'CASH' }));
     const summary = vrpSummary(document);
-    expect(summary.reverseCharge).toBe(true);
-    expect(summary.buyer).toEqual({ name: 'Beta, s. r. o.', icDph: 'SK2020000004' });
+    expect(summary).toMatchObject({ kind: 'INVOICE', entry: 'INVOICE_PAYMENT', number: 'FA20260001', reverseCharge: true, payable: '212.30', paid: '212.30' });
+    expect(summary.buyer).toEqual({ name: 'Beta, s. r. o.', icDph: 'SK2021000003' });
     expect(summary.lines[0]).toMatchObject({ category: 'AE', vatRate: '0', unitPrice: '100.00', total: '200.00', exemption: '§ 69 ods. 12 zákona o DPH' });
     expect(summary.vat.map(v => [v.category, v.rate, v.vat])).toEqual([['AE', '0', '0.00'], ['S', '23', '2.30']]);
     expect(summary.texts).toEqual([{ key: 'reverseCharge', text: 'prenesenie daňovej povinnosti' }]);
-    expect(summary.payable).toBe('212.30');
   });
 
-  it('keeps the exempt and zero categories apart in the summary', () => {
+  it('stays a sales receipt for exempt and zero-rated lines, with the categories apart', () => {
     const { document } = issueSalesReceipt([{ item: cable, qty: '1', vat: 'E' }, { item: cable, qty: '1', vat: 'Z' }].map((e, i) => ({ ...e, item: { ...e.item, id: `x${i}` } })),
-      { company: payer, series: series(), now: NOW, method: 'CARD' });
+      ctx({ buyer: null }));
+    expect(document.kind).toBe('SALES_RECEIPT');
     const summary = vrpSummary(document);
+    expect(summary.entry).toBe('ITEMS');
     expect(summary.vat.map(v => v.category)).toEqual(['E', 'Z']);
     expect(summary.texts.map(x => x.key)).toEqual(['exempt']);
     expect(summary.buyer).toBe(null);
