@@ -3,8 +3,9 @@
 // (missingParticulars), the same check that guards issuing a document, so
 // the PDF and the issue gate cannot disagree. On top of it a printed copy
 // needs its number even while the document is a draft, and a tax document
-// needs computed totals for the VAT summary. Field paths are reduced to
-// one entry per kind ("lines[2].qty" becomes "lines.qty").
+// needs computed totals for the VAT summary. The register entry may come
+// from the company, as the printed parties block takes it. Field paths are
+// reduced to one entry per kind ("lines[2].qty" becomes "lines.qty").
 import { missingParticulars } from '@we-invoice/core';
 import { isTaxDocument } from './legal.js';
 
@@ -16,7 +17,11 @@ const hasText = (value) => value !== null && value !== undefined && String(value
 export function missingRequisites(document, company) {
   const missing = [];
   if (!hasText(document.number)) missing.push('number');
-  for (const { field } of missingParticulars(document, company)) missing.push(field.replace(/\[\d+\]/g, ''));
+  const seller = document.seller;
+  const printed = seller && !hasText(seller.registerEntry) && hasText(company && company.registerEntry)
+    ? { ...document, seller: { ...seller, registerEntry: company.registerEntry } }
+    : document;
+  for (const { field } of missingParticulars(printed, company)) missing.push(field.replace(/\[\d+\]/g, ''));
   if (isTaxDocument(document.kind) && !document.totals) missing.push('totals');
   return [...new Set(missing)];
 }
