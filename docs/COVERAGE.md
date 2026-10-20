@@ -2,7 +2,7 @@
 
 How WE Invoice answers the weak points of other invoicing apps used in Slovakia and the Czech Republic, and where it keeps parity with their strong points. Every row has a status and the evidence: a test, an end-to-end scenario or a screen. Status values: **Done** (built and covered by a test), **Partial** (built in part; the missing part is named), **Missing** (planned but not built yet), **Not planned** (a deliberate choice, explained in the FAQ of the site).
 
-Checked against the `develop` branch after wave B, on 19 October 2026. End-to-end scenarios live in `tests/e2e`, unit tests next to the code.
+Checked against the `develop` branch after wave B and its follow-ups, on 20 October 2026. End-to-end scenarios live in `tests/e2e`, unit tests next to the code.
 
 ## A. Weak points of other invoicing apps that WE Invoice closes
 
@@ -36,7 +36,7 @@ Checked against the `develop` branch after wave B, on 19 October 2026. End-to-en
 | A26 | Overloaded interface | First invoice within 60 s, progressive disclosure, speed tested end to end | P0 | Done | `tests/e2e/first-run.spec.js`, `tests/e2e/onboarding.spec.js`, `tests/e2e/large-list.timing.spec.js` |
 | A27 | Mobile app hangs and crashes | PWA with end-to-end tests on phone viewports | P0 | Done | Every scenario runs on iPhone 14 and Pixel 7 (`playwright.config.js`); `tests/e2e/phone-quick-invoice.spec.js` |
 | A28 | No link to accounting programs | Export to Pohoda XML, Money S3 XML, Omega, ISDOC, UBL, XLSX | P0 | Done | `packages/core/exports`, `tests/e2e/exim.spec.js`, `tests/e2e/seams-inbox.spec.js` |
-| A29 | No shop connectors, or paid ones | Import of orders and invoices from shop exports (XML, CSV) | P2 | Partial | WooCommerce order exports are read by the CSV importer (`packages/core/imports/mapping.js`); a Shoptet export profile is not built. |
+| A29 | No shop connectors, or paid ones | Import of orders and invoices from shop exports (XML, CSV) | P2 | Done | Shoptet XML order exports (`packages/core/imports/shoptet.js`, `tests/e2e/exim-shoptet.spec.js`) and WooCommerce order exports through the CSV importer (`packages/core/imports/mapping.js`) come in as draft invoices |
 | A30 | Every company is a licence, confusing product line | One app, every feature, unlimited companies | P0 | Done | `tests/e2e/multi-company.spec.js`; the company switch on phones on the More screen |
 | A31 | Peppol tied to the vendor's provider | Free choice of provider (SAPI-SK and native adapters), change without losing data | P0 (beta) | Done | `app/src/peppol/adapters` (SAPI-SK, Verteco, ePošťák), `packages/core/peppol/providers.json`, `tests/e2e/peppol.spec.js`, `tests/e2e/peppol-flow.spec.js` |
 | A32 | Sending e-invoices paid above a monthly count | WE takes nothing; the user picks a provider, with the tariffs in the wizard | P0 | Done | Pricing links of providers in the eFaktura wizard (`app/src/views/settings/peppol-section-provider.js`), `tests/e2e/peppol.spec.js` |

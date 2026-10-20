@@ -13,12 +13,20 @@ function fail(message, pos) {
   throw new CoreError('UBL_XML_INVALID', `${message} at offset ${pos}`, { offset: pos });
 }
 
+// The characters XML 1.0 allows (production Char). A reference to any other,
+// such as &#0; or a lone surrogate, would pass into the exports for the
+// accountant and make their XML invalid, so the document is refused here.
+function isXmlChar(code) {
+  return code === 0x9 || code === 0xa || code === 0xd || (code >= 0x20 && code <= 0xd7ff)
+    || (code >= 0xe000 && code <= 0xfffd) || (code >= 0x10000 && code <= 0x10ffff);
+}
+
 function decode(text, pos) {
   if (!text.includes('&')) return text;
   return text.replace(/&(#x[0-9a-fA-F]+|#[0-9]+|[a-zA-Z]+);/g, (match, ref) => {
     if (ref[0] === '#') {
       const code = ref[1] === 'x' ? parseInt(ref.slice(2), 16) : parseInt(ref.slice(1), 10);
-      if (!Number.isFinite(code) || code > 0x10ffff) fail(`bad character reference ${match}`, pos);
+      if (!Number.isFinite(code) || !isXmlChar(code)) fail(`bad character reference ${match}`, pos);
       return String.fromCodePoint(code);
     }
     if (!(ref in ENTITIES)) fail(`unknown entity ${match}`, pos);

@@ -3,9 +3,10 @@
 // due date it is on the local calendar date `today`: not yet due, 1-15,
 // 16-30, 31-60 and more than 60 days. A document without a due date is
 // counted as due on its issue date.
-import { add, cmp } from '../money/index.js';
+import Big from 'big.js';
+import { cmp } from '../money/index.js';
 import { diffDays } from '../documents/dates.js';
-import { isReceivableDoc, isPayableDoc, counts, eurAmounts, partyOf, byAmountDesc, fixed2 } from './amounts.js';
+import { isReceivableDoc, isPayableDoc, counts, eurDue, partyOf, byAmountDesc, fixed2 } from './amounts.js';
 import { CoreError } from '../errors.js';
 
 export const AGING_BUCKETS = Object.freeze(['current', 'd1to15', 'd16to30', 'd31to60', 'd60plus']);
@@ -20,8 +21,15 @@ export function agingBucket(dueDate, today) {
   return 'd60plus';
 }
 
+// The sums are kept as big.js numbers while the documents are read and
+// written out once at the end: exact decimal arithmetic, so the result is
+// the same as adding the strings one by one, without parsing every total
+// again for each document.
+const ZERO = new Big(0);
+const text = (value) => value.toFixed();
+
 function emptyBuckets() {
-  return Object.fromEntries(AGING_BUCKETS.map(b => [b, '0']));
+  return Object.fromEntries(AGING_BUCKETS.map(b => [b, ZERO]));
 }
 
 function side(documents, today, wanted) {
@@ -29,35 +37,38 @@ function side(documents, today, wanted) {
   const buckets = emptyBuckets();
   const counts_ = Object.fromEntries(AGING_BUCKETS.map(b => [b, 0]));
   const rows = [];
-  let total = '0';
-  let overdue = '0';
+  let total = ZERO;
+  let overdue = ZERO;
   for (const doc of documents || []) {
     if (!wanted(doc) || !counts(doc)) continue;
-    const { due } = eurAmounts(doc);
+    const due = eurDue(doc);
     if (cmp(due, '0') <= 0) continue;
     const dueDate = doc.dueDate || doc.issueDate || doc.receivedDate;
     if (!dueDate) continue;
     const bucket = agingBucket(dueDate, today);
     const days = Math.max(0, diffDays(dueDate, today));
     const party = partyOf(doc);
-    buckets[bucket] = add(buckets[bucket], due);
+    const amount = new Big(due);
+    buckets[bucket] = buckets[bucket].plus(amount);
     counts_[bucket] += 1;
-    total = add(total, due);
-    if (bucket !== 'current') overdue = add(overdue, due);
+    total = total.plus(amount);
+    if (bucket !== 'current') overdue = overdue.plus(amount);
     let entry = contacts.get(party.key);
     if (!entry) {
-      entry = { key: party.key, id: party.id, name: party.name, total: '0', count: 0, maxDays: 0, ...emptyBuckets() };
+      entry = { key: party.key, id: party.id, name: party.name, total: ZERO, count: 0, maxDays: 0, ...emptyBuckets() };
       contacts.set(party.key, entry);
     }
-    entry[bucket] = add(entry[bucket], due);
-    entry.total = add(entry.total, due);
+    entry[bucket] = entry[bucket].plus(amount);
+    entry.total = entry.total.plus(amount);
     entry.count += 1;
     entry.maxDays = Math.max(entry.maxDays, days);
     rows.push({ id: doc.id, kind: doc.kind, number: doc.number || '', contactKey: party.key, name: party.name, dueDate, days, bucket, due, currency: doc.currency || 'EUR' });
   }
   rows.sort((a, b) => b.days - a.days || cmp(b.due, a.due));
-  const byContact = fixed2(Array.from(contacts.values()), ['total', ...AGING_BUCKETS]).sort(byAmountDesc('total'));
-  const [sums] = fixed2([{ total, overdue, ...buckets }], ['total', 'overdue', ...AGING_BUCKETS]);
+  const strings = (entry, fields) => { fields.forEach(f => { entry[f] = text(entry[f]); }); return entry; };
+  const contactRows = Array.from(contacts.values()).map(e => strings(e, ['total', ...AGING_BUCKETS]));
+  const byContact = fixed2(contactRows, ['total', ...AGING_BUCKETS]).sort(byAmountDesc('total'));
+  const [sums] = fixed2([{ total: text(total), overdue: text(overdue), ...Object.fromEntries(AGING_BUCKETS.map(b => [b, text(buckets[b])])) }], ['total', 'overdue', ...AGING_BUCKETS]);
   const { total: t, overdue: o, ...b } = sums;
   return { total: t, overdue: o, buckets: b, counts: counts_, byContact, documents: rows };
 }

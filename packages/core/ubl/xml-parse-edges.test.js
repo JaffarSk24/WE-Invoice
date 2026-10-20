@@ -58,6 +58,13 @@ describe('XML parser: accepted markup', () => {
     expect(text(parseXml('<R>&#382;&#x161;&#x1F600;&#x10FFFF;</R>'))).toBe('žš\u{1F600}\u{10FFFF}');
   });
 
+  it('refuses references to characters XML does not allow', () => {
+    for (const ref of ['&#0;', '&#x1;', '&#xD800;', '&#xDFFF;', '&#xFFFE;', '&#xFFFF;', '&#x110000;']) {
+      expect(() => parseXml(`<R>${ref}</R>`), ref).toThrow(expect.objectContaining({ code: 'UBL_XML_INVALID' }));
+    }
+    expect(text(parseXml('<R>a&#9;b&#xA;c&#xD;d&#xE000;&#xFFFD;</R>'))).toBe('a\tb\nc\rd\ue000\ufffd');
+  });
+
   it('leaves a lone ampersand that is not a reference as it is', () => {
     expect(text(parseXml('<R>AT&T</R>'))).toBe('AT&T');
   });
