@@ -49,20 +49,14 @@ All notable changes to this project are documented here. The format follows [Kee
 - A file this device lacks is taken from Drive when it is opened, previewed or sent by e-mail, and kept on the device as a cache. Attachments of received eFaktúry stored earlier as `<id>.<ext>.enc` open the same way.
 - States of an attachment file next to its name: waiting for the upload, in Google Drive, downloading, not uploaded yet by the other device, Google Drive out of reach. A file that cannot be opened says why; Settings, Synchronizácia counts the files waiting for their upload.
 - Texts in all six languages; unit tests on the content format, the file store and two devices over the mock Drive; an end-to-end test with two devices over the mocked Drive.
-
-#### Changed (20 October)
-
-- `views/purchase/file-store.js` keeps `putFile`, `getFile` and `deleteFile` as they were and gains `localFiles` and `setRemoteFiles`: the sync registers itself at start, so the editor, the Inbox, the preview and the e-mail need no change to read files from Drive.
-- The Slovak sync texts say "Google Drive" instead of "Google Disk", as the glossary keeps the name.
-
-#### Added (20 October)
-
 - `removedAttachments` on a document (contract change of the Document schema): the attachments removed from an issued or received document, with id, name, type, size, the time and the reason of the removal. The screens do not list them; the change log still records the removal.
 - Retention rules of attachment files in Google Drive (`app/src/sync/attachments/retention.js`), with the archive period from the legislation value `archiveYears` (§ 76 zákona o DPH): an attachment removed from a draft, and the file of a deleted Inbox record that is not a document yet, leave Drive and the devices as before; an attachment removed from an issued or received document stays in Drive as an archived reference; a document in the recycle bin keeps its files, which may go only when it is removed for good and it was a draft or its archive period is over.
 - The sync records the last day each known file must be kept, so a file of an archived document that disappears from the data stays in Drive until its archive period ends. A device that never saw a reference still removes nothing.
 
 #### Changed (20 October)
 
+- `views/purchase/file-store.js` keeps `putFile`, `getFile` and `deleteFile` as they were and gains `localFiles` and `setRemoteFiles`: the sync registers itself at start, so the editor, the Inbox, the preview and the e-mail need no change to read files from Drive.
+- The Slovak sync texts say "Google Drive" instead of "Google Disk", as the glossary keeps the name.
 - Removing an attachment from an issued or received document moves it to `removedAttachments` and keeps the file on the device and in Drive; removing it from a draft still drops the file.
 - Deleting a received document from the purchase screens keeps its files (the document can be restored from the bin); deleting an Inbox record that is not a document yet still drops its file. Received eFaktúry waiting in the Inbox count as received documents.
 - A copy of a document starts without `removedAttachments`, as it starts without attachments.
@@ -186,6 +180,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Website, waitlist, privacy and terms
 
 #### Added
+
 - Landing page in six languages (`site/sk/`, `cs/`, `en/`, `de/`, `ru/`, `uk/`) with hreflang and canonical links: hero, the eFaktura 2027 block with the waitlist form, nine feature cards, the comparison with paid apps without competitor names (facts as of 10/2026), privacy and openness, the three steps to connect an e-invoicing provider, FAQ including what the app deliberately does not do, the White Eagles block and the footer with the company details.
 - Root pages (`site/index.html`, `privacy.html`, `terms.html`, `thanks.html`) choose the language of the browser, remember the visitor's choice and fall back to Slovak; `404.html` for GitHub Pages.
 - Waitlist form posting to `POST /v1/waitlist` of the gateway: e-mail, language, four interests, VAT payer, GDPR consent, honeypot and form open time; messages in the language of the page; thank-you page per language.
@@ -198,6 +193,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Tests `tests/site/`: every language page exists with the same structure, hreflang and canonical are correct, no broken internal link, the form carries every field of the contract, structured data, sitemap, Open Graph image sizes, e-mail placeholders, number and unit spacing; e2e `tests/e2e/site.spec.js` for the redirect, the consent banner and the form.
 
 #### Changed
+
 - `site/index.html` is now the language chooser instead of a one-page placeholder.
 - Waitlist without e-mails to applicants by default: a sign-up is stored at once and the owner gets a notice (Mailgun HTTP API or SMTP) with Reply-To set to the applicant, to answer personally; the double opt-in stays available with `WAITLIST_CONFIRM_EMAIL=true`. The form, the success message and the privacy policy say so in all six languages and name Mailgun (EU servers) as the processor of the notice.
 - The privacy policy now says the desktop app looks for updates at start-up and once a day.
@@ -531,8 +527,6 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### End-to-end testing and acceptance
 
-#### End-to-end testing and acceptance (WP-QA), follow-up (20 October)
-
 #### Fixed (20 October)
 
 - A received e-invoice whose XML referred to a character that XML does not allow (such as `&#0;` or a lone surrogate) was read anyway, and the character then reached the exports for the accountant and made their XML invalid; such a document is now refused as invalid XML.
@@ -587,6 +581,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Skeleton
 
 #### Added
+
 - Monorepo skeleton: npm workspaces, Vite (web and desktop modes), Vitest, ESLint flat config, Playwright.
 - `packages/core/schema`: JSON Schemas and JSDoc typedefs of every entity, schema version 1, migration runner.
 - `packages/core` public API with the contract signatures; unimplemented functions throw `NotImplementedError`.
@@ -602,4 +597,5 @@ All notable changes to this project are documented here. The format follows [Kee
 - Repository hygiene, dictionary completeness and hardcoded-text tests.
 
 #### Notes
+
 - Data model additions beyond the specification: document kind `SALES_RECEIPT` (predajka) and payment method `QR_ON_SITE` (QR payment at the point of sale, relevant for eKasa).
