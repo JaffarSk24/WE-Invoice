@@ -6,6 +6,7 @@
 // opened again.
 import { test, expect } from '@playwright/test';
 import { seed, company, contact, invoice, offline } from './support/seed.js';
+import { cardSettled } from './support/card.js';
 
 const SEPTEMBER = invoice({ number: 'FA20260009', issueDate: '2026-09-10', taxDate: '2026-09-10', dueDate: '2026-09-24' });
 const CARD = `#/invoices/${SEPTEMBER.id}`;
@@ -15,6 +16,7 @@ test.beforeEach(async ({ page }) => {
   await offline(page);
   await seed(page, { company: company(), contacts: [contact()], documents: [SEPTEMBER] }, { hash: CARD });
   await expect(page.locator('main h1')).toHaveText('Faktúra FA20260009');
+  await cardSettled(page, 'FA20260009');
 });
 
 async function more(page, selector) {
@@ -23,6 +25,9 @@ async function more(page, selector) {
 }
 
 test('a closed VAT period keeps its invoice out of the editor', async ({ page }) => {
+  // A long scenario: the period is closed and opened again, and the card
+  // opens three times; the default 30 seconds also cover the seeding.
+  test.setTimeout(60_000);
   await page.goto('./#/vat-records');
   await expect(page.locator('.tax-period-name')).toContainText('september 2026');
   await expect(page.locator('main#main')).toContainText('FA20260009');
@@ -31,6 +36,7 @@ test('a closed VAT period keeps its invoice out of the editor', async ({ page })
   await expect(page.locator('main#main')).toContainText('Obdobie je uzavreté');
 
   await page.goto(`./${CARD}`);
+  await cardSettled(page, 'FA20260009');
   await page.locator('#detail-edit').click();
   await expect(page.locator('.toast', { hasText: 'Doklad patrí do uzavretého obdobia.' })).toBeVisible();
   await expect(page.locator('#editor-save')).toHaveCount(0);
@@ -46,6 +52,7 @@ test('a closed VAT period keeps its invoice out of the editor', async ({ page })
   await page.locator('.modal-content').getByRole('button', { name: 'Otvoriť obdobie' }).click();
   await expect(page.locator('main#main')).toContainText('Obdobie je otvorené');
   await page.goto(`./${CARD}`);
+  await cardSettled(page, 'FA20260009');
   await page.locator('#detail-edit').click();
   await page.locator('.modal-content').getByRole('button', { name: /Pokračovať|Áno|OK/ }).click();
   await expect(page.locator('#editor-save')).toBeVisible();
