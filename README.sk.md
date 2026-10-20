@@ -15,7 +15,9 @@
 
 WE Invoice je tretia bezplatná aplikácia rady WE od [White Eagles](https://whiteeagles.sk/), po [WE Time Tracker](https://github.com/JaffarSk24/WE-Time-Tracker) a [WE Budget](https://github.com/JaffarSk24/WE-Budget). Robí to, za čo si platené fakturačné služby účtujú 5 až 15 € mesačne, bez taríf, bez limitov na kontakty, doklady či firmy a bez registrácie.
 
-> **Stav: prvá verzia sa pripravuje na vydanie.** Všetky funkcie prvej verzie sú hotové a pokryté testami na počítači aj v telefóne; daňové výkazy prechádzajú oficiálnymi schémami a kontroluje ich účtovník. Zatiaľ nie je nič vydané; sledujte [vydania](https://github.com/JaffarSk24/WE-Invoice/releases).
+**Stiahnuť:** [webová aplikácia](https://jaffarsk24.github.io/WE-Invoice/app/) (dá sa nainštalovať aj do iPhonu a Androidu) · [macOS a Windows](https://github.com/JaffarSk24/WE-Invoice/releases/latest) · [web](https://jaffarsk24.github.io/WE-Invoice/sk/)
+
+> **Verzia 0.1.0, prvá verzia.** Všetky funkcie sú pokryté testami na počítači aj v telefóne. Daňové výkazy prechádzajú oficiálnymi schémami Finančnej správy a kontroluje ich účtovník, preto ich pred podaním skontrolujte. eFaktúra je v bete a otvára sa postupne ľuďom zo zoznamu čakateľov.
 
 English version: [README.md](README.md).
 
@@ -42,9 +44,9 @@ English version: [README.md](README.md).
 
 ## Inštalácia
 
-**Web a telefón:** otvorte [jaffarsk24.github.io/WE-Invoice/app](https://jaffarsk24.github.io/WE-Invoice/app/) a pridajte si ho na plochu (bude k dispozícii s prvým vydaním).
+**Web a telefón:** otvorte [jaffarsk24.github.io/WE-Invoice/app](https://jaffarsk24.github.io/WE-Invoice/app/) a pridajte si ho na plochu (Safari: Zdieľať, Pridať na plochu; Chrome: Inštalovať aplikáciu). Po prvom spustení funguje aj offline.
 
-**Počítač:** inštalátory sú v [GitHub Releases](https://github.com/JaffarSk24/WE-Invoice/releases). Aplikácia sa odtiaľ aktualizuje sama a každé stiahnutie overuje kontrolným súčtom sha512.
+**Počítač:** inštalátory sú v [poslednom vydaní](https://github.com/JaffarSk24/WE-Invoice/releases/latest). Aplikácia sa odtiaľ aktualizuje sama a každé stiahnutie overuje kontrolným súčtom sha512.
 
 ### macOS (10.15 a novší, Intel aj Apple silicon)
 

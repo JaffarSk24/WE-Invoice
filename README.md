@@ -13,7 +13,7 @@
   <a href="https://github.com/JaffarSk24/WE-Invoice/actions/workflows/ci.yml"><img src="https://github.com/JaffarSk24/WE-Invoice/actions/workflows/ci.yml/badge.svg?branch=develop" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/platforms-web%20%7C%20iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Windows-0891b2.svg" alt="Platforms">
-  <img src="https://img.shields.io/badge/status-in%20development-f59e0b.svg" alt="Status: in development">
+  <img src="https://img.shields.io/badge/version-0.1.0-16a34a.svg" alt="Version 0.1.0">
 </p>
 
 <p align="center">
@@ -22,7 +22,9 @@
 
 WE Invoice is the third free app of the WE line by [White Eagles](https://whiteeagles.sk/), after [WE Time Tracker](https://github.com/JaffarSk24/WE-Time-Tracker) and [WE Budget](https://github.com/JaffarSk24/WE-Budget). It does what paid Slovak invoicing services charge 5 to 15 € a month for, with no plans, no limits on contacts, documents or companies, and no registration.
 
-> **Status: the first version is being prepared for release.** Every feature of the first version is built and covered by unit and end-to-end tests on desktop and phone screens; the tax reports validate against the official schemas and are being checked by an accountant. Nothing is released yet; follow the [releases](https://github.com/JaffarSk24/WE-Invoice/releases).
+**Get it:** [web app](https://jaffarsk24.github.io/WE-Invoice/app/) (also installs on iPhone and Android) · [macOS and Windows](https://github.com/JaffarSk24/WE-Invoice/releases/latest) · [website](https://jaffarsk24.github.io/WE-Invoice/)
+
+> **Version 0.1.0, the first version.** Every feature below is covered by unit and end-to-end tests on desktop and phone screens. The tax reports validate against the official schemas of the Financial Administration and are being checked by an accountant, so check them before you file. eFaktúra is a beta, opened in waves to people from the waiting list.
 
 Slovenská verzia: [README.sk.md](README.sk.md).
 
@@ -96,9 +98,9 @@ Full details are in the [privacy policy](https://jaffarsk24.github.io/WE-Invoice
 
 ## Installing
 
-**Web and phone:** open [jaffarsk24.github.io/WE-Invoice/app](https://jaffarsk24.github.io/WE-Invoice/app/) and add it to the home screen (published with the first release).
+**Web and phone:** open [jaffarsk24.github.io/WE-Invoice/app](https://jaffarsk24.github.io/WE-Invoice/app/) and add it to the home screen (Safari: Share, Add to Home Screen; Chrome: Install app). It works offline after the first start.
 
-**Desktop:** installers come from [GitHub Releases](https://github.com/JaffarSk24/WE-Invoice/releases). The app updates itself from there and checks the sha512 of every download against the release's `latest-mac.yml` or `latest.yml`.
+**Desktop:** installers come from the [latest release](https://github.com/JaffarSk24/WE-Invoice/releases/latest). The app updates itself from there and checks the sha512 of every download against the release's `latest-mac.yml` or `latest.yml`.
 
 ### macOS (10.15 or newer, Intel and Apple silicon)
 
@@ -149,12 +151,14 @@ npm --prefix gateway install && npm run test:gateway
 
 ## Roadmap
 
-| Release | Content |
+Version 0.1.0 already holds the four planned releases: public invoicing, the eFaktúra beta, money and purchases, taxes and bookkeeping.
+
+| Next | What |
 |---|---|
-| **R1** public invoicing | Invoices and all sales documents, contacts with register lookup, PDF with QR, recurring invoices, reminders, encrypted Drive sync, web and desktop, website with the waitlist |
-| **R2** eFaktúra beta | Sending and receiving through Peppol, provider wizard, XML archive, invitations from the waitlist |
-| **R3** money and purchases | Bank statements and matching, SEPA orders, cash desk, Inbox with recognition, eKasa receipts, exports for the accountant, migration |
-| **R4** taxes and bookkeeping | KV, SV and VAT return, cash journal, fixed assets, year-end closing, stock, reports |
+| **eFaktúra for everyone** | The beta opens in waves before the duty starts on 1 January 2027 |
+| **Accountant's check** | The KV, SV and VAT return confirmed by an accountant, then the "check before you file" note goes away |
+| **Signed installers** | Notarized macOS app and a signed Windows installer, so no Terminal command and no SmartScreen warning |
+| **eKasa** | Cash register documents through a certified cloud register, once a provider shows its certification |
 
 ## License
 
