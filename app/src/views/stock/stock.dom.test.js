@@ -98,8 +98,9 @@ describe('quick sale screen', () => {
     expect(root.querySelector('#sale-vrp-hint').hidden).toBe(false);
   });
 
-  it('sells a reverse-charge line only with the buyer IČ DPH and shows it for VRP2', async () => {
-    await store.insert('contacts', { kind: 'COMPANY', name: 'Beta, s. r. o.', icDph: 'SK2020000004', country: 'SK' });
+  it('issues a reverse-charge sale as an invoice with the buyer and tells VRP2 to record its payment', async () => {
+    await store.updateCompany({ ico: '12345679', dic: '2020000004', registerEntry: 'OR OS Bratislava I, oddiel Sro, vložka 1/B', address: { street: 'Hlavná 1', city: 'Bratislava', zip: '811 01', country: 'SK' } });
+    await store.insert('contacts', { kind: 'COMPANY', name: 'Beta, s. r. o.', icDph: 'SK2021000003', country: 'SK', billingAddress: { street: 'Nová 2', city: 'Košice', zip: '040 01', country: 'SK' } });
     const root = document.createElement('main');
     document.body.append(root);
     renderQuickSale(root);
@@ -117,14 +118,19 @@ describe('quick sale screen', () => {
     const pick = root.querySelector('#sale-buyer-pick');
     pick.value = pick.options[1].value;
     pick.dispatchEvent(new Event('change'));
-    expect(root.querySelector('#sale-buyer-icdph').value).toBe('SK2020000004');
+    expect(root.querySelector('#sale-buyer-icdph').value).toBe('SK2021000003');
+    expect(root.querySelector('#sale-buyer-city').value).toBe('Košice');
     root.querySelector('#sale-sell').click();
     await until(() => document.querySelector('#stock-vrp-buyer'));
-    expect(document.querySelector('#stock-vrp-buyer').textContent).toBe('Beta, s. r. o., SK2020000004');
+    expect(document.querySelector('#stock-vrp-number').textContent).toMatch(/^FA\d{4}0001$/);
+    expect(document.querySelector('#stock-vrp-invoice')).not.toBe(null);
+    expect(document.querySelector('#stock-vrp-buyer').textContent).toBe('Beta, s. r. o., SK2021000003');
     expect(document.querySelector('#stock-vrp td[data-category="AE"]').textContent).toBe(t('vat.category.AE'));
-    expect(document.querySelector('#stock-vrp-reverse-charge')).not.toBe(null);
-    const receipt = store.list('documents').find(d => d.kind === 'SALES_RECEIPT');
-    expect(receipt.buyer).toMatchObject({ name: 'Beta, s. r. o.', icDph: 'SK2020000004' });
-    expect(receipt.lines[0]).toMatchObject({ vatCategory: 'AE', vatRate: '0', exemptionReasonCode: 'VATEX-EU-AE' });
+    const invoice = store.list('documents').find(d => d.kind === 'INVOICE');
+    expect(invoice).toMatchObject({ status: 'PAID', buyer: { name: 'Beta, s. r. o.', icDph: 'SK2021000003', address: { city: 'Košice' } } });
+    expect(invoice.lines[0]).toMatchObject({ vatCategory: 'AE', vatRate: '0', exemptionReasonCode: 'VATEX-EU-AE' });
+    expect(store.list('documents').some(d => d.kind === 'SALES_RECEIPT')).toBe(false);
+    expect(store.company().series.find(x => x.kind === 'INVOICE').counters).toEqual({ [invoice.issueDate.slice(0, 4)]: 2 });
+    expect(levelRows(stockData()).find(r => r.id === item.id).qty).toBe('4');
   });
 });

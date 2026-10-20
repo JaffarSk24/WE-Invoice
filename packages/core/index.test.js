@@ -24,7 +24,7 @@ const API = [
   'lowStockItems', 'costStockMoves', 'stockValuation', 'reconcileDocumentMoves', 'documentsAffectedBy', 'deliveredByNote',
   'documentMoveIds', 'stockReservations', 'availableStock', 'priceFor', 'inventoryDifferences', 'hasShortage', 'salesReceiptSeries', 'salesReceiptLine',
   'issueSalesReceipt', 'vrpSummary', 'stockCsv', 'salesReceiptVatChoices', 'salesReceiptVatChoiceOf', 'vatOfCategory', 'salesReceiptVat',
-  'salesReceiptBuyerNeed', 'normalizeVatId', 'checkSalesReceiptBuyer',
+  'salesReceiptBuyerNeed', 'normalizeVatId', 'checkSalesReceiptBuyer', 'quickSaleKind',
   'salesReport', 'agingReport', 'cashflowForecast', 'searchIndex', 'ekasaReceiptText',
   'searchQuery', 'profitability', 'averagePurchasePrices', 'paymentDelays', 'recurringRuns', 'agingBucket', 'periodKey', 'periodKeys',
   'eurAmounts', 'partyOf', 'trashEntries', 'restoredRecord', 'purgedRecord', 'auditEntryFor', 'filterAudit', 'changedFields',

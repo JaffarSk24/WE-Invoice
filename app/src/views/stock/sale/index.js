@@ -2,9 +2,9 @@
 // left (search, or a USB barcode scanner that types the code and Enter),
 // the cart on the right with quantities, totals, cash or card and an
 // optional partial payment. Each line has its VAT choice, as on an invoice;
-// a reverse-charge line asks for the buyer's IČ DPH. "Sell" issues the
-// receipt, moves the stock and shows what to type into the virtual cash
-// register.
+// a reverse-charge line asks for the buyer, and the sale is then issued as
+// a full invoice instead of a sales receipt. "Sell" issues the document,
+// moves the stock and shows what to type into the virtual cash register.
 import { ekasaExempt } from '@we-invoice/core';
 import { h, icon, append, clear } from '../../../ui/dom.js';
 import { refreshIcons } from '../../../ui/icons.js';
@@ -130,7 +130,7 @@ export function renderQuickSale(root) {
   }
 
   function saleDone(document, warnings) {
-    showToast(t('stock.sale.done', { number: document.number || '' }), { type: 'success' });
+    showToast(t(document.kind === 'INVOICE' ? 'stock.sale.doneInvoice' : 'stock.sale.done', { number: document.number || '' }), { type: 'success' });
     const names = nameIndex(data.items);
     warnings.forEach(w => showToast(t('stock.warning.negative', { item: names(w.itemId), qty: qtyText(w.qty) }), { type: 'info', duration: 8000 }));
   }
