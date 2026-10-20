@@ -191,8 +191,8 @@
         "a": "Several providers offer receiving for free. Sending costs from 0 to about 3 € a month, or a few cents per document, depending on the provider. You pay them directly; WE Invoice adds nothing on top."
       },
       {
-        "q": "Why does my Mac say the developer is unverified?",
-        "a": "The desktop app isn't yet signed with an Apple developer certificate, which costs 99 USD a year. On first launch, right-click the app and choose Open, or allow it under Settings, Privacy & Security. Later updates run without the warning."
+        "q": "Why won't my Mac open the app?",
+        "a": "The desktop app is not yet notarized by Apple, so macOS refuses to open it after a download from the browser. Before the first start, run this once in Terminal: xattr -cr \"/Applications/WE Invoice.app\". After that the app opens like any other, and its own updates need no such step."
       },
       {
         "q": "Will it replace my accountant?",

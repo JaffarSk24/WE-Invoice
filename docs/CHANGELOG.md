@@ -73,6 +73,11 @@ All notable changes to this project are documented here. The format follows [Kee
 - The company made in the "My company" wizard is saved in the store and synced to Google Drive; it used to stay only on the device. A company kept on the device by an earlier version moves into the store at start, the device copy is dropped only after the store has written it, and the company switcher and the end of sample mode work through the store.
 - Phone layout of the Overview: quick actions in a 2 by 2 grid with the icon above the label, badges no longer wrap, the page header wraps cleanly, widget titles take the free width and the move arrows are hidden on a phone (the order is changed in "Widgets"), and the create menu dims the page behind it and closes on a tap outside.
 
+#### Changed (20 October)
+
+- The desktop app shows a button to its own settings screen (updates, backups, tray) in Settings, About.
+- The settings menu is 256 px wide, and the sync section is called "Синхронизация и защита" in Russian and "Синхронізація та захист" in Ukrainian, so no menu item wraps.
+
 ### PDF documents and QR payments
 
 #### Added
@@ -90,6 +95,10 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Changed
 
 - `bysquare` added as a dependency of the core, `pdfmake` as a build dependency of the app.
+
+#### Changed (20 October)
+
+- The PDF check of mandatory particulars uses missingParticulars() of the core, the same rules that guard issuing, so a document that could be issued is never refused a PDF. A printed copy still needs its number and a tax document its totals.
 
 ### Gateway
 
@@ -109,6 +118,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - The proxy allow-list is built from packages/core/peppol/providers.json at start (PROVIDERS_FILE and PROVIDER_BASE_URLS in .env adjust it); the Docker image is built from the repository root so it carries that file.
 - gateway/.env.example lists every setting of the gateway.
+
+#### Fixed (20 October)
+
+- Confirming and unsubscribing from the waiting list redirect to the site pages in the language of the sign-up (`/<lang>/thanks.html`, `/<lang>/unsubscribed.html`); the old `/waitlist/...` pages never existed.
 
 ### Desktop app
 
@@ -153,6 +166,12 @@ All notable changes to this project are documented here. The format follows [Kee
 - `site/index.html` is now the language chooser instead of a one-page placeholder.
 - Waitlist without e-mails to applicants by default: a sign-up is stored at once and the owner gets a notice (Mailgun HTTP API or SMTP) with Reply-To set to the applicant, to answer personally; the double opt-in stays available with `WAITLIST_CONFIRM_EMAIL=true`. The form, the success message and the privacy policy say so in all six languages and name Mailgun (EU servers) as the processor of the notice.
 - The privacy policy now says the desktop app looks for updates at start-up and once a day.
+
+#### Changed (20 October)
+
+- A page in six languages confirms that the e-mail was taken off the waiting list; it is kept out of the sitemap like the thank-you page.
+- The Mac FAQ gives the one Terminal command needed before the first start, without the price of Apple's developer programme.
+- Privacy policy and terms are effective from 19 October 2026; the company is written "White Eagles & Co. s. r. o." everywhere, including LICENSE and package.json.
 
 ### Reports, search, recycle bin and change log
 

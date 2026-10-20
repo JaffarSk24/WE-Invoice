@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Free invoicing and eFaktura (Peppol) for Slovak sole traders and small companies, with VAT reports and simple bookkeeping. Data stays encrypted in the user's own Google Drive.",
   "author": {
-    "name": "White Eagles & Co. s.r.o.",
+    "name": "White Eagles & Co. s. r. o.",
     "url": "https://whiteeagles.sk/"
   },
   "license": "MIT",
@@ -133,7 +133,7 @@
         "releaseType": "release"
       }
     ],
-    "copyright": "Copyright (c) 2026 White Eagles & Co. s.r.o."
+    "copyright": "Copyright (c) 2026 White Eagles & Co. s. r. o."
   },
   "dependencies": {
     "nodemailer": "^10.1.7"

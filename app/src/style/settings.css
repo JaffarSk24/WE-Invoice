@@ -1,6 +1,6 @@
 /* Settings (sections list and panel) and Help (topic list). */
 
-.settings-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px; align-items: start; }
+.settings-layout { display: grid; grid-template-columns: 256px minmax(0, 1fr); gap: 20px; align-items: start; }
 .settings-select { display: none; }
 .settings-nav { display: flex; flex-direction: column; gap: 2px; }
 .settings-panel { padding: 22px 24px; min-height: 300px; }

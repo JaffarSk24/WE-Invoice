@@ -31,6 +31,7 @@ export default {
   "settings.about.version": "Version",
   "settings.about.updates": "Updates",
   "settings.about.updatesHint": "The web version updates itself. On the desktop a new version is offered at start.",
+  "settings.about.desktopSettings": "Desktop app settings",
   "settings.about.github": "Source code on GitHub",
   "settings.about.privacy": "Privacy",
   "settings.about.whiteEagles": "White Eagles: web and advertising",

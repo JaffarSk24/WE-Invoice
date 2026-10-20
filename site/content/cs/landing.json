@@ -191,8 +191,8 @@
         "a": "Týká se slovenské eFaktury: digitální pošťák je certifikovaný slovenský poskytovatel eFaktur. Přijímání nabízí řada z nich zdarma, odesílání stojí od 0 do zhruba 3 € měsíčně, nebo několik centů za doklad, podle poskytovatele. Platíte přímo jemu, WE Invoice si nic nepřidává. České firmy mají ISDOC v aplikaci zdarma a bez poskytovatele."
       },
       {
-        "q": "Proč Mac hlásí neověřeného vývojáře?",
-        "a": "Desktopová aplikace zatím není podepsaná vývojářským certifikátem Apple, který stojí 99 USD ročně. Při prvním spuštění otevřete aplikaci přes pravé tlačítko a Otevřít, nebo ji povolte v Nastavení, Soukromí a zabezpečení. Další aktualizace už běží bez upozornění."
+        "q": "Proč Mac nechce aplikaci otevřít?",
+        "a": "Aplikace zatím není notarizovaná společností Apple, proto ji macOS po stažení z prohlížeče odmítne otevřít. Před prvním spuštěním jednou zadejte v Terminálu: xattr -cr \"/Applications/WE Invoice.app\". Potom se otevírá jako každá jiná aplikace a její aktualizace tento krok nepotřebují."
       },
       {
         "q": "Nahradí to účetního?",

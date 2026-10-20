@@ -129,13 +129,23 @@ describe('mandatory particulars', () => {
     expect(missingRequisites(fx.quote, fx.company)).toEqual([]);
   });
 
-  it('lists what a tax document lacks', () => {
+  it('lists what a tax document lacks, by the same rules as the issue check', () => {
     const bare = { kind: 'INVOICE', seller: { name: 'X', address: { city: 'Y' }, vatPayer: true }, buyer: {}, lines: [{ kind: 'ITEM', name: '', qty: '', unitPrice: '1', vatCategory: 'S' }] };
-    expect(missingRequisites(bare, fx.company)).toEqual(['number', 'issueDate', 'lines.name', 'lines.qty', 'seller.ico', 'seller.icDph', 'buyer.name', 'buyer.address', 'taxDate', 'totals', 'lines.vatRate']);
-    expect(missingRequisites({ ...fx.creditNote, links: [] }, fx.company)).toEqual(['links.corrects']);
-    expect(missingRequisites(bare, { ...fx.company, registerEntry: null })).toContain('seller.registerEntry');
+    expect(missingRequisites(bare, fx.company).sort()).toEqual(['buyer.name', 'issueDate', 'lines.name', 'lines.qty', 'lines.vatRate', 'number', 'seller.address', 'seller.icDph', 'seller.ico', 'totals']);
+    expect(missingRequisites({ ...fx.creditNote, links: [] }, fx.company)).toEqual(['links']);
+    expect(missingRequisites({ ...bare, buyer: { name: 'B' } }, fx.company)).toContain('buyer.address');
     expect(missingRequisites({ ...fx.nonPayerInvoice, seller: { ...fx.nonPayerInvoice.seller, dic: null } }, fx.nonPayerCompany)).toEqual(['seller.dic']);
     expect(missingRequisites({ ...fx.quote, number: null, lines: [] }, fx.company)).toEqual(['number', 'lines']);
+  });
+
+  it('takes the register entry from the company, as the printed parties block does', () => {
+    const seller = { ...fx.invoice.seller, registerEntry: null };
+    expect(missingRequisites({ ...fx.invoice, seller }, { ...fx.company, registerEntry: 'OR OS Bratislava I, vl. č. 1/B' })).toEqual([]);
+    expect(missingRequisites({ ...fx.invoice, seller }, { ...fx.company, registerEntry: null })).toEqual(['seller.registerEntry']);
+  });
+
+  it('needs a number on a printed draft, which the issue check does not', () => {
+    expect(missingRequisites({ ...fx.invoice, status: 'DRAFT', number: null }, fx.company)).toEqual(['number']);
   });
 });
 

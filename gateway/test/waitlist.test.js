@@ -74,7 +74,7 @@ describe('double opt-in', () => {
     const unsubscribeToken = tokenOf(ctx.sent[0], 'unsubscribe');
     let res = await ctx.app.inject({ method: 'GET', url: `/v1/waitlist/confirm?token=${confirmToken}` });
     expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('https://site.test/waitlist/thanks.html?lang=sk&status=confirmed');
+    expect(res.headers.location).toBe('https://site.test/sk/thanks.html');
     expect(ctx.app.deps.waitlist.all()[0]).toMatchObject({ status: 'confirmed' });
     res = await ctx.app.inject({ method: 'GET', url: `/v1/waitlist/confirm?token=${confirmToken}` });
     expect(res.statusCode).toBe(400);
@@ -89,7 +89,7 @@ describe('double opt-in', () => {
     expect(res.statusCode).toBe(400);
     res = await ctx.app.inject({ method: 'GET', url: `/v1/waitlist/unsubscribe?token=${unsubscribeToken}` });
     expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('https://site.test/waitlist/unsubscribed.html?lang=sk&status=deleted');
+    expect(res.headers.location).toBe('https://site.test/sk/unsubscribed.html');
     expect(ctx.app.deps.waitlist.all()).toEqual([]);
     res = await ctx.app.inject({ method: 'GET', url: `/v1/waitlist/unsubscribe?token=${unsubscribeToken}` });
     expect(res.statusCode).toBe(400);

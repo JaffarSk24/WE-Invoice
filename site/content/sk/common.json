@@ -40,6 +40,15 @@
     "ctaBack": "Späť na úvod",
     "unsubscribe": "Ak si to rozmyslíte, každý náš e-mail má odkaz na odhlásenie. Zmažeme vás zo zoznamu hneď."
   },
+  "unsubscribed": {
+    "title": "Odhlásili ste sa",
+    "description": "Váš e-mail sme odstránili zo zoznamu čakateľov na betu eFaktúr.",
+    "h1": "Odhlásili ste sa",
+    "lead": "Váš e-mail a všetky údaje z prihlásenia sme zo zoznamu čakateľov vymazali. Ďalšie e-maily od nás nedostanete.",
+    "meanwhile": "Aplikácia vám zostáva k dispozícii: fakturácia, výdavky a účtovníctvo fungujú bez registrácie a zadarmo.",
+    "ctaApp": "Otvoriť aplikáciu",
+    "ctaBack": "Späť na úvod"
+  },
   "notFound": {
     "title": "Stránka sa nenašla",
     "h1": "Stránka sa nenašla",

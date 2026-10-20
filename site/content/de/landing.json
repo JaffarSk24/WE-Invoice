@@ -191,8 +191,8 @@
         "a": "Den Empfang von E-Rechnungen bieten mehrere Provider kostenlos an. Der Versand kostet je nach Provider 0 bis etwa 3 € im Monat oder ein paar Cent pro Beleg. Sie zahlen direkt an ihn, WE Invoice schlägt nichts auf."
       },
       {
-        "q": "Warum meldet der Mac einen nicht verifizierten Entwickler?",
-        "a": "Die Desktop-App ist noch nicht mit einem Apple-Entwicklerzertifikat signiert, das 99 USD im Jahr kostet. Öffnen Sie die App beim ersten Start per Rechtsklick und Öffnen, oder erlauben Sie sie unter Einstellungen, Datenschutz & Sicherheit. Spätere Updates laufen dann ohne Warnung."
+        "q": "Warum öffnet der Mac die App nicht?",
+        "a": "Die App ist noch nicht von Apple notarisiert, deshalb verweigert macOS nach dem Download aus dem Browser das Öffnen. Geben Sie vor dem ersten Start einmal im Terminal ein: xattr -cr \"/Applications/WE Invoice.app\". Danach öffnet sie sich wie jede andere App, und ihre Updates brauchen diesen Schritt nicht."
       },
       {
         "q": "Ersetzt das den Buchhalter?",

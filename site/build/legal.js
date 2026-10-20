@@ -1,4 +1,5 @@
-// Document-style pages: privacy policy, terms and the thank-you page. The
+// Document-style pages: privacy policy, terms, the thank-you page and the
+// page shown after unsubscribing. The
 // legal texts are structured JSON (sections of paragraphs and lists) so the
 // six languages cannot drift in structure.
 import { text, inline, lines, indent } from './html.js';
@@ -37,6 +38,20 @@ export function thanksBody(t) {
     `    <a class="btn" href="./">${text(t.ctaBack)}</a>`,
     '  </div>',
     `  <p class="note">${text(t.unsubscribe)}</p>`,
+    '</article>'
+  );
+}
+
+export function unsubscribedBody(t) {
+  return lines(
+    '<article class="doc thanks">',
+    `  <h1>${text(t.h1)}</h1>`,
+    `  <p class="lead">${text(t.lead)}</p>`,
+    `  <p>${text(t.meanwhile)}</p>`,
+    '  <div class="buttons start">',
+    `    <a class="btn primary" href="../app/">${text(t.ctaApp)}</a>`,
+    `    <a class="btn" href="./">${text(t.ctaBack)}</a>`,
+    '  </div>',
     '</article>'
   );
 }

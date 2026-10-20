@@ -31,6 +31,7 @@ export default {
   "settings.about.version": "Verzia",
   "settings.about.updates": "Aktualizácie",
   "settings.about.updatesHint": "Webová verzia sa aktualizuje sama. Na počítači sa nová verzia ponúkne po spustení.",
+  "settings.about.desktopSettings": "Nastavenia aplikácie pre počítač",
   "settings.about.github": "Zdrojový kód na GitHube",
   "settings.about.privacy": "Ochrana súkromia",
   "settings.about.whiteEagles": "White Eagles: web a reklama",

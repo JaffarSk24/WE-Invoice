@@ -1,7 +1,7 @@
 // Pages at the site root: the language chooser that redirects by browser
-// language (index.html, privacy.html, terms.html, thanks.html) and the
-// 404 page GitHub Pages serves for unknown paths. The chooser works without
-// JavaScript too: it lists every language.
+// language (index.html, privacy.html, terms.html, thanks.html,
+// unsubscribed.html) and the 404 page GitHub Pages serves for unknown paths.
+// The chooser works without JavaScript too: it lists every language.
 import { SITE_URL, LANGUAGES, DEFAULT_LANGUAGE } from './config.js';
 import { escape, attr, lines, indent } from './html.js';
 
