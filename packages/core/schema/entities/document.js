@@ -159,6 +159,13 @@ export const documentSchema = entity('Document', {
   peppol: { anyOf: [PEPPOL_STATE, { type: 'null' }] },
   pdfFileId: NULLABLE_ID,
   attachments: { type: 'array', items: object({ id: ID, name: SHORT_TEXT, mime: SHORT_TEXT, size: { type: 'integer', minimum: 0 } }, ['id', 'name']) },
+  // Attachments removed from an issued or received document: hidden from
+  // the screens, but their files stay in Drive for the archive period
+  // (§ 76 zákona o DPH, legislation archiveYears) and keep syncing.
+  removedAttachments: {
+    type: 'array',
+    items: object({ id: ID, name: SHORT_TEXT, mime: SHORT_TEXT, size: { type: 'integer', minimum: 0 }, removedAt: DATE_TIME, reason: SHORT_TEXT }, ['id', 'name', 'removedAt'])
+  },
   sendLog: { type: 'array', items: SEND_LOG_ENTRY },
   exportedAt: NULLABLE_DATE_TIME,
   lockedAt: NULLABLE_DATE_TIME,
