@@ -10,7 +10,11 @@
 #   - uninstalling removes the app and keeps the user's data.
 #
 # Meant for a throwaway machine such as a CI runner: it changes Defender
-# settings and installs and removes the app for the current user.
+# settings and installs and removes the app for the current user. When
+# Defender itself does not answer on the machine (its service fails on some
+# runners), the install, start, update and uninstall are still checked and
+# the Defender part is reported as a warning. No step waits without limit:
+# a scan gets 5 minutes, an installer or uninstaller 10.
 #
 #   pwsh desktop/scripts/check-windows-install.ps1 [-Installer <path to WE-Invoice-x.y.z-win-x64.exe>] [-ExpectGoogleClient] [-Repeat <n>]
 
@@ -33,6 +37,9 @@ $Publisher = 'White Eagles & Co. s. r. o.'
 $UninstallRoot = 'Software\Microsoft\Windows\CurrentVersion\Uninstall'
 $StartedAt = Get-Date
 $script:Warnings = 0
+$script:Defender = $true
+$ScanMinutes = 5
+$SetupMinutes = 10
 
 function Step([string]$Text) { Write-Host ''; Write-Host "== $Text" }
 function Fail([string]$Text) { Write-Host "::error::$Text"; exit 1 }
@@ -66,6 +73,7 @@ function Wait-App([int]$Seconds) {
 # only detections that touch this app's files fail the check.
 $script:Reported = @{}
 function Get-NewDetections {
+  if (-not $script:Defender) { return @() }
   @(Get-MpThreatDetection -ErrorAction SilentlyContinue | Where-Object { $_.InitialDetectionTime -ge $StartedAt }) |
     ForEach-Object {
       $threat = Get-MpThreat -ThreatID $_.ThreatID -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -93,12 +101,19 @@ function Assert-NoDetections([string]$Stage) {
 }
 
 function Scan([string]$Path) {
+  if (-not $script:Defender) { Warn "Defender is not available, $Path was not scanned"; return }
+  $job = Start-Job -ScriptBlock { param($p) Start-MpScan -ScanType CustomScan -ScanPath $p } -ArgumentList $Path
+  if (-not (Wait-Job $job -Timeout ($ScanMinutes * 60))) {
+    Stop-Job $job; Remove-Job $job -Force
+    Warn "Defender did not finish scanning $Path within $ScanMinutes minutes"
+    return
+  }
   try {
-    Start-MpScan -ScanType CustomScan -ScanPath $Path
+    Receive-Job $job -ErrorAction Stop | Out-Null
   } catch {
     Warn "Defender could not scan $Path`: $($_.Exception.Message)"
     return
-  }
+  } finally { Remove-Job $job -Force -ErrorAction SilentlyContinue }
   Assert-NoDetections "while scanning $Path"
   Write-Host "Defender found nothing in $Path"
 }
@@ -129,13 +144,25 @@ function Show-Crash([string]$What) {
 # as a warning; any other exit code fails the check.
 $StartCrash = -1073741819  # 0xC0000005
 $script:StartCrashes = 0
+# Runs an installer or uninstaller and waits for it, at most $SetupMinutes
+# minutes: one that hangs is shown with what Windows logged and fails.
+function Start-Setup([string]$File, [string[]]$Arguments, [string]$What) {
+  $run = Start-Process -FilePath $File -ArgumentList $Arguments -PassThru
+  if (-not $run.WaitForExit($SetupMinutes * 60 * 1000)) {
+    Show-Crash $What
+    Get-Process -Id $run.Id -ErrorAction SilentlyContinue | Stop-Process -Force
+    Fail "The $What did not finish within $SetupMinutes minutes"
+  }
+  return $run
+}
+
 function Invoke-Setup([string]$File, [string[]]$Arguments, [string]$What) {
-  $run = Start-Process -FilePath $File -ArgumentList $Arguments -PassThru -Wait
+  $run = Start-Setup $File $Arguments $What
   if ($run.ExitCode -eq $StartCrash) {
     $script:StartCrashes++
     Show-Crash $What
     Warn "The $What crashed at start (0xC0000005), trying once more"
-    $run = Start-Process -FilePath $File -ArgumentList $Arguments -PassThru -Wait
+    $run = Start-Setup $File $Arguments $What
   }
   return $run.ExitCode
 }
@@ -149,8 +176,15 @@ $Installer = (Resolve-Path $Installer).Path
 Write-Host "Installer: $Installer"
 
 Step 'Microsoft Defender with the protection of a home computer'
+try {
+  $preference = Get-MpPreference -ErrorAction Stop
+} catch {
+  $script:Defender = $false
+  Warn "Microsoft Defender does not answer on this machine ($($_.Exception.Message)); the install, start, update and uninstall are checked without it"
+}
+if ($script:Defender) {
 # CI images come with Defender switched off and whole drives excluded.
-foreach ($path in @((Get-MpPreference).ExclusionPath)) {
+foreach ($path in @($preference.ExclusionPath)) {
   if ($path) { Remove-MpPreference -ExclusionPath $path }
 }
 $settings = [ordered]@{
@@ -183,9 +217,16 @@ if (Test-Path $policy) {
 }
 try { Update-MpSignature } catch { Warn "Defender signatures were not updated: $($_.Exception.Message)" }
 Start-Sleep -Seconds 10
-Get-MpPreference | Format-List DisableRealtimeMonitoring, DisableBehaviorMonitoring, DisableIOAVProtection, MAPSReporting,
-  SubmitSamplesConsent, DisableBlockAtFirstSeen, PUAProtection, ExclusionPath | Out-String | Write-Host
-$status = Get-MpComputerStatus
+try {
+  Get-MpPreference -ErrorAction Stop | Format-List DisableRealtimeMonitoring, DisableBehaviorMonitoring, DisableIOAVProtection, MAPSReporting,
+    SubmitSamplesConsent, DisableBlockAtFirstSeen, PUAProtection, ExclusionPath | Out-String | Write-Host
+  $status = Get-MpComputerStatus -ErrorAction Stop
+} catch {
+  $script:Defender = $false
+  Warn "Microsoft Defender stopped answering on this machine ($($_.Exception.Message)); the rest is checked without it"
+}
+}
+if ($script:Defender) {
 $status | Format-List AMRunningMode, AntivirusEnabled, RealTimeProtectionEnabled, BehaviorMonitorEnabled, IoavProtectionEnabled,
   AntivirusSignatureVersion, AntivirusSignatureLastUpdated | Out-String | Write-Host
 $MpCmdRun = Join-Path $env:ProgramFiles 'Windows Defender\MpCmdRun.exe'
@@ -194,6 +235,7 @@ Write-Host "Cloud protection: $maps"
 if ($LASTEXITCODE -ne 0) { Warn 'Defender cannot reach its cloud protection; scans use local signatures only' }
 if (-not $status.RealTimeProtectionEnabled) {
   Warn 'Real-time protection is off on this machine; only the scans below check the files'
+}
 }
 
 Step 'Scan the installer'

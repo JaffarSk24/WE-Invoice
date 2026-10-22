@@ -182,6 +182,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Fixed (22 October, release check)
+
+- The Windows install check waits for nothing without a limit: a Defender scan gets 5 minutes and an installer or uninstaller 10, and one that hangs is shown with what Windows logged. When Microsoft Defender does not answer on the CI machine (its service failed on GitHub's runner with 0x800106ba), the install, start, update and uninstall are still checked and the Defender part becomes a warning instead of failing or hanging the run.
+
 #### Fixed (20 October, 0.1.2)
 
 - The desktop app could not store any secret whose name the page builds with ":" (the e-invoicing provider's client id and secret, the beta invitation, the SuperFaktúra API key): the keychain store refused the name and the wizard answered "Invalid key value" whatever key was entered. Names may now carry ":" (stored as "~" in the file name, which Windows needs) and be up to 128 characters; a refused name reports BAD_NAME instead of BAD_VALUE. A test stores the real names the page uses.
