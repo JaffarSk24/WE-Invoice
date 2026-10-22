@@ -29,6 +29,15 @@
 .table tr.row.is-selected { background: var(--overlay-04); }
 .table tr.row[tabindex]:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent-blue); }
 .table tr.vspacer td { border: 0; padding: 0; }
+/* A long text in a list cell ends with an ellipsis instead of pushing the
+   last columns out of the table; the full text is in its title. */
+.cell-text { display: block; max-width: 20rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.table .contact-name { flex-wrap: nowrap; max-width: 24rem; }
+.contact-name-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A table that is not a virtual list (statements, summaries, templates)
+   wraps its text inside its card; numbers stay on one line. */
+.table:not(.data-table .table) th, .table:not(.data-table .table) td { white-space: normal; overflow: visible; overflow-wrap: break-word; }
+.table:not(.data-table .table) td.num { white-space: nowrap; }
 .table tfoot td { position: sticky; bottom: 0; z-index: 2; background: var(--bg-elevated); font-weight: 600; height: 42px; border-top: 1px solid var(--border-strong); border-bottom: 0; }
 .col-select { width: 40px; }
 .col-select input { width: 18px; height: 18px; min-height: 0; margin: 0; accent-color: var(--accent-indigo); }
@@ -47,8 +56,13 @@
 .card-check { width: 20px; height: 20px; min-height: 0; margin-top: 2px; accent-color: var(--accent-indigo); flex: none; }
 .list-card-body { flex: 1; min-width: 0; }
 .list-card-top { display: flex; justify-content: space-between; gap: 8px; }
-.list-card-title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.list-card-primary { font-weight: 600; flex: none; }
+.list-card-title { position: relative; flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-card-title .contact-name { display: inline; }
+.list-card-title .cell-text { display: inline; max-width: none; }
+.list-card-primary { font-weight: 600; flex: none; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* In a card the VAT light shows its icon only; its word stays for screen
+   readers, so the name keeps the line. */
+.list-card-title .vat-light > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .list-card-line { font-size: 13px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .status-badge {

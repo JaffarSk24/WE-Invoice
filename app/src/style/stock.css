@@ -2,8 +2,10 @@
 
 .stock-header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .stock-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0; }
-.stock-filters input[type="search"] { flex: 1; min-width: 200px; }
-.stock-filters select, .stock-filters input { min-height: 36px; }
+.stock-filters input[type="search"] { flex: 1 1 260px; min-width: 200px; }
+/* Selects and dates sit in one row with the search, at their own width. */
+.stock-filters select, .stock-filters input:not([type="search"]):not([type="checkbox"]) { width: auto; flex: 0 1 220px; min-width: 150px; }
+@media (max-width: 767px) { .stock-filters select, .stock-filters input:not([type="search"]):not([type="checkbox"]) { flex: 1 1 140px; } }
 .stock-negative { color: var(--danger); font-weight: 600; }
 .stock-low-badge { margin-left: 8px; color: var(--warning); border-color: var(--warning); }
 .stock-kind { font-weight: 600; }

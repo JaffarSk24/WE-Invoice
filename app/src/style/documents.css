@@ -20,10 +20,10 @@
 .more-actions > summary { list-style: none; cursor: pointer; }
 .more-actions > summary::-webkit-details-marker { display: none; }
 .more-menu {
-  position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; display: flex; flex-direction: column; gap: 6px; min-width: 240px; padding: 10px;
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; display: flex; flex-direction: column; gap: 6px; min-width: 240px; width: max-content; max-width: min(380px, calc(100vw - 32px)); padding: 10px;
   background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
 }
-.more-menu .btn { justify-content: flex-start; }
+.more-menu .btn { justify-content: flex-start; white-space: nowrap; }
 
 .status-ribbon { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; margin: 0; padding: 0; color: var(--text-muted); }
 .status-ribbon li { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
@@ -56,7 +56,10 @@ label.btn.is-disabled { opacity: 0.5; pointer-events: none; }
 
 @media (max-width: 767px) {
   .documents-search, .documents-payment { max-width: none; flex-basis: 100%; }
-  .more-menu { right: auto; left: 0; }
+  .view-actions:has(> .more-actions) { position: relative; }
+  .more-actions { position: static; }
+  .more-menu { left: 0; right: 0; min-width: 0; width: auto; max-width: none; }
+  .more-menu .btn { white-space: normal; }
   .pdf-frame { min-height: 480px; }
 }
 

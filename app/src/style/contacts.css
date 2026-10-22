@@ -37,7 +37,7 @@
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .ico-lookup { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
 .ico-lookup .field { flex: 1; min-width: 160px; }
-.ico-lookup .btn { margin-bottom: 16px; }
+.ico-lookup .btn { margin-bottom: 16px; white-space: nowrap; }
 .ico-lookup p { flex-basis: 100%; margin: -10px 0 8px; }
 .repeat-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
 .repeat-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
@@ -59,7 +59,7 @@
 
 @media (max-width: 767px) {
   .view-actions { width: 100%; }
-  .view-actions .btn { flex: 1; justify-content: center; }
+  .view-actions .btn { flex: 1 1 auto; justify-content: center; white-space: nowrap; }
   .contact-docs { display: block; overflow-x: auto; }
 }
 

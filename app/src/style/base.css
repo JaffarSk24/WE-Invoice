@@ -62,11 +62,15 @@ input, select, textarea {
   min-height: 40px; padding: 8px 12px; width: 100%;
 }
 input:focus, select:focus, textarea:focus { border-color: var(--border-focus); }
+/* Check boxes and radios keep their own size: the field rule above would
+   stretch them to the full width of a flex row and squeeze its label. */
+input[type="checkbox"], input[type="radio"] { width: 18px; height: 18px; min-height: 0; padding: 0; flex: none; accent-color: var(--accent-indigo); }
 label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
 
 /* iOS zooms into fields smaller than 16px; phones get 16px everywhere. */
 @media (max-width: 767px) {
   input, select, textarea { font-size: 16px; }
+  input:not([type="checkbox"]):not([type="radio"]), select { min-height: var(--touch-target); }
   .btn { min-height: var(--touch-target); }
 }
 

@@ -15,9 +15,9 @@ function kvColumns(section) {
   const base = { label: t('tax.records.base'), value: r => money(r.base), num: true };
   const vat = { label: t('tax.records.vat'), value: r => money(r.vat), num: true };
   const deducted = { label: t('tax.records.deductible'), value: r => money(r.deductible), num: true };
-  const party = (key, label) => ({ label: t(label), value: r => r[key] || '' });
-  const number = { label: t('tax.records.number'), value: r => documentLink(r.kind, r.docId, r.number) };
-  const date = { label: t('tax.records.date'), value: r => r.date || '' };
+  const party = (key, label) => ({ label: t(label), value: r => r[key] || '', nowrap: true });
+  const number = { label: t('tax.records.number'), value: r => documentLink(r.kind, r.docId, r.number), nowrap: true };
+  const date = { label: t('tax.records.date'), value: r => r.date || '', nowrap: true };
   switch (section) {
     case 'A1': return [party('buyer', 'tax.records.buyerVatId'), number, date, base, vat, rate];
     case 'A2': return [party('buyer', 'tax.records.buyerVatId'), number, date, base];

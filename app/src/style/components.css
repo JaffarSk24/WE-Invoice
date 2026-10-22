@@ -46,7 +46,11 @@
 .modal-wide { width: min(880px, 100%); }
 .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
 .modal-body { padding: 20px; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--border-color); }
+.modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--border-color); }
+/* A label stays on one line; when the buttons do not fit side by side the
+   row wraps and each button takes the full width. */
+.modal-actions .btn { white-space: nowrap; flex: 0 1 auto; }
+@media (max-width: 480px) { .modal-actions .btn { flex: 1 1 auto; } }
 
 /* Sync dialogs (WP-SYNC): fields, recovery words, hints. */
 .sync-text { color: var(--text-secondary); margin: 0 0 16px; line-height: 1.5; }

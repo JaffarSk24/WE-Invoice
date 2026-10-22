@@ -15,7 +15,8 @@
 .tax-deadline { margin: 0 0 8px; }
 .tax-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
 .tax-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.tax-closing { display: flex; align-items: center; gap: 10px; }
+.tax-closing { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.tax-closing .btn { white-space: nowrap; }
 .tax-closing .badge { display: inline-flex; align-items: center; gap: 6px; }
 .tax-closing .badge svg { width: 14px; height: 14px; }
 .badge-locked { color: var(--warning); border-color: var(--warning); }
@@ -46,6 +47,7 @@
 .tax-table th, .tax-table td { padding: var(--row-padding-y) var(--row-padding-x); border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: top; }
 .tax-table th { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
 .tax-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tax-table .nowrap { white-space: nowrap; }
 .tax-table tfoot td { font-weight: 700; }
 
 .tax-threshold { padding: 16px 18px; }
@@ -54,6 +56,6 @@
 
 @media (max-width: 767px) {
   .tax-buttons { margin-left: 0; width: 100%; }
-  .tax-buttons .btn { flex: 1; }
+  .tax-buttons .btn { flex: 1 1 auto; white-space: nowrap; }
   .tax-period-name { min-width: 0; font-size: 16px; }
 }
