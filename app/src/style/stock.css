@@ -2,8 +2,10 @@
 
 .stock-header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .stock-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0; }
-.stock-filters input[type="search"] { flex: 1; min-width: 200px; }
-.stock-filters select, .stock-filters input { min-height: 36px; }
+.stock-filters input[type="search"] { flex: 1 1 260px; min-width: 200px; }
+/* Selects and dates sit in one row with the search, at their own width. */
+.stock-filters select, .stock-filters input:not([type="search"]):not([type="checkbox"]) { width: auto; flex: 0 1 220px; min-width: 150px; }
+@media (max-width: 767px) { .stock-filters select, .stock-filters input:not([type="search"]):not([type="checkbox"]) { flex: 1 1 140px; } }
 .stock-negative { color: var(--danger); font-weight: 600; }
 .stock-low-badge { margin-left: 8px; color: var(--warning); border-color: var(--warning); }
 .stock-kind { font-weight: 600; }
@@ -34,6 +36,9 @@
 .stock-actions { display: flex; justify-content: flex-end; margin-top: 14px; }
 
 .sale-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr); gap: 16px; align-items: start; }
+/* Next to the sidebar a tablet leaves too little room for the catalog and
+   the cart side by side, so the cart goes under the catalog. */
+@media (max-width: 1099px) { .sale-layout { grid-template-columns: minmax(0, 1fr); } .sale-cart { position: static; } }
 .sale-catalog, .sale-cart { padding: 16px; }
 .sale-catalog input[type="search"] { width: 100%; min-height: var(--touch-target); margin-bottom: 12px; }
 .sale-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }

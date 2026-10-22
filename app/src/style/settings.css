@@ -6,21 +6,25 @@
 .settings-panel { padding: 22px 24px; min-height: 300px; }
 .settings-panel h2:focus { outline: none; }
 .settings-section { margin-top: 14px; }
-.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
-.setting-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+/* The description of a section keeps a gap to the first field below it. */
+.settings-section > p.muted:first-child { margin-bottom: 14px; }
+.setting-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+.setting-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 240px; }
 .setting-label { font-weight: 600; }
 .setting-hint { font-size: 13px; color: var(--text-secondary); }
-.setting-control { flex: none; min-width: 200px; }
-.setting-control select { min-height: 36px; }
+.setting-control { flex: 0 1 auto; min-width: 0; max-width: 100%; }
+.setting-control select { min-height: 36px; min-width: 200px; max-width: 100%; }
 .about-links { list-style: none; margin: 16px 0; display: flex; flex-direction: column; gap: 8px; }
 .about-links a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; min-height: 32px; }
 .about-links svg { width: 16px; height: 16px; }
-@media (max-width: 767px) {
-  .settings-layout { grid-template-columns: 1fr; }
+@media (max-width: 1099px) {
+  .settings-layout { grid-template-columns: minmax(0, 1fr); }
   .settings-select { display: block; }
   .settings-nav { display: none; }
+}
+@media (max-width: 767px) {
   .setting-row { flex-direction: column; align-items: stretch; }
-  .setting-control { min-width: 0; }
+  .setting-control select { min-width: 0; }
 }
 
 .help-intro { margin-bottom: 14px; }

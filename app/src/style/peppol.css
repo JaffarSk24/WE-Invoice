@@ -27,7 +27,7 @@
 .peppol-result svg { width: 18px; height: 18px; }
 .peppol-option { margin-bottom: 8px; }
 
-.peppol-filter { margin-bottom: 16px; flex-wrap: wrap; }
+.peppol-filter { margin-bottom: 16px; }
 .peppol-count { color: var(--text-muted); font-variant-numeric: tabular-nums; }
 .peppol-deadline.is-near { color: var(--warning); }
 .peppol-deadline.is-late { color: var(--danger); font-weight: 600; }

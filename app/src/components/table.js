@@ -24,6 +24,13 @@ export function isPhone() {
   return typeof matchMedia === 'function' && matchMedia('(max-width: 767px)').matches;
 }
 
+// Plain text goes into a box that ends with an ellipsis and keeps the full
+// text as its title, so one long name never pushes the columns out.
+export function textCell(content) {
+  if (typeof content !== 'string' || !content) return content;
+  return h('span', { class: 'cell-text', title: content }, content);
+}
+
 export function sortRows(rows, column, dir) {
   if (!column || !column.sortValue) return rows;
   const sign = dir === 'desc' ? -1 : 1;
@@ -82,7 +89,7 @@ export function createTable({ key, columns, rows = [], rowKey = (r) => r.id, sel
         type: 'checkbox', checked: isSelected(row), 'aria-label': t('table.selectRow'), onclick: (e) => { e.stopPropagation(); toggle(row); }
       })));
     }
-    shown().forEach(c => cells.push(h('td', { class: c.align === 'num' ? 'num' : null }, cellContent(c, row))));
+    shown().forEach(c => cells.push(h('td', { class: c.align === 'num' ? 'num' : null }, textCell(cellContent(c, row)))));
     const tr = h('tr', {
       class: `row ${isSelected(row) ? 'is-selected' : ''}`.trim(), tabindex: onRowClick ? '0' : null, 'aria-selected': selectable ? String(isSelected(row)) : null,
       onclick: onRowClick ? () => onRowClick(row) : null,

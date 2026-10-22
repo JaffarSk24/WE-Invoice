@@ -31,6 +31,7 @@ export function renderReport(root, ctx, def, view) {
   }
   const body = h('div', { class: 'tax-body' });
   append(root, [disclaimer(), h('div', { class: 'tax-toolbar' }, periodBar(view.period, view.onPeriod), def.periodKinds ? periodKindSelect(view) : null), body]);
+  refreshIcons(root);
   draw(body, ctx, def, { ...view, src });
 }
 

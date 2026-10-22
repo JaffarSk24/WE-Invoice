@@ -2,6 +2,7 @@
 // jump, the panel of the chosen tab is shown. tabs: [{ id, label, render }]
 // where render(panel) draws the content the first time the tab opens.
 import { h } from '../ui/dom.js';
+import { refreshIcons } from '../ui/icons.js';
 
 let counter = 0;
 
@@ -27,7 +28,9 @@ export function createTabs({ tabs, active = null, onChange = null, cls = '' }) {
       buttons[i].setAttribute('aria-selected', on ? 'true' : 'false');
       buttons[i].tabIndex = on ? 0 : -1;
       panelEls[i].hidden = !on;
-      if (on && !drawn.has(tab.id)) { drawn.add(tab.id); if (tab.render) tab.render(panelEls[i]); }
+      // A panel is drawn when first opened, after the screen refreshed its
+      // icons, so it draws the icons of its own content.
+      if (on && !drawn.has(tab.id)) { drawn.add(tab.id); if (tab.render) { tab.render(panelEls[i]); refreshIcons(panelEls[i]); } }
       if (on && focus) buttons[i].focus();
     });
     if (onChange) onChange(tabId);

@@ -88,14 +88,20 @@ export function filingLine(status) {
 }
 
 /** A simple table: columns [{ label, value(row), num? }]. */
+// Numbers sit right; numbers, dates and identifiers (nowrap) never break
+// inside, so a narrow column cannot split "2. 9. 2026" over two lines.
+function cellClass(c) {
+  return [c.num ? 'num' : null, c.nowrap ? 'nowrap' : null].filter(Boolean).join(' ') || null;
+}
+
 export function simpleTable(columns, rows, { caption = null, foot = null } = {}) {
   // A scrolling region must be reachable by the keyboard (WCAG 2.1.1).
   return h('div', { class: 'table-scroll tax-table-wrap', tabindex: '0', role: 'region', 'aria-label': caption || t('tax.preview.table') },
     h('table', { class: 'tax-table' },
       caption ? h('caption', {}, caption) : null,
-      h('thead', {}, h('tr', {}, columns.map(c => h('th', { scope: 'col', class: c.num ? 'num' : null }, c.label)))),
-      h('tbody', {}, rows.map(row => h('tr', {}, columns.map(c => h('td', { class: c.num ? 'num' : null }, c.value(row)))))),
-      foot ? h('tfoot', {}, h('tr', {}, columns.map((c, i) => h('td', { class: c.num ? 'num' : null }, foot[i] ?? '')))) : null));
+      h('thead', {}, h('tr', {}, columns.map(c => h('th', { scope: 'col', class: cellClass(c) }, c.label)))),
+      h('tbody', {}, rows.map(row => h('tr', {}, columns.map(c => h('td', { class: cellClass(c) }, c.value(row)))))),
+      foot ? h('tfoot', {}, h('tr', {}, columns.map((c, i) => h('td', { class: cellClass(c) }, foot[i] ?? '')))) : null));
 }
 
 export function documentLink(kind, id, text) {

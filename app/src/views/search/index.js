@@ -1,7 +1,8 @@
 // The search screen (#/search?q=...): the same search as the Ctrl/Cmd+K
 // dialog with every result, narrowed by type. The query stays in the
 // address, so the browser's back button returns to the same results.
-import { h } from '../../ui/dom.js';
+import { h, icon } from '../../ui/dom.js';
+import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { navigate } from '../../router.js';
 import { on } from '../../events.js';
@@ -59,7 +60,8 @@ export function renderSearch(root) {
   });
   root.append(
     h('header', { class: 'view-header' }, h('h1', {}, t('search.title'))),
-    h('div', { class: 'card search-page' }, h('div', { class: 'search-field' }, input), types, results));
+    h('div', { class: 'card search-page' }, h('div', { class: 'search-field' }, icon('search'), input), types, results));
+  refreshIcons(root);
   draw();
   ['data:changed', 'company:switched'].forEach(ev => offs.push(on(ev, () => { if (results.isConnected) draw(); })));
   setTimeout(() => input.focus(), 0);

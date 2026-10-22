@@ -51,9 +51,10 @@
 .muted { color: var(--text-secondary); }
 .small { font-size: 13px; }
 
-.segmented { display: inline-flex; border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; }
+.segmented { display: inline-flex; flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: thin; border: 1px solid var(--border-color); border-radius: var(--radius-sm); }
 .segment {
   min-height: 36px; padding: 0 12px; border: 0; background: transparent; color: var(--text-secondary); font: inherit; font-weight: 600; cursor: pointer;
+  flex: none; white-space: nowrap;
 }
 .segment + .segment { border-left: 1px solid var(--border-color); }
 .segment[aria-pressed="true"] { background: var(--overlay-04); color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent-blue); }

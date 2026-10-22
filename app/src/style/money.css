@@ -45,7 +45,7 @@
 
 @media (max-width: 767px) {
   .view-actions { width: 100%; }
-  .view-actions .btn { flex: 1 1 auto; }
+  .view-actions .btn { flex: 1 1 auto; white-space: nowrap; }
   .cash-balance { margin-left: 0; width: 100%; }
   .money-toolbar select { flex: 1 1 140px; }
 }

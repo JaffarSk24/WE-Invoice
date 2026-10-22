@@ -59,7 +59,7 @@
 
 @media (max-width: 767px) {
   .view-actions { width: 100%; }
-  .view-actions .btn { flex: 1; justify-content: center; }
+  .view-actions .btn { flex: 1 1 auto; justify-content: center; white-space: nowrap; }
   .contact-docs { display: block; overflow-x: auto; }
 }
 

@@ -56,7 +56,7 @@
 .search-hit-amount { flex: none; font-variant-numeric: tabular-nums; }
 .search-more { margin-top: 10px; font-size: 13px; }
 .search-page { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
-.search-page .segmented { flex-wrap: wrap; }
+.search-page .segmented { align-self: flex-start; }
 
 /* Recycle bin */
 .view-intro { margin: -8px 0 16px; }

@@ -17,10 +17,10 @@ import { closeTaxPeriod, openTaxPeriod } from './actions.js';
 import { periodBar, disclaimer, summaryTiles, problemList, simpleTable, money, documentLink } from './parts.js';
 
 const columns = (direction) => [
-  { label: t('tax.records.number'), value: e => documentLink(e.kind, e.docId, e.number) },
-  { label: t('tax.records.date'), value: e => formatDate(e.date) },
+  { label: t('tax.records.number'), value: e => documentLink(e.kind, e.docId, e.number), nowrap: true },
+  { label: t('tax.records.date'), value: e => formatDate(e.date), nowrap: true },
   { label: t(direction === 'OUT' ? 'tax.records.buyer' : 'tax.records.supplier'), value: e => e.partner.name || e.partner.icDph || '' },
-  { label: t('tax.records.vatId'), value: e => e.partner.icDph || '' },
+  { label: t('tax.records.vatId'), value: e => e.partner.icDph || '', nowrap: true },
   { label: t('tax.records.treatment'), value: e => t(`tax.treatment.${e.treatment}`) },
   { label: t('tax.records.rate'), value: e => (e.rate === null || e.rate === undefined ? '' : `${e.rate} %`), num: true },
   { label: t('tax.records.base'), value: e => money(e.base), num: true },
@@ -149,5 +149,7 @@ export function renderVatRecords(root, ctx, { period, onPeriod }) {
   }
   const body = h('div', { class: 'tax-body' });
   root.append(disclaimer(), periodBar(period, onPeriod), body);
+  // The header (disclaimer, period arrows) is drawn here, outside the body.
+  refreshIcons(root);
   renderRecordsBody(body, { src, period, ctx, redraw: () => onPeriod(period) });
 }

@@ -4,7 +4,8 @@
 .ledger-header .view-actions { flex-wrap: wrap; }
 
 .ledger-year { width: auto; min-width: 96px; min-height: var(--touch-target); padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); }
-.ledger-stats { margin-bottom: 16px; }
+/* Ledger labels are long book names, so a tile keeps room for one word. */
+.ledger-stats { margin-bottom: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .ledger-stats .stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; }
 .ledger-stats .stat-danger .stat-value { color: var(--danger); }
 .ledger-tabs { margin-top: 8px; }
@@ -33,14 +34,17 @@
 /* Only inside a ledger screen (the element holding its header): written
    bare, the rule pushed down every card that follows a card anywhere in
    the app once this file had loaded, so grids of cards lost their line. */
-:has(> .ledger-header) :is(.card + .card, .card + .ledger-statements, .ledger-statements + .card) { margin-top: 16px; }
+/* Direct children only: the cards inside the statements grid sit side by
+   side and must start on one line. */
+:has(> .ledger-header) > :is(.card + .card, .card + .ledger-statements, .ledger-statements + .card) { margin-top: 16px; }
 .ledger-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .ledger-check { display: flex; align-items: center; gap: 8px; }
 .ledger-check svg { width: 18px; height: 18px; flex: none; }
 .ledger-check.is-ok svg { color: var(--success); }
 .ledger-check.is-pending svg { color: var(--text-muted); }
 .ledger-check.is-bad svg { color: var(--warning); }
-.ledger-statements { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.ledger-statements { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px; margin-top: 16px; align-items: start; }
+.ledger-statement { min-width: 0; }
 .ledger-carry .btn { margin-top: 8px; }
 
 @media (max-width: 767px) {
