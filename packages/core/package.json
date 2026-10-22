@@ -1,6 +1,6 @@
 {
   "name": "@we-invoice/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "description": "Pure domain logic of WE Invoice: money, VAT, documents, numbering, UBL, tax reports, bookkeeping. No DOM, no network.",
   "license": "MIT",
