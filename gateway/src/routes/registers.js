@@ -8,6 +8,7 @@ import { fetchVatIds, fetchReliability } from '../upstream/fs-opendata.js';
 import { fetchCompanyCz } from '../upstream/ares.js';
 import { checkVat } from '../upstream/vies.js';
 
+const FS_RETRY_MS = 5 * 60 * 1000;
 const limit = (max) => ({ rateLimit: { max, timeWindow: '1 minute' } });
 const params = (properties) => ({ type: 'object', properties, required: Object.keys(properties) });
 
@@ -28,13 +29,17 @@ export default async function registerRoutes(app, { config, upstream, cache }) {
     schema: { params: params({ ico: { type: 'string', pattern: '^[0-9]{6,8}$' } }) }
   }, async (request) => {
     const { ico } = request.params;
-    const company = await cache.remember(`company:sk:${ico}`, DAY, async () => {
+    // An answer without DIČ because the FS open data failed is kept for a
+    // few minutes only, so the company gets its DIČ once FS is back.
+    let fsFailed = false;
+    const company = await cache.remember(`company:sk:${ico}`, () => (fsFailed ? FS_RETRY_MS : DAY), async () => {
       const found = await fetchCompanySk(upstream, u, ico);
       if (!found) return null;
       let ids = { dic: null, icDph: null };
       try {
         ids = await fetchVatIds(upstream, u, ico);
       } catch (e) {
+        fsFailed = true;
         request.log.warn({ reason: e.code || e.message }, 'FS open data lookup skipped');
       }
       return { ...found, dic: ids.dic, icDph: ids.icDph };

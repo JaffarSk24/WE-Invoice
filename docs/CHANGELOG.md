@@ -159,6 +159,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - The proxy allow-list is built from packages/core/peppol/providers.json at start (PROVIDERS_FILE and PROVIDER_BASE_URLS in .env adjust it); the Docker image is built from the repository root so it carries that file.
 - gateway/.env.example lists every setting of the gateway.
 
+#### Fixed (22 October)
+
+- A company found in RPO while the FS open data did not answer (the portal was down) is cached for five minutes instead of a day, so it gets its DIČ and IČ DPH as soon as the portal is back.
+
 #### Fixed (20 October)
 
 - A company looked up by IČO in RPO is the entity still in business: an IČO can also return branches closed long ago, and their old name came first (for Slovenská sporiteľňa the name of a branch in Trenčín). The search by name lists entities in business first too.

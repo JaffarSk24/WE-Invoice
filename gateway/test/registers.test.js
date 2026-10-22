@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { createTestApp, json } from './helpers.js';
 import { RPO_ENTITY, ARES_ENTITY, VIES_VALID, FS_TAX_SUBJECTS, FS_VAT_PAYERS, FS_LIST, FS_NOT_FOUND } from './fixtures.js';
 import { mapRpoEntity, currentValue } from '../src/upstream/rpo.js';
@@ -89,6 +89,23 @@ describe('GET /v1/company/sk/{ico}', () => {
     res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/35763469' });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toMatchObject({ name: 'Example s. r. o.', dic: null });
+  });
+
+  it('keeps an answer without DIČ after an FS failure for minutes only', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-22T10:00:00Z'));
+    ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k' } });
+    ctx.pool(RPO).intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json).times(2);
+    ctx.pool(FS).intercept({ path: /ds_dsrdp/ }).reply(503, 'updating');
+    ctx.pool(FS).intercept({ path: /ds_dphs/ }).reply(503, 'updating');
+    let res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/35763469' });
+    expect(res.json()).toMatchObject({ dic: null });
+    vi.setSystemTime(new Date('2026-10-22T10:06:00Z'));
+    ctx.pool(FS).intercept({ path: '/api/data/ds_dsrdp/search?page=1&column=ico&search=35763469' }).reply(200, FS_TAX_SUBJECTS, json);
+    ctx.pool(FS).intercept({ path: '/api/data/ds_dphs/search?page=1&column=ico&search=35763469' }).reply(200, FS_VAT_PAYERS, json);
+    res = await ctx.app.inject({ method: 'GET', url: '/v1/company/sk/35763469' });
+    expect(res.json()).toMatchObject({ dic: '2020317068', icDph: 'SK2020317068' });
+    vi.useRealTimers();
   });
 
   it('answers 404, 400 and 502', async () => {
