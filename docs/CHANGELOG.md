@@ -292,6 +292,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Export, import, migration and backup
 
+#### Fixed (22 October, 0.1.4)
+
+- The import from iDoklad reads its Slovak export too ("Názov/Meno", "Vystavenie", "Dodané", "Dátum platby", "Spolu", "Uhradená suma"); every invoice of such a list used to be skipped for want of an issue date and a buyer.
+- Slash dates are read month first when some date of the file can only be month/day/year (10/22/2026), as iDoklad writes them for an account in English; otherwise day first, as before.
+
 #### Added
 
 - Export for the accountant: one ZIP per period with a summary, the document register and its lines as CSV and XLSX, Pohoda XML (dataPack 2.0 with issued and received invoices, cash vouchers and the address book), Money S3 XML, the KROS Omega text import in Windows-1250, ISDOC 6.0.2 per document, UBL per document through the Peppol builder when it is available, and the PDFs of issued documents.

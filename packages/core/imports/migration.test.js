@@ -14,6 +14,37 @@ import { computeTotals } from '../vat/index.js';
 const fixture = (name) => readFileSync(new URL(`../../../tests/fixtures/imports/${name}`, import.meta.url), 'utf8');
 const payable = (d) => computeTotals(d).payable;
 
+describe('iDoklad in Slovak, dates month/day/year', () => {
+  const result = importIdoklad([{ name: 'zoznam.csv', rows: readCsv(fixture('idoklad-sk-zoznam-faktur.csv')) }], { company: { ...company, vatMode: 'NONPAYER' } });
+
+  it('maps the Slovak columns and reads every invoice', () => {
+    expect(result.report.skipped).toEqual([]);
+    expect(result.documents.map(d => d.number)).toEqual(['20260040', '20260039', '20260038']);
+    expect(result.tables[0].mapping).toMatchObject({ issueDate: 8, dueDate: 9, taxDate: 10, partner: 4, paidDate: 11, gross: 12, paid: 15 });
+  });
+
+  it('reads 10/22/2026 as 22 October, so every date of the file is month first', () => {
+    const [first, , third] = result.documents;
+    expect(first).toMatchObject({ issueDate: '2026-10-01', taxDate: '2026-10-01', dueDate: '2026-10-08', vs: '20260040' });
+    expect(first.buyer).toMatchObject({ name: 'Alfa Stavby s. r. o.', ico: '35763469' });
+    expect(first.lines[0]).toMatchObject({ name: 'Reklamné nástroje Google Ads', unitPrice: '900' });
+    expect(first.payments).toEqual([expect.objectContaining({ date: '2026-10-22', amount: '900' })]);
+    expect(third).toMatchObject({ issueDate: '2026-09-04', dueDate: '2026-09-11', payments: [] });
+  });
+});
+
+describe('slash dates', () => {
+  it('are day first unless a date can only be month first', async () => {
+    const { slashDateOrder, isoFromMdy, readDate } = await import('./values.js');
+    expect(slashDateOrder(['10/01/2026', '10/22/2026'])).toBe('MDY');
+    expect(slashDateOrder(['22/10/2026', '10/01/2026'])).toBe('DMY');
+    expect(slashDateOrder(['10/01/2026', '2026-10-05', ''])).toBe('DMY');
+    expect(isoFromMdy('10/01/2026')).toBe('2026-10-01');
+    expect(isoFromMdy('2026-10-01')).toBe('2026-10-01');
+    expect(readDate('10/01/2026')).toBe('2026-01-10');
+  });
+});
+
 describe('iDoklad', () => {
   const result = importIdoklad([{ name: 'faktury.csv', rows: readCsv(fixture('idoklad-vydane-faktury.csv')) }], { company });
 

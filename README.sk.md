@@ -17,7 +17,7 @@ WE Invoice je tretia bezplatná aplikácia rady WE od [White Eagles](https://whi
 
 **Stiahnuť:** [webová aplikácia](https://jaffarsk24.github.io/WE-Invoice/app/) (dá sa nainštalovať aj do iPhonu a Androidu) · [macOS a Windows](https://github.com/JaffarSk24/WE-Invoice/releases/latest) · [web](https://jaffarsk24.github.io/WE-Invoice/sk/)
 
-> **Verzia 0.1.3.** Všetky funkcie sú pokryté testami na počítači aj v telefóne. Daňové výkazy prechádzajú oficiálnymi schémami Finančnej správy a kontroluje ich účtovník, preto ich pred podaním skontrolujte. eFaktúra je v bete a otvára sa postupne ľuďom zo zoznamu čakateľov.
+> **Verzia 0.1.4.** Všetky funkcie sú pokryté testami na počítači aj v telefóne. Daňové výkazy prechádzajú oficiálnymi schémami Finančnej správy a kontroluje ich účtovník, preto ich pred podaním skontrolujte. eFaktúra je v bete a otvára sa postupne ľuďom zo zoznamu čakateľov.
 
 English version: [README.md](README.md).
 

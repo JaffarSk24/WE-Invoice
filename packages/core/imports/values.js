@@ -24,6 +24,29 @@ export function readDate(value) {
   return validDay(y, mo, d) ? `${y}-${pad(mo)}-${pad(d)}` : null;
 }
 
+/**
+ * The order of slash dates in one file: "MDY" when some date can only be
+ * month/day/year (10/22/2026), else "DMY", the Slovak and Czech order.
+ * iDoklad exports in the order of the account's locale.
+ */
+export function slashDateOrder(values) {
+  let mdy = false;
+  let dmy = false;
+  for (const v of values) {
+    const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:$|\s)/.exec(String(v ?? '').trim());
+    if (!m) continue;
+    if (Number(m[1]) > 12) dmy = true;
+    if (Number(m[2]) > 12) mdy = true;
+  }
+  return mdy && !dmy ? 'MDY' : 'DMY';
+}
+
+/** A month/day/year slash date as YYYY-MM-DD; any other value unchanged. */
+export function isoFromMdy(value) {
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:$|\s)/.exec(String(value ?? '').trim());
+  return m ? readDate(`${m[3]}-${m[1]}-${m[2]}`) : value;
+}
+
 /** A decimal string or null. */
 export function readAmount(value) {
   if (value === null || value === undefined || String(value).trim() === '') return null;

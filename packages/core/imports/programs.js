@@ -15,8 +15,14 @@ import { importOmegaText } from './omega.js';
 import { readCsv } from './csv.js';
 
 // Header names of the programs that differ from the shared list.
+// iDoklad comes in Czech and in Slovak ("Názov/Meno", "Vystavenie",
+// "Dodané", "Dátum platby").
 const IDOKLAD = {
-  documents: { number: ['cislo dokladu', 'cislo faktury'], partner: ['odberatel', 'nazev odberatele', 'kontakt'], gross: ['celkem s dph', 'celkem'], paid: ['uhrazeno', 'uhrazena castka'], paidDate: ['datum uhrady'] },
+  documents: {
+    number: ['cislo dokladu', 'cislo faktury'], partner: ['odberatel', 'nazev odberatele', 'kontakt', 'nazov/meno', 'nazev/jmeno'],
+    issueDate: ['vystavenie', 'vystaveni'], taxDate: ['dodane', 'dodano', 'duzp'],
+    gross: ['celkem s dph', 'celkem', 'spolu'], paid: ['uhrazeno', 'uhrazena castka', 'uhradena suma'], paidDate: ['datum uhrady', 'datum platby']
+  },
   contacts: { name: ['nazev firmy', 'firma', 'nazev'] }
 };
 const SUPERFAKTURA = {

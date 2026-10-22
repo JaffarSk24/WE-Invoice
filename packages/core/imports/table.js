@@ -6,7 +6,9 @@
 import { emptyParsed, skip, warn } from './report.js';
 import { pick, guessMapping, guessEntity } from './mapping.js';
 import { contactDraft, itemDraft, documentDraft } from './records.js';
-import { normalizeKey } from './values.js';
+import { normalizeKey, slashDateOrder, isoFromMdy } from './values.js';
+
+const DATE_FIELDS = ['issueDate', 'taxDate', 'dueDate', 'paidDate'];
 
 /**
  * @param {string[][]} rows  the table, header first (at options.headerRow)
@@ -38,8 +40,12 @@ export function importRows(rows, options = {}) {
     });
   } else {
     const groups = new Map();
+    const picked = body.map(row => pick(row, mapping));
+    // Dates written month/day/year are turned to ISO before reading.
+    const mdy = slashDateOrder(picked.flatMap(f => DATE_FIELDS.map(k => f[k]))) === 'MDY';
     body.forEach((row, i) => {
-      const fields = pick(row, mapping);
+      const fields = picked[i];
+      if (mdy) DATE_FIELDS.forEach(k => { if (fields[k] !== undefined) fields[k] = isoFromMdy(fields[k]); });
       const key = normalizeKey(fields.number) || `#${headerRow + i + 2}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(fields);

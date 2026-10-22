@@ -39,10 +39,10 @@ export const FIELDS = Object.freeze({
   documents: {
     number: ['cislo', 'cislo faktury', 'cislo dokladu', 'number', 'invoice number', 'doklad', 'faktura', 'cislo faktury dodavatela', 'order number', 'order id'],
     kind: ['typ', 'typ dokladu', 'druh', 'druh dokladu', 'document type', 'type'],
-    issueDate: ['datum vystavenia', 'datum vystaveni', 'vystavene', 'vystaveno', 'issue date', 'date', 'datum', 'order date'],
-    taxDate: ['datum dodania', 'duzp', 'datum zdanitelneho plneni', 'datum uskutecneni zdanitelneho plneni', 'tax point date', 'delivery date', 'datum dodani', 'dodanie'],
+    issueDate: ['datum vystavenia', 'datum vystaveni', 'vystavene', 'vystaveno', 'vystavenie', 'issue date', 'date', 'datum', 'order date'],
+    taxDate: ['datum dodania', 'duzp', 'datum zdanitelneho plneni', 'datum uskutecneni zdanitelneho plneni', 'tax point date', 'delivery date', 'datum dodani', 'dodanie', 'dodane'],
     dueDate: ['datum splatnosti', 'splatnost', 'due date', 'splatne', 'splatna'],
-    partner: ['odberatel', 'klient', 'zakaznik', 'customer', 'partner', 'nazov odberatela', 'nazev odberatele', 'firma', 'dodavatel', 'supplier', 'obchodny partner', 'nazov', 'billing company', 'customer name', 'billing name'],
+    partner: ['odberatel', 'klient', 'zakaznik', 'customer', 'partner', 'nazov odberatela', 'nazev odberatele', 'firma', 'dodavatel', 'supplier', 'obchodny partner', 'nazov', 'nazov/meno', 'billing company', 'customer name', 'billing name'],
     ...ADDRESS,
     currency: ['mena', 'currency', 'mena dokladu'],
     fxRate: ['kurz', 'exchange rate', 'kurs'],
@@ -58,7 +58,7 @@ export const FIELDS = Object.freeze({
     vat: ['dph', 'vyska dph', 'suma dph', 'vat', 'vat amount', 'dph spolu', 'dph celkem', 'dph celkom'],
     gross: ['celkom', 'suma', 'spolu', 'celkem', 'celkom s dph', 'celkem s dph', 'suma s dph', 'total', 'total with vat', 'k uhrade', 'celkova suma', 'order total'],
     paid: ['uhradene', 'uhrazeno', 'zaplatene', 'paid', 'uhrada', 'uhradena suma', 'zaplateno'],
-    paidDate: ['datum uhrady', 'paid date', 'zaplatene dna', 'uhrazeno dne', 'datum zaplatenia'],
+    paidDate: ['datum uhrady', 'paid date', 'zaplatene dna', 'uhrazeno dne', 'datum zaplatenia', 'datum platby'],
     text: ['popis', 'text', 'poznamka', 'note', 'predmet', 'uvodny text'],
     paymentMethod: ['forma uhrady', 'sposob uhrady', 'zpusob uhrady', 'payment method', 'uhrada typ']
   }
