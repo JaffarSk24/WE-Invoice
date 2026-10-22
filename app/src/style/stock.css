@@ -36,6 +36,9 @@
 .stock-actions { display: flex; justify-content: flex-end; margin-top: 14px; }
 
 .sale-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr); gap: 16px; align-items: start; }
+/* Next to the sidebar a tablet leaves too little room for the catalog and
+   the cart side by side, so the cart goes under the catalog. */
+@media (max-width: 1099px) { .sale-layout { grid-template-columns: minmax(0, 1fr); } .sale-cart { position: static; } }
 .sale-catalog, .sale-cart { padding: 16px; }
 .sale-catalog input[type="search"] { width: 100%; min-height: var(--touch-target); margin-bottom: 12px; }
 .sale-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }

@@ -21,8 +21,8 @@
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
 /* A button among the figures gets its own line instead of a narrow column. */
 .stats > .btn { grid-column: 1 / -1; justify-self: start; white-space: nowrap; }
-.stat { display: flex; flex-direction: column; gap: 2px; }
-.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; overflow-wrap: break-word; hyphens: auto; }
 .stat-value { font-family: var(--font-display); font-size: 22px; font-weight: 700; }
 .stat-hint { font-size: 12px; color: var(--text-secondary); }
 .stat-change { font-size: 12px; font-weight: 600; }

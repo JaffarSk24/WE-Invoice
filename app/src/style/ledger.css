@@ -4,7 +4,8 @@
 .ledger-header .view-actions { flex-wrap: wrap; }
 
 .ledger-year { width: auto; min-width: 96px; min-height: var(--touch-target); padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); }
-.ledger-stats { margin-bottom: 16px; }
+/* Ledger labels are long book names, so a tile keeps room for one word. */
+.ledger-stats { margin-bottom: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .ledger-stats .stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; }
 .ledger-stats .stat-danger .stat-value { color: var(--danger); }
 .ledger-tabs { margin-top: 8px; }

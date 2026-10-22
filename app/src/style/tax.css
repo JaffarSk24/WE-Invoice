@@ -25,8 +25,8 @@
 .tax-reason { width: 100%; min-height: 72px; background: var(--input-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; font: inherit; }
 
 .tax-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
-.tax-tile { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); }
-.tax-tile-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.tax-tile { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); }
+.tax-tile-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; overflow-wrap: break-word; hyphens: auto; }
 .tax-tile-value { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
 .tax-tile.is-due .tax-tile-value { color: var(--danger); }
 .tax-tile.is-refund .tax-tile-value { color: var(--success); }
