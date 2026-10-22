@@ -67,6 +67,36 @@ export function nextNumber(series, ctx) {
 }
 
 /**
+ * The series after a numbered document was deleted: when its number is the
+ * last one the counter gave, the counter steps back so the next document
+ * gets that number again. It keeps stepping back over numbers held only by
+ * other deleted documents, and stops at the first number still in use or
+ * never seen (a counter set by hand to continue another system's numbering
+ * is not rewound below it). Null when nothing changes.
+ * @param {import('../schema/types.js').Series} series
+ * @param {object} deleted  the document just deleted (number, issueDate)
+ * @param {Array<object>} documents  every document of the company, the deleted one included
+ * @returns {import('../schema/types.js').Series|null}
+ */
+export function releaseNumber(series, deleted, documents = []) {
+  if (!series || !deleted || !deleted.number || !deleted.issueDate) return null;
+  const key = counterKey(series, deleted.issueDate);
+  let counter = series.counters?.[key];
+  if (!Number.isInteger(counter) || counter < 2) return null;
+  const inSeries = (documents || []).filter(d => d && d.seriesId === series.id && d.number);
+  const live = new Set(inSeries.filter(d => !d.deleted && d.id !== deleted.id).map(d => d.number));
+  const gone = new Set([...inSeries.filter(d => d.deleted).map(d => d.number), deleted.number]);
+  const start = counter;
+  while (counter > 1) {
+    const previous = formatNumber(series.mask, { date: deleted.issueDate, counter: counter - 1 });
+    if (live.has(previous) || !gone.has(previous)) break;
+    counter -= 1;
+  }
+  if (counter === start) return null;
+  return { ...series, counters: { ...series.counters, [key]: counter } };
+}
+
+/**
  * Variable symbol from a document number: its digits only, at most 10.
  * When there are more, the last ten are kept, so the sequence number at
  * the end of a long mask survives.

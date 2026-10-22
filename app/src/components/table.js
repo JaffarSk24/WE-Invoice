@@ -67,7 +67,8 @@ export function createTable({ key, columns, rows = [], rowKey = (r) => r.id, sel
     bulkBar.hidden = !selected.size;
     if (!selected.size) return;
     bulkBar.append(h('span', { class: 'bulk-count' }, t('table.selected', { n: selected.size })));
-    bulkActions.forEach(a => append(bulkBar, [h('button', {
+    // An action marked single (copy) applies to exactly one selected row.
+    bulkActions.filter(a => !a.single || selected.size === 1).forEach(a => append(bulkBar, [h('button', {
       type: 'button', class: 'btn', onclick: () => a.onClick(selectedRows())
     }, a.icon ? icon(a.icon) : null, a.label)]));
     bulkBar.append(h('button', { type: 'button', class: 'btn btn-ghost', onclick: () => { selected.clear(); refreshBulk(); list.refresh(); } }, t('table.clearSelection')));

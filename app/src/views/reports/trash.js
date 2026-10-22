@@ -43,6 +43,7 @@ async function restore(entry) {
     await restoreRecord(s, entry.collection, entry.id);
     showToast(t('reports.trash.restored', { name: entry.title || entryType(entry) }), { type: 'success', actionLabel: t('reports.trash.open'), onAction: () => navigate(entryRoute(entry)) });
   } catch (e) {
+    if (e && e.code === 'TRASH_NUMBER_TAKEN') { showToast(t('errors.TRASH_NUMBER_TAKEN', e.details), { type: 'error', duration: 8000 }); return; }
     showError(e, 'errors.TRASH_RESTORE_FAILED');
   }
 }

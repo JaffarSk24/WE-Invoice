@@ -24,10 +24,12 @@ function qrColumn(ctx) {
   const { qr, labels, theme } = ctx;
   if (!qr) return null;
   const caption = qr.format === 'QR_PLATBA' ? labels.L('payment.qrPlatba') : labels.L('payment.payBySquare');
+  // The column is as wide as the caption, and the code sits in its middle,
+  // right above the centre of the caption.
   return {
-    width: 64,
+    width: 84,
     stack: [
-      { qr: qr.text, fit: 64, eccLevel: 'M', foreground: theme.text },
+      { qr: qr.text, fit: 64, eccLevel: 'M', foreground: theme.text, alignment: 'center' },
       { text: caption, fontSize: theme.small, bold: true, alignment: 'center', margin: [0, 3, 0, 0] },
     ]
   };

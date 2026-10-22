@@ -64,6 +64,15 @@ describe('recycle bin on the store', () => {
     await expect(purgeRecord(store, 'documents', issued.id)).rejects.toMatchObject({ code: 'TRASH_ARCHIVED' });
   });
 
+  it('keeps a deleted document in the bin when another one has its number now', async () => {
+    const store = await openStore();
+    const old = await store.insert('documents', invoice({ seriesId: 's1', number: '20260041' }));
+    await store.remove('documents', old.id);
+    await store.insert('documents', invoice({ seriesId: 's1', number: '20260041' }));
+    await expect(restoreRecord(store, 'documents', old.id)).rejects.toMatchObject({ code: 'TRASH_NUMBER_TAKEN', details: { number: '20260041' } });
+    expect(store.get('documents', old.id)).toBeNull();
+  });
+
   it('uses restore() of the store when it has one', async () => {
     const calls = [];
     await restoreRecord({ restore: (n, id) => calls.push([n, id]) }, 'items', 'i1');

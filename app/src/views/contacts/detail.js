@@ -49,15 +49,18 @@ function overview(contact, documents) {
           (contact.emails || []).map(e => h('li', {}, h('a', { href: `mailto:${e.address}` }, e.address), ' ', (e.purposes || []).map(p => h('span', { class: 'badge' }, t(`contacts.purpose.${p}`))))),
           (contact.persons || []).map(p => h('li', {}, h('strong', {}, p.name), p.role ? ` (${p.role})` : '', p.email ? ` ${p.email}` : '', p.phone ? ` ${p.phone}` : '')))
         : h('p', { class: 'muted' }, t('contacts.emails.none'))),
-    h('section', { class: 'card' }, h('h2', {}, t('contacts.section.terms')), dl(terms)),
-    contact.note ? h('section', { class: 'card' }, h('h2', {}, t('contacts.field.note')), h('p', { class: 'pre-line' }, contact.note)) : null);
+    // Terms and the note span the whole row under the three cards above:
+    // the terms side by side, each label over its value.
+    h('section', { class: 'card contact-wide' }, h('h2', {}, t('contacts.section.terms')),
+      h('dl', { class: 'contact-terms' }, terms.filter(([, v]) => v !== null && v !== undefined && v !== '').map(([k, v]) => h('div', {}, h('dt', {}, k), h('dd', {}, v))))),
+    contact.note ? h('section', { class: 'card contact-wide' }, h('h2', {}, t('contacts.field.note')), h('p', { class: 'pre-line' }, contact.note)) : null);
 }
 
 function documentList(contact, documents) {
   const docs = contactDocuments(contact, documents);
   if (!docs.length) return emptyState({ title: t('contacts.documents.none'), iconName: 'file-text' });
   return h('table', { class: 'table contact-docs' },
-    h('thead', {}, h('tr', {}, ['docKind', 'number', 'issueDate', 'dueDate', 'status', 'amount', 'due'].map(k => h('th', { scope: 'col', class: k === 'amount' || k === 'due' ? 'num' : null }, t(`contacts.documents.${k}`))), h('td', {}))),
+    h('thead', {}, h('tr', {}, ['docKind', 'number', 'issueDate', 'dueDate', 'status', 'amount', 'due'].map(k => h('th', { scope: 'col', class: k === 'amount' || k === 'due' ? 'num' : null }, t(`contacts.documents.${k}`))), h('th', { scope: 'col', class: 'col-actions' }))),
     h('tbody', {}, docs.map(d => {
       const { gross, due } = documentAmounts(d);
       return h('tr', {},

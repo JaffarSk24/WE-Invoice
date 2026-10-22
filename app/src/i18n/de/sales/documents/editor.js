@@ -26,6 +26,8 @@ export default {
   "documents.editor.ks": "Konstantes Symbol",
   "documents.editor.ss": "Spezifisches Symbol",
   "documents.editor.errors.vs": "Das variable Symbol hat höchstens 10 Ziffern.",
+  "documents.editor.errors.numberTaken": "Ein anderer Beleg der Reihe hat diese Nummer bereits.",
+  "documents.editor.errors.numberEmpty": "Geben Sie die Belegnummer ein.",
   "documents.editor.errors.ks": "Das konstante Symbol hat höchstens 4 Ziffern.",
   "documents.editor.errors.ss": "Das spezifische Symbol hat höchstens 10 Ziffern.",
   "documents.editor.currency": "Währung",

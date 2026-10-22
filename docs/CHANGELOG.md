@@ -63,6 +63,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Fixed (22 October)
+
+- A rule of the bookkeeping styles (`.card + .card { margin-top: 16px }`) applied to every card following a card anywhere in the app once those styles had loaded, so grids of cards lost their line; it now applies inside the bookkeeping screens only.
+
 #### Added
 
 - Sidebar of 260 px with the navigation groups, the Beta badge of e-invoices, tax items filtered by the company's VAT and bookkeeping modes (all shown while no company is known), the company switcher and the sync status line at the bottom. Both listen to the `company:switched`, `company:list` and `sync:status` events and show a neutral state without them; picking another company emits `company:switch`.
@@ -98,6 +102,11 @@ All notable changes to this project are documented here. The format follows [Kee
 - The settings menu is 256 px wide, and the sync section is called "Синхронизация и защита" in Russian and "Синхронізація та захист" in Ukrainian, so no menu item wraps.
 
 ### PDF documents and QR payments
+
+#### Fixed (22 October)
+
+- The payment QR sits in the middle of its column, right above the centre of its caption "PAY by square" or "QR Platba"; the caption used to be wider than the column and the code stood at its left.
+- A seller who is not a VAT payer prints no VAT summary (Rekapitulácia DPH): the note "Nie je platiteľ DPH" is enough.
 
 #### Added
 
@@ -412,6 +421,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Contacts, price list, recurring invoices, reminders and e-mail
 
+#### Fixed (22 October)
+
+- The contact card: the three cards at the top stand on one line, and the terms and the note span the full width under them with each label over its value (the terms used to sit in a narrow column, their values broken letter by letter). The header of the documents table runs over the column of the Send button too.
+
 #### Added
 
 - Contacts (Adresár) at `#/contacts`: search by name, IČO, DIČ, e-mail and tag, a table on the desktop and cards on the phone, the amount due of every client, and a card with identifiers, addresses, e-mails by purpose (invoices, reminders, copy to the accountant), contact persons, delivery addresses, the client's terms (due days, discount, currency, print language, reminders on or off, price level), the balance, all documents and the e-mail history.
@@ -433,6 +446,13 @@ All notable changes to this project are documented here. The format follows [Kee
 - The CRM dictionaries are split by screen under `app/src/i18n/{sk,en}/sales/crm/` and merged in `sales/crm.js`, so no dictionary file grows past the size limit.
 
 ### Sales documents and the document editor
+
+#### Added (22 October)
+
+- Copy from the list: with one document selected, the bar offers Copy, which makes a draft with the same content (the number comes from the series at issue) and opens it for editing, as the card already did.
+- The number of an issued document can be edited in its editor; a number another document of the series has is refused at the field, and a variable symbol made from the old number follows the new one.
+- An issued document can be deleted from its card (More, Delete) after a confirmation, unless it was sent as an e-invoice, is locked after an export to the accountant or lies in a closed VAT period. When it had the last number of its series, the counter steps back (`releaseNumber` in the core), so the next document gets that number again; a counter set by hand to continue another system's numbering is never rewound below it.
+- A deleted document whose number another document got meanwhile stays in the recycle bin (TRASH_NUMBER_TAKEN), so two documents never share a number.
 
 #### Added
 

@@ -198,6 +198,7 @@ export default {
   "errors.REPORT_GRANULARITY_INVALID": "Unbekannter Schritt der Auswertung.",
   "errors.REPORT_DIRECTION_INVALID": "Unbekannte Art der Auswertung.",
   "errors.TRASH_RESTORE_FAILED": "Der Datensatz konnte nicht wiederhergestellt werden.",
+  "errors.TRASH_NUMBER_TAKEN": "Der Beleg kann nicht wiederhergestellt werden: Ein anderer Beleg hat bereits die Nummer {number}. Kopieren Sie ihn bei Bedarf.",
   "errors.TRASH_PURGE_FAILED": "Der Datensatz konnte nicht endgültig gelöscht werden.",
   "errors.TRASH_ARCHIVED": "Ein ausgestellter Beleg gehört zum Archiv und kann nicht endgültig gelöscht werden.",
   "errors.TRASH_NOT_DELETED": "Der Datensatz ist nicht mehr im Papierkorb.",

@@ -4,6 +4,7 @@
 // issuing without the autosave overwriting the issued document, the card
 // with its actions, and the start-up events.
 import { on } from '../../events.js';
+import { t } from '../../i18n/index.js';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createStore, memoryAdapter } from '../../store/index.js';
 import { renderDocumentList } from './list-view.js';
@@ -41,6 +42,33 @@ beforeEach(async () => {
 });
 
 describe('sales list', () => {
+  it('copies the one selected invoice into a draft and opens it for editing', async () => {
+    const contact = await store.insert('contacts', structuredClone(CONTACT));
+    const first = await store.insert('documents', { ...filledDraft(contact), status: 'ISSUED', number: 'FA20260001' });
+    await store.insert('documents', { ...filledDraft(contact), status: 'ISSUED', number: 'FA20260002' });
+    const root = document.createElement('main');
+    document.body.append(root);
+    renderDocumentList(root, 'invoices');
+    const box = (i) => root.querySelectorAll('.data-table tbody tr.row .col-select input')[i];
+    const copyButton = () => [...root.querySelectorAll('.bulk-bar button')].find(b => b.textContent.includes(t('documents.action.copy')));
+    box(0).click();
+    expect(copyButton()).toBeDefined();
+    box(1).click();
+    expect(copyButton()).toBeUndefined();
+    box(1).click();
+    const chosen = store.list('documents').find(d => d.number === root.querySelector('.data-table tbody tr.row').textContent.match(/FA2026000\d/)[0]);
+    copyButton().click();
+    await tick(10);
+    const docs = store.list('documents');
+    expect(docs).toHaveLength(3);
+    const copy = docs.find(d => d.status === 'DRAFT');
+    expect(copy).toMatchObject({ kind: 'INVOICE', number: null, contactId: contact.id });
+    expect(copy.lines.map(l => l.name)).toEqual(chosen.lines.map(l => l.name));
+    expect(copy.id).not.toBe(first.id);
+    expect(window.location.hash).toContain(copy.id);
+    expect(window.location.hash).toContain('edit');
+  });
+
   it('shows one main action when empty and the rows with totals otherwise', async () => {
     const root = document.createElement('main');
     document.body.append(root);
@@ -69,6 +97,28 @@ describe('editor', () => {
     expect(root.querySelector('#editor-missing')).not.toBeNull();
     expect(root.querySelector('.editor-party').classList.contains('field-invalid')).toBe(true);
     expect(store.list('documents').every(d => d.status === 'DRAFT')).toBe(true);
+  });
+
+  it('edits the number of an issued invoice, refusing one the series already has, and the VS follows', async () => {
+    const contact = await store.insert('contacts', structuredClone(CONTACT));
+    const base = { ...filledDraft(contact), status: 'ISSUED', seriesId: 's1' };
+    await store.insert('documents', { ...base, id: undefined, number: '20260040', vs: '20260040' });
+    const doc = await store.insert('documents', { ...filledDraft(contact), status: 'ISSUED', seriesId: 's1', number: '20260041', vs: '20260041' });
+    const root = document.createElement('main');
+    document.body.append(root);
+    const leave = renderEditor(root, { route: 'invoices', kind: 'INVOICE', doc });
+    const number = root.querySelector('#editor-number');
+    expect(number.value).toBe('20260041');
+    number.value = '20260040';
+    number.dispatchEvent(new Event('change'));
+    expect(number.closest('.field').textContent).toContain(t('documents.editor.errors.numberTaken'));
+    number.value = '20260045';
+    number.dispatchEvent(new Event('change'));
+    expect(root.querySelector('#editor-vs').value).toBe('20260045');
+    root.querySelector('#editor-save').click();
+    await tick(30);
+    leave();
+    expect(store.get('documents', doc.id)).toMatchObject({ number: '20260045', vs: '20260045', status: 'ISSUED' });
   });
 
   it('issues a draft and leaving the editor does not write the draft back', async () => {

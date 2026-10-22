@@ -1,9 +1,11 @@
 // The head of a document in the editor: series and the number it will
-// get, the dates (issue, supply, due, valid until), the correction of a
+// get (an issued document's number may be edited, never to one another
+// document of the series has; a variable symbol made from the old number
+// follows the new one), the dates (issue, supply, due, valid until), the correction of a
 // credit or debit note (the corrected invoice and the reason) and the
 // buyer's references (order BT-13, contract BT-12). Each field reports
 // its change; errors from the particulars check land at the field.
-import { isTaxDocument, isPayable } from '@we-invoice/core';
+import { isTaxDocument, isPayable, vsFromNumber } from '@we-invoice/core';
 import { h } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { dateField, selectField, textField, textArea } from '../../components/fields.js';
@@ -37,8 +39,30 @@ export function headerForm(ctx) {
     });
     fields.push(series.el);
   }
-  fields.push(h('div', { class: 'field number-field' }, h('span', { class: 'field-label' }, t('documents.editor.number')), numberText));
-  errors.number = () => {};
+  if (draft.number) {
+    let current = draft.number;
+    const number = textField({ label: t('documents.editor.number'), value: draft.number, required: true, attrs: { id: 'editor-number', maxlength: '40', class: 'num' } });
+    number.input.addEventListener('change', () => {
+      const value = number.value();
+      if (!value) { number.setError(t('documents.editor.errors.numberEmpty')); return; }
+      const taken = (ctx.documents || []).some(d => !d.deleted && d.id !== draft.id && d.seriesId === draft.seriesId && d.number === value);
+      if (taken) { number.setError(t('documents.editor.errors.numberTaken')); return; }
+      number.setError(null);
+      const patch = { number: value };
+      const vsInput = document.getElementById('editor-vs');
+      if (vsInput && vsInput.value === vsFromNumber(current)) {
+        patch.vs = vsFromNumber(value) || null;
+        vsInput.value = patch.vs || '';
+      }
+      current = value;
+      set(patch);
+    });
+    errors.number = number.setError;
+    fields.push(number.el);
+  } else {
+    fields.push(h('div', { class: 'field number-field' }, h('span', { class: 'field-label' }, t('documents.editor.number')), numberText));
+    errors.number = () => {};
+  }
 
   const issue = dateField({ label: t('documents.editor.issueDate'), value: draft.issueDate || '', required: true, attrs: { id: 'editor-issue-date' } });
   issue.input.addEventListener('change', () => ctx.onIssueDate(issue.value()));

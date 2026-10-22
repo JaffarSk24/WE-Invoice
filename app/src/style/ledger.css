@@ -30,7 +30,10 @@
 .ledger-plan { margin-top: 16px; }
 .ledger-plan h4 { margin: 0 0 8px; }
 
-.card + .card, .card + .ledger-statements, .ledger-statements + .card { margin-top: 16px; }
+/* Only inside a ledger screen (the element holding its header): written
+   bare, the rule pushed down every card that follows a card anywhere in
+   the app once this file had loaded, so grids of cards lost their line. */
+:has(> .ledger-header) :is(.card + .card, .card + .ledger-statements, .ledger-statements + .card) { margin-top: 16px; }
 .ledger-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .ledger-check { display: flex; align-items: center; gap: 8px; }
 .ledger-check svg { width: 18px; height: 18px; flex: none; }

@@ -15,7 +15,12 @@
 .vat-red { color: var(--danger); }
 .vat-grey { color: var(--text-muted); }
 
-.contact-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+.contact-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; align-items: stretch; }
+.contact-overview > .card { margin: 0; }
+.contact-wide { grid-column: 1 / -1; }
+.contact-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px 24px; margin: 0; font-size: 14px; }
+.contact-terms dt { color: var(--text-secondary); font-size: 13px; margin-bottom: 2px; }
+.contact-terms dd { margin: 0; font-weight: 600; }
 .contact-overview h2 { font-size: 15px; margin-bottom: 10px; }
 .contact-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; font-size: 14px; }
 .contact-facts dt { color: var(--text-secondary); }
@@ -23,6 +28,8 @@
 .contact-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 14px; padding: 0; margin: 12px 0; }
 .contact-list .badge { margin-left: 4px; color: var(--text-secondary); }
 .contact-docs { width: 100%; margin-top: 12px; }
+.contact-docs .col-actions { width: 1%; }
+.contact-docs td:last-child { text-align: right; }
 .pre-line { white-space: pre-line; }
 
 .form-section { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }

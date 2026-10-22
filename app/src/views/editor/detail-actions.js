@@ -21,7 +21,7 @@ import { pdfOptions } from '../documents/pdf-options.js';
 import { buildPdf, pdfFileNameFor } from '../../pdf/index.js';
 import { canFrameBlobs, openPdf } from '../documents/pdf-frame.js';
 import { isDemo } from '../shell/demo-mode.js';
-import { createDraft, addPayment, removePayment, updatePayment, setStatus, unlockDocument } from './actions.js';
+import { createDraft, addPayment, removePayment, updatePayment, setStatus, unlockDocument, deleteDocument } from './actions.js';
 import { availableConversions, convertForEditor, needsReason } from './convert.js';
 import { duplicateDocument } from './draft.js';
 import { openPaymentDialog } from './payments.js';
@@ -103,6 +103,19 @@ export function detailActions({ doc, row, company, route, documents }) {
     } catch (e) { showError(e); }
   }
 
+  // Moves the document to the bin; its number goes to the next document
+  // when it was the last of the series (deleteDocument).
+  async function remove() {
+    if (!guardWrite()) return;
+    const number = doc.number || t('documents.list.noNumber');
+    if (!(await confirmDialog(t('documents.detail.deleteConfirm', { number }), { danger: true, okLabel: t('documents.action.delete') }))) return;
+    try {
+      await deleteDocument(store(), doc.id);
+      showToast(t('documents.toast.documentDeleted', { number }), { type: 'success' });
+      window.location.hash = salesHash(route);
+    } catch (e) { showError(e); }
+  }
+
   async function status(next) {
     if (!guardWrite()) return;
     if (next === 'CANCELLED' && !(await confirmDialog(t('documents.detail.cancelConfirm'), { danger: true }))) return;
@@ -148,7 +161,8 @@ export function detailActions({ doc, row, company, route, documents }) {
       btn(t('documents.action.copy'), 'copy', copy, { id: 'detail-copy' }),
       doc.kind === 'INVOICE' ? btn(t('documents.action.recurring'), 'repeat', () => emit('recurring:from-document', { documentId: doc.id }), { id: 'detail-recurring' }) : null,
       ...availableConversions(doc, documents).map(target => btn(t(`documents.convert.${target}`), 'file-plus-2', () => convert(target), { dataset: { convert: target } })),
-      ...manual.map(s => btn(t(`documents.status.set.${s}`), 'check', () => status(s), { dataset: { setStatus: s } }))
+      ...manual.map(s => btn(t(`documents.status.set.${s}`), 'check', () => status(s), { dataset: { setStatus: s } })),
+      btn(t('documents.action.delete'), 'trash-2', remove, { id: 'detail-delete' })
     ].filter(Boolean);
     return [
       btn(t('documents.action.pdf'), 'download', () => downloadPdf(doc, { company, documents }), { id: 'detail-pdf' }),

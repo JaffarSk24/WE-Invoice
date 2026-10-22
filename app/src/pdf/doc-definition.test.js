@@ -164,3 +164,29 @@ describe('template list', () => {
     expect([...TEMPLATE_IDS].sort()).toEqual([...schema.DOCUMENT_TEMPLATES].sort());
   });
 });
+
+describe('payment QR and VAT summary', () => {
+  const find = (node, test, out = []) => {
+    if (Array.isArray(node)) node.forEach(n => find(n, test, out));
+    else if (node && typeof node === 'object') {
+      if (test(node)) out.push(node);
+      Object.values(node).forEach(v => find(v, test, out));
+    }
+    return out;
+  };
+
+  it('puts the QR in the middle of a column as wide as its caption', () => {
+    const def = buildDocDefinition(fx.invoice, fx.company, { language: 'sk' });
+    const [column] = find(def.content, n => Array.isArray(n.stack) && n.stack.some(s => s && s.qr));
+    expect(column.width).toBeGreaterThanOrEqual(80);
+    expect(column.stack[0]).toMatchObject({ alignment: 'center' });
+    expect(column.stack[1]).toMatchObject({ alignment: 'center' });
+  });
+
+  it('prints a VAT summary for a payer and none for a non-payer', () => {
+    const rateHead = (def) => find(def.content, n => typeof n.text === 'string' && n.bold && /^Sadzba/.test(n.text));
+    expect(rateHead(buildDocDefinition(fx.invoice, fx.company, { language: 'sk' })).length).toBeGreaterThan(0);
+    const outOfScope = { ...fx.nonPayerInvoice, totals: { ...fx.nonPayerInvoice.totals, breakdown: [{ category: 'O', rate: null, base: '700.00', vat: '0.00' }] } };
+    expect(rateHead(buildDocDefinition(outOfScope, fx.nonPayerCompany, { language: 'sk' }))).toEqual([]);
+  });
+});

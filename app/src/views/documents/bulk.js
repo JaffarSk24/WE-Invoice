@@ -1,5 +1,6 @@
 // Bulk actions of a sales list: download the PDFs, send (the e-mail
-// package listens to document:send), mark as paid. Drafts are skipped,
+// package listens to document:send), mark as paid, and copy one selected
+// document into a new draft opened for editing. Drafts are skipped,
 // and so are cash and card documents when marking paid: each of those
 // payments needs its own eKasa receipt, so they are recorded one by one.
 import { isPayable, cmp } from '@we-invoice/core';
@@ -7,8 +8,10 @@ import { t } from '../../i18n/index.js';
 import { emit } from '../../events.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { todayLocal } from '../../components/dates.js';
-import { addPayment } from '../editor/actions.js';
-import { companyNow, allDocuments, salesStore, guardWrite } from './source.js';
+import { addPayment, createDraft } from '../editor/actions.js';
+import { duplicateDocument } from '../editor/draft.js';
+import { companyNow, allDocuments, allContacts, salesStore, guardWrite } from './source.js';
+import { salesHash, routeForKind } from './kinds.js';
 import { pdfOptions } from './pdf-options.js';
 
 const EKASA_METHODS = new Set(['CASH', 'CARD', 'QR_ON_SITE']);
@@ -60,8 +63,25 @@ export async function bulkMarkPaid(rows) {
   if (oneByOne.length) showToast(t('documents.bulk.cashOneByOne', { n: oneByOne.length }), { type: 'info', duration: 8000 });
 }
 
+/** Copies the one selected document into a draft (number given at issue) and opens it for editing. */
+export async function copySelected(rows) {
+  const doc = rows[0] && (rows[0].doc || rows[0]);
+  if (!doc || !guardWrite()) return null;
+  try {
+    const contact = allContacts().find(c => c.id === doc.contactId) || null;
+    const stored = await createDraft(salesStore(), duplicateDocument(doc, { today: todayLocal(), company: companyNow(), contact }));
+    showToast(t('documents.toast.copied'), { type: 'success' });
+    window.location.hash = salesHash(routeForKind(stored.kind) || 'invoices', { id: stored.id, mode: 'edit' });
+    return stored;
+  } catch (e) {
+    showError(e);
+    return null;
+  }
+}
+
 export function bulkActions() {
   return [
+    { label: t('documents.action.copy'), icon: 'copy', onClick: copySelected, single: true },
     { label: t('documents.bulk.pdf'), icon: 'download', onClick: bulkPdf },
     { label: t('documents.bulk.send'), icon: 'send', onClick: bulkSend },
     { label: t('documents.bulk.markPaid'), icon: 'banknote', onClick: bulkMarkPaid }

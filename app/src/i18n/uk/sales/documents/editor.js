@@ -26,6 +26,8 @@ export default {
   "documents.editor.ks": "Константний символ",
   "documents.editor.ss": "Специфічний символ",
   "documents.editor.errors.vs": "Варіабельний символ містить не більше 10 цифр.",
+  "documents.editor.errors.numberTaken": "Цей номер уже має інший документ серії.",
+  "documents.editor.errors.numberEmpty": "Введіть номер документа.",
   "documents.editor.errors.ks": "Константний символ містить не більше 4 цифр.",
   "documents.editor.errors.ss": "Специфічний символ містить не більше 10 цифр.",
   "documents.editor.currency": "Валюта",

@@ -2,7 +2,7 @@
 // reset on the boundary, taken numbers, variable symbol from a number with
 // letters, conflicts after a merge.
 import { describe, it, expect } from 'vitest';
-import { formatNumber, nextNumber, vsFromNumber, findNumberConflicts, counterKey } from './index.js';
+import { formatNumber, nextNumber, vsFromNumber, findNumberConflicts, counterKey, releaseNumber } from './index.js';
 
 const code = (fn) => { try { fn(); } catch (e) { return e.code; } return null; };
 const series = (over = {}) => ({ id: 's1', kind: 'INVOICE', mask: 'FA{YYYY}{N:4}', vsMask: null, reset: 'YEARLY', counters: {}, ...over });
@@ -139,5 +139,33 @@ describe('findNumberConflicts', () => {
   it('orders by id when creation times are equal or missing', () => {
     const docs = [{ id: 'b', seriesId: 's1', number: 'N1', issueDate: '2026-10-18' }, { id: 'a', seriesId: 's1', number: 'N1', issueDate: '2026-10-18' }];
     expect(findNumberConflicts(docs, list)[0].docId).toBe('b');
+  });
+});
+
+describe('releaseNumber', () => {
+  const series = { id: 's1', mask: '{YYYY}{N:4}', reset: 'YEARLY', counters: { 2026: 42 } };
+  const docOf = (id, n, extra = {}) => ({ id, seriesId: 's1', number: `2026${String(n).padStart(4, '0')}`, issueDate: '2026-10-22', ...extra });
+
+  it('steps the counter back when the last number is deleted', () => {
+    const last = docOf('d41', 41);
+    const next = releaseNumber(series, last, [docOf('d40', 40), last]);
+    expect(next.counters['2026']).toBe(41);
+    expect(nextNumber(next, { date: '2026-10-23', taken: ['20260040'] }).number).toBe('20260041');
+  });
+
+  it('keeps the counter when a number in the middle is deleted', () => {
+    expect(releaseNumber(series, docOf('d30', 30), [docOf('d30', 30), docOf('d41', 41)])).toBeNull();
+  });
+
+  it('steps back over numbers deleted earlier, but not below a number never used', () => {
+    const docs = [docOf('d39', 39), docOf('d40', 40, { deleted: true }), docOf('d41', 41)];
+    expect(releaseNumber(series, docs[2], docs).counters['2026']).toBe(40);
+    const continued = { ...series, counters: { 2026: 42 } };
+    expect(releaseNumber(continued, docOf('d41', 41), [docOf('d41', 41)]).counters['2026']).toBe(41);
+  });
+
+  it('does nothing without a number, a date or a counter', () => {
+    expect(releaseNumber(series, { id: 'x', seriesId: 's1', number: null, issueDate: '2026-10-22' }, [])).toBeNull();
+    expect(releaseNumber({ ...series, counters: {} }, docOf('d1', 1), [])).toBeNull();
   });
 });

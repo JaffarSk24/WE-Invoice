@@ -198,6 +198,7 @@ export default {
   "errors.REPORT_GRANULARITY_INVALID": "Neznámý krok přehledu.",
   "errors.REPORT_DIRECTION_INVALID": "Neznámý druh přehledu.",
   "errors.TRASH_RESTORE_FAILED": "Záznam se nepodařilo obnovit.",
+  "errors.TRASH_NUMBER_TAKEN": "Doklad nelze obnovit: číslo {number} už má jiný doklad. Pokud ho potřebujete, zkopírujte ho.",
   "errors.TRASH_PURGE_FAILED": "Záznam se nepodařilo odstranit natrvalo.",
   "errors.TRASH_ARCHIVED": "Vystavený doklad patří do archivu a nelze ho odstranit natrvalo.",
   "errors.TRASH_NOT_DELETED": "Záznam už není v koši.",

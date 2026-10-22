@@ -26,6 +26,8 @@ export default {
   "documents.editor.ks": "Constant symbol",
   "documents.editor.ss": "Specific symbol",
   "documents.editor.errors.vs": "The variable symbol has at most 10 digits.",
+  "documents.editor.errors.numberTaken": "Another document of the series already has this number.",
+  "documents.editor.errors.numberEmpty": "Enter the document number.",
   "documents.editor.errors.ks": "The constant symbol has at most 4 digits.",
   "documents.editor.errors.ss": "The specific symbol has at most 10 digits.",
   "documents.editor.currency": "Currency",

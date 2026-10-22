@@ -7,7 +7,7 @@ import {
   duplicateLine, updateLine, liveTotals, duplicateDocument, dueDateFor, languageFor
 } from './draft.js';
 import { availableConversions, convertForEditor, deductionCandidates, correctionCandidates, advanceAvailable, needsReason } from './convert.js';
-import { issueDraft, saveDocument, createDraft, deleteDraft, addPayment, removePayment, updatePayment, setStatus, unlockDocument } from './actions.js';
+import { issueDraft, saveDocument, createDraft, deleteDraft, deleteDocument, addPayment, removePayment, updatePayment, setStatus, unlockDocument } from './actions.js';
 import { COMPANY, CONTACT, memoryStore } from '../documents/fixtures.js';
 
 const TODAY = '2026-10-18';
@@ -182,7 +182,34 @@ describe('store actions', () => {
     expect(store.company().series).toEqual([]);
   });
 
-  it('records, edits and removes payments; deletes only drafts', async () => {
+  it('deletes an issued invoice and gives its number to the next one when it was the last', async () => {
+    const { store, contact } = await withClient();
+    const issue = () => issueDraft(store, filled(newDraft({ kind: 'INVOICE', company: store.company(), contact, today: TODAY })), { emit: () => {} });
+    const first = await issue();
+    const second = await issue();
+    const third = await issue();
+    expect(third.number).toBe('FA20260003');
+    await deleteDocument(store, second.id);
+    expect(store.get('documents', second.id)).toBeNull();
+    expect((await issue()).number).toBe('FA20260004');
+    await deleteDocument(store, store.list('documents').find(d => d.number === 'FA20260004').id);
+    await deleteDocument(store, third.id);
+    expect(store.company().series[0].counters['2026']).toBe(2);
+    expect((await issue()).number).toBe('FA20260002');
+    expect(first.number).toBe('FA20260001');
+  });
+
+  it('does not delete an invoice sent as an e-invoice, locked, or in a closed VAT period', async () => {
+    const { store, contact } = await withClient();
+    const doc = await issueDraft(store, filled(newDraft({ kind: 'INVOICE', company: store.company(), contact, today: TODAY })), { emit: () => {} });
+    await store.update('documents', doc.id, { peppol: { direction: 'OUT', status: 'DELIVERED' } });
+    await expect(deleteDocument(store, doc.id)).rejects.toMatchObject({ code: 'DOCUMENT_PEPPOL_SENT' });
+    await store.update('documents', doc.id, { peppol: null, lockedAt: '2026-10-19T10:00:00.000Z' });
+    await expect(deleteDocument(store, doc.id)).rejects.toMatchObject({ code: 'DOCUMENT_LOCKED' });
+    expect(store.get('documents', doc.id)).not.toBeNull();
+  });
+
+  it('records, edits and removes payments; deletes drafts', async () => {
     const { store, contact } = await withClient();
     const doc = await issueDraft(store, filled(newDraft({ kind: 'INVOICE', company: store.company(), contact, today: TODAY })), { emit: () => {} });
     const p = await addPayment(store, doc.id, { date: TODAY, amount: '100.00', method: 'CASH' });
@@ -192,7 +219,6 @@ describe('store actions', () => {
     expect(paidAmount(store.get('documents', doc.id))).toBe('100.00');
     await removePayment(store, doc.id, p.id);
     expect(store.get('documents', doc.id).payments).toEqual([]);
-    await expect(deleteDraft(store, doc.id)).rejects.toMatchObject({ code: 'DOCUMENT_NOT_DRAFT' });
     const draft = await createDraft(store, newDraft({ kind: 'QUOTE', company: store.company(), today: TODAY }));
     await deleteDraft(store, draft.id);
     expect(store.get('documents', draft.id)).toBeNull();

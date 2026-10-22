@@ -198,6 +198,7 @@ export default {
   "errors.REPORT_GRANULARITY_INVALID": "Неизвестный шаг отчёта.",
   "errors.REPORT_DIRECTION_INVALID": "Неизвестный вид отчёта.",
   "errors.TRASH_RESTORE_FAILED": "Не удалось восстановить запись.",
+  "errors.TRASH_NUMBER_TAKEN": "Документ нельзя восстановить: номер {number} уже у другого документа. Если он нужен, скопируйте его.",
   "errors.TRASH_PURGE_FAILED": "Не удалось удалить запись навсегда.",
   "errors.TRASH_ARCHIVED": "Выставленный документ входит в архив, и удалить его навсегда нельзя.",
   "errors.TRASH_NOT_DELETED": "Записи уже нет в корзине.",

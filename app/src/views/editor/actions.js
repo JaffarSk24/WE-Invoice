@@ -1,11 +1,12 @@
 // What the document screens change in the store: save a draft, issue it
 // (number from the series, snapshots, totals), convert, copy, delete a
-// draft, record and remove payments, move a status, unlock a locked
+// document (an issued one frees its number when it was the last of its
+// series), record and remove payments, move a status, unlock a locked
 // document with an audit entry. Each function takes the store, so tests
 // run them over a memory store; the screens add the toasts. Other
 // packages hear about it through events:
 //   stock:document-issued { documentId }   after a document is issued
-import { issueDocument, canTransition, uuidv7, contactSnapshot, localDate } from '@we-invoice/core';
+import { issueDocument, canTransition, canEdit, releaseNumber, uuidv7, contactSnapshot, localDate } from '@we-invoice/core';
 import { resolveSeries, withSeries, takenNumbers } from '../documents/series.js';
 import { assertPeriodOpen } from '../documents/period-guard.js';
 import { emit as busEmit } from '../../events.js';
@@ -72,17 +73,36 @@ export async function createDraft(store, draft) {
   return store.insert('documents', fieldsOf(draft));
 }
 
-/** Deletes a draft (tombstone). An issued document is never deleted: it is corrected by a credit note. */
-export async function deleteDraft(store, id) {
+/**
+ * Moves a document to the recycle bin. An issued one may go too, unless it
+ * was sent as an e-invoice, is locked after an export to the accountant or
+ * lies in a closed VAT period; when its number was the last its series
+ * gave, the counter steps back and the next document gets that number.
+ */
+export async function deleteDocument(store, id) {
   const doc = store.get('documents', id);
   if (!doc) return null;
   if (doc.status !== 'DRAFT') {
-    const error = new Error('Only a draft can be deleted');
-    error.code = 'DOCUMENT_NOT_DRAFT';
-    throw error;
+    const check = canEdit(doc);
+    if (!check.editable && check.reason !== 'DOCUMENT_CANCELLED') {
+      const error = new Error(`Document cannot be deleted: ${check.reason}`);
+      error.code = check.reason;
+      throw error;
+    }
+    assertPeriodOpen(doc, null, store.company());
   }
-  return store.remove('documents', id);
+  const removed = await store.remove('documents', id);
+  if (doc.number && doc.seriesId) {
+    const company = store.company();
+    const series = ((company && company.series) || []).find(s => s.id === doc.seriesId);
+    const released = releaseNumber(series, doc, store.list('documents', { includeDeleted: true }));
+    if (released) await store.updateCompany({ series: withSeries(company, released) });
+  }
+  return removed;
 }
+
+/** Deletes a draft: kept for the editor's draft button. */
+export const deleteDraft = deleteDocument;
 
 /**
  * Records a payment on a document in its currency.

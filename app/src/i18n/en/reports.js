@@ -198,6 +198,7 @@ export default {
   "errors.REPORT_GRANULARITY_INVALID": "Unknown report step.",
   "errors.REPORT_DIRECTION_INVALID": "Unknown kind of report.",
   "errors.TRASH_RESTORE_FAILED": "The record could not be restored.",
+  "errors.TRASH_NUMBER_TAKEN": "The document cannot be restored: another document already has the number {number}. Copy it if you need it.",
   "errors.TRASH_PURGE_FAILED": "The record could not be deleted for good.",
   "errors.TRASH_ARCHIVED": "An issued document belongs to the archive and cannot be deleted for good.",
   "errors.TRASH_NOT_DELETED": "The record is no longer in the bin.",

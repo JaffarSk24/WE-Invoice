@@ -26,6 +26,8 @@ export default {
   "documents.editor.ks": "Konštantný symbol",
   "documents.editor.ss": "Špecifický symbol",
   "documents.editor.errors.vs": "Variabilný symbol má najviac 10 číslic.",
+  "documents.editor.errors.numberTaken": "Toto číslo už má iný doklad v rade.",
+  "documents.editor.errors.numberEmpty": "Zadajte číslo dokladu.",
   "documents.editor.errors.ks": "Konštantný symbol má najviac 4 číslice.",
   "documents.editor.errors.ss": "Špecifický symbol má najviac 10 číslic.",
   "documents.editor.currency": "Mena",

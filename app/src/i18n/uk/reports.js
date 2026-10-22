@@ -198,6 +198,7 @@ export default {
   "errors.REPORT_GRANULARITY_INVALID": "Невідомий крок звіту.",
   "errors.REPORT_DIRECTION_INVALID": "Невідомий тип звіту.",
   "errors.TRASH_RESTORE_FAILED": "Не вдалося відновити запис.",
+  "errors.TRASH_NUMBER_TAKEN": "Документ не можна відновити: номер {number} уже має інший документ. Якщо він потрібен, скопіюйте його.",
   "errors.TRASH_PURGE_FAILED": "Не вдалося остаточно видалити запис.",
   "errors.TRASH_ARCHIVED": "Виставлений документ належить до архіву, і його не можна видалити остаточно.",
   "errors.TRASH_NOT_DELETED": "Запису вже немає в кошику.",

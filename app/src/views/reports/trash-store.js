@@ -26,8 +26,22 @@ async function replaceTombstone(store, name, id, change) {
   return store.commit(name, { data: { ...store.data, [name]: next, updatedAt: now }, record });
 }
 
-/** Brings a deleted record back under its own id. */
+/**
+ * Brings a deleted record back under its own id. A deleted document whose
+ * number another document of its series got meanwhile stays in the bin:
+ * two documents never share a number (TRASH_NUMBER_TAKEN).
+ */
 export function restoreRecord(store, name, id) {
+  if (name === 'documents') {
+    const doc = store.get('documents', id, { includeDeleted: true });
+    const taken = doc && doc.number && store.list('documents').some(d => d.id !== id && d.seriesId === doc.seriesId && d.number === doc.number);
+    if (taken) {
+      const error = new Error(`Number ${doc.number} is used by another document`);
+      error.code = 'TRASH_NUMBER_TAKEN';
+      error.details = { number: doc.number };
+      return Promise.reject(error);
+    }
+  }
   if (typeof store.restore === 'function') return store.restore(name, id);
   return replaceTombstone(store, name, id, (record, now) => restoredRecord(record, now));
 }

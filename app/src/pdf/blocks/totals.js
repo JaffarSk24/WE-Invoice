@@ -1,11 +1,13 @@
 // Totals and the VAT summary by rate, straight from document.totals (the
 // core computes them at issue; nothing is recomputed here). The summary
 // sits at the left, the totals column at the right with the amount due
-// highlighted.
+// highlighted. A seller who is not a VAT payer prints no VAT summary: the
+// note "Nie je platiteľ DPH" says it all.
 import { isZero, isNegative, sum, negate } from '../amounts.js';
 
 function summaryRows(ctx) {
-  const { doc, labels, fmt, theme } = ctx;
+  const { doc, labels, fmt, theme, vatPayer } = ctx;
+  if (!vatPayer) return null;
   const breakdown = (doc.totals && doc.totals.breakdown) || [];
   if (!breakdown.length) return null;
   const head = (key) => ({ text: labels.L(key), bold: true, fontSize: theme.small + 0.5, color: theme.muted });
