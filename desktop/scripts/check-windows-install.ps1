@@ -146,25 +146,34 @@ $StartCrash = -1073741819  # 0xC0000005
 $script:StartCrashes = 0
 # Runs an installer or uninstaller and waits for it, at most $SetupMinutes
 # minutes: one that hangs is shown with what Windows logged and fails.
+# Start-Process -Wait waits for the whole process tree, which matters: the
+# NSIS uninstaller copies itself to a temporary file and exits at once while
+# the copy does the work. It runs in a job so the wait has a limit.
 function Start-Setup([string]$File, [string[]]$Arguments, [string]$What) {
-  $run = Start-Process -FilePath $File -ArgumentList $Arguments -PassThru
-  if (-not $run.WaitForExit($SetupMinutes * 60 * 1000)) {
+  $job = Start-Job -ScriptBlock {
+    param($f, $a)
+    (Start-Process -FilePath $f -ArgumentList $a -PassThru -Wait).ExitCode
+  } -ArgumentList $File, $Arguments
+  if (-not (Wait-Job $job -Timeout ($SetupMinutes * 60))) {
+    Stop-Job $job; Remove-Job $job -Force
     Show-Crash $What
-    Get-Process -Id $run.Id -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.Path -and ($_.Path -like "$env:TEMP*" -or $_.Path -eq $File) } | Stop-Process -Force -ErrorAction SilentlyContinue
     Fail "The $What did not finish within $SetupMinutes minutes"
   }
-  return $run
+  $code = Receive-Job $job | Select-Object -Last 1
+  Remove-Job $job -Force
+  return [int]$code
 }
 
 function Invoke-Setup([string]$File, [string[]]$Arguments, [string]$What) {
-  $run = Start-Setup $File $Arguments $What
-  if ($run.ExitCode -eq $StartCrash) {
+  $code = Start-Setup $File $Arguments $What
+  if ($code -eq $StartCrash) {
     $script:StartCrashes++
     Show-Crash $What
     Warn "The $What crashed at start (0xC0000005), trying once more"
-    $run = Start-Setup $File $Arguments $What
+    $code = Start-Setup $File $Arguments $What
   }
-  return $run.ExitCode
+  return $code
 }
 
 if (-not $Installer) {
