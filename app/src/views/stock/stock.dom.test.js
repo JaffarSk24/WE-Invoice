@@ -9,6 +9,9 @@ import { renderStock } from './index.js';
 import { renderQuickSale } from './sale/index.js';
 import { addMoves, ensureWarehouse, stockData } from './data.js';
 import { openMoveDialog } from './move-dialog.js';
+import { initModalKeys } from '../../ui/modal.js';
+
+initModalKeys();
 import { levelRows } from './levels-tab.js';
 import { t } from '../../i18n/index.js';
 
@@ -65,6 +68,32 @@ describe('stock screen', () => {
     const select = document.querySelector('#stock-move-item');
     await until(() => select.value);
     expect(select.options[select.selectedIndex].textContent).toBe('Stôl (NAB-0012)');
+  });
+
+  it('picks the scanned item and keeps the receipt open on the Enter of the scanner', async () => {
+    openMoveDialog('RECEIPT');
+    await until(() => document.querySelector('#stock-move-scan'));
+    document.querySelector('#stock-move-item').value = item.id;
+    document.querySelector('#stock-move-qty').value = '3';
+    const scan = document.querySelector('#stock-move-scan');
+    scan.value = '8580000000017';
+    scan.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await tick();
+    expect(document.querySelector('#stock-move-item').value).toBe(item.id);
+    expect(scan.value).toBe('');
+    expect(document.querySelector('#stock-move-scan')).not.toBeNull();
+    expect(stockData().moves).toHaveLength(1);
+  });
+
+  it('opens a new item with the scanned barcode when nothing has it', async () => {
+    openMoveDialog('RECEIPT');
+    await until(() => document.querySelector('#stock-move-scan'));
+    const scan = document.querySelector('#stock-move-scan');
+    scan.value = '8580000000099';
+    scan.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await until(() => document.querySelector('#stock-new-item-barcode'));
+    expect(document.querySelector('#stock-new-item-barcode').value).toBe('8580000000099');
+    expect(document.querySelector('#stock-new-item-code').value).toBe('');
   });
 
   it('shows empty states in the demo', () => {

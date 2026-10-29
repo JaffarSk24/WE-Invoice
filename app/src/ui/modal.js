@@ -56,7 +56,8 @@ export function initModalKeys() {
     if (e.key === 'Escape') {
       e.preventDefault();
       m.close();
-    } else if (e.key === 'Enter' && !e.shiftKey && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON') {
+    } else if (e.key === 'Enter' && !e.shiftKey && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'BUTTON' && !(e.target.dataset && e.target.dataset.ownEnter)) {
+      // A field with data-own-enter (a barcode scanner field) uses Enter itself.
       const primary = m.footer.querySelector('[data-primary]');
       if (primary) { e.preventDefault(); primary.click(); }
     }

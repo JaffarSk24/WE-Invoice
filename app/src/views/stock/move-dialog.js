@@ -2,7 +2,9 @@
 // (issue) or prevodka (transfer). It checks the move with the core before
 // saving and asks before a move that would take a balance below zero. An
 // item that is not in the price list yet can be added from here as a
-// stock-tracked item, with its code and barcode for the stocktaking.
+// stock-tracked item, with its code and barcode for the stocktaking. A
+// scanned barcode (or a typed code and Enter) picks the item it belongs to,
+// or opens the new item with that barcode already filled in.
 import { negativeStockWarnings, normalizeStockMove, vatRatesOn } from '@we-invoice/core';
 import { h } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
@@ -11,6 +13,8 @@ import { showToast, showError } from '../../ui/toast.js';
 import { todayLocal } from '../../components/dates.js';
 import { textField, numberField, dateField, selectField } from '../../components/fields.js';
 import { stockData, addMoves, ensureWarehouse, createStockItem } from './data.js';
+import { scannerInput, cameraButton } from './scan.js';
+import { findByCode } from './sale/cart.js';
 import { qtyText, nameIndex, refuseWrite } from './format.js';
 
 const FIELD_OF = { qty: 'qty', unitCost: 'cost', date: 'date', itemId: 'item', warehouseId: 'warehouse', targetWarehouseId: 'target' };
@@ -20,10 +24,15 @@ function itemOptions(items) {
   return [{ value: '', label: t('stock.move.pickItem') }, ...tracked.map(i => ({ value: i.id, label: i.code ? `${i.name} (${i.code})` : i.name }))];
 }
 
-function openNewItem(onCreated) {
+const isBarcode = (text) => /^\d{6,14}$/.test(text);
+
+function openNewItem(onCreated, preset = {}) {
   const name = textField({ label: t('stock.item.name'), required: true, attrs: { id: 'stock-new-item-name' } });
-  const code = textField({ label: t('stock.item.code'), attrs: { id: 'stock-new-item-code', maxlength: '40' } });
-  const barcode = textField({ label: t('stock.item.barcode'), attrs: { id: 'stock-new-item-barcode', inputmode: 'numeric', maxlength: '40' } });
+  const code = textField({ label: t('stock.item.code'), value: preset.code || '', attrs: { id: 'stock-new-item-code', maxlength: '40' } });
+  const barcode = textField({ label: t('stock.item.barcode'), value: preset.barcode || '', attrs: { id: 'stock-new-item-barcode', inputmode: 'numeric', maxlength: '40', placeholder: t('stock.scan.placeholder') } });
+  // A scanner's Enter in the barcode field moves on instead of saving.
+  scannerInput(barcode.input, () => name.input.focus());
+  barcode.el.append(cameraButton((value) => { barcode.input.value = value; name.input.focus(); }, { id: 'stock-new-item-camera' }));
   const unit = textField({ label: t('stock.item.unit'), value: t('stock.item.unitDefault') });
   const price = numberField({ label: t('stock.item.price') });
   openModal({
@@ -58,13 +67,25 @@ export async function openMoveDialog(kind, preset = {}) {
   const firstWarehouse = preset.warehouseId || data.warehouses[0]?.id || '';
 
   const item = selectField({ label: t('stock.move.item'), options: itemOptions(data.items), value: preset.itemId || '', required: true, attrs: { id: 'stock-move-item' } });
+  const items = data.items.filter(i => i.stockTracked);
+  const added = (created) => {
+    items.push(created);
+    item.input.append(h('option', { value: created.id }, created.code ? `${created.name} (${created.code})` : created.name));
+    item.input.value = created.id;
+  };
   const addItem = h('button', {
     type: 'button', class: 'btn btn-ghost btn-sm', id: 'stock-move-new-item',
-    onclick: () => openNewItem((created) => {
-      item.input.append(h('option', { value: created.id }, created.code ? `${created.name} (${created.code})` : created.name));
-      item.input.value = created.id;
-    })
+    onclick: () => openNewItem(added)
   }, t('stock.item.new'));
+  const scan = textField({ label: t('stock.scan.label'), attrs: { id: 'stock-move-scan', placeholder: t('stock.scan.placeholder'), autocomplete: 'off' } });
+  const pick = (value) => {
+    scan.input.value = '';
+    const found = findByCode(items, value);
+    if (found) { item.input.value = found.id; item.setError(''); qty.input.focus(); return; }
+    openNewItem((created) => { added(created); qty.input.focus(); }, isBarcode(value) ? { barcode: value } : { code: value });
+  };
+  scannerInput(scan.input, pick);
+  const scanRow = h('div', { class: 'stock-scan-row' }, scan.el, cameraButton(pick, { id: 'stock-move-camera' }));
   const date = dateField({ label: t('stock.move.date'), value: todayLocal(), required: true });
   const qty = numberField({ label: t('stock.move.qty'), required: true, attrs: { id: 'stock-move-qty' } });
   const warehouse = selectField({ label: kind === 'TRANSFER' ? t('stock.move.from') : t('stock.move.warehouse'), options: warehouseOptions, value: firstWarehouse });
@@ -76,6 +97,7 @@ export async function openMoveDialog(kind, preset = {}) {
   const fields = { item, date, qty, warehouse, target, cost, note };
 
   const body = h('div', { class: 'stock-move-form' },
+    scanRow,
     h('div', { class: 'stock-item-row' }, item.el, addItem),
     h('div', { class: 'form-grid' }, date.el, qty.el, warehouse.el, target ? target.el : null, cost ? cost.el : null),
     note.el);

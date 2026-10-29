@@ -63,6 +63,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Added (29 October, from testers)
+
+- Favourites in the menu: a star next to every section (shown on hover, always on a touch screen) pins it to a Favourites group under Overview, on the sidebar and on the phone More screen; the choice is kept on the device.
+
+#### Fixed (29 October, menu)
+
+- The sidebar keeps its scroll position when a section is opened, so a section low in the menu (Bank) stays in view instead of the menu jumping back to the top.
+
 #### Fixed (29 October, from testers)
 
 - A filled button (Continue in the company wizard, primary, brand and danger buttons everywhere) kept its colour on hover instead of turning into a plain grey one with an invisible white label on the light theme; it now gets a little lighter. A disabled button no longer reacts to hover.
@@ -261,6 +269,11 @@ All notable changes to this project are documented here. The format follows [Kee
 - End-to-end tests: the search finds an invoice by its variable symbol and opens it; the reports draw every tab; axe checks of the new screens.
 
 ### Stock, price levels and the quick sale
+
+#### Added (29 October, barcodes)
+
+- A receipt, issue or transfer starts with a Barcode or code field: a USB or Bluetooth scanner (or a typed code and Enter) picks the item with that barcode or code, or opens a new item with the barcode already filled in. The Enter of the scanner no longer saves a half filled dialog (fields marked data-own-enter keep their Enter).
+- Where the browser can read barcodes from the camera (the desktop app and Chrome on a Mac, Chrome on Android), a Scan with the camera button fills the code in from a live view. The macOS app declares why it asks for the camera (NSCameraUsageDescription), which macOS requires before it allows the camera at all.
 
 #### Added (29 October, from testers)
 

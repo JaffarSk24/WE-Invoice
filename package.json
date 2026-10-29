@@ -84,6 +84,9 @@
     "mac": {
       "icon": "icon.png",
       "category": "public.app-category.business",
+      "extendInfo": {
+        "NSCameraUsageDescription": "WE Invoice uses the camera to read the barcode of an item or the QR code of a receipt."
+      },
       "minimumSystemVersion": "10.15",
       "target": [
         {
