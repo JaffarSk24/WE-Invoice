@@ -2,7 +2,7 @@
 // (issue) or prevodka (transfer). It checks the move with the core before
 // saving and asks before a move that would take a balance below zero. An
 // item that is not in the price list yet can be added from here as a
-// stock-tracked item.
+// stock-tracked item, with its code and barcode for the stocktaking.
 import { negativeStockWarnings, normalizeStockMove, vatRatesOn } from '@we-invoice/core';
 import { h } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
@@ -22,11 +22,13 @@ function itemOptions(items) {
 
 function openNewItem(onCreated) {
   const name = textField({ label: t('stock.item.name'), required: true, attrs: { id: 'stock-new-item-name' } });
+  const code = textField({ label: t('stock.item.code'), attrs: { id: 'stock-new-item-code', maxlength: '40' } });
+  const barcode = textField({ label: t('stock.item.barcode'), attrs: { id: 'stock-new-item-barcode', inputmode: 'numeric', maxlength: '40' } });
   const unit = textField({ label: t('stock.item.unit'), value: t('stock.item.unitDefault') });
   const price = numberField({ label: t('stock.item.price') });
   openModal({
     title: t('stock.item.new'),
-    body: h('div', { class: 'form-grid' }, name.el, unit.el, price.el),
+    body: h('div', { class: 'form-grid' }, name.el, code.el, barcode.el, unit.el, price.el),
     actions: [
       { label: t('common.cancel'), onClick: (m) => m.close() },
       {
@@ -34,7 +36,7 @@ function openNewItem(onCreated) {
           if (!name.value()) { name.setError(t('stock.item.nameRequired')); return; }
           try {
             const standard = vatRatesOn(todayLocal()).find(r => r.code === 'STANDARD');
-            const item = await createStockItem({ name: name.value(), unitLabel: unit.value(), price: price.value() || '0', vatRate: standard ? standard.rate : null });
+            const item = await createStockItem({ name: name.value(), code: code.value(), barcode: barcode.value(), unitLabel: unit.value(), price: price.value() || '0', vatRate: standard ? standard.rate : null });
             m.close();
             onCreated(item);
           } catch (e) { showError(e, 'stock.error.save'); }
@@ -59,7 +61,7 @@ export async function openMoveDialog(kind, preset = {}) {
   const addItem = h('button', {
     type: 'button', class: 'btn btn-ghost btn-sm', id: 'stock-move-new-item',
     onclick: () => openNewItem((created) => {
-      item.input.append(h('option', { value: created.id }, created.name));
+      item.input.append(h('option', { value: created.id }, created.code ? `${created.name} (${created.code})` : created.name));
       item.input.value = created.id;
     })
   }, t('stock.item.new'));

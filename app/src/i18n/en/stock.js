@@ -72,6 +72,8 @@ export default {
   "stock.move.invalid.unitCost": "The price cannot be negative.",
   "stock.item.new": "New stock item",
   "stock.item.name": "Name",
+  "stock.item.code": "Code",
+  "stock.item.barcode": "Barcode",
   "stock.item.nameRequired": "Enter the item name.",
   "stock.item.unit": "Unit",
   "stock.item.unitDefault": "pcs",

@@ -72,6 +72,8 @@ export default {
   "stock.move.invalid.unitCost": "Цена не может быть отрицательной.",
   "stock.item.new": "Новая складская позиция",
   "stock.item.name": "Название",
+  "stock.item.code": "Код",
+  "stock.item.barcode": "Штрихкод",
   "stock.item.nameRequired": "Укажите название позиции.",
   "stock.item.unit": "Единица измерения",
   "stock.item.unitDefault": "шт.",

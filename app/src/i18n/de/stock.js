@@ -72,6 +72,8 @@ export default {
   "stock.move.invalid.unitCost": "Der Preis darf nicht negativ sein.",
   "stock.item.new": "Neuer Lagerartikel",
   "stock.item.name": "Bezeichnung",
+  "stock.item.code": "Code",
+  "stock.item.barcode": "Barcode",
   "stock.item.nameRequired": "Geben Sie die Bezeichnung des Artikels ein.",
   "stock.item.unit": "Mengeneinheit",
   "stock.item.unitDefault": "Stk.",

@@ -137,11 +137,11 @@ export async function saveLevelPrices(levelId, prices) {
 }
 
 /** A stock-tracked price list entry typed in from the stock screens. */
-export async function createStockItem({ name, unitLabel, price, vatRate }) {
+export async function createStockItem({ name, code = null, barcode = null, unitLabel, price, vatRate }) {
   const s = assertWritable();
   if (!String(name || '').trim()) throw new StockError('STOCK_ITEM_NAME');
   return s.insert('items', {
-    name: String(name).trim(), code: null, barcode: null, unit: { code: 'C62', label: unitLabel || '' }, price: price || '0', priceType: 'NET',
+    name: String(name).trim(), code: String(code || '').trim() || null, barcode: String(barcode || '').trim() || null, unit: { code: 'C62', label: unitLabel || '' }, price: price || '0', priceType: 'NET',
     vatRate: vatRate ?? null, vatCategory: 'S', currency: s.company().defaults?.currency || 'EUR', stockTracked: true, minStock: null,
     warehouseQty: {}, prices: {}, accountingCategory: null, description: ''
   });

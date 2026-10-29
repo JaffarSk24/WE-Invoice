@@ -72,6 +72,8 @@ export default {
   "stock.move.invalid.unitCost": "Ціна не може бути від’ємною.",
   "stock.item.new": "Нова складська позиція",
   "stock.item.name": "Назва",
+  "stock.item.code": "Код",
+  "stock.item.barcode": "Штрихкод",
   "stock.item.nameRequired": "Введіть назву позиції.",
   "stock.item.unit": "Одиниця виміру",
   "stock.item.unitDefault": "шт.",

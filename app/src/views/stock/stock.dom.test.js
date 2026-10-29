@@ -8,6 +8,7 @@ import { resetPrefsCache, setPref } from '../../prefs.js';
 import { renderStock } from './index.js';
 import { renderQuickSale } from './sale/index.js';
 import { addMoves, ensureWarehouse, stockData } from './data.js';
+import { openMoveDialog } from './move-dialog.js';
 import { levelRows } from './levels-tab.js';
 import { t } from '../../i18n/index.js';
 
@@ -47,6 +48,23 @@ describe('stock screen', () => {
     root.querySelector('[data-tab="warehouses"]').click();
     expect(root.querySelector('.stock-warehouse h3').textContent).toContain(t('stock.warehouse.defaultName'));
     expect(window.location.hash).toBe('#/stock/warehouses');
+  });
+
+  it('adds a new item with its code and barcode from a receipt', async () => {
+    openMoveDialog('RECEIPT');
+    await until(() => document.querySelector('#stock-move-new-item'));
+    document.querySelector('#stock-move-new-item').click();
+    await until(() => document.querySelector('#stock-new-item-code'));
+    document.querySelector('#stock-new-item-name').value = 'Stôl';
+    document.querySelector('#stock-new-item-code').value = 'NAB-0012';
+    document.querySelector('#stock-new-item-barcode').value = '8580000000024';
+    const save = [...document.querySelectorAll('.modal-actions button')].filter(b => b.textContent.trim() === t('common.save')).pop();
+    save.click();
+    await until(() => stockData().items.some(i => i.name === 'Stôl'));
+    expect(stockData().items.find(i => i.name === 'Stôl')).toMatchObject({ code: 'NAB-0012', barcode: '8580000000024', stockTracked: true });
+    const select = document.querySelector('#stock-move-item');
+    await until(() => select.value);
+    expect(select.options[select.selectedIndex].textContent).toBe('Stôl (NAB-0012)');
   });
 
   it('shows empty states in the demo', () => {

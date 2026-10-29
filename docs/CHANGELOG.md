@@ -258,6 +258,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Stock, price levels and the quick sale
 
+#### Added (29 October, from testers)
+
+- The window that adds a new item from a stock receipt, issue or transfer asks for its code and barcode too, so an item gets its stocktaking code when it first comes in; the list of the move shows the new item with its code.
+
 #### Added
 
 - Stock core in `packages/core/stock`: validation of stock moves (receipt, issue, transfer, stocktaking difference), levels per item and warehouse on any date, warnings for balances below zero (checked at the end of each day, so backdated sales warn too) and for items under their minimum.

@@ -72,6 +72,8 @@ export default {
   "stock.move.invalid.unitCost": "Cena nesmie byť záporná.",
   "stock.item.new": "Nová skladová položka",
   "stock.item.name": "Názov",
+  "stock.item.code": "Kód",
+  "stock.item.barcode": "Čiarový kód",
   "stock.item.nameRequired": "Zadajte názov položky.",
   "stock.item.unit": "Merná jednotka",
   "stock.item.unitDefault": "ks",
