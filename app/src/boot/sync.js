@@ -2,6 +2,7 @@
 // engine, and the dialogs that the engine's status asks for (sign-in, the
 // encryption password, unlocking). Called once, in the order of
 // boot/index.js, after the language and the transport are ready.
+import { bootStep } from './splash.js';
 import { createStore } from '../store/index.js';
 import { connectStore, adoptLocalCompany } from '../store/bridge.js';
 import { SyncEngine } from '../sync/engine.js';
@@ -92,7 +93,17 @@ export async function boot(ctx) {
   });
 
   if (store.readOnly) showToast(t('sync.readOnly'), { type: 'error', duration: 15000 });
-  const state = await engine.init();
+  // The start screen says what the wait is: the sync with Google Drive
+  // runs before the first screen when the device is signed in.
+  bootStep(0.25, t('boot.opening'));
+  const offStart = on('sync:status', (s) => { if (s && s.status === 'syncing') bootStep(0.4, t('boot.syncing')); });
+  let state;
+  try {
+    state = await engine.init();
+  } finally {
+    if (typeof offStart === 'function') offStart();
+  }
+  bootStep(0.55, t('boot.preparing'));
   // Not connected: an offer that does not block the app (a dialog over the
   // first screen would stop people who only want to look around).
   if (state.status === 'off' && !dismissedThisSession()) {

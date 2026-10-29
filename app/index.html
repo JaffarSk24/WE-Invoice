@@ -14,9 +14,36 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" type="image/png" href="./favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <style>
+    /* The start screen: drawn before any script runs and replaced by the
+       app once it is ready; src/boot/splash.js moves the bar and names the
+       step. Plain colours, as the theme is not known yet. */
+    .boot-splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: #090b11; color: #e8ebf4; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .boot-logo { display: flex; align-items: center; gap: 12px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
+    .boot-logo img { width: 44px; height: 44px; border-radius: 10px; }
+    .boot-spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.14); border-top-color: #38bdf8; animation: boot-spin 0.9s linear infinite; }
+    .boot-bar { width: 280px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+    .boot-bar-fill { width: 8%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #38bdf8, #6366f1); transition: width 0.3s ease; }
+    .boot-step { min-height: 22px; margin: 0; font-size: 16px; color: #9aa3b8; text-align: center; padding: 0 24px; }
+    @keyframes boot-spin { to { transform: rotate(360deg); } }
+    @media (prefers-color-scheme: light) {
+      .boot-splash { background: #f5f7fb; color: #111827; }
+      .boot-spinner { border-color: rgba(17,24,39,0.12); border-top-color: #0284c7; }
+      .boot-bar { background: rgba(17,24,39,0.08); }
+      .boot-step { color: #4b5563; }
+    }
+    @media (prefers-reduced-motion: reduce) { .boot-spinner { animation-duration: 2.5s; } }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="boot-splash" id="boot-splash" role="status" aria-live="polite">
+      <div class="boot-logo"><img src="./favicon.png" alt="">WE Invoice</div>
+      <div class="boot-spinner" aria-hidden="true"></div>
+      <div class="boot-bar" aria-hidden="true"><div class="boot-bar-fill" id="boot-bar"></div></div>
+      <p class="boot-step" id="boot-step"></p>
+    </div>
+  </div>
   <script type="module" src="./src/main.js"></script>
 </body>
 </html>

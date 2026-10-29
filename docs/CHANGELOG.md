@@ -63,6 +63,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Added (29 October, start screen)
+
+- A start screen with the logo, a spinner and a progress bar shows from the first moment the window opens (it is part of index.html, before any script), and says what the start is doing: opening the data, syncing with Google Drive (only while that sync runs), preparing the workspace. It used to be an empty window for several seconds while the sync with Google Drive ran before the first screen, longer on the first start after an update, when macOS checks the new files.
+
 #### Added (29 October, from testers)
 
 - Favourites in the menu: a star next to every section (shown on hover, always on a touch screen) pins it to a Favourites group under Overview, on the sidebar and on the phone More screen; the choice is kept on the device.

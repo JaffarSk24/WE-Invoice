@@ -25,12 +25,16 @@ export const MODULES = Object.freeze([
   ['reports', reports], ['ekasa', ekasa]
 ]);
 
-export async function bootModules(ctx, onError) {
+// onProgress(done, total) after each module, for the start screen's bar.
+export async function bootModules(ctx, onError, onProgress = () => {}) {
+  let done = 0;
   for (const [name, mod] of MODULES) {
     try {
       await mod.boot(ctx);
     } catch (e) {
       onError(name, e);
     }
+    done += 1;
+    onProgress(done, MODULES.length);
   }
 }

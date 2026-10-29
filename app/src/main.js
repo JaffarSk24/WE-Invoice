@@ -24,6 +24,7 @@ import { ALL_ROUTES } from './views/shell/nav.js';
 import { getTransport } from './transport/index.js';
 import { registerServiceWorker } from './sw-register.js';
 import { bootModules } from './boot/index.js';
+import { bootStep } from './boot/splash.js';
 import { on, emit } from './events.js';
 
 ALL_ROUTES.forEach(route => registerRoute(route, (root) => renderPlaceholder(root, route)));
@@ -54,10 +55,14 @@ async function start() {
   setTheme(prefs.theme);
   setDensity(prefs.density);
   await setLanguage(prefs.language);
+  bootStep(0.12, t('boot.opening'));
   const transport = getTransport();
   initModalKeys();
+  // The first module opens the data and syncs with Google Drive (it names
+  // that step itself); the rest prepare the screens.
   await bootModules({ registerRoute, transport, t, showToast, showError, navigate, on, emit },
-    (name, e) => { console.error(`Module ${name} did not start`, e); showError(e); });
+    (name, e) => { console.error(`Module ${name} did not start`, e); showError(e); },
+    (done, total) => bootStep(0.55 + 0.45 * (done / total), t('boot.preparing')));
   window.addEventListener('unhandledrejection', (e) => showError(e.reason));
   startRouter({ defaultRoute: 'dashboard', onChange: draw });
   registerServiceWorker();
