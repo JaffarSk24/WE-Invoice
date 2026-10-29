@@ -91,6 +91,8 @@ export default {
   "purchase.payment.amount": "Оплачена сума",
   "purchase.payment.save": "Зберегти оплату",
   "purchase.payment.saved": "Оплату записано.",
+  "purchase.payment.pastDue": "Строк оплати минув {date}. Якщо документ уже оплачено, запишіть оплату, інакше він рахуватиметься простроченим.",
+  "purchase.payment.notYet": "Ще не оплачено",
   "purchase.payment.due": "Залишилося оплатити",
   "purchase.paymentMethod.none": "Виберіть",
   "purchase.paymentMethod.TRANSFER": "Банківським переказом",

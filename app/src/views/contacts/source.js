@@ -84,11 +84,7 @@ export function subPath() {
   return String(hash).replace(/^#\/?/, '').split('?')[0].split('/').slice(1).filter(Boolean).map(decodeURIComponent);
 }
 
-// Opens a route with its sub-path. navigate() of the router compares only
-// the first segment, so going from "#/contacts/abc" to "#/contacts" with it
-// would draw the card again; the hash is set here instead.
+// Opens a route with its sub-path.
 export function go(path) {
-  const target = `#/${path}`;
-  if (window.location.hash !== target) window.location.hash = target;
-  else navigate(path.split('/')[0]);
+  navigate(path);
 }

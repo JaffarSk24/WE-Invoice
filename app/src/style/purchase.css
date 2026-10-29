@@ -29,6 +29,7 @@
 .review-title h1 { margin: 0; }
 .review-notice { display: flex; align-items: center; gap: 8px; margin: -8px 0 16px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--overlay-04); color: var(--text-secondary); }
 .review-notice svg { width: 18px; height: 18px; color: var(--info); flex: none; }
+.payment-lead { margin: 0 0 16px; color: var(--text-secondary); }
 .review-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 1fr); gap: 24px; align-items: start; }
 .review-grid.no-preview { grid-template-columns: minmax(0, 720px); }
 .review-side { display: grid; gap: 16px; }

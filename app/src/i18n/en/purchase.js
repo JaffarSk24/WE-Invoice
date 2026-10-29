@@ -91,6 +91,8 @@ export default {
   "purchase.payment.amount": "Amount paid",
   "purchase.payment.save": "Save payment",
   "purchase.payment.saved": "The payment is recorded.",
+  "purchase.payment.pastDue": "The due date was {date}. If the document is paid already, record the payment; otherwise it shows as overdue.",
+  "purchase.payment.notYet": "Not paid yet",
   "purchase.payment.due": "Still due",
   "purchase.paymentMethod.none": "Choose",
   "purchase.paymentMethod.TRANSFER": "Bank transfer",

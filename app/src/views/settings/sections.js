@@ -7,7 +7,7 @@ import { languageOptions } from '../../i18n/languages.js';
 import { getPrefs, setPref } from '../../prefs.js';
 import { setTheme, setDensity } from '../../ui/theme.js';
 import { emit } from '../../events.js';
-import { navigate, hasRoute } from '../../router.js';
+import { navigate, hasRoute, refreshRoute } from '../../router.js';
 import { APP_VERSION } from '../../config.js';
 import { confirmDialog } from '../../ui/modal.js';
 import { isDemo, enableDemo, disableDemo } from '../shell/demo-mode.js';
@@ -24,7 +24,7 @@ export function interfaceSection(root, { redraw }) {
   const prefs = getPrefs();
   const lang = selectEl(languageOptions(), currentLang(), { id: 'settings-language', 'aria-label': t('shell.language') });
   // The whole screen is drawn again (menu, title), not only this section.
-  lang.addEventListener('change', async () => { setPref('language', lang.value); await setLanguage(lang.value); emit('language:changed', lang.value); navigate('settings'); });
+  lang.addEventListener('change', async () => { setPref('language', lang.value); await setLanguage(lang.value); emit('language:changed', lang.value); refreshRoute(); });
   const theme = selectEl(THEMES.map(v => ({ value: v, label: t(`theme.${v}`) })), prefs.theme, { id: 'settings-theme', 'aria-label': t('shell.theme') });
   theme.addEventListener('change', () => { setPref('theme', theme.value); setTheme(theme.value); });
   const density = selectEl(DENSITIES.map(v => ({ value: v, label: t(`table.density.${v}`) })), prefs.density, { id: 'settings-density', 'aria-label': t('table.density') });

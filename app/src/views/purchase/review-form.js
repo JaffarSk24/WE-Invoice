@@ -1,6 +1,7 @@
 // The form of the review: every field of a received document with a mark
 // where recognition was unsure ("Skontrolujte") and a "Vybrať" button that
-// lets the user take the value from the preview instead of typing it.
+// lets the user take the value from the preview instead of typing it. The
+// marks are for the Inbox only: a confirmed document was checked already.
 import { h, icon } from '../../ui/dom.js';
 import { t } from '../../i18n/index.js';
 import { textField, dateField, selectField, textArea } from '../../components/fields.js';
@@ -42,7 +43,7 @@ function control(name, value) {
  */
 export function createReviewForm(doc, { onPick = null, pickEnabled = false, vatPayer = true } = {}) {
   const initial = valuesOf(doc);
-  const conf = (doc.inbox && doc.inbox.fieldConfidence) || {};
+  const conf = (doc.status === 'TO_PROCESS' && doc.inbox && doc.inbox.fieldConfidence) || {};
   const sources = (doc.inbox && doc.inbox.sources) || {};
   const fields = {};
   const el = h('form', { class: 'review-form', novalidate: true, onsubmit: (e) => e.preventDefault() });

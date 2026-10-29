@@ -21,6 +21,9 @@ test('an Inbox invoice reaches the VAT records and the Pohoda export', async ({ 
   await expect(page.locator('input[data-field="total"]')).toHaveValue('221,40');
   await page.locator('select[data-field="category"]').selectOption('SERVICES');
   await page.locator('[data-action="save"]').click();
+  // Due on 15 October, before today: asked whether it is paid already.
+  await expect(page.locator('.payment-lead')).toContainText('15. 10. 2026');
+  await page.getByRole('button', { name: 'Ešte neuhradený' }).click();
   await expect(page).toHaveURL(/#\/received$/);
 
   await page.goto('./#/vat-records');

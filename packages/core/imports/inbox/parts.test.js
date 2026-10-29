@@ -3,6 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { parseXml, textAt, at } from './xml.js';
+import { encodePayBySquare } from '../../paybysquare/pay.js';
 import {
   parseEkasaQr, detectQrFormat, recognizeQr, recognizeEkasaReceipt, recognizeXml, detectXmlFormat, registerInboxParser,
   recognizeFound, detectInboxFile, mergeRecognitions, pickFieldValue, applyUserValue, learnTemplate, applyTemplateRegions,
@@ -127,6 +128,14 @@ describe('combining what a file holds', () => {
     expect(r.sources.ico).toBe('text');
     expect(r.fields.total).toBe('221.40');
     expect(r.needsConfirmation).toBe(true);
+  });
+
+  it('trusts the QR name that the document prints too', () => {
+    const qr = encodePayBySquare({ iban: 'SK1109000000000630964920', amount: '338.48', vs: '86992551', beneficiary: 'O2 Slovakia s.r.o.' });
+    const text = 'O2 Slovakia, s.r.o., Pribinova 40, 811 09 Bratislava\nIČO: 47 259 116\nFaktúra: 1511928641\nCelková suma na úhradu: 338,48 €';
+    expect(recognizeFound({ qr: [qr], text }, { company }).fieldConfidence.supplierName).toBeGreaterThanOrEqual(0.7);
+    const other = recognizeFound({ qr: [qr], text: text.replace(/O2 Slovakia, s\.r\.o\., /, '') }, { company });
+    expect(other.fieldConfidence.supplierName).toBeLessThan(0.7);
   });
 
   it('uses OCR text only when there is no text layer', () => {

@@ -91,6 +91,8 @@ export default {
   "purchase.payment.amount": "Uhradená suma",
   "purchase.payment.save": "Uložiť úhradu",
   "purchase.payment.saved": "Úhrada je zaznamenaná.",
+  "purchase.payment.pastDue": "Splatnosť uplynula {date}. Ak je doklad už uhradený, zaznamenajte úhradu, inak bude v zozname po splatnosti.",
+  "purchase.payment.notYet": "Ešte neuhradený",
   "purchase.payment.due": "Zostáva uhradiť",
   "purchase.paymentMethod.none": "Vyberte",
   "purchase.paymentMethod.TRANSFER": "Prevodom",

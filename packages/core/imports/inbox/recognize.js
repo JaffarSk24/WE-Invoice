@@ -7,6 +7,7 @@ import { recognizeXml, detectXmlFormat } from './recognize-xml.js';
 import { recognizeQr } from './recognize-qr.js';
 import { extractInvoiceFields } from './text-fields.js';
 import { mergeRecognitions, emptyRecognition, finish } from './result.js';
+import { cleanText, fold } from './text-scan.js';
 
 /** 'XML' | 'PDF' | 'IMAGE' | null from a file name, a MIME type and its first bytes. */
 export function detectInboxFile({ name = '', mime = '', head = null } = {}) {
@@ -50,7 +51,21 @@ export function recognizeFound(found, ctx = {}) {
   if (!parts.length) return { ...finish(emptyRecognition('NONE')), warnings };
   const merged = mergeRecognitions(...parts);
   merged.warnings.push(...warnings);
+  confirmNameByText(merged, found.text || found.ocrText);
   // Without XML a person checks the fields (§ 3.11 AC); a QR alone carries no supplier.
   if (!parts.some(p => ['UBL', 'ISDOC', 'CII'].includes(p.format))) merged.needsConfirmation = true;
   return merged;
+}
+
+// Letters and digits only, folded: "O2 Slovakia, s.r.o." -> "o2slovakiasro".
+const squash = (text) => fold(cleanText(text)).replace(/[^a-z0-9]/g, '');
+
+// The name in a payment QR code is unsure on its own (banking apps strip
+// diacritics, some put a brand there). Printed in the document as well,
+// it is the supplier's name.
+function confirmNameByText(result, text) {
+  const name = result.fields.supplierName;
+  if (!name || !text || result.sources.supplierName !== 'qr') return;
+  const key = squash(name);
+  if (key.length >= 4 && squash(text).includes(key)) result.fieldConfidence.supplierName = 0.9;
 }

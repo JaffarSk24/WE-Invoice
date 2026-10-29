@@ -563,6 +563,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Purchases, Inbox and expenses
 
+#### Fixed (29 October, from testers)
+
+- The back arrow of a received document, an expense or an Inbox document opened the same card again: the router took "#/received/abc" and "received" for the same place because it compared only the first segment. It now compares the whole path, which also makes "Show all" in the change log drop its filter and the card redraw after a recorded payment. Changing the language in Settings stays on the section it was changed in.
+- A document confirmed after its due date (an old bill put in for the records) no longer turns overdue without a word: the payment dialog opens with the question whether it is paid already and the due date as the payment date; "Not paid yet" leaves it unpaid.
+- The supplier's name from a payment QR code, marked "Check" because banking apps strip diacritics, counts as sure when the document prints the same name. A confirmed document shows no "Check" marks any more; the user checked it on confirming.
+
 #### Added
 
 - Inbox for received documents: drop, paste, pick or photograph PDFs, pictures and ISDOC or UBL XML files; every file is read on the device and waits in the queue "Na spracovanie" until the user checks it.

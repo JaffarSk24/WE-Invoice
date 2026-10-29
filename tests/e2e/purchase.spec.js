@@ -71,6 +71,9 @@ test('a PDF invoice goes from the Inbox to received invoices', async ({ page }) 
 
   await page.locator('select[data-field="category"]').selectOption('SERVICES');
   await page.locator('[data-action="save"]').click();
+  // Due on 15 October, before today: asked whether it is paid already.
+  await expect(page.locator('.payment-lead')).toContainText('15. 10. 2026');
+  await page.getByRole('button', { name: 'Ešte neuhradený' }).click();
   await expect(page).toHaveURL(/#\/received$/);
   await page.locator('.filter-preset').selectOption('all');
   await expect(page.locator('.data-table')).toContainText('Účtovníctvo Pro s.r.o.');

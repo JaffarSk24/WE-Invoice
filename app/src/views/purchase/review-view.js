@@ -11,7 +11,7 @@ import { confirmDialog } from '../../ui/modal.js';
 import { navigate } from '../../router.js';
 import { statusBadge } from '../../components/status-badge.js';
 import { emptyState } from '../../components/empty-state.js';
-import { todayLocal } from '../../components/dates.js';
+import { todayLocal, formatDate } from '../../components/dates.js';
 import { formatAmount } from '../../components/decimal.js';
 import { isDemo } from '../shell/demo-mode.js';
 import { storeOrNull, canWrite, receivedStatus } from './data.js';
@@ -23,6 +23,7 @@ import { openPaymentDialog } from './payment-dialog.js';
 import { confidenceChip } from './columns.js';
 
 const listOf = (kind) => (kind === 'EXPENSE_RECEIPT' ? 'expenses' : 'received');
+const pastDue = (doc, today) => Boolean(doc.dueDate && doc.dueDate < today && doc.totals && cmp(amountDue(doc), '0') > 0);
 
 function paymentInfo(doc) {
   if (!doc.totals || doc.status === 'TO_PROCESS') return null;
@@ -73,7 +74,9 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
     try {
       const saved = await saveDocument(store, doc, values, { regions, isNew, today });
       showToast(t(inbox ? 'purchase.review.confirmed' : 'purchase.review.saved'), { type: 'success' });
-      navigate(inbox || isNew ? listOf(saved.kind) : `${route}/${saved.id}`);
+      const next = inbox || isNew ? listOf(saved.kind) : `${route}/${saved.id}`;
+      if ((inbox || isNew) && pastDue(saved, today)) askPaid(saved, next);
+      else navigate(next);
     } catch (e) {
       showError(e, 'errors.PURCHASE_SAVE_FAILED');
     }
@@ -89,6 +92,27 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
     } catch (e) {
       showError(e, 'errors.PURCHASE_SAVE_FAILED');
     }
+  }
+
+  // Confirmed after its due date: most likely an old bill, paid already.
+  function askPaid(saved, next) {
+    openPaymentDialog(saved, {
+      today,
+      date: saved.dueDate,
+      lead: t('purchase.payment.pastDue', { date: formatDate(saved.dueDate) }),
+      cancelLabel: t('purchase.payment.notYet'),
+      onClose: () => navigate(next),
+      onSave: async (payment) => {
+        try {
+          await recordPayment(store, saved, payment, today);
+          showToast(t('purchase.payment.saved'), { type: 'success' });
+          return true;
+        } catch (e) {
+          showError(e, 'errors.PURCHASE_SAVE_FAILED');
+          return false;
+        }
+      }
+    });
   }
 
   function pay() {

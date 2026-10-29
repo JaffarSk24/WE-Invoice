@@ -90,6 +90,22 @@ describe('review', () => {
     expect(store.get('documents', doc.id).status).toBe('TO_PROCESS');
   });
 
+  it('marks nothing on a confirmed document', async () => {
+    const doc = await inboxDoc();
+    await store.update('documents', doc.id, { status: 'PROCESSED' });
+    renderReview(root, { id: doc.id, route: 'received', ctx: {} });
+    expect(root.querySelector('.field-low')).toBe(null);
+    expect(root.querySelector('.field-check')).toBe(null);
+  });
+
+  it('goes back from a card to its list', async () => {
+    const doc = await inboxDoc();
+    window.location.hash = `#/received/${doc.id}`;
+    renderReview(root, { id: doc.id, route: 'received', ctx: {} });
+    root.querySelector('.review-title button').click();
+    expect(window.location.hash).toBe('#/received');
+  });
+
   it('confirms a document into the received list', async () => {
     const doc = await inboxDoc();
     renderReview(root, { id: doc.id, route: 'inbox', ctx: {} });
@@ -100,6 +116,26 @@ describe('review', () => {
     expect(saved.status).not.toBe('TO_PROCESS');
     expect(saved.expenseCategory).toBe('SERVICES');
     expect(saved.lines[0].accountingCategory).toBe('EXPENSE_TAX_SERVICES');
+    // Due on 15.10.2026, before today: asked whether it is paid already.
+    const buttons = document.querySelectorAll('.modal-actions button');
+    expect(document.querySelector('.payment-lead').textContent).toContain('15. 10. 2026');
+    buttons[0].click();
+    expect(store.get('documents', doc.id).payments || []).toEqual([]);
+    expect(window.location.hash).toBe('#/received');
+  });
+
+  it('records the payment of a bill confirmed after its due date', async () => {
+    const doc = await inboxDoc();
+    renderReview(root, { id: doc.id, route: 'inbox', ctx: {} });
+    root.querySelector('[data-action="save"]').click();
+    await flush(); await flush();
+    expect(document.querySelector('.modal-overlay input').value).toBe('2026-10-15');
+    document.querySelectorAll('.modal-actions button')[1].click();
+    await flush(); await flush();
+    const saved = store.get('documents', doc.id);
+    expect(saved.payments).toEqual([expect.objectContaining({ date: '2026-10-15' })]);
+    expect(saved.status).toBe('PAID');
+    expect(document.querySelector('.modal-overlay')).toBe(null);
     expect(window.location.hash).toBe('#/received');
   });
 
