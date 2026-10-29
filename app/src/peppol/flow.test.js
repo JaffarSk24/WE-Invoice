@@ -7,7 +7,6 @@ import { memoryAdapter } from '../store/local.js';
 import { createSapiProvider, createMockTransport } from './mock-provider.js';
 import { createPeppolService } from './service.js';
 import { saveCredentials } from './credentials.js';
-import { BETA_SECRET } from './beta.js';
 import { findProvider } from './providers.js';
 import { dropAllTokens } from './token-cache.js';
 
@@ -25,14 +24,13 @@ const invoice = (fields = {}) => ({
   buyer: BUYER, lines: [{ id: 'l1', name: 'Služba', qty: '1', unitPrice: '100', vatCategory: 'S', vatRate: '23' }], ...fields
 });
 
-async function setup({ inbox = [], beta = true, platform = 'web', files: deviceFiles = {} } = {}) {
+async function setup({ inbox = [], platform = 'web', files: deviceFiles = {} } = {}) {
   dropAllTokens();
   const store = new Store({ adapter: memoryAdapter() });
   await store.open();
   const company = await store.createCompany(COMPANY);
   const server = createSapiProvider({ inbox });
   const transport = createMockTransport({ platform, providers: { verteco: server }, bases: { verteco: 'https://peppol.verteco.digital/sapi' } });
-  if (beta) transport.secretsMap.set(BETA_SECRET, JSON.stringify({ token: 't', expiresAt: '2099-01-01T00:00:00Z' }));
   await saveCredentials(transport, company.id, findProvider('verteco'), { clientId: 'client', clientSecret: 'secret' });
   const files = new Map();
   const archive = {
@@ -105,13 +103,9 @@ describe('sending', () => {
     expect(result.peppol).toMatchObject({ status: 'INVALID', errors: [{ code: 'PEPPOL_VALIDATION', message: 'Receiver not registered' }], nextAttemptAt: null });
   });
 
-  it('needs the beta to be switched on', async () => {
-    const off = await setup({ beta: false });
-    const doc = await off.store.insert('documents', invoice());
-    const result = await off.service.send(doc.id);
-    expect(result.peppol.status).toBe('FAILED');
-    expect(result.peppol.errors[0].code).toBe('PEPPOL_BETA_REQUIRED');
-    expect(await off.service.ready()).toBe(false);
+  it('sends without any invite code: the provider is all it takes', async () => {
+    const open = await setup();
+    expect(await open.service.ready()).toBe(true);
   });
 });
 

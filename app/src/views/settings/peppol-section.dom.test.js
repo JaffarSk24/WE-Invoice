@@ -1,7 +1,8 @@
 // @vitest-environment happy-dom
 // The eFaktúra wizard in a DOM, against the real store and an in-memory
-// provider behind the gateway: beta code, provider, keys with a connection
-// test, Peppol registration, options, disconnect.
+// provider behind the gateway: provider, keys with a connection test,
+// Peppol registration, options, disconnect. No invite code: eFaktúra is
+// open to everyone.
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createStore, memoryAdapter } from '../../store/index.js';
 import { applySwitched } from '../shell/company-state.js';
@@ -9,7 +10,6 @@ import { resetPrefsCache } from '../../prefs.js';
 import { createSapiProvider, createMockTransport, mockResponse } from '../../peppol/mock-provider.js';
 import { dropAllTokens } from '../../peppol/token-cache.js';
 import { secretName } from '../../peppol/credentials.js';
-import { BETA_SECRET } from '../../peppol/beta.js';
 import { createPeppolSection } from './peppol-section.js';
 
 const COMPANY = {
@@ -17,10 +17,7 @@ const COMPANY = {
   ico: '35000007', dic: '2020000004', icDph: 'SK2020000004', address: { country: 'SK' }
 };
 
-function gateway({ url, method, body }) {
-  if (url.endsWith('/v1/beta/redeem') && method === 'POST') {
-    return JSON.parse(body).code === 'WELCOME' ? mockResponse(200, { token: 'signed', expiresAt: '2027-10-01T00:00:00Z' }) : mockResponse(400, { error: { code: 'BAD_CODE' } });
-  }
+function gateway({ url }) {
   if (url.endsWith('/v1/peppol/lookup/0245/2020000004')) return mockResponse(200, { registered: true, documentTypes: [], checkedAt: '2027-01-02T10:00:00Z' });
   return mockResponse(404, {});
 }
@@ -52,7 +49,8 @@ describe('eFaktúra settings wizard', () => {
   it('shows every step with the provider cards from providers.json', async () => {
     const { root } = await setup();
     const steps = [...root.querySelectorAll('.peppol-step')].map(s => s.dataset.step);
-    expect(steps).toEqual(['intro', 'beta', 'provider', 'vpds', 'connect', 'lookup', 'options']);
+    expect(steps).toEqual(['intro', 'provider', 'vpds', 'connect', 'lookup', 'options']);
+    expect(root.querySelector('#peppol-beta-code')).toBeNull();
     const verteco = root.querySelector('[data-provider="verteco"] input');
     expect(verteco.checked).toBe(true);
     expect(root.querySelector('[data-provider="ipostar"] input').disabled).toBe(true);
@@ -60,17 +58,6 @@ describe('eFaktúra settings wizard', () => {
     click(root.querySelector('[data-provider="sapi-sk"] input'));
     root.querySelector('[data-provider="sapi-sk"] input').dispatchEvent(new Event('change'));
     expect(root.querySelector('.peppol-custom-base').hidden).toBe(false);
-  });
-
-  it('redeems a beta code and keeps the token with the secrets', async () => {
-    const { root, transport } = await setup();
-    type(root.querySelector('#peppol-beta-code'), 'WRONG');
-    click(root.querySelector('[data-action="redeem"]'));
-    await vi.waitFor(() => expect(transport.secretsMap.has(BETA_SECRET)).toBe(false));
-    type(root.querySelector('#peppol-beta-code'), 'WELCOME');
-    click(root.querySelector('[data-action="redeem"]'));
-    await vi.waitFor(() => expect(transport.secretsMap.get(BETA_SECRET)).toContain('signed'));
-    await vi.waitFor(() => expect(root.querySelector('[data-step="beta"] .peppol-result').className).toContain('is-ok'));
   });
 
   it('tests the connection, then stores the key in secrets and the settings in the company', async () => {

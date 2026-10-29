@@ -109,7 +109,6 @@ export async function boot(ctx) {
   };
   on('scheduler:efaktury', round);
   on('company:switched', round);
-  on('peppol:beta', round);
   setTimeout(round, FIRST_ROUND_MS);
   if (transport.platform === 'web') {
     setInterval(() => {

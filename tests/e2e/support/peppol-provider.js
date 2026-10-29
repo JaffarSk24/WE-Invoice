@@ -2,8 +2,7 @@
 // tests: the in-memory provider of the unit tests (app/src/peppol/
 // mock-provider.js) answers what the web app sends to
 // <gateway>/v1/proxy/peppol/<provider>/<path>, and the participant lookup
-// of the gateway says every receiver is registered; any beta invite code
-// is accepted.
+// of the gateway says every receiver is registered.
 import { createSapiProvider } from '../../../app/src/peppol/mock-provider.js';
 import { json } from './seed.js';
 
@@ -11,7 +10,6 @@ const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-headers
 
 export async function routePeppol(target, { providerId = 'verteco', clientId, clientSecret, inbox = [] }) {
   const provider = createSapiProvider({ clientId, clientSecret, inbox });
-  await target.route('**/v1/beta/redeem', route => json(route, { token: 'beta-e2e', expiresAt: '2027-10-18T00:00:00.000Z' }));
   await target.route('**/v1/peppol/lookup/**', route => json(route, { registered: true, documentTypes: [], checkedAt: '2026-10-18T08:00:00Z' }));
   await target.route('**/v1/proxy/peppol/**', async (route) => {
     const request = route.request();

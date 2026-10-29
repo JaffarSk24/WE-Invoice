@@ -35,7 +35,7 @@ test('connect a provider, send, see a refusal and receive an e-invoice', async (
   // The key lives only inside the encrypted data file.
   expect(drive.contents().some(f => f.text.includes('vpt_e2e'))).toBe(false);
 
-  // eFaktúra is a closed beta: without the invite the card says so.
+  // eFaktúra is open to everyone: the provider's key is all it takes.
   const send = async (doc) => {
     await a.page.goto(`./#/invoices/${doc.id}`);
     await expect(a.page.locator('main h1')).toContainText(doc.number);
@@ -44,14 +44,6 @@ test('connect a provider, send, see a refusal and receive an e-invoice', async (
     // event, instead of racing the redraw; seams-card.spec.js opens the menu.
     await a.page.locator('#detail-peppol').dispatchEvent('click');
   };
-  await send(first);
-  await expect(a.page.locator('.toast', { hasText: 'eFaktúry sú v bete.' })).toBeVisible({ timeout: 20_000 });
-  expect(provider.sent).toHaveLength(0);
-  await a.page.goto('./#/settings/peppol');
-  await a.page.fill('#peppol-beta-code', 'BETA-E2E');
-  await a.page.locator('[data-action="redeem"]').click();
-  await expect(a.page.locator('.peppol-result.is-ok').first()).toBeVisible();
-
   await send(first);
   await expect(a.page.locator('.toast', { hasText: 'eFaktúra FA20260001 je odoslaná.' })).toBeVisible({ timeout: 20_000 });
   expect(provider.sent).toHaveLength(1);

@@ -409,6 +409,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### eFaktúra through Peppol
 
+#### Changed (29 October, open to everyone)
+
+- eFaktúra is open to everyone: there is no invite code and no waiting list any more. The user connects the certified provider of their choice with its key in Settings, eFaktúra, and sends and receives; the app only carries the data. The section keeps its Beta mark while it is new. The beta step of the wizard, the desktop beta switch, the invite code check of the send queue (PEPPOL_BETA_REQUIRED) and app/src/peppol/beta.js are gone, with their texts in six languages.
+
 #### Added
 
 - E-invoices in Peppol BIS Billing 3.0 (UBL 2.1) with the Slovak rules: `buildUbl(document, company, options)` writes an Invoice or a CreditNote from `computeTotals` without recomputing any amount, with the legal notes (reverse charge, cash accounting scheme, self-billing), the reference to the corrected invoice (BT-25, BT-26), the VAT in EUR for other currencies (BT-6, BT-111), the delivery country of intra-community supplies and the optional PDF attachment (`company.defaults.attachPdfToEInvoice`, on by default).

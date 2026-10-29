@@ -24,7 +24,7 @@ WE Invoice is the third free app of the WE line by [White Eagles](https://whitee
 
 **Get it:** [web app](https://jaffarsk24.github.io/WE-Invoice/app/) (also installs on iPhone and Android) · [macOS and Windows](https://github.com/JaffarSk24/WE-Invoice/releases/latest) · [website](https://jaffarsk24.github.io/WE-Invoice/)
 
-> **Version 0.1.5.** Every feature below is covered by unit and end-to-end tests on desktop and phone screens. The tax reports validate against the official schemas of the Financial Administration and are being checked by an accountant, so check them before you file. eFaktúra is a beta, opened in waves to people from the waiting list.
+> **Version 0.1.5.** Every feature below is covered by unit and end-to-end tests on desktop and phone screens. The tax reports validate against the official schemas of the Financial Administration and are being checked by an accountant, so check them before you file. eFaktúra is marked beta while it is new, and open to everyone: connect the certified provider you choose in Settings and send.
 
 Slovenská verzia: [README.sk.md](README.sk.md).
 
@@ -155,7 +155,7 @@ Version 0.1.0 already holds the four planned releases: public invoicing, the eFa
 
 | Next | What |
 |---|---|
-| **eFaktúra for everyone** | The beta opens in waves before the duty starts on 1 January 2027 |
+| **eFaktúra out of beta** | The beta mark goes once the first invoices have gone through every supported provider, before the duty starts on 1 January 2027 |
 | **Accountant's check** | The KV, SV and VAT return confirmed by an accountant, then the "check before you file" note goes away |
 | **Signed installers** | Notarized macOS app and a signed Windows installer, so no Terminal command and no SmartScreen warning |
 | **eKasa** | Cash register documents through a certified cloud register, once a provider shows its certification |

@@ -1,10 +1,9 @@
 // The eFaktúra service of the running app: one place that knows whether
-// Peppol is switched on for the open company (beta, provider, credentials)
+// Peppol is switched on for the open company (provider, credentials)
 // and runs the send queue, the delivery checks and the inbox. The editor of
 // WP-SALES sends through the event peppol:send { documentId } and hears
 // back peppol:status { documentId, status } at every step.
 import { PeppolError } from './errors.js';
-import { betaState } from './beta.js';
 import { openConnection, peppolSettings } from './connection.js';
 import { createArchive } from './archive.js';
 import { createOutbox } from './outbox.js';
@@ -26,8 +25,6 @@ export function createPeppolService({ getStore, transport, emit, buildPdf = null
   }
 
   async function connect() {
-    const beta = await betaState(transport);
-    if (!beta.enabled) throw new PeppolError('PEPPOL_BETA_REQUIRED', 'eFaktura beta is not switched on');
     const company = store().company();
     if (!peppolSettings(company).enabled) throw new PeppolError('PEPPOL_NO_PROVIDER', 'no provider connected');
     return openConnection({ transport, company });
@@ -68,8 +65,7 @@ export function createPeppolService({ getStore, transport, emit, buildPdf = null
   async function ready() {
     const s = getStore();
     if (!s || !s.company() || s.readOnly) return false;
-    if (!peppolSettings(s.company()).enabled) return false;
-    return (await betaState(transport)).enabled;
+    return peppolSettings(s.company()).enabled;
   }
 
   /**

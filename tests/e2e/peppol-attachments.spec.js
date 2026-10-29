@@ -25,9 +25,6 @@ test('attachments go into the e-invoice, the window names what Peppol does not t
   await a.page.fill('#peppol-cred-clientSecret', 'vpt_e2e');
   await a.page.locator('[data-action="test-connection"]').click();
   await expect(a.page.locator('.toast', { hasText: 'Pripojenie je uložené.' })).toBeVisible({ timeout: 15_000 });
-  await a.page.fill('#peppol-beta-code', 'BETA-E2E');
-  await a.page.locator('[data-action="redeem"]').click();
-  await expect(a.page.locator('.peppol-result.is-ok').first()).toBeVisible();
 
   const send = async (doc) => {
     await a.page.goto(`./#/invoices/${doc.id}`);

@@ -1,5 +1,5 @@
 // Settings > eFaktúra (04-peppol.md § 4.9): the connection wizard on one
-// page, step by step: what e-invoicing is, the beta, the provider from
+// page, step by step: what e-invoicing is, the provider from
 // providers.json, the choice in VPDS, the keys with a connection test, the
 // Peppol registration check and the options. Changing the provider is the
 // same wizard with a new key; the archive stays in the user's Drive.
@@ -14,7 +14,7 @@ import { peppolSettings } from '../../peppol/connection.js';
 import { findProvider, providerList } from '../../peppol/providers.js';
 import { providerStep } from './peppol-section-provider.js';
 import { connectStep, lookupStep } from './peppol-section-connect.js';
-import { betaStep, optionsStep } from './peppol-section-options.js';
+import { optionsStep } from './peppol-section-options.js';
 
 function introStep() {
   return stepCard('intro', t('peppol.intro.title'),
@@ -58,7 +58,7 @@ export function createPeppolSection({ transport }) {
       refreshIcons(connectBox);
     };
     ctx.onProviderChange = drawConnect;
-    root.append(introStep(), betaStep(ctx));
+    root.append(introStep());
     if (!company) return;
     if (!company.dic) {
       root.append(h('p', { class: 'callout callout-warning' }, t('peppol.connect.noDic')));
