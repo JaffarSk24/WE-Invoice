@@ -25,7 +25,7 @@ const errorValidator = ajv.getSchema('openapi#/components/schemas/Error');
 let ctx;
 beforeAll(async () => {
   const resolver = fakeResolver({ naptr: { [naptrName('0245:2020317068', 'edelivery.tech.ec.europa.eu')]: [NAPTR_RECORD] } });
-  ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k', ADMIN_TOKEN: 'admin', BETA_HMAC_SECRET: 's', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}' }, resolver });
+  ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k', ADMIN_TOKEN: 'admin', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}' }, resolver });
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?fullName=Example' }).reply(200, { results: [RPO_ENTITY] }, json);
   ctx.pool('https://iz.opendata.financnasprava.sk').intercept({ path: /ds_dsrdp/ }).reply(200, FS_TAX_SUBJECTS, json);
@@ -50,28 +50,19 @@ const CASES = [
   ['/v1/rates/ecb', 'get', '200', { url: '/v1/rates/ecb?date=2026-10-17' }],
   ['/v1/ekasa/receipt', 'post', '200', { method: 'POST', url: '/v1/ekasa/receipt', payload: { receiptId: 'O-1234567890ABCDEF1234567890ABCDEF' } }],
   ['/v1/peppol/lookup/{scheme}/{id}', 'get', '200', { url: '/v1/peppol/lookup/0245/2020317068' }],
-  ['/v1/waitlist', 'post', '202', { method: 'POST', url: '/v1/waitlist', payload: { email: 'c@d.sk', lang: 'uk', consent: true, startedAt: 1 } }],
-  ['/v1/beta/redeem', 'post', '200', { method: 'POST', url: '/v1/beta/redeem', payload: { code: 'CODE' } }],
   ['/v1/admin/stats', 'get', '200', { url: '/v1/admin/stats', headers: { authorization: 'Bearer admin' } }]
 ];
 
 describe('responses match openapi.yaml', () => {
   it.each(CASES)('%s %s %s', async (path, method, status, request) => {
-    if (path === '/v1/beta/redeem') request.payload.code = ctx.app.deps.invites.create();
     const res = await ctx.app.inject({ method: 'GET', ...request });
     expect(res.statusCode).toBe(Number(status));
     const validate = validator(path, method, status);
     expect(validate(res.json()), JSON.stringify(validate.errors)).toBe(true);
   });
 
-  it('the CSV export is text/csv', async () => {
-    const res = await ctx.app.inject({ method: 'GET', url: '/v1/admin/waitlist.csv', headers: { authorization: 'Bearer admin' } });
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['content-type']).toMatch(/^text\/csv/);
-  });
-
   it.each([
-    ['/v1/company/sk/x'], ['/v1/nope'], ['/v1/admin/stats'], ['/v1/proxy/peppol/nope/x'], ['/v1/proxy/peppol/verteco/x'], ['/v1/proxy/superfaktura/de/x'], ['/v1/proxy/superfaktura/sk/a%5cb'], ['/v1/waitlist/confirm?token=bad'], ['/v1/rates/ecb?date=3000-01-01']
+    ['/v1/company/sk/x'], ['/v1/nope'], ['/v1/admin/stats'], ['/v1/proxy/peppol/nope/x'], ['/v1/proxy/peppol/verteco/x'], ['/v1/proxy/superfaktura/de/x'], ['/v1/proxy/superfaktura/sk/a%5cb'], ['/v1/rates/ecb?date=3000-01-01']
   ])('error of %s has the Error shape', async (url) => {
     const res = await ctx.app.inject({ method: 'GET', url });
     expect(res.statusCode).toBeGreaterThanOrEqual(400);

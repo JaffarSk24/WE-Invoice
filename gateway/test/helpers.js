@@ -8,7 +8,7 @@ import { loadConfig } from '../src/config.js';
 export const PUBLIC_IP = '93.184.216.34';
 
 export function testEnv(extra = {}) {
-  return { DATABASE_PATH: ':memory:', RATE_LIMIT_SCALE: '0', PUBLIC_URL: 'https://api.test', SITE_URL: 'https://site.test/', WAITLIST_CONFIRM_EMAIL: 'true', ...extra };
+  return { DATABASE_PATH: ':memory:', RATE_LIMIT_SCALE: '0', PUBLIC_URL: 'https://api.test', ...extra };
 }
 
 export const publicLookup = async () => [{ address: PUBLIC_IP, family: 4 }];
@@ -30,22 +30,11 @@ export function fakeResolver({ naptr = {}, cname = {} } = {}) {
   };
 }
 
-export async function createTestApp({ env = {}, resolver, lookup = publicLookup, logger = false, transport, failMail = false } = {}) {
+export async function createTestApp({ env = {}, resolver, lookup = publicLookup, logger = false } = {}) {
   const agent = new MockAgent();
   agent.disableNetConnect();
-  const sent = [];
-  let mailTransport = transport;
-  if (transport === undefined) {
-    mailTransport = {
-      async sendMail(message) {
-        if (failMail) throw new Error('smtp down');
-        sent.push(message);
-        return { messageId: `${sent.length}` };
-      }
-    };
-  }
-  const app = await buildApp(loadConfig(testEnv(env)), { logger, dispatcher: agent, lookup, resolver, transport: mailTransport });
-  return { app, agent, sent, pool: (origin) => agent.get(origin) };
+  const app = await buildApp(loadConfig(testEnv(env)), { logger, dispatcher: agent, lookup, resolver });
+  return { app, agent, pool: (origin) => agent.get(origin) };
 }
 
 export const json = { headers: { 'content-type': 'application/json' } };

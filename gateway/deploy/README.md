@@ -6,7 +6,7 @@ Deployment is run by the owner only. Nothing in this folder deploys by itself. T
 
 1. Run the read-only survey and send the output back: `bash gateway/deploy/discover.sh > discover.txt 2>&1`. It decides between variant A (Docker Compose, preferred) and variant B (systemd with Node 22).
 2. Add a DNS A record `invoice-api.whiteeagles.sk` pointing to `5.75.136.96`, then wait until `getent hosts invoice-api.whiteeagles.sk` answers that address.
-3. Prepare the secrets for `.env` (see `gateway/.env.example`): the Mailgun API key of mg.whiteeagles.sk for the sign-up notices to welcome@whiteeagles.sk (the same key the whiteeagles.sk site uses; no e-mail goes to applicants unless `WAITLIST_CONFIRM_EMAIL=true`), `FS_OPENDATA_API_KEY` from opendata.financnasprava.sk, and two long random strings for `ADMIN_TOKEN` and `BETA_HMAC_SECRET` (`openssl rand -base64 48`).
+3. Prepare the secrets for `.env` (see `gateway/.env.example`): `FS_OPENDATA_API_KEY` from opendata.financnasprava.sk and a long random string for `ADMIN_TOKEN` (`openssl rand -base64 48`).
 
 ## 1. nginx and the certificate (both variants)
 
@@ -79,8 +79,6 @@ Backup (root crontab): `15 3 * * * /opt/we-invoice/current/gateway/deploy/backup
 
 ## 3. Owner's tasks after the start
 
-- Waitlist export: `curl -fsS -H "Authorization: Bearer $ADMIN_TOKEN" https://invoice-api.whiteeagles.sk/v1/admin/waitlist.csv -o waitlist.csv`.
 - Counters: `curl -fsS -H "Authorization: Bearer $ADMIN_TOKEN" https://invoice-api.whiteeagles.sk/v1/admin/stats`.
-- Beta wave (variant A): `docker cp waitlist.csv we-invoice-gateway:/tmp/ && docker exec we-invoice-gateway node scripts/send-invites.mjs /tmp/waitlist.csv --dry-run`, check the list, then run it again without `--dry-run`. Variant B: `cd /opt/we-invoice/current/gateway && sudo -u weinvoice node --env-file=/etc/we-invoice/gateway.env scripts/send-invites.mjs waitlist.csv`.
 - Monitoring: point UptimeRobot (or similar) at `https://invoice-api.whiteeagles.sk/v1/health`.
 - A provider that publishes its API address between releases: add it to `PROVIDER_BASE_URLS` in `.env` as JSON and restart the gateway.

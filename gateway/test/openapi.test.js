@@ -9,9 +9,7 @@ const EXPECTED = [
   ['get', '/v1/health'], ['post', '/v1/proxy/peppol/{providerId}/{path}'], ['get', '/v1/proxy/superfaktura/{market}/{path}'], ['get', '/v1/company/sk/{ico}'],
   ['get', '/v1/company/sk/search'], ['get', '/v1/company/cz/{ico}'], ['get', '/v1/vat/vies/{cc}/{number}'],
   ['get', '/v1/vat/sk/{icdph}/reliability'], ['get', '/v1/rates/ecb'], ['post', '/v1/ekasa/receipt'],
-  ['get', '/v1/peppol/lookup/{scheme}/{id}'], ['post', '/v1/waitlist'], ['get', '/v1/waitlist/confirm'],
-  ['get', '/v1/waitlist/unsubscribe'], ['post', '/v1/beta/redeem'], ['get', '/v1/admin/waitlist.csv'],
-  ['get', '/v1/admin/stats'], ['post', '/v1/share'], ['get', '/v1/share/{id}'], ['post', '/v1/share/{id}/reply'],
+  ['get', '/v1/peppol/lookup/{scheme}/{id}'], ['get', '/v1/admin/stats'], ['post', '/v1/share'], ['get', '/v1/share/{id}'], ['post', '/v1/share/{id}/reply'],
   ['post', '/v1/inbox/register'], ['get', '/v1/inbox/{id}'], ['delete', '/v1/inbox/{id}/{msg}'],
   ['post', '/v1/assistant/jobs'], ['delete', '/v1/assistant/jobs']
 ];
@@ -24,6 +22,10 @@ describe('openapi.yaml', () => {
   it.each(EXPECTED)('defines %s %s', (method, path) => {
     expect(spec.paths[path], path).toBeTruthy();
     expect(spec.paths[path][method], `${method} ${path}`).toBeTruthy();
+  });
+
+  it('has no waiting list or invitation codes any more', () => {
+    expect(Object.keys(spec.paths).filter(p => /waitlist|beta/.test(p))).toEqual([]);
   });
 
   it('has one error format', () => {

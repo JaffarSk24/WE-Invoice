@@ -1,35 +1,13 @@
-// SQLite storage of the gateway: waitlist, beta invites, the public data
-// cache and request counters. No user documents ever land here. The schema
+// SQLite storage of the gateway: the public data cache and request
+// counters. No user documents or personal data ever land here. The schema
 // is created on open and versioned by user_version for later migrations.
+// Databases from before 30 October 2026 still hold the tables of the
+// retired waiting list (waitlist, invites); nothing reads them any more.
 import Database from 'better-sqlite3';
 
 const SCHEMA_VERSION = 1;
 
 const SCHEMA = `
-CREATE TABLE IF NOT EXISTS waitlist (
-  id INTEGER PRIMARY KEY,
-  email TEXT NOT NULL UNIQUE,
-  lang TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending',
-  source TEXT,
-  interests TEXT NOT NULL DEFAULT '[]',
-  vat_payer INTEGER,
-  consent_at TEXT NOT NULL,
-  confirmed_at TEXT,
-  confirm_token TEXT UNIQUE,
-  confirm_expires_at TEXT,
-  unsubscribe_token TEXT NOT NULL UNIQUE,
-  last_activity_at TEXT NOT NULL
-);
-CREATE TABLE IF NOT EXISTS invites (
-  code TEXT PRIMARY KEY,
-  email TEXT,
-  created_at TEXT NOT NULL,
-  max_uses INTEGER NOT NULL DEFAULT 3,
-  uses INTEGER NOT NULL DEFAULT 0,
-  last_redeemed_at TEXT,
-  revoked_at TEXT
-);
 CREATE TABLE IF NOT EXISTS cache (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,

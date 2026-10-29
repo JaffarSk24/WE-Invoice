@@ -1,6 +1,6 @@
 // Builds the Fastify app: security headers, CORS for the site and the dev
 // server, rate limits, counters, then the routes. Everything with a side
-// effect (database, HTTP dispatcher, DNS, mail transport) is injectable so
+// effect (database, HTTP dispatcher, DNS) is injectable so
 // tests run without the network.
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
@@ -12,16 +12,11 @@ import { createCache } from './lib/cache.js';
 import { createStats } from './lib/stats.js';
 import { createUpstream } from './lib/upstream.js';
 import { createGuardedAgent } from './lib/guarded-agent.js';
-import { createMailer } from './mail/mailer.js';
-import { createWaitlist } from './waitlist/service.js';
-import { createInvites } from './waitlist/invites.js';
 import healthRoutes from './routes/health.js';
 import proxyRoutes from './routes/proxy.js';
 import superfakturaRoutes from './routes/superfaktura.js';
 import registerRoutes from './routes/registers.js';
 import publicDataRoutes from './routes/public-data.js';
-import waitlistRoutes from './routes/waitlist.js';
-import betaRoutes from './routes/beta.js';
 import adminRoutes from './routes/admin.js';
 
 const SECURITY_HEADERS = {
@@ -36,7 +31,7 @@ const SECURITY_HEADERS = {
 const ALLOWED_HEADERS = ['Content-Type', 'Accept', 'Authorization', 'X-Upstream-Authorization', 'X-Upstream-Base', 'X-Peppol-Participant-Id', 'X-API-Key'];
 
 // logger: true, false or {stream} (tests capture the output).
-export async function buildApp(config, { logger = true, dispatcher, lookup, resolver, transport, db } = {}) {
+export async function buildApp(config, { logger = true, dispatcher, lookup, resolver, db } = {}) {
   const app = Fastify({
     logger: logger ? loggerOptions(config.logLevel, logger.stream) : false,
     trustProxy: config.trustProxy,
@@ -47,9 +42,6 @@ export async function buildApp(config, { logger = true, dispatcher, lookup, reso
   const stats = createStats(database);
   const cache = createCache(database);
   const upstream = createUpstream(config.upstream, { dispatcher, stats, log: app.log });
-  const mailer = createMailer(config, { transport, log: app.log });
-  const waitlist = createWaitlist(database, config);
-  const invites = createInvites(database, config);
   const proxyDispatcher = dispatcher || createGuardedAgent({ timeoutMs: config.upstream.timeoutMs });
 
   app.addHook('onSend', async (request, reply, payload) => {
@@ -69,26 +61,15 @@ export async function buildApp(config, { logger = true, dispatcher, lookup, reso
     await app.register(rateLimit, { max: Math.round(120 * config.rateLimitScale), timeWindow: '1 minute', addHeadersOnExceeding: { 'x-ratelimit-limit': true, 'x-ratelimit-remaining': true } });
   }
 
-  const deps = { config, upstream, cache, stats, waitlist, invites, mailer, lookup, resolver };
+  const deps = { config, upstream, cache, stats, lookup, resolver };
   await app.register(healthRoutes, deps);
   await app.register(proxyRoutes, { config, dispatcher: proxyDispatcher, lookup });
   await app.register(superfakturaRoutes, { config, dispatcher: proxyDispatcher, lookup });
   await app.register(registerRoutes, deps);
   await app.register(publicDataRoutes, deps);
-  await app.register(waitlistRoutes, deps);
-  await app.register(betaRoutes, deps);
   await app.register(adminRoutes, deps);
 
-  // GDPR retention: expired pending records and records without activity.
-  const purge = () => {
-    const removed = waitlist.purge();
-    if (removed) app.log.info({ removed }, 'waitlist records purged');
-  };
-  purge();
-  const timer = setInterval(purge, 24 * 60 * 60 * 1000);
-  timer.unref();
   app.addHook('onClose', async () => {
-    clearInterval(timer);
     if (!dispatcher) await proxyDispatcher.close();
     if (!db) database.close();
   });

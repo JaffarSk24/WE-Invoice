@@ -7,7 +7,7 @@
 
 // Registers and services the desktop reaches directly, without the gateway
 // (04-peppol.md, 06-gateway-server.md). The gateway itself is here for the
-// endpoints it alone provides (rates, waitlist, beta).
+// endpoints it alone provides (rates, eKasa receipts, register caches).
 const REGISTER_HOSTS = Object.freeze([
   'invoice-api.whiteeagles.sk',
   'api.statistics.sk',

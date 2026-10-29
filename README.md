@@ -126,7 +126,7 @@ Data of the desktop app lives in `we-invoice-data` inside the user's application
 app/              client: vanilla JS + Vite, one code base for the web and the desktop
 packages/core/    pure domain logic: money, VAT, documents, numbering, UBL, tax, bookkeeping
 desktop/          Electron main process and preload bridges (storage, network, mail, tray, updates)
-gateway/          stateless Fastify gateway: provider proxy, registers, rates, waitlist
+gateway/          stateless Fastify gateway: provider proxy, registers, rates
 site/             website in six languages, privacy policy and terms (GitHub Pages)
 tests/            repository checks, end-to-end tests and fixtures
 ```

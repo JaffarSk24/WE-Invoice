@@ -17,7 +17,6 @@ export function loadConfig(env = process.env) {
     // itself and so get around the rate limits by IP.
     trustProxy: env.TRUST_PROXY === 'false' ? false : (env.TRUST_PROXY && env.TRUST_PROXY !== 'true' ? env.TRUST_PROXY : 'loopback,uniquelocal'),
     databasePath: env.DATABASE_PATH || ':memory:',
-    siteUrl: (env.SITE_URL || 'https://jaffarsk24.github.io/WE-Invoice').replace(/\/+$/, ''),
     publicUrl: (env.PUBLIC_URL || 'https://invoice-api.whiteeagles.sk').replace(/\/+$/, ''),
     // Multiplier for every per-route limit; 0 disables rate limiting (tests).
     rateLimitScale: num(env.RATE_LIMIT_SCALE, 1),
@@ -51,34 +50,7 @@ export function loadConfig(env = process.env) {
       // publishes its API address between releases.
       baseUrls: parseJson(env.PROVIDER_BASE_URLS, {})
     },
-    smtp: {
-      host: env.SMTP_HOST || '',
-      port: num(env.SMTP_PORT, 587),
-      secure: env.SMTP_SECURE === 'true',
-      user: env.SMTP_USER || '',
-      pass: env.SMTP_PASS || '',
-      from: env.SMTP_FROM || ''
-    },
-    // Mailgun HTTP API, used when SMTP is not set (the White Eagles site
-    // sends through it already). The key lives only in the server env.
-    mailgun: {
-      apiKey: env.MAILGUN_API_KEY || '',
-      domain: env.MAILGUN_DOMAIN || '',
-      endpoint: env.MAILGUN_ENDPOINT || 'api.eu.mailgun.net'
-    },
-    waitlist: {
-      confirmTtlHours: num(env.WAITLIST_CONFIRM_TTL_HOURS, 48),
-      minFillSeconds: num(env.WAITLIST_MIN_FILL_SECONDS, 3),
-      retentionMonths: num(env.WAITLIST_RETENTION_MONTHS, 24),
-      // Off by default: sign-ups are taken at once and the owner writes to
-      // people personally. On: double opt-in e-mail to the applicant.
-      confirmByEmail: env.WAITLIST_CONFIRM_EMAIL === 'true',
-      // Where a notice of every new sign-up goes (empty: no notice).
-      ownerEmail: env.OWNER_NOTIFY_EMAIL || '',
-      ownerLang: env.OWNER_NOTIFY_LANG || 'ru'
-    },
-    adminToken: env.ADMIN_TOKEN || '',
-    betaHmacSecret: env.BETA_HMAC_SECRET || ''
+    adminToken: env.ADMIN_TOKEN || ''
   };
 }
 

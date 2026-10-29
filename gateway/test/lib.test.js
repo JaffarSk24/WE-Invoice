@@ -14,11 +14,10 @@ describe('config', () => {
     expect(c.adminToken).toBe('');
     expect(c.trustProxy).toBe('loopback,uniquelocal');
     expect(c.proxy.baseUrls).toEqual({});
-    const d = loadConfig({ PORT: '9000', CORS_ORIGINS: 'https://a.test, https://b.test', TRUST_PROXY: 'false', SITE_URL: 'https://s.test/', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}', RATE_LIMIT_SCALE: '0' });
+    const d = loadConfig({ PORT: '9000', CORS_ORIGINS: 'https://a.test, https://b.test', TRUST_PROXY: 'false', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}', RATE_LIMIT_SCALE: '0' });
     expect(d.port).toBe(9000);
     expect(d.corsOrigins).toEqual(['https://a.test', 'https://b.test']);
     expect(d.trustProxy).toBe(false);
-    expect(d.siteUrl).toBe('https://s.test');
     expect(d.proxy.baseUrls.verteco).toBe('https://api.verteco.test');
     expect(d.rateLimitScale).toBe(0);
   });

@@ -16,7 +16,6 @@ tags:
   - name: registers
   - name: rates
   - name: peppol
-  - name: waitlist
   - name: admin
   - name: p2
 paths:
@@ -198,74 +197,6 @@ paths:
                   documentTypes: { type: array, items: { type: string } }
                   checkedAt: { type: string, format: date-time }
         '502': { $ref: '#/components/responses/Error' }
-  /v1/waitlist:
-    post:
-      tags: [waitlist]
-      summary: Join the waitlist (direct sign-up with a notice to the owner, or a double opt-in e-mail when WAITLIST_CONFIRM_EMAIL is on)
-      x-rate-limit: 5/min per IP; honeypot and fill-time check
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [email, lang, consent]
-              properties:
-                email: { type: string, format: email, maxLength: 320 }
-                lang: { type: string, enum: [sk, cs, en, de, ru, uk] }
-                consent: { type: boolean, const: true }
-                source: { type: string, maxLength: 60 }
-                interests: { type: array, items: { type: string, enum: [efaktura-send, efaktura-receive, simple-bookkeeping, vat-reports] } }
-                vatPayer: { type: [boolean, 'null'] }
-                website: { type: string, description: Honeypot; must be empty }
-                startedAt: { type: integer, description: Form open time in ms, for the fill-time check }
-      responses:
-        '202': { description: Accepted; received at once, or pending until the e-mail is confirmed, content: { application/json: { schema: { type: object, properties: { status: { type: string, enum: [received, pending] } } } } } }
-        '400': { $ref: '#/components/responses/Error' }
-        '429': { $ref: '#/components/responses/Error' }
-  /v1/waitlist/confirm:
-    get:
-      tags: [waitlist]
-      summary: Confirm the e-mail, then redirect to the thank-you page
-      parameters:
-        - { name: token, in: query, required: true, schema: { type: string, maxLength: 200 } }
-      responses:
-        '302': { description: Redirect to the site }
-        '400': { $ref: '#/components/responses/Error' }
-  /v1/waitlist/unsubscribe:
-    get:
-      tags: [waitlist]
-      summary: Unsubscribe and delete the record
-      parameters:
-        - { name: token, in: query, required: true, schema: { type: string, maxLength: 200 } }
-      responses:
-        '302': { description: Redirect to the site }
-        '400': { $ref: '#/components/responses/Error' }
-  /v1/beta/redeem:
-    post:
-      tags: [peppol]
-      summary: Exchange an invite code for a signed beta token (HMAC, 1 year)
-      x-rate-limit: 10/min
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { type: object, required: [code], properties: { code: { type: string, maxLength: 40 } } }
-      responses:
-        '200':
-          description: Token
-          content:
-            application/json:
-              schema: { type: object, required: [token, expiresAt], properties: { token: { type: string }, expiresAt: { type: string, format: date-time } } }
-        '400': { $ref: '#/components/responses/Error' }
-  /v1/admin/waitlist.csv:
-    get:
-      tags: [admin]
-      summary: Waitlist export for the owner
-      security: [{ adminToken: [] }]
-      responses:
-        '200': { description: CSV, content: { text/csv: { schema: { type: string } } } }
-        '401': { $ref: '#/components/responses/Error' }
   /v1/admin/stats:
     get:
       tags: [admin]

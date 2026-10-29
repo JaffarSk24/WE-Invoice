@@ -162,6 +162,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Gateway
 
+#### Removed (29 October, eFaktúra open to everyone)
+
+- The waiting list and the beta: `POST /v1/waitlist`, `GET /v1/waitlist/confirm`, `GET /v1/waitlist/unsubscribe`, `POST /v1/beta/redeem` and `GET /v1/admin/waitlist.csv` answer 404; the waiting list service, invite codes, the e-mail sending (Mailgun or SMTP, nodemailer), the owner's `scripts/send-invites.mjs` and the settings `SITE_URL`, `WAITLIST_*`, `OWNER_NOTIFY_*`, `MAILGUN_*`, `SMTP_*` and `BETA_HMAC_SECRET` are gone. The gateway now keeps nothing but the public register cache and request counters, as the privacy policy says. A new database has no waiting list tables; an older one keeps them unread.
+
 #### Added
 
 - Gateway routes of 06-gateway-server.md § 6.3: streaming proxy to allow-listed Peppol providers (X-Upstream-Authorization becomes Authorization, 15 MB limit, private networks and cross-host redirects refused, answers never cached), Slovak company by IČO and search (RPO plus DIČ and IČ DPH from the FS open data), Czech company (ARES), VIES, Slovak VAT payer reliability (FS lists), ECB rates with history, eKasa receipt lookup (configurable URL), Peppol participant lookup (SML NAPTR with SHA-256 Base32 per Policy for use of Identifiers 4.4, optional legacy MD5 CNAME, SMP ServiceGroup), waitlist with double opt-in, confirm, unsubscribe, beta code redeem (HMAC token for one year), admin CSV export and counters.
