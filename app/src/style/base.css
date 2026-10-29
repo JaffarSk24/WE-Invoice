@@ -45,9 +45,13 @@ a { color: var(--accent-blue); }
   min-height: 40px; padding: 0 16px; border-radius: var(--radius-sm);
   border: 1px solid var(--border-color); background: var(--overlay-04);
   color: var(--text-primary); font: inherit; font-weight: 600; cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast), filter var(--transition-fast);
 }
-.btn:hover { background: var(--overlay-hover); border-color: var(--border-strong); }
+/* Hover tints a plain button only: written for every .btn, it outranked the
+   fill of .btn-primary, .btn-brand and .btn-danger, so their white label
+   vanished on the light theme. A filled button gets lighter instead. */
+.btn:not(.btn-primary):not(.btn-brand):not(.btn-danger):not(:disabled):hover { background: var(--overlay-hover); border-color: var(--border-strong); }
+.btn-primary:not(:disabled):hover, .btn-brand:not(:disabled):hover, .btn-danger:not(:disabled):hover { filter: brightness(1.08); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn svg { width: 18px; height: 18px; }
 .btn-primary { background: var(--grad-primary); border-color: transparent; color: var(--text-on-accent); }

@@ -63,6 +63,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Fixed (29 October, from testers)
+
+- A filled button (Continue in the company wizard, primary, brand and danger buttons everywhere) kept its colour on hover instead of turning into a plain grey one with an invisible white label on the light theme; it now gets a little lighter. A disabled button no longer reacts to hover.
+
 #### Fixed (22 October)
 
 - A rule of the bookkeeping styles (`.card + .card { margin-top: 16px }`) applied to every card following a card anywhere in the app once those styles had loaded, so grids of cards lost their line; it now applies inside the bookkeeping screens only.
