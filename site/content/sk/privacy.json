@@ -4,7 +4,7 @@
     "description": "Aké údaje WE Invoice spracúva, kde sú uložené, čo prechádza cez našu bránu bez ukladania a aké máte práva podľa GDPR."
   },
   "h1": "Ochrana osobných údajov",
-  "effective": "Webová a desktopová aplikácia WE Invoice a táto stránka. Platné od 20. októbra 2026.",
+  "effective": "Webová a desktopová aplikácia WE Invoice a táto stránka. Platné od 30. októbra 2026.",
   "intro": "WE Invoice vyvíja White Eagles & Co. s. r. o. (ďalej „my“). Tento dokument vysvetľuje, aké údaje aplikácia a stránka spracúvajú, kde sú uložené a ako ich odstrániť. Píšeme ho tak, aby ste ho prečítali, nie preskočili.",
   "sections": [
     {
@@ -13,7 +13,7 @@
         { "ul": [
           "Vaše faktúry, kontakty, výdavky a účtovníctvo sú zašifrované vo vašom zariadení a uložené vo vašom Google Drive. My k nim nemáme prístup.",
           "Náš server je len brána: preposiela požiadavky poskytovateľom eFaktúr, verejným registrom a kurzovému lístku a nič z ich obsahu si neukladá.",
-          "Na serveri uchovávame iba zoznam čakateľov na betu, kódy pozvánok a krátkodobú vyrovnávaciu pamäť verejných registrov.",
+          "Na serveri uchovávame iba krátkodobú vyrovnávaciu pamäť verejných údajov z registrov firiem.",
           "V aplikácii nie je žiadna analytika ani reklama. Na tejto stránke sa Google Analytics zapne až po vašom súhlase."
         ] }
       ]
@@ -47,12 +47,7 @@
     {
       "h2": "Čo sa ukladá na našom serveri",
       "blocks": [
-        { "ul": [
-          "Zoznam čakateľov na betu eFaktúr: e-mail, jazyk, vaše záujmy, údaj, či ste platiteľ DPH, čas súhlasu a IP adresa pri zápise. Právnym základom je váš súhlas. Údaje uchovávame do odvolania súhlasu, najdlhšie 24 mesiacov od zápisu. O novom zápise nám s týmito údajmi príde upozornenie do našej schránky; e-mail doručuje Mailgun (Sinch, servery v EÚ) ako náš sprostredkovateľ.",
-          "Kódy pozvánok do bety a informácia, či boli použité.",
-          "Vyrovnávacia pamäť odpovedí verejných registrov (údaje o firmách, ktoré sú verejné), aby sme registre nezaťažovali. Najdlhšie 24 hodín.",
-          "Ak v budúcnosti zapnete voliteľné funkcie, ako zdieľanie dokladu zašifrovaným odkazom alebo serverového pomocníka pre opakované faktúry, uchováme len zašifrované dáta, ktoré bez vášho kľúča nevieme prečítať, a to iba po dobu, ktorú funkcia potrebuje. Pred zapnutím každej takejto funkcie vám to aplikácia vysvetlí a vyžiada si súhlas."
-        ] }
+        { "p": "Ukladáme iba vyrovnávaciu pamäť odpovedí verejných registrov (údaje o firmách, ktoré sú verejné), aby sme registre nezaťažovali, a to najdlhšie 24 hodín. Vaše doklady, kontakty ani kľúče na serveri neuchovávame." }
       ]
     },
     {
@@ -78,7 +73,7 @@
     {
       "h2": "Vaše práva",
       "blocks": [
-        { "p": "Podľa nariadenia GDPR máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo namietať. Súhlas so zoznamom čakateľov môžete kedykoľvek odvolať odpoveďou na náš e-mail alebo správou na náš kontakt; záznam vymažeme bez zbytočného odkladu. Máte tiež právo podať sťažnosť na [Úrad na ochranu osobných údajov Slovenskej republiky](https://dataprotection.gov.sk/)." },
+        { "p": "Podľa nariadenia GDPR máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo namietať. Na našom serveri o vás nevedieme žiadne osobné údaje okrem technických záznamov brány opísaných vyššie. Ak nám napíšete, vašu správu použijeme len na odpoveď. Máte tiež právo podať sťažnosť na [Úrad na ochranu osobných údajov Slovenskej republiky](https://dataprotection.gov.sk/)." },
         { "p": "Obchodné dáta v aplikácii máte výlučne vy. Vymažete ich odstránením súborov aplikácie z Google Drive (Google Drive, Nastavenia, Spravovať aplikácie) a vymazaním dát prehliadača alebo dátového priečinka desktopovej aplikácie. Prístup aplikácie k vášmu účtu Google zrušíte na [myaccount.google.com/permissions](https://myaccount.google.com/permissions)." }
       ]
     },

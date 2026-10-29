@@ -4,7 +4,7 @@
     "description": "WE Invoice is free and provided “as is” under the MIT licence. The user is responsible for the accuracy and filing of tax documents."
   },
   "h1": "Terms of use",
-  "effective": "The WE Invoice web and desktop app. Effective from 19 October 2026.",
+  "effective": "The WE Invoice web and desktop app. Effective from 30 October 2026.",
   "intro": "WE Invoice is developed by White Eagles & Co. s. r. o. (“we”). By using the app you agree to these terms. They are short, because we have nothing to hide.",
   "sections": [
     {
@@ -36,13 +36,7 @@
       "h2": "E-invoicing and third-party providers",
       "blocks": [
         { "p": "E-invoices are sent and received through a certified provider with whom you have your own contract. The provider is responsible for its availability, pricing and compliance with legal obligations. The same applies to Google Drive, banks and other third-party services you connect in the app." },
-        { "p": "The e-invoicing feature is in closed beta. We may restrict or end access granted by an invitation code if the stability of the service requires it." }
-      ]
-    },
-    {
-      "h2": "Waiting list",
-      "blocks": [
-        { "p": "By joining the waiting list you agree to receive e-mails about the e-invoicing beta. You can unsubscribe via the link in every e-mail. Details are in the [privacy policy](./privacy.html)." }
+        { "p": "The eFaktúra feature is marked Beta because it is new, and it is open to everyone. It works through the provider you choose yourself and whose API key you enter in the app. We only pass invoices on to the provider and do not store them; we are not responsible for the provider's services." }
       ]
     },
     {

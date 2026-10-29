@@ -30,25 +30,6 @@
     "reject": "Decline",
     "more": "More about data protection"
   },
-  "thanks": {
-    "title": "Thanks, you're on the list",
-    "description": "Your e-mail is confirmed. When we open the next wave of the e-invoicing beta, we'll send you an invitation code.",
-    "h1": "Thanks, you're on the list",
-    "lead": "Your e-mail is confirmed. When we open the next wave of the e-invoicing beta, you'll get an invitation code. Enter it in the app under Settings, E-invoicing, Invitation code.",
-    "meanwhile": "No need to wait in the meantime: invoicing, expenses and bookkeeping work today. No sign-up, free.",
-    "ctaApp": "Open the app",
-    "ctaBack": "Back to the homepage",
-    "unsubscribe": "Changed your mind? Every e-mail we send has an unsubscribe link. We'll take you off the list straight away."
-  },
-  "unsubscribed": {
-    "title": "You have unsubscribed",
-    "description": "We have removed your e-mail from the e-invoicing beta waiting list.",
-    "h1": "You have unsubscribed",
-    "lead": "We have deleted your e-mail and everything you sent with the sign-up from the waiting list. You won't get any more e-mails from us.",
-    "meanwhile": "The app stays yours to use: invoicing, expenses and bookkeeping work without sign-up and for free.",
-    "ctaApp": "Open the app",
-    "ctaBack": "Back to the homepage"
-  },
   "notFound": {
     "title": "Page not found",
     "h1": "Page not found",

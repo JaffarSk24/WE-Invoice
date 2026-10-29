@@ -30,25 +30,6 @@
     "reject": "Odmítnout",
     "more": "Více o ochraně údajů"
   },
-  "thanks": {
-    "title": "Děkujeme, jste na seznamu",
-    "description": "Váš e-mail je potvrzený. Až otevřeme další vlnu bety eFaktur, pošleme vám kód pozvánky.",
-    "h1": "Děkujeme, jste na seznamu",
-    "lead": "Váš e-mail je potvrzený. Až otevřeme další vlnu bety eFaktur, dostanete kód pozvánky. Zadáte ho v aplikaci v části Nastavení, eFaktura, Kód pozvánky.",
-    "meanwhile": "Mezitím nemusíte čekat: fakturace, výdaje a účetnictví fungují už dnes. Bez registrace, zdarma.",
-    "ctaApp": "Otevřít aplikaci",
-    "ctaBack": "Zpět na úvod",
-    "unsubscribe": "Pokud si to rozmyslíte, každý náš e-mail má odkaz na odhlášení. Ze seznamu vás smažeme hned."
-  },
-  "unsubscribed": {
-    "title": "Odhlásili jste se",
-    "description": "Váš e-mail jsme odstranili ze seznamu čekatelů na betu eFaktur.",
-    "h1": "Odhlásili jste se",
-    "lead": "Váš e-mail a všechny údaje z přihlášení jsme ze seznamu čekatelů smazali. Další e-maily od nás nedostanete.",
-    "meanwhile": "Aplikace vám zůstává k dispozici: fakturace, výdaje a účetnictví fungují bez registrace a zdarma.",
-    "ctaApp": "Otevřít aplikaci",
-    "ctaBack": "Zpět na úvod"
-  },
   "notFound": {
     "title": "Stránka nenalezena",
     "h1": "Stránka nenalezena",

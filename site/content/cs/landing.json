@@ -11,7 +11,7 @@
     "lead": "Všechno, za co jinde platíte 5 až 15 € měsíčně. Bez registrace, bez limitů. Vaše data šifrovaná ve vašem Google Drive.",
     "ctaApp": "Otevřít webovou aplikaci",
     "ctaDownload": "Stáhnout pro Mac / Windows",
-    "hint": "Otevřený kód (MIT). Fakturace, výdaje a účetnictví pro všechny, eFaktura přes Peppol (pro Slovensko) v uzavřené betě na pozvánky.",
+    "hint": "Otevřený kód (MIT). Fakturace, výdaje a účetnictví pro všechny, eFaktúra přes Peppol (pro Slovensko) hned a bez čekání.",
     "shotAlt": "Obrazovka WE Invoice: seznam faktur se stavy, co je po splatnosti, a náhled faktury s QR kódem pro platbu"
   },
   "efaktura": {
@@ -33,36 +33,16 @@
       }
     ],
     "help": "Kdo podniká na Slovensku, tomu WE Invoice pomůže eFaktury přijímat i posílat: přijatou fakturu načte celou, se všemi řádky, a odeslanou uloží v původním XML na 10 let, jak žádá slovenský zákon. České firmy dostanou ISDOC, QR Platbu a ARES.",
-    "cta": "Zapsat se do bety eFaktur"
-  },
-  "form": {
-    "title": "Zapište se do bety eFaktur (Slovensko)",
-    "intro": "Beta eFaktur přes Peppol je určená pro podnikání na Slovensku a otevíráme ji po vlnách. Zapsaným posíláme kód pozvánky a návod, jak si vybrat digitálního pošťáka (poskytovatele eFaktur). Zapsat se můžete i jako česká firma, kterou eFaktura zajímá. Žádný spam, odhlášení jedním kliknutím.",
-    "email": "E-mail",
-    "emailPlaceholder": "jmeno@firma.cz",
-    "interests": {
-      "legend": "Co vás zajímá",
-      "send": "eFaktura: odesílání",
-      "receive": "eFaktura: přijímání",
-      "bookkeeping": "Jednoduché účetnictví (daňová evidence)",
-      "vat": "Výkazy DPH"
-    },
-    "vat": {
-      "legend": "Jsem plátce DPH",
-      "yes": "Ano",
-      "no": "Ne"
-    },
-    "consent": "Souhlasím se zpracováním e-mailu pro účely seznamu čekatelů podle [zásad ochrany osobních údajů](./privacy.html).",
-    "submit": "Zapsat se",
-    "sending": "Odesílám...",
-    "note": "Žádné automatické e-maily: až otevřeme další vlnu bety, napíšeme vám osobně.",
-    "msg": {
-      "success": "Hotovo. Jste na seznamu, a až otevřeme další vlnu, napíšeme vám osobně.",
-      "invalidEmail": "Zadejte platnou e-mailovou adresu.",
-      "consent": "Bez souhlasu vás na seznam nemůžeme zařadit.",
-      "rateLimited": "Příliš mnoho pokusů. Zkuste to za minutu.",
-      "badRequest": "Server přihlášku odmítl. Zkontrolujte e-mail a zkuste to znovu.",
-      "network": "Nepodařilo se spojit se serverem. Zkontrolujte připojení a zkuste to znovu."
+    "cta": "Otevřít aplikaci a zapnout funkci eFaktúra",
+    "start": {
+      "title": "Funkci eFaktúra si zapnete sami, ještě dnes",
+      "intro": "Funkce eFaktúra je v aplikaci označená jako Beta, protože je nová. Může ji používat každý, bez registrace u nás a bez čekání. Slouží k povinné elektronické fakturaci na Slovensku.",
+      "steps": [
+        "Vyberte si akreditovaného slovenského poskytovatele (digitálny poštár).",
+        "V aplikaci otevřete Nastavení, eFaktúra a vložte API klíč od poskytovatele.",
+        "Odesílejte a přijímejte elektronické faktury přímo z WE Invoice."
+      ],
+      "price": "Od nás je to zdarma. Poskytovatel si účtuje své služby podle vlastního ceníku a příjem je u více poskytovatelů zdarma. Faktury vašemu poskytovateli jen předáváme a nic neukládáme."
     }
   },
   "features": {
@@ -162,7 +142,7 @@
       },
       {
         "title": "Vložte API klíč do WE Invoice",
-        "text": "Nastavení, eFaktura, poskytovatel a klíč. Od té chvíle se faktury posílají a přijímají přímo z aplikace."
+        "text": "Nastavení, eFaktúra, poskytovatel a klíč. Od té chvíle se faktury posílají a přijímají přímo z aplikace."
       }
     ],
     "note": "Poskytovatele můžete kdykoli vyměnit. Vaše faktury a archiv XML zůstávají u vás."

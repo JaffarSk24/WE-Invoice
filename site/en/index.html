@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="../assets/landing.css">
   <script type="module" src="../assets/site.js"></script>
   <script type="module" src="../assets/consent.js"></script>
-  <script type="module" src="../assets/waitlist.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/en/","inLanguage":"en","description":"Invoicing, e-invoicing via Peppol, bank imports, payment reminders, VAT filings and single-entry bookkeeping. Free, no sign-up, no limits. Your data encrypted in your own Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Invoices and documents","E-invoicing (Peppol)","Bank and payment matching","Payment reminders with interest","Expenses and receipt scanning","VAT filings","Single-entry bookkeeping","Several companies, free","Phone and desktop"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/en.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Is it really free? Why?","acceptedAnswer":{"@type":"Answer","text":"Yes: no plans, no limits, no trial period. We have almost no running costs: the site runs on GitHub Pages, your data is in your Google Drive and you pay for e-invoicing directly to your provider. The app is built by the White Eagles agency as a showcase of its work and a way to reach small business owners."}},{"@type":"Question","name":"Where is my data?","acceptedAnswer":{"@type":"Answer","text":"On your device and in your Google Drive, encrypted with a key only you know. Our server is just a gateway to e-invoicing providers, public registers and exchange rates: it stores nothing. In the web version your provider API key also passes through it, because providers don't accept requests straight from a browser; the gateway hands it over only for the duration of the request and never logs or caches it. The desktop version for macOS and Windows talks to the provider directly from your computer and bypasses the gateway; if you want maximum privacy, choose that one."}},{"@type":"Question","name":"What if I lose my password?","acceptedAnswer":{"@type":"Answer","text":"On first launch you get a recovery key. Keep it away from your computer, printed out for example. Without the password and the recovery key the data cannot be decrypted; not even we can do it."}},{"@type":"Question","name":"Do I have to receive e-invoices even if I'm not a VAT payer?","acceptedAnswer":{"@type":"Answer","text":"Yes. From 1 January 2027 every business and every legal entity in Slovakia has to receive e-invoices. Only VAT payers have to issue them. Receiving is free with several providers."}},{"@type":"Question","name":"How much does an e-invoicing provider cost?","acceptedAnswer":{"@type":"Answer","text":"Several providers offer receiving for free. Sending costs from 0 to about 3 € a month, or a few cents per document, depending on the provider. You pay them directly; WE Invoice adds nothing on top."}},{"@type":"Question","name":"Why won't my Mac open the app?","acceptedAnswer":{"@type":"Answer","text":"The desktop app is not yet notarized by Apple, so macOS refuses to open it after a download from the browser. Before the first start, run this once in Terminal: xattr -cr \"/Applications/WE Invoice.app\". After that the app opens like any other, and its own updates need no such step."}},{"@type":"Question","name":"Will it replace my accountant?","acceptedAnswer":{"@type":"Answer","text":"No. It prepares the groundwork: reports, journal, exports in common formats. You or your accountant remain responsible for the accuracy of tax documents and for filing them. A good accountant saves time with WE Invoice; the work is still theirs."}},{"@type":"Question","name":"What we don't do, and why","acceptedAnswer":{"@type":"Answer","text":"No eKasa cash register of our own and no direct link to the VRP virtual register: Act No. 384/2025 Coll. bans using VRP through third-party apps, and a cash register of our own would need Financial Administration certification. When an invoice is paid in cash, we prepare the data for VRP and store the receipt number. No real-time bank connection via PSD2: it needs a licence and your data would pass through someone else's server, so we import statements instead. No SMS reminders: a paid channel we would have to charge for. E-mail and Peppol instead."}}]}</script>
 </head>
@@ -74,7 +73,7 @@
           <a class="btn primary" href="../app/">Open the web app</a>
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Download for Mac / Windows</a>
         </div>
-        <p class="hint">Open source (MIT). Invoicing, expenses and bookkeeping for everyone; e-invoicing via Peppol in a closed, invite-only beta.</p>
+        <p class="hint">Open source (MIT). Invoicing, expenses, bookkeeping and e-invoicing via Peppol for everyone, right away.</p>
         <div class="shot">
           <picture>
             <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
@@ -106,39 +105,16 @@
           </div>
         </div>
         <p class="help">WE Invoice helps you both receive and send e-invoices. A received invoice is imported in full, every line included, and a sent one is kept in its original XML for 10 years, as the law requires.</p>
-        <p class="buttons"><a class="btn primary" href="#waitlist">Join the e-invoicing beta</a></p>
-        <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Sending..." data-msg-success="Done. You&#39;re on the list, and when we open the next wave, we&#39;ll write to you personally." data-msg-invalid-email="Enter a valid e-mail address." data-msg-consent="We can&#39;t add you to the list without your consent." data-msg-rate-limited="Too many attempts. Try again in a minute." data-msg-bad-request="The server rejected the sign-up. Check your e-mail address and try again." data-msg-network="Couldn&#39;t reach the server. Check your connection and try again.">
-            <h3 id="waitlist-title">Join the e-invoicing beta</h3>
-            <p>We open the beta in waves. Everyone on the list gets an invitation code and a guide to choosing an e-invoicing provider (digitálny poštár). No spam, one-click unsubscribe.</p>
-            <input type="hidden" name="lang" value="en">
-            <input type="hidden" name="source" value="site">
-            <input type="hidden" name="startedAt" value="">
-            <div class="field">
-              <label for="wl-email">E-mail</label>
-              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="name@company.com">
-            </div>
-            <fieldset>
-              <legend>What interests you</legend>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> E-invoicing: sending</label>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> E-invoicing: receiving</label>
-              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Single-entry bookkeeping</label>
-              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> VAT filings</label>
-            </fieldset>
-            <fieldset>
-              <legend>I am a VAT payer</legend>
-              <label class="check"><input type="radio" name="vatPayer" value="true"> Yes</label>
-              <label class="check"><input type="radio" name="vatPayer" value="false"> No</label>
-            </fieldset>
-            <div class="hp" aria-hidden="true">
-              <label for="wl-website">Website</label>
-              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>I agree to my e-mail being processed for the waiting list, as described in the <a href="./privacy.html">privacy policy</a>.</span></label>
-            <button type="submit" class="btn primary">Sign me up</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">No automatic e-mails: when we open the next wave of the beta, we&#39;ll write to you personally.</p>
-          </form>
+        <div class="start" id="start">
+          <h3>Turn on e-invoicing yourself, today</h3>
+          <p>The eFaktúra feature is marked Beta in the app because it is new. Anyone can use it: no account with us, no waiting.</p>
+          <ol class="start-steps">
+            <li>Choose an accredited e-invoicing provider (digitálny poštár).</li>
+            <li>In the app, open Settings, E-invoicing and paste the provider&#39;s API key.</li>
+            <li>Send and receive e-invoices straight from WE Invoice.</li>
+          </ol>
+          <p class="buttons"><a class="btn primary" href="../app/">Open the app and turn on eFaktúra</a></p>
+          <p class="note">It costs nothing on our side. Your provider charges for its service under its own price list, and several providers receive for free. We only pass your invoices on to your provider and store nothing.</p>
         </div>
       </div>
     </section>
