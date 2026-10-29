@@ -1,6 +1,8 @@
 // The 260 px sidebar of wide screens: logo, the brand "New invoice" button,
-// the navigation groups (tax items filtered by the company's modes), and at
-// the bottom the company switcher, the sync status, language and theme.
+// the navigation groups (tax items filtered by the company's modes) with the
+// user's favourite sections on top (a star next to each item pins it, kept
+// on this device), and at the bottom the company switcher, the sync status,
+// language and theme.
 import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang } from '../../i18n/index.js';
@@ -8,6 +10,7 @@ import { languageOptions } from '../../i18n/languages.js';
 import { visibleNav } from './nav.js';
 import { navigate } from '../../router.js';
 import { emit } from '../../events.js';
+import { getPrefs, setPref } from '../../prefs.js';
 import { APP_VERSION } from '../../config.js';
 import { currentCompany, companyList, requestSwitch } from './company-state.js';
 import { syncState, syncIcon, syncTextKey } from './sync-state.js';
@@ -21,15 +24,48 @@ export function navLink(item, active) {
   }, icon(item.icon), h('span', {}, t(item.label)));
 }
 
+export function favouriteRoutes() {
+  const saved = getPrefs().navFavourites;
+  return Array.isArray(saved) ? saved.filter(r => typeof r === 'string') : [];
+}
+
+export function toggleFavourite(route) {
+  const list = favouriteRoutes();
+  setPref('navFavourites', list.includes(route) ? list.filter(r => r !== route) : [...list, route]);
+}
+
+// A menu item with its star: the star is a button next to the link, so the
+// two stay separate controls for the keyboard and screen readers.
+function navRow(item, active, favourite) {
+  const label = t(favourite ? 'nav.favourite.remove' : 'nav.favourite.add');
+  return h('div', { class: `nav-row ${favourite ? 'is-favourite' : ''}`.trim() }, navLink(item, active),
+    h('button', {
+      type: 'button', class: 'nav-star', 'aria-label': `${label}: ${t(item.label)}`, title: label, 'aria-pressed': String(favourite), dataset: { favourite: item.route },
+      onclick: () => { toggleFavourite(item.route); refreshNav(active); }
+    }, icon('star')));
+}
+
 // The navigation list, used by the sidebar and by the phone "More" screen.
 export function navList(active, { withBadges = true } = {}) {
   const nav = h('nav', { class: 'nav', 'aria-label': t('nav.main') });
-  visibleNav(currentCompany()).forEach(group => {
+  const groups = visibleNav(currentCompany());
+  const items = new Map(groups.flatMap(g => g.items).map(item => [item.route, item]));
+  const favourites = favouriteRoutes().filter(r => items.has(r));
+  // Favourites follow the untitled first group (Overview), so it is not
+  // taken for one of them.
+  const addFavourites = () => {
+    if (!favourites.length) return;
+    nav.append(h('div', { class: 'nav-group-title' }, t('nav.group.favourites')));
+    favourites.forEach(route => nav.append(navRow(items.get(route), active, true)));
+  };
+  if (!groups.length || groups[0].title) addFavourites();
+  groups.forEach((group, index) => {
+    if (index === 1 && !groups[0].title) addFavourites();
     if (group.title) {
       append(nav, [h('div', { class: 'nav-group-title' }, t(group.title),
         withBadges && group.beta ? h('span', { class: 'nav-badge' }, t('common.beta')) : null)]);
     }
-    group.items.forEach(item => nav.append(navLink(item, active)));
+    group.items.forEach(item => nav.append(navRow(item, active, favourites.includes(item.route))));
   });
   return nav;
 }
@@ -74,11 +110,21 @@ export function refreshSyncStatus() {
 }
 
 export function refreshNav(active) {
+  // The phone "More" screen has its own list.
+  const more = document.querySelector('.main > .nav');
+  if (more) {
+    const fresh = navList(null);
+    more.replaceWith(fresh);
+    refreshIcons(fresh);
+  }
   const old = document.querySelector('.sidebar .nav');
   if (old) {
+    const sidebar = old.closest('.sidebar');
+    const scroll = sidebar.scrollTop;
     const fresh = navList(active);
     old.replaceWith(fresh);
     refreshIcons(fresh);
+    sidebar.scrollTop = scroll;
   }
   ['company-switcher', 'more-company-switcher'].forEach(id => {
     const sw = document.getElementById(id);

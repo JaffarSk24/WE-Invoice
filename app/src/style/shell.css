@@ -31,6 +31,21 @@
 }
 .nav-item svg { width: 18px; height: 18px; flex: none; }
 .nav-item:hover { background: var(--overlay-hover); color: var(--text-primary); }
+/* A row of the menu: the link and its star, shown on hover and focus, and
+   always for a favourite. */
+.nav-row { position: relative; display: flex; align-items: center; }
+.nav-row .nav-item { flex: 1; min-width: 0; padding-right: 34px; }
+.nav-star {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted); cursor: pointer; opacity: 0;
+}
+.nav-star svg { width: 15px; height: 15px; }
+.nav-row:hover .nav-star, .nav-star:focus-visible, .nav-row.is-favourite .nav-star { opacity: 1; }
+.nav-star:hover { background: var(--overlay-hover); color: var(--text-primary); }
+.nav-row.is-favourite .nav-star { color: var(--warning); }
+.nav-row.is-favourite .nav-star svg { fill: currentColor; }
+@media (hover: none) { .nav-star { opacity: 1; } }
 .nav-item[aria-current="page"] { background: var(--overlay-04); color: var(--text-primary); box-shadow: inset 3px 0 0 var(--accent-blue); }
 .nav-badge { margin-left: auto; font-size: 11px; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-secondary); }
 
