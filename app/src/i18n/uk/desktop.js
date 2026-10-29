@@ -83,5 +83,9 @@ export default {
   "desktop.updates.later": "Пізніше",
   "desktop.updates.notesTitle": "Що нового у версії {version}",
   "desktop.updates.noNotes": "Примітки до випуску не додано.",
+  "desktop.updates.popupTitle": "Вийшла нова версія {version}",
+  "desktop.updates.popupLead": "Доступна WE Invoice {version}, у вас встановлена {current}. Оновіться, щоб отримати свіжі виправлення та нові можливості.",
+  "desktop.updates.popupSafe": "Оновлення триває хвилину, ваші дані збережуться.",
+  "desktop.updates.updateNow": "Оновити зараз",
   "errors.UPDATE_INSTALL": "Не вдалося встановити оновлення. Спробуйте ще раз або завантажте інсталятор зі сторінки застосунку."
 };

@@ -21,10 +21,10 @@ describe('update notice', () => {
     const worker = fakeWorker();
     watchForUpdates(fakeRegistration(worker), () => false);
     worker.set('activated');
-    expect(document.querySelector('.toast')).toBe(null);
+    expect(document.querySelector('.update-popup')).toBe(null);
   });
 
-  it('offers a reload once when an update arrives', async () => {
+  it('offers a reload once, in a large window, when an update arrives', async () => {
     const { watchForUpdates } = await import('./sw-register.js');
     const reg = fakeRegistration(null);
     watchForUpdates(reg, () => true);
@@ -32,7 +32,7 @@ describe('update notice', () => {
     reg.found(worker);
     worker.set('installed');
     worker.set('activated');
-    expect(document.querySelectorAll('.toast')).toHaveLength(1);
-    expect(document.querySelector('.toast-action')).toBeTruthy();
+    expect(document.querySelectorAll('.update-popup')).toHaveLength(1);
+    expect(document.querySelector('#pwa-update-reload')).toBeTruthy();
   });
 });

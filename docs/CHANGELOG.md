@@ -186,6 +186,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Added (29 October)
+
+- A new release opens a large window over the app at start: the new and the installed version, what is new (the release notes), a large Update now button, then the download progress and Restart and update in the same window. Later closes it until the next start; the banner stays as a reminder. The web app asks to reload in the same kind of window instead of a small notice.
+
 #### Fixed (22 October, release check)
 
 - The Windows install check waits for nothing without a limit: a Defender scan gets 5 minutes and an installer or uninstaller 10, and one that hangs is shown with what Windows logged. When Microsoft Defender does not answer on the CI machine (its service failed on GitHub's runner with 0x800106ba), the install, start, update and uninstall are still checked and the Defender part becomes a warning instead of failing or hanging the run.

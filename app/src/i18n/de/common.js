@@ -92,7 +92,10 @@ export default {
   "search.title": "Suchen",
   "search.placeholder": "Belege, Kontakte, Artikel suchen...",
   "search.hint": "Geben Sie eine Belegnummer, einen Kontaktnamen oder einen Betrag ein.",
-  "pwa.newVersion": "Eine neue Version der App ist verfügbar.",
   "pwa.reload": "Neu laden",
+  "pwa.popupTitle": "Eine neue Version von WE Invoice ist da",
+  "pwa.popupLead": "Die neue Version ist bereits geladen. Laden Sie die Seite neu, um mit ihr zu arbeiten.",
+  "pwa.popupSafe": "Ihre Daten bleiben erhalten.",
+  "pwa.later": "Später",
   "legislation.einvoice.note": "Ab 1. 1. 2027 stellen umsatzsteuerpflichtige Unternehmer in der Slowakei inländische B2B-Rechnungen als eFaktúra über Peppol aus, und alle Unternehmer müssen sie empfangen können."
 };

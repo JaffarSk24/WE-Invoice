@@ -83,5 +83,9 @@ export default {
   "desktop.updates.later": "Later",
   "desktop.updates.notesTitle": "What's new in version {version}",
   "desktop.updates.noNotes": "No release notes are attached.",
+  "desktop.updates.popupTitle": "Version {version} is out",
+  "desktop.updates.popupLead": "WE Invoice {version} is available, you have {current}. Update to get the latest fixes and features.",
+  "desktop.updates.popupSafe": "The update takes a minute, and your data stays as it is.",
+  "desktop.updates.updateNow": "Update now",
   "errors.UPDATE_INSTALL": "The update could not be installed. Try again, or download the installer from the app's website."
 };

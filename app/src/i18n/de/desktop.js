@@ -83,5 +83,9 @@ export default {
   "desktop.updates.later": "Später",
   "desktop.updates.notesTitle": "Neu in Version {version}",
   "desktop.updates.noNotes": "Keine Versionshinweise beigefügt.",
+  "desktop.updates.popupTitle": "Version {version} ist erschienen",
+  "desktop.updates.popupLead": "WE Invoice {version} ist verfügbar, Sie haben {current}. Aktualisieren Sie, um die neuesten Korrekturen und Funktionen zu erhalten.",
+  "desktop.updates.popupSafe": "Die Aktualisierung dauert eine Minute, Ihre Daten bleiben erhalten.",
+  "desktop.updates.updateNow": "Jetzt aktualisieren",
   "errors.UPDATE_INSTALL": "Das Update konnte nicht installiert werden. Versuchen Sie es erneut oder laden Sie das Installationsprogramm von der Website der App herunter."
 };

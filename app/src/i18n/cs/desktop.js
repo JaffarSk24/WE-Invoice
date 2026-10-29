@@ -83,5 +83,9 @@ export default {
   "desktop.updates.later": "Později",
   "desktop.updates.notesTitle": "Co je nového ve verzi {version}",
   "desktop.updates.noNotes": "Poznámky k vydání nejsou přiloženy.",
+  "desktop.updates.popupTitle": "Vyšla nová verze {version}",
+  "desktop.updates.popupLead": "K dispozici je WE Invoice {version}, vy máte {current}. Aktualizujte, abyste měli nejnovější opravy a funkce.",
+  "desktop.updates.popupSafe": "Aktualizace trvá minutu a vaše data zůstanou zachována.",
+  "desktop.updates.updateNow": "Aktualizovat nyní",
   "errors.UPDATE_INSTALL": "Aktualizaci se nepodařilo nainstalovat. Zkuste to znovu nebo si stáhněte instalátor ze stránky aplikace."
 };

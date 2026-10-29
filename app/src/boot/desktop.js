@@ -13,6 +13,7 @@ import { currentLang } from '../i18n/index.js';
 import { APP_VERSION } from '../config.js';
 import { initCloseHandshake } from '../desktop/close.js';
 import { createUpdates } from '../desktop/updates.js';
+import { createUpdatePopup } from '../desktop/update-popup.js';
 import '../style/update-banner.css';
 import { topBanner } from '../ui/top-banners.js';
 import { buildTrayState, TRAY_ACTIONS } from '../desktop/tray-state.js';
@@ -62,6 +63,8 @@ export function createDesktopModule(ctx, win) {
     bridges.weApp.pendingLink().then(link => { if (link) onDeepLink(link); }).catch(e => console.warn('Pending link unknown', e));
     // The update banner lives over the page, outside the redrawn shell.
     const banner = topBanner('update-banner');
+    // A newer release opens a large window at start, the banner stays as a reminder.
+    createUpdatePopup({ updates, t });
     updates.start(banner);
     ctx.registerRoute('desktop', (root) => {
       import('../views/desktop/settings.js')

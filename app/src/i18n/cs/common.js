@@ -92,7 +92,10 @@ export default {
   "search.title": "Hledat",
   "search.placeholder": "Hledat doklady, kontakty, položky...",
   "search.hint": "Zadejte číslo dokladu, název kontaktu nebo částku.",
-  "pwa.newVersion": "Je k dispozici nová verze aplikace.",
   "pwa.reload": "Obnovit",
+  "pwa.popupTitle": "Vyšla nová verze WE Invoice",
+  "pwa.popupLead": "Nová verze je už stažená. Obnovte stránku a budete pracovat v ní.",
+  "pwa.popupSafe": "Vaše data zůstanou zachována.",
+  "pwa.later": "Později",
   "legislation.einvoice.note": "Od 1. 1. 2027 plátci DPH na Slovensku vystavují tuzemské B2B faktury jako eFaktúra přes Peppol a přijímat je musí všichni podnikatelé."
 };

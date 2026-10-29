@@ -92,7 +92,10 @@ export default {
   "search.title": "Search",
   "search.placeholder": "Search documents, contacts, items...",
   "search.hint": "Type a document number, a contact name or an amount.",
-  "pwa.newVersion": "A new version of the app is available.",
   "pwa.reload": "Reload",
+  "pwa.popupTitle": "A new version of WE Invoice is out",
+  "pwa.popupLead": "The new version is already downloaded. Reload the page to work in it.",
+  "pwa.popupSafe": "Your data stays as it is.",
+  "pwa.later": "Later",
   "legislation.einvoice.note": "From 1 January 2027 Slovak VAT payers issue domestic B2B invoices as e-invoices via Peppol, and every business must be able to receive them."
 };

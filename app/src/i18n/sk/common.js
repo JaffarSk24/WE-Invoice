@@ -92,7 +92,10 @@ export default {
   "search.title": "Hľadať",
   "search.placeholder": "Hľadať doklady, kontakty, položky...",
   "search.hint": "Zadajte číslo dokladu, názov kontaktu alebo sumu.",
-  "pwa.newVersion": "Je k dispozícii nová verzia aplikácie.",
   "pwa.reload": "Obnoviť",
+  "pwa.popupTitle": "Vyšla nová verzia WE Invoice",
+  "pwa.popupLead": "Nová verzia je už stiahnutá. Obnovte stránku a budete pracovať v nej.",
+  "pwa.popupSafe": "Vaše údaje zostanú zachované.",
+  "pwa.later": "Neskôr",
   "legislation.einvoice.note": "Od 1. 1. 2027 platitelia DPH vystavujú tuzemské B2B faktúry ako eFaktúry cez Peppol a prijímať ich musia všetci podnikatelia."
 };

@@ -19,3 +19,25 @@
 @media (max-width: 767px) {
   .top-banners { inset-inline-start: 16px; }
 }
+
+/* The large window about a new version (desktop/update-popup.js and the
+   web notice in sw-register.js): it should not be missed. */
+.btn-lg { min-height: 48px; padding: 0 24px; font-size: 16px; }
+.btn-lg svg { width: 20px; height: 20px; }
+.update-popup { display: flex; flex-direction: column; gap: 16px; }
+.update-popup-hero { display: flex; gap: 16px; align-items: flex-start; padding: 16px; border-radius: var(--radius-md); background: var(--overlay-04); border: 1px solid var(--border-color); }
+.update-popup-hero > svg { width: 40px; height: 40px; flex: none; color: var(--accent-blue); }
+.update-popup-hero p { margin: 0; }
+.update-popup-lead { font-size: 17px; font-weight: 600; line-height: 1.4; margin-bottom: 4px !important; }
+.update-popup-subtitle { font-size: 15px; margin: 0; }
+.update-popup-notes { max-height: 280px; overflow-y: auto; font-size: 14px; line-height: 1.5; }
+.update-popup-notes h4 { font-size: 14px; margin: 12px 0 4px; }
+.update-popup-notes h4:first-child { margin-top: 0; }
+.update-popup-notes ul { margin: 0; padding-inline-start: 20px; display: flex; flex-direction: column; gap: 4px; }
+.update-popup-notes p { margin: 0 0 6px; }
+.update-popup-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.update-popup-actions p { flex-basis: 100%; margin: 0; }
+.update-popup-progress { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; }
+@media (max-width: 767px) {
+  .update-popup-actions .btn { flex: 1 1 100%; }
+}
