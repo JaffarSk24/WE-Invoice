@@ -1,6 +1,6 @@
 /* Landing page: hero, section blocks, feature cards, the eFaktura block
-   with the waitlist form, the comparison table, the three steps and the
-   FAQ. Colours only through the variables of base.css. */
+   with the call to turn it on in the app, the comparison table, the three
+   steps and the FAQ. Colours only through the variables of base.css. */
 .hero { padding: 64px 0 32px; text-align: center; }
 .hero h1 { font-size: clamp(32px, 5.5vw, 52px); margin: 0 0 18px; }
 .hero .lead { font-size: 19px; color: var(--text-soft); max-width: 720px; margin: 0 auto 28px; }
@@ -33,32 +33,17 @@ section.block .intro { color: var(--text-soft); font-size: 17px; max-width: 760p
 .efaktura .help { font-size: 17px; max-width: 760px; margin: 24px 0; }
 .efaktura .buttons { justify-content: flex-start; }
 
-/* Waitlist form */
-.waitlist-wrap { margin-top: 32px; scroll-margin-top: 16px; }
-.waitlist {
-  max-width: 640px; padding: 28px; border-radius: var(--radius);
+/* Turning eFaktura on in the app */
+.start {
+  max-width: 640px; margin-top: 8px; padding: 28px; border-radius: var(--radius);
   background: var(--card); border: 1px solid var(--border);
 }
-.waitlist h3 { margin: 0 0 8px; font-size: 22px; }
-.waitlist > p { color: var(--text-soft); margin: 0 0 18px; }
-.waitlist .field { margin-bottom: 16px; }
-.waitlist label { display: block; font-weight: 600; margin-bottom: 6px; }
-.waitlist input[type="email"] {
-  width: 100%; padding: 12px 14px; border-radius: 10px; font: inherit;
-  border: 1px solid var(--border); background: var(--bg); color: var(--text);
-}
-.waitlist input[type="email"]:focus { border-color: var(--accent-2); }
-.waitlist fieldset { border: 0; padding: 0; margin: 0 0 16px; }
-.waitlist legend { font-weight: 600; margin-bottom: 6px; padding: 0; }
-.waitlist label.check { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; margin: 6px 0; }
-.waitlist label.check input { width: 18px; height: 18px; margin: 3px 0 0; flex-shrink: 0; accent-color: var(--accent-2); }
-.waitlist .consent-check { margin: 4px 0 18px; font-size: 15px; }
-.waitlist .btn { width: 100%; }
-.form-status { margin: 14px 0 0; font-weight: 600; min-height: 1.4em; }
-.form-status.ok { color: var(--ok); }
-.form-status.bad { color: var(--bad); }
-.waitlist .note { margin: 12px 0 0; }
-.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.start h3 { margin: 0 0 8px; font-size: 22px; }
+.start > p { color: var(--text-soft); margin: 0 0 16px; }
+.start-steps { margin: 0 0 20px; padding-left: 22px; }
+.start-steps li { margin: 8px 0; }
+.start .buttons { justify-content: flex-start; margin: 0 0 14px; }
+.start .note { margin: 0; }
 
 /* Comparison table */
 .table-wrap { overflow-x: auto; }

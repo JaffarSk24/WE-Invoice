@@ -7,7 +7,6 @@ export const GITHUB_URL = 'https://github.com/JaffarSk24/WE-Invoice';
 export const RELEASES_URL = `${GITHUB_URL}/releases/latest`;
 export const LICENSE_URL = `${GITHUB_URL}/blob/main/LICENSE`;
 export const AGENCY_URL = 'https://whiteeagles.sk/';
-export const WAITLIST_URL = 'https://invoice-api.whiteeagles.sk/v1/waitlist';
 
 export const OTHER_APPS = [
   { name: 'WE Time Tracker', url: 'https://jaffarsk24.github.io/WE-Time-Tracker/' },
@@ -25,18 +24,9 @@ export const LANGUAGES = [
 ];
 export const DEFAULT_LANGUAGE = 'sk';
 
-// Pages rendered per language, with their file name.
-export const PAGES = ['index.html', 'thanks.html', 'unsubscribed.html', 'privacy.html', 'terms.html'];
-// Pages reached only from a link in an e-mail: kept out of the sitemap.
-export const UNLISTED = ['thanks.html', 'unsubscribed.html'];
-
-// Values of the interest checkboxes, exactly as gateway/openapi.yaml lists them.
-export const INTERESTS = [
-  { value: 'efaktura-send', key: 'send' },
-  { value: 'efaktura-receive', key: 'receive' },
-  { value: 'simple-bookkeeping', key: 'bookkeeping' },
-  { value: 'vat-reports', key: 'vat' }
-];
+// Pages rendered per language, with their file name. All of them are
+// listed in the sitemap.
+export const PAGES = ['index.html', 'privacy.html', 'terms.html'];
 
 export const SITE_DIR = new URL('../', import.meta.url);
 export const CONTENT_DIR = new URL('../content/', import.meta.url);

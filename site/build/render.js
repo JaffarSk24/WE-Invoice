@@ -5,12 +5,12 @@ import { PAGES } from './config.js';
 import { loadAll } from './content.js';
 import { document } from './page.js';
 import { landingBody } from './landing.js';
-import { legalBody, thanksBody, unsubscribedBody } from './legal.js';
+import { legalBody } from './legal.js';
 import { softwareApplication, faqPage, sitemap, robots } from './seo.js';
 import { chooser, notFound } from './root.js';
 import { appsMarkdown, appsHtml } from './apps-block.js';
 
-// The four pages of one language as { fileName: html }.
+// The pages of one language as { fileName: html }.
 export function renderLanguage(c) {
   const { code, common, landing, privacy, terms } = c;
   const base = { code, common };
@@ -23,27 +23,9 @@ export function renderLanguage(c) {
       ogTitle: landing.meta.ogTitle,
       ogDescription: landing.meta.ogDescription,
       styles: ['base.css', 'landing.css'],
-      scripts: ['site.js', 'consent.js', 'waitlist.js'],
+      scripts: ['site.js', 'consent.js'],
       jsonLd: [softwareApplication(code, landing, common), faqPage(code, landing)],
-      body: landingBody(code, landing)
-    }),
-    'thanks.html': document({
-      ...base,
-      page: 'thanks.html',
-      title: `${common.thanks.title}: WE Invoice`,
-      description: common.thanks.description,
-      styles: ['base.css', 'doc.css'],
-      noindex: true,
-      body: thanksBody(common.thanks)
-    }),
-    'unsubscribed.html': document({
-      ...base,
-      page: 'unsubscribed.html',
-      title: `${common.unsubscribed.title}: WE Invoice`,
-      description: common.unsubscribed.description,
-      styles: ['base.css', 'doc.css'],
-      noindex: true,
-      body: unsubscribedBody(common.unsubscribed)
+      body: landingBody(landing)
     }),
     'privacy.html': document({
       ...base,

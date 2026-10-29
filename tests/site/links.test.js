@@ -47,8 +47,6 @@ describe('internal links', () => {
       expect(sitemap).toContain(`<loc>${SITE_URL}${code}/</loc>`);
       expect(sitemap).toContain(`<loc>${SITE_URL}${code}/privacy.html</loc>`);
       expect(sitemap).toContain(`<loc>${SITE_URL}${code}/terms.html</loc>`);
-      expect(sitemap).not.toContain(`${code}/thanks.html</loc>`);
-      expect(sitemap).not.toContain(`${code}/unsubscribed.html</loc>`);
     }
     const robots = read('site/robots.txt');
     expect(robots).toContain(`Sitemap: ${SITE_URL}sitemap.xml`);

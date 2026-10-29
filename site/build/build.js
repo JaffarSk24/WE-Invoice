@@ -1,6 +1,6 @@
 // Builds the static site from the templates and the per-language texts:
 //   node site/build/build.js
-// Writes site/<lang>/{index,thanks,privacy,terms}.html, the root chooser
+// Writes site/<lang>/{index,privacy,terms}.html, the root chooser
 // pages, 404.html, sitemap.xml, robots.txt and the whiteeagles.sk apps
 // block in docs/. The output is committed: GitHub Pages serves site/ as is.
 // Images are rendered separately by site/build/images.js.

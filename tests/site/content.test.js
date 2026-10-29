@@ -1,10 +1,9 @@
-// The texts of the six languages have the same shape, the e-mail templates
-// carry the same placeholders, and the languages with a space before the
-// unit (sk, cs, de) follow their norm in the source texts.
+// The texts of the six languages have the same shape, and the languages
+// with a space before the unit (sk, cs, de) follow their norm in the
+// source texts.
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
 import { loadContent, PARTS } from '../../site/build/content.js';
-import { CODES, ROOT, read } from './helpers.js';
+import { CODES, read } from './helpers.js';
 
 const content = Object.fromEntries(CODES.map(c => [c, loadContent(c)]));
 
@@ -22,7 +21,6 @@ function strings(value, out = []) {
   return out;
 }
 
-const placeholders = (s) => (s.match(/\{\w+\}/g) || []).sort().join(',');
 const links = (s) => (s.match(/\]\(([^)]+)\)/g) || []).sort().join(' ');
 
 describe('site texts', () => {
@@ -52,28 +50,5 @@ describe('site texts', () => {
     const html = read(`site/${code}/index.html`).replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '');
     expect(html).not.toMatch(/\d (€|%)/);
     expect(html).toMatch(/\d&nbsp;€/);
-  });
-});
-
-describe('waitlist e-mails', () => {
-  const mail = Object.fromEntries(CODES.map(c => [c, JSON.parse(readFileSync(new URL(`site/emails/${c}.json`, ROOT), 'utf8'))]));
-
-  it.each(CODES)('%s has confirm and invite with subject and body', (code) => {
-    expect(Object.keys(mail[code]).sort()).toEqual(['confirm', 'invite']);
-    for (const key of ['confirm', 'invite']) {
-      expect(mail[code][key].subject.length).toBeGreaterThan(10);
-      expect(mail[code][key].body.length).toBeGreaterThan(100);
-    }
-  });
-
-  it.each(CODES)('%s uses the placeholders of the Slovak template', (code) => {
-    for (const key of ['confirm', 'invite']) expect(placeholders(mail[code][key].body), key).toBe(placeholders(mail.sk[key].body));
-  });
-
-  it('the confirmation carries the confirm link and the invite the code and the unsubscribe link', () => {
-    expect(mail.sk.confirm.body).toContain('{confirmUrl}');
-    expect(mail.sk.invite.body).toContain('{code}');
-    expect(mail.sk.invite.body).toContain('{unsubscribeUrl}');
-    expect(mail.sk.invite.body).toContain('{appUrl}');
   });
 });

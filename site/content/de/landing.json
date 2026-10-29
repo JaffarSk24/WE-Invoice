@@ -11,7 +11,7 @@
     "lead": "Alles, wofür Sie anderswo 5 bis 15 € im Monat zahlen. Ohne Registrierung, ohne Limits. Ihre Daten verschlüsselt in Ihrem Google Drive.",
     "ctaApp": "Web-App öffnen",
     "ctaDownload": "Für Mac / Windows herunterladen",
-    "hint": "Open Source (MIT). Rechnungen, Ausgaben und Buchführung für alle, E-Rechnung (eFaktúra) über Peppol in geschlossener Beta auf Einladung.",
+    "hint": "Open Source (MIT). Rechnungen, Ausgaben, Buchführung und eFaktúra über Peppol für alle, sofort und ohne Wartezeit.",
     "shotAlt": "Bildschirm von WE Invoice: Rechnungsliste mit Status, überfällige Posten und Rechnungsvorschau mit QR-Code zum Bezahlen"
   },
   "efaktura": {
@@ -33,36 +33,16 @@
       }
     ],
     "help": "WE Invoice hilft Ihnen, E-Rechnungen zu empfangen und zu versenden. Eine empfangene Rechnung wird komplett eingelesen, mit allen Positionen, eine versendete wird 10 Jahre lang im Original-XML aufbewahrt, wie es das Gesetz verlangt.",
-    "cta": "Für die E-Rechnungs-Beta eintragen"
-  },
-  "form": {
-    "title": "Tragen Sie sich für die E-Rechnungs-Beta ein",
-    "intro": "Wir öffnen die Beta in Wellen. Eingetragene erhalten einen Einladungscode und eine Anleitung zur Wahl eines E-Rechnungs-Providers (slowakisch: digitálny poštár). Kein Spam, Abmeldung mit einem Klick.",
-    "email": "E-Mail",
-    "emailPlaceholder": "name@firma.sk",
-    "interests": {
-      "legend": "Was Sie interessiert",
-      "send": "E-Rechnung: Versand",
-      "receive": "E-Rechnung: Empfang",
-      "bookkeeping": "Einfache Buchführung",
-      "vat": "Umsatzsteuer-Meldungen"
-    },
-    "vat": {
-      "legend": "Ich bin umsatzsteuerpflichtig",
-      "yes": "Ja",
-      "no": "Nein"
-    },
-    "consent": "Ich bin mit der Verarbeitung meiner E-Mail-Adresse für die Warteliste gemäß der [Datenschutzerklärung](./privacy.html) einverstanden.",
-    "submit": "Eintragen",
-    "sending": "Wird gesendet...",
-    "note": "Keine automatischen E-Mails: Wenn wir die nächste Welle der Beta öffnen, schreiben wir Ihnen persönlich.",
-    "msg": {
-      "success": "Fertig. Sie stehen auf der Liste, und wenn wir die nächste Welle öffnen, schreiben wir Ihnen persönlich.",
-      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
-      "consent": "Ohne Ihre Zustimmung können wir Sie nicht auf die Liste setzen.",
-      "rateLimited": "Zu viele Versuche. Probieren Sie es in einer Minute noch einmal.",
-      "badRequest": "Der Server hat die Anmeldung abgelehnt. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut.",
-      "network": "Keine Verbindung zum Server. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut."
+    "cta": "App öffnen und eFaktúra einschalten",
+    "start": {
+      "title": "eFaktúra schalten Sie selbst ein, noch heute",
+      "intro": "Die Funktion eFaktúra ist in der App als Beta markiert, weil sie neu ist. Nutzen kann sie jeder: ohne Konto bei uns und ohne Wartezeit.",
+      "steps": [
+        "Wählen Sie einen akkreditierten Provider (digitálny poštár).",
+        "Öffnen Sie in der App Einstellungen, eFaktúra und fügen Sie den API-Schlüssel des Providers ein.",
+        "Senden und empfangen Sie E-Rechnungen direkt aus WE Invoice."
+      ],
+      "price": "Von unserer Seite ist das kostenlos. Der Provider berechnet seine Leistung nach eigener Preisliste, der Empfang ist bei mehreren Providern kostenlos. Wir leiten Ihre Rechnungen nur an Ihren Provider weiter und speichern nichts."
     }
   },
   "features": {
@@ -162,7 +142,7 @@
       },
       {
         "title": "API-Schlüssel in WE Invoice eintragen",
-        "text": "Einstellungen, E-Rechnung, Provider und Schlüssel. Ab diesem Moment werden Rechnungen direkt aus der App versendet und empfangen."
+        "text": "Einstellungen, eFaktúra, Provider und Schlüssel. Ab diesem Moment werden Rechnungen direkt aus der App versendet und empfangen."
       }
     ],
     "note": "Den Provider können Sie jederzeit wechseln. Ihre Rechnungen und das XML-Archiv bleiben bei Ihnen."

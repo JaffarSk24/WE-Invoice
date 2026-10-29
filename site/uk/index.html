@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="../assets/landing.css">
   <script type="module" src="../assets/site.js"></script>
   <script type="module" src="../assets/consent.js"></script>
-  <script type="module" src="../assets/waitlist.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/uk/","inLanguage":"uk","description":"Рахунки, електронні рахунки (eFaktúra) через Peppol, банк, нагадування про оплату, звіти з ПДВ і простий облік. Безкоштовно, без реєстрації та без обмежень. Дані зашифровані у вашому Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Рахунки й документи","Е-рахунки (Peppol)","Банк і звірка платежів","Нагадування про оплату з пенею","Витрати та сканування чеків","Звіти з ПДВ","Простий облік","Кілька компаній безкоштовно","Телефон і комп'ютер"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/uk.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"uk","mainEntity":[{"@type":"Question","name":"Це справді безкоштовно? Чому?","acceptedAnswer":{"@type":"Answer","text":"Так, без пакетів, обмежень і пробного періоду. У нас майже немає операційних витрат: сайт працює на GitHub Pages, дані у вашому Google Drive, а за е-рахунки ви платите напряму своєму провайдеру. Застосунок розробляє агентство White Eagles як приклад своєї роботи та як спосіб познайомитися з власниками малого бізнесу."}},{"@type":"Question","name":"Де мої дані?","acceptedAnswer":{"@type":"Answer","text":"На вашому пристрої та у вашому Google Drive, зашифровані ключем, який знаєте лише ви. Наш сервер лише шлюз до провайдерів е-рахунків, публічних реєстрів і курсів валют: він нічого не зберігає. У вебверсії через нього проходить і ваш API-ключ провайдера, бо провайдери не приймають запити прямо з браузера; шлюз передає його лише на час запиту, не записує і не кешує. Десктопна версія для macOS і Windows спілкується з провайдером прямо з вашого комп'ютера, оминаючи шлюз; якщо хочете максимум приватності, обирайте її."}},{"@type":"Question","name":"Що, як я забуду пароль?","acceptedAnswer":{"@type":"Answer","text":"Під час першого запуску ви отримаєте ключ відновлення. Збережіть його поза комп'ютером, наприклад у роздрукованому вигляді. Без пароля і без ключа відновлення дані розшифрувати неможливо, навіть ми цього не зможемо."}},{"@type":"Question","name":"Чи мушу я приймати е-рахунки, якщо я не платник ПДВ?","acceptedAnswer":{"@type":"Answer","text":"Так. З 1.1.2027 приймати е-рахунки повинен кожен підприємець і кожна юридична особа у Словаччині. Виставляти їх зобов'язані лише платники ПДВ. Приймання в багатьох провайдерів безкоштовне."}},{"@type":"Question","name":"Скільки коштує провайдер е-рахунків (digitálny poštár)?","acceptedAnswer":{"@type":"Answer","text":"Приймання е-рахунків кілька провайдерів пропонують безкоштовно. Надсилання коштує від 0 до приблизно 3 € на місяць або кілька центів за документ, залежно від провайдера. Платите напряму йому, WE Invoice нічого не додає."}},{"@type":"Question","name":"Чому Mac не відкриває застосунок?","acceptedAnswer":{"@type":"Answer","text":"Застосунок поки не нотаризований Apple, тому після завантаження з браузера macOS відмовляється його відкривати. Перед першим запуском один раз виконайте в Терміналі: xattr -cr \"/Applications/WE Invoice.app\". Після цього він відкривається як будь-який інший, а його оновлення цього кроку не потребують."}},{"@type":"Question","name":"Чи замінить це бухгалтера?","acceptedAnswer":{"@type":"Answer","text":"Ні. Застосунок підготує вам матеріали: звіти, касову книгу, експорти в поширених форматах. За правильність податкових документів та їх подання відповідаєте ви або ваш бухгалтер. Хороший бухгалтер із WE Invoice заощадить час, а не роботу."}},{"@type":"Question","name":"Чого ми не робимо і чому","acceptedAnswer":{"@type":"Answer","text":"Власної каси eKasa та прямого підключення до віртуальної каси VRP: словацький закон 384/2025 Z. z. забороняє використовувати VRP через інші застосунки, а власна каса потребує сертифікації фінансової адміністрації. При оплаті рахунка готівкою ми підготуємо вам дані для VRP і збережемо номер документа. Банку в реальному часі через PSD2: потрібна ліцензія, а ваші дані йшли б через чужий сервер, тому імпортуємо виписки. SMS-нагадувань: це платний канал, за який довелося б брати гроші. Замість цього e-mail і Peppol."}}]}</script>
 </head>
@@ -74,7 +73,7 @@
           <a class="btn primary" href="../app/">Відкрити вебзастосунок</a>
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Завантажити для Mac / Windows</a>
         </div>
-        <p class="hint">Відкритий код (MIT). Рахунки, витрати й облік доступні всім, електронні рахунки (eFaktúra) через Peppol у закритій беті за запрошеннями.</p>
+        <p class="hint">Відкритий код (MIT). Рахунки, витрати, облік і eFaktúra через Peppol доступні всім одразу.</p>
         <div class="shot">
           <picture>
             <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
@@ -106,39 +105,16 @@
           </div>
         </div>
         <p class="help">WE Invoice допоможе вам і приймати, і надсилати е-рахунки. Отриманий рахунок завантажить повністю, з усіма рядками, а надісланий збереже в оригінальному XML на 10 років, як вимагає закон.</p>
-        <p class="buttons"><a class="btn primary" href="#waitlist">Записатися до бети е-рахунків</a></p>
-        <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Надсилаємо..." data-msg-success="Готово. Ви в списку, і коли відкриємо наступну хвилю, ми напишемо вам особисто." data-msg-invalid-email="Введіть дійсну адресу e-mail." data-msg-consent="Без згоди ми не можемо додати вас до списку." data-msg-rate-limited="Забагато спроб. Спробуйте за хвилину." data-msg-bad-request="Сервер відхилив заявку. Перевірте e-mail і спробуйте ще раз." data-msg-network="Не вдалося з&#39;єднатися із сервером. Перевірте з&#39;єднання і спробуйте ще раз.">
-            <h3 id="waitlist-title">Запишіться до бети е-рахунків</h3>
-            <p>Бету відкриваємо хвилями. Записаним надсилаємо код запрошення та інструкцію, як обрати провайдера е-рахунків (digitálny poštár). Жодного спаму, відписка одним кліком.</p>
-            <input type="hidden" name="lang" value="uk">
-            <input type="hidden" name="source" value="site">
-            <input type="hidden" name="startedAt" value="">
-            <div class="field">
-              <label for="wl-email">E-mail</label>
-              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="meno@firma.sk">
-            </div>
-            <fieldset>
-              <legend>Що вас цікавить</legend>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> Е-рахунки: надсилання</label>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> Е-рахунки: приймання</label>
-              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Простий облік</label>
-              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> Звіти з ПДВ</label>
-            </fieldset>
-            <fieldset>
-              <legend>Я платник ПДВ</legend>
-              <label class="check"><input type="radio" name="vatPayer" value="true"> Так</label>
-              <label class="check"><input type="radio" name="vatPayer" value="false"> Ні</label>
-            </fieldset>
-            <div class="hp" aria-hidden="true">
-              <label for="wl-website">Website</label>
-              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Погоджуюся на обробку e-mail для ведення списку очікування згідно з <a href="./privacy.html">політикою захисту персональних даних</a>.</span></label>
-            <button type="submit" class="btn primary">Записатися</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">Жодних автоматичних листів: коли відкриємо наступну хвилю бети, напишемо вам особисто.</p>
-          </form>
+        <div class="start" id="start">
+          <h3>eFaktúra вмикаєте самі, хоч сьогодні</h3>
+          <p>Функцію eFaktúra позначено в застосунку як Beta, бо вона нова. Користуватися нею може кожен: без реєстрації в нас, одразу.</p>
+          <ol class="start-steps">
+            <li>Оберіть акредитованого провайдера (digitálny poštár).</li>
+            <li>У застосунку відкрийте Налаштування, eFaktúra і вставте API-ключ провайдера.</li>
+            <li>Надсилайте й отримуйте електронні рахунки прямо з WE Invoice.</li>
+          </ol>
+          <p class="buttons"><a class="btn primary" href="../app/">Відкрити застосунок і ввімкнути eFaktúra</a></p>
+          <p class="note">З нашого боку це безкоштовно. Провайдер бере плату за свої послуги за власним тарифом, а приймання в багатьох провайдерів безкоштовне. Ми лише передаємо ваші рахунки провайдеру й нічого не зберігаємо.</p>
         </div>
       </div>
     </section>
@@ -312,7 +288,7 @@
           </li>
           <li>
             <h3>Вставте API-ключ у WE Invoice</h3>
-            <p>Налаштування, Електронні рахунки, провайдер і ключ. Відтоді рахунки надсилаються і приймаються прямо із застосунку.</p>
+            <p>Налаштування, eFaktúra, провайдер і ключ. Відтоді рахунки надсилаються і приймаються прямо із застосунку.</p>
           </li>
         </ol>
         <p class="note">Провайдера можна будь-коли змінити. Ваші рахунки та архів XML залишаються у вас.</p>

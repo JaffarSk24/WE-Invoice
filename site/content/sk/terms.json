@@ -4,7 +4,7 @@
     "description": "WE Invoice je zadarmo a „tak, ako je“, pod licenciou MIT. Za správnosť daňových dokladov a ich podanie zodpovedá používateľ."
   },
   "h1": "Podmienky používania",
-  "effective": "Webová a desktopová aplikácia WE Invoice. Platné od 19. októbra 2026.",
+  "effective": "Webová a desktopová aplikácia WE Invoice. Platné od 30. októbra 2026.",
   "intro": "WE Invoice vyvíja White Eagles & Co. s. r. o. (ďalej „my“). Používaním aplikácie súhlasíte s týmito podmienkami. Sú krátke, lebo nemáme čo skrývať.",
   "sections": [
     {
@@ -36,13 +36,7 @@
       "h2": "eFaktúra a poskytovatelia tretích strán",
       "blocks": [
         { "p": "eFaktúry sa odosielajú a prijímajú cez certifikovaného poskytovateľa, s ktorým máte vlastnú zmluvu. Za jeho dostupnosť, ceny a splnenie zákonných povinností zodpovedá poskytovateľ. To isté platí pre Google Drive, banky a iné služby tretích strán, ktoré si v aplikácii pripojíte." },
-        { "p": "Funkcia eFaktúra je v uzavretej bete. Prístup na základe kódu pozvánky môžeme obmedziť alebo ukončiť, ak to vyžaduje stabilita služby." }
-      ]
-    },
-    {
-      "h2": "Zoznam čakateľov",
-      "blocks": [
-        { "p": "Zápisom do zoznamu čakateľov súhlasíte so zasielaním e-mailov o bete eFaktúr. Zo zoznamu sa odhlásite odkazom v každom e-maile. Podrobnosti sú v [zásadách ochrany osobných údajov](./privacy.html)." }
+        { "p": "Funkcia eFaktúra je označená ako Beta, lebo je nová, a je dostupná každému. Funguje cez poskytovateľa, ktorého si vyberiete sami a ktorého API kľúč zadáte v aplikácii. Faktúry poskytovateľovi len odovzdávame a neukladáme ich; za služby poskytovateľa nezodpovedáme." }
       ]
     },
     {

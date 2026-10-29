@@ -4,7 +4,7 @@
     "description": "Welche Daten WE Invoice verarbeitet, wo sie gespeichert sind, was ohne Speicherung über unser Gateway läuft und welche Rechte Sie nach der DSGVO haben."
   },
   "h1": "Datenschutz",
-  "effective": "Web- und Desktop-App WE Invoice und diese Website. Gültig ab 20. Oktober 2026.",
+  "effective": "Web- und Desktop-App WE Invoice und diese Website. Gültig ab 30. Oktober 2026.",
   "intro": "WE Invoice wird von White Eagles & Co. s. r. o. (im Folgenden „wir“) entwickelt. Dieses Dokument erklärt, welche Daten die App und die Website verarbeiten, wo sie gespeichert sind und wie Sie sie löschen. Wir schreiben es so, dass Sie es lesen und nicht überspringen.",
   "sections": [
     {
@@ -13,7 +13,7 @@
         { "ul": [
           "Ihre Rechnungen, Kontakte, Ausgaben und Buchführung sind auf Ihrem Gerät verschlüsselt und in Ihrem Google Drive gespeichert. Wir haben keinen Zugriff darauf.",
           "Unser Server ist nur ein Gateway: Er leitet Anfragen an die Provider für E-Rechnungen (eFaktúra), öffentliche Register und den Wechselkursdienst weiter und speichert nichts von deren Inhalt.",
-          "Auf dem Server speichern wir nur die Warteliste für die Beta, Einladungscodes und einen kurzlebigen Zwischenspeicher öffentlicher Register.",
+          "Auf dem Server speichern wir nur einen kurzlebigen Zwischenspeicher öffentlicher Daten aus Firmenregistern.",
           "In der App gibt es keine Analytik und keine Werbung. Auf dieser Website startet Google Analytics erst nach Ihrer Zustimmung."
         ] }
       ]
@@ -47,12 +47,7 @@
     {
       "h2": "Was auf unserem Server gespeichert wird",
       "blocks": [
-        { "ul": [
-          "Warteliste für die E-Rechnungs-Beta: E-Mail-Adresse, Sprache, Ihre Interessen, die Angabe, ob Sie umsatzsteuerpflichtig sind, Zeitpunkt der Zustimmung und IP-Adresse bei der Eintragung. Rechtsgrundlage ist Ihre Einwilligung. Wir speichern die Daten bis zum Widerruf Ihrer Einwilligung, längstens 24 Monate ab Eintragung. Über eine neue Eintragung erhalten wir eine Benachrichtigung mit diesen Angaben in unser Postfach; die E-Mail stellt Mailgun (Sinch, Server in der EU) als unser Auftragsverarbeiter zu.",
-          "Einladungscodes für die Beta und die Information, ob sie verwendet wurden.",
-          "Zwischenspeicher für Antworten öffentlicher Register (Firmendaten, die öffentlich sind), damit wir die Register nicht unnötig belasten. Längstens 24 Stunden.",
-          "Wenn Sie künftig optionale Funktionen einschalten, etwa das Teilen eines Belegs per verschlüsseltem Link oder einen serverseitigen Helfer für wiederkehrende Rechnungen, speichern wir nur verschlüsselte Daten, die wir ohne Ihren Schlüssel nicht lesen können, und nur so lange, wie die Funktion es braucht. Vor dem Einschalten jeder solchen Funktion erklärt Ihnen die App das und holt Ihre Zustimmung ein."
-        ] }
+        { "p": "Wir speichern nur einen Zwischenspeicher für Antworten öffentlicher Register (Firmendaten, die öffentlich sind), damit wir die Register nicht unnötig belasten, längstens 24 Stunden. Ihre Belege, Kontakte oder Schlüssel speichern wir auf dem Server nicht." }
       ]
     },
     {
@@ -78,7 +73,7 @@
     {
       "h2": "Ihre Rechte",
       "blocks": [
-        { "p": "Nach der DSGVO haben Sie das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Die Einwilligung zur Warteliste können Sie jederzeit per Antwort auf unsere E-Mail oder per Nachricht an unseren Kontakt widerrufen; wir löschen den Eintrag ohne unnötige Verzögerung. Sie haben außerdem das Recht, Beschwerde beim [Amt für den Schutz personenbezogener Daten der Slowakischen Republik](https://dataprotection.gov.sk/) einzulegen." },
+        { "p": "Nach der DSGVO haben Sie das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Außer dem oben beschriebenen technischen Protokoll des Gateways speichern wir auf unserem Server keine personenbezogenen Daten über Sie. Wenn Sie uns schreiben, nutzen wir Ihre Nachricht nur für die Antwort. Sie haben außerdem das Recht, Beschwerde beim [Amt für den Schutz personenbezogener Daten der Slowakischen Republik](https://dataprotection.gov.sk/) einzulegen." },
         { "p": "Die Geschäftsdaten in der App gehören ausschließlich Ihnen. Sie löschen sie, indem Sie die Dateien der App aus Google Drive entfernen (Google Drive, Einstellungen, Apps verwalten) und die Browserdaten oder den Datenordner der Desktop-App löschen. Den Zugriff der App auf Ihr Google-Konto widerrufen Sie unter [myaccount.google.com/permissions](https://myaccount.google.com/permissions)." }
       ]
     },

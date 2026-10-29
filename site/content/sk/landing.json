@@ -11,7 +11,7 @@
     "lead": "Všetko, za čo inde platíte 5 až 15 € mesačne. Bez registrácie, bez limitov. Vaše dáta šifrované vo vašom Google Drive.",
     "ctaApp": "Otvoriť webovú aplikáciu",
     "ctaDownload": "Stiahnuť pre Mac / Windows",
-    "hint": "Otvorený kód (MIT). Fakturácia, výdavky a účtovníctvo pre všetkých, eFaktúra cez Peppol v uzavretej bete na pozvánky.",
+    "hint": "Otvorený kód (MIT). Fakturácia, výdavky, účtovníctvo aj eFaktúra cez Peppol pre každého, hneď a bez čakania.",
     "shotAlt": "Obrazovka WE Invoice: zoznam faktúr so stavmi, čo je po splatnosti a náhľad faktúry s QR kódom na platbu"
   },
   "efaktura": {
@@ -33,36 +33,16 @@
       }
     ],
     "help": "WE Invoice vám pomôže eFaktúry prijímať aj posielať. Prijatú faktúru načíta celú, so všetkými riadkami, a odoslanú uloží v pôvodnom XML na 10 rokov, ako žiada zákon.",
-    "cta": "Zapísať sa do bety eFaktúr"
-  },
-  "form": {
-    "title": "Zapíšte sa do bety eFaktúr",
-    "intro": "Betu otvárame po vlnách. Zapísaným posielame kód pozvánky a návod, ako si vybrať digitálneho poštára. Žiadny spam, odhlásenie jedným kliknutím.",
-    "email": "E-mail",
-    "emailPlaceholder": "meno@firma.sk",
-    "interests": {
-      "legend": "Čo vás zaujíma",
-      "send": "eFaktúra: odosielanie",
-      "receive": "eFaktúra: prijímanie",
-      "bookkeeping": "Jednoduché účtovníctvo",
-      "vat": "DPH výkazy"
-    },
-    "vat": {
-      "legend": "Som platiteľ DPH",
-      "yes": "Áno",
-      "no": "Nie"
-    },
-    "consent": "Súhlasím so spracovaním e-mailu na účely zoznamu čakateľov podľa [zásad ochrany osobných údajov](./privacy.html).",
-    "submit": "Zapísať sa",
-    "sending": "Odosielam...",
-    "note": "Žiadne automatické e-maily: keď otvoríme ďalšiu vlnu bety, napíšeme vám osobne.",
-    "msg": {
-      "success": "Hotovo. Ste na zozname a keď otvoríme ďalšiu vlnu, napíšeme vám osobne.",
-      "invalidEmail": "Zadajte platnú e-mailovú adresu.",
-      "consent": "Bez súhlasu vás na zoznam nemôžeme zaradiť.",
-      "rateLimited": "Príliš veľa pokusov. Skúste to o minútu.",
-      "badRequest": "Server prihlášku odmietol. Skontrolujte e-mail a skúste to znova.",
-      "network": "Nepodarilo sa spojiť so serverom. Skontrolujte pripojenie a skúste to znova."
+    "cta": "Otvoriť aplikáciu a zapnúť eFaktúru",
+    "start": {
+      "title": "eFaktúru si zapnete sami, ešte dnes",
+      "intro": "Funkcia eFaktúra je v aplikácii označená ako Beta, lebo je nová. Môže ju používať každý, bez registrácie u nás a bez čakania.",
+      "steps": [
+        "Vyberte si digitálneho poštára, teda akreditovaného poskytovateľa eFaktúr.",
+        "V aplikácii otvorte Nastavenia, eFaktúra a vložte API kľúč od poskytovateľa.",
+        "Odosielajte a prijímajte eFaktúry priamo z WE Invoice."
+      ],
+      "price": "Od nás je to zadarmo. Poskytovateľ si účtuje svoje služby podľa vlastného cenníka a prijímanie je u viacerých zadarmo. Faktúry vášmu poskytovateľovi len odovzdávame a nič neukladáme."
     }
   },
   "features": {

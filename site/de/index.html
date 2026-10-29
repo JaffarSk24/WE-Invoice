@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="../assets/landing.css">
   <script type="module" src="../assets/site.js"></script>
   <script type="module" src="../assets/consent.js"></script>
-  <script type="module" src="../assets/waitlist.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/de/","inLanguage":"de","description":"Rechnungen, E-Rechnung (eFaktúra) über Peppol, Bank, Mahnungen, Umsatzsteuer-Meldungen und einfache Buchführung. Kostenlos, ohne Registrierung und ohne Limits. Daten verschlüsselt in Ihrem Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Rechnungen und Belege","E-Rechnung (Peppol)","Bank und Zahlungsabgleich","Mahnungen mit Verzugszinsen","Ausgaben und Belegscan","Umsatzsteuer-Meldungen","Einfache Buchführung (Einnahmen-Ausgaben-Rechnung)","Mehrere Firmen kostenlos","Handy und Computer"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/de.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"de","mainEntity":[{"@type":"Question","name":"Ist das wirklich kostenlos? Warum?","acceptedAnswer":{"@type":"Answer","text":"Ja, ohne Pakete, Limits und Testphase. Wir haben fast keine Betriebskosten: Die Website läuft auf GitHub Pages, die Daten liegen in Ihrem Google Drive, und E-Rechnungen zahlen Sie direkt an Ihren Provider. Die App entwickelt die Agentur White Eagles als Referenz ihrer Arbeit und als Weg zu Inhabern kleiner Firmen."}},{"@type":"Question","name":"Wo sind meine Daten?","acceptedAnswer":{"@type":"Answer","text":"Auf Ihrem Gerät und in Ihrem Google Drive, verschlüsselt mit einem Schlüssel, den nur Sie kennen. Unser Server ist nur ein Gateway zu E-Rechnungs-Providern, öffentlichen Registern und Wechselkursen: Er speichert nichts. In der Web-Version läuft auch Ihr API-Schlüssel des Providers über ihn, weil die Provider keine Anfragen direkt aus dem Browser annehmen; das Gateway reicht ihn nur für die Dauer der Anfrage weiter, schreibt ihn nicht ins Protokoll und cacht ihn nicht. Die Desktop-Version für macOS und Windows kommuniziert mit dem Provider direkt von Ihrem Computer aus und umgeht das Gateway; wenn Sie ein Maximum an Privatsphäre wollen, wählen Sie diese."}},{"@type":"Question","name":"Was, wenn ich mein Passwort verliere?","acceptedAnswer":{"@type":"Answer","text":"Beim ersten Start erhalten Sie einen Wiederherstellungsschlüssel. Bewahren Sie ihn außerhalb des Computers auf, zum Beispiel ausgedruckt. Ohne Passwort und ohne Wiederherstellungsschlüssel lassen sich die Daten nicht entschlüsseln, auch wir können das nicht."}},{"@type":"Question","name":"Muss ich E-Rechnungen empfangen, auch wenn ich nicht umsatzsteuerpflichtig bin?","acceptedAnswer":{"@type":"Answer","text":"Ja. Ab 1. 1. 2027 muss jeder Unternehmer und jede juristische Person in der Slowakei E-Rechnungen empfangen. Ausstellen müssen sie nur Umsatzsteuerzahler. Der Empfang ist bei mehreren Providern kostenlos."}},{"@type":"Question","name":"Was kostet ein E-Rechnungs-Provider?","acceptedAnswer":{"@type":"Answer","text":"Den Empfang von E-Rechnungen bieten mehrere Provider kostenlos an. Der Versand kostet je nach Provider 0 bis etwa 3 € im Monat oder ein paar Cent pro Beleg. Sie zahlen direkt an ihn, WE Invoice schlägt nichts auf."}},{"@type":"Question","name":"Warum öffnet der Mac die App nicht?","acceptedAnswer":{"@type":"Answer","text":"Die App ist noch nicht von Apple notarisiert, deshalb verweigert macOS nach dem Download aus dem Browser das Öffnen. Geben Sie vor dem ersten Start einmal im Terminal ein: xattr -cr \"/Applications/WE Invoice.app\". Danach öffnet sie sich wie jede andere App, und ihre Updates brauchen diesen Schritt nicht."}},{"@type":"Question","name":"Ersetzt das den Buchhalter?","acceptedAnswer":{"@type":"Answer","text":"Nein. Die App bereitet die Unterlagen vor: Meldungen, Kassenbuch, Exporte in gängigen Formaten. Für die Richtigkeit der Steuerbelege und deren Einreichung sind Sie oder Ihr Buchhalter verantwortlich. Ein guter Buchhalter spart mit WE Invoice Zeit, überflüssig wird er nicht."}},{"@type":"Question","name":"Was wir nicht machen und warum","acceptedAnswer":{"@type":"Answer","text":"Keine eigene eKasa-Registrierkasse und keine direkte Anbindung an die virtuelle Kasse VRP: Das slowakische Gesetz Nr. 384/2025 Z. z. verbietet die Nutzung der VRP über fremde Apps, und eine eigene Kasse bräuchte eine Zertifizierung der Finanzverwaltung. Bei Barzahlung einer Rechnung bereiten wir die Daten für die VRP vor und speichern die Belegnummer. Keine Bank in Echtzeit über PSD2: Das erfordert eine Lizenz, und Ihre Daten liefen über einen fremden Server, deshalb importieren wir Kontoauszüge. Keine SMS-Mahnungen: ein kostenpflichtiger Kanal, den wir berechnen müssten. Stattdessen E-Mail und Peppol."}}]}</script>
 </head>
@@ -74,7 +73,7 @@
           <a class="btn primary" href="../app/">Web-App öffnen</a>
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Für Mac / Windows herunterladen</a>
         </div>
-        <p class="hint">Open Source (MIT). Rechnungen, Ausgaben und Buchführung für alle, E-Rechnung (eFaktúra) über Peppol in geschlossener Beta auf Einladung.</p>
+        <p class="hint">Open Source (MIT). Rechnungen, Ausgaben, Buchführung und eFaktúra über Peppol für alle, sofort und ohne Wartezeit.</p>
         <div class="shot">
           <picture>
             <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
@@ -106,39 +105,16 @@
           </div>
         </div>
         <p class="help">WE Invoice hilft Ihnen, E-Rechnungen zu empfangen und zu versenden. Eine empfangene Rechnung wird komplett eingelesen, mit allen Positionen, eine versendete wird 10 Jahre lang im Original-XML aufbewahrt, wie es das Gesetz verlangt.</p>
-        <p class="buttons"><a class="btn primary" href="#waitlist">Für die E-Rechnungs-Beta eintragen</a></p>
-        <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Wird gesendet..." data-msg-success="Fertig. Sie stehen auf der Liste, und wenn wir die nächste Welle öffnen, schreiben wir Ihnen persönlich." data-msg-invalid-email="Geben Sie eine gültige E-Mail-Adresse ein." data-msg-consent="Ohne Ihre Zustimmung können wir Sie nicht auf die Liste setzen." data-msg-rate-limited="Zu viele Versuche. Probieren Sie es in einer Minute noch einmal." data-msg-bad-request="Der Server hat die Anmeldung abgelehnt. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut." data-msg-network="Keine Verbindung zum Server. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.">
-            <h3 id="waitlist-title">Tragen Sie sich für die E-Rechnungs-Beta ein</h3>
-            <p>Wir öffnen die Beta in Wellen. Eingetragene erhalten einen Einladungscode und eine Anleitung zur Wahl eines E-Rechnungs-Providers (slowakisch: digitálny poštár). Kein Spam, Abmeldung mit einem Klick.</p>
-            <input type="hidden" name="lang" value="de">
-            <input type="hidden" name="source" value="site">
-            <input type="hidden" name="startedAt" value="">
-            <div class="field">
-              <label for="wl-email">E-Mail</label>
-              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="name@firma.sk">
-            </div>
-            <fieldset>
-              <legend>Was Sie interessiert</legend>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> E-Rechnung: Versand</label>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> E-Rechnung: Empfang</label>
-              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Einfache Buchführung</label>
-              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> Umsatzsteuer-Meldungen</label>
-            </fieldset>
-            <fieldset>
-              <legend>Ich bin umsatzsteuerpflichtig</legend>
-              <label class="check"><input type="radio" name="vatPayer" value="true"> Ja</label>
-              <label class="check"><input type="radio" name="vatPayer" value="false"> Nein</label>
-            </fieldset>
-            <div class="hp" aria-hidden="true">
-              <label for="wl-website">Website</label>
-              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Ich bin mit der Verarbeitung meiner E-Mail-Adresse für die Warteliste gemäß der <a href="./privacy.html">Datenschutzerklärung</a> einverstanden.</span></label>
-            <button type="submit" class="btn primary">Eintragen</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">Keine automatischen E-Mails: Wenn wir die nächste Welle der Beta öffnen, schreiben wir Ihnen persönlich.</p>
-          </form>
+        <div class="start" id="start">
+          <h3>eFaktúra schalten Sie selbst ein, noch heute</h3>
+          <p>Die Funktion eFaktúra ist in der App als Beta markiert, weil sie neu ist. Nutzen kann sie jeder: ohne Konto bei uns und ohne Wartezeit.</p>
+          <ol class="start-steps">
+            <li>Wählen Sie einen akkreditierten Provider (digitálny poštár).</li>
+            <li>Öffnen Sie in der App Einstellungen, eFaktúra und fügen Sie den API-Schlüssel des Providers ein.</li>
+            <li>Senden und empfangen Sie E-Rechnungen direkt aus WE Invoice.</li>
+          </ol>
+          <p class="buttons"><a class="btn primary" href="../app/">App öffnen und eFaktúra einschalten</a></p>
+          <p class="note">Von unserer Seite ist das kostenlos. Der Provider berechnet seine Leistung nach eigener Preisliste, der Empfang ist bei mehreren Providern kostenlos. Wir leiten Ihre Rechnungen nur an Ihren Provider weiter und speichern nichts.</p>
         </div>
       </div>
     </section>
@@ -312,7 +288,7 @@
           </li>
           <li>
             <h3>API-Schlüssel in WE Invoice eintragen</h3>
-            <p>Einstellungen, E-Rechnung, Provider und Schlüssel. Ab diesem Moment werden Rechnungen direkt aus der App versendet und empfangen.</p>
+            <p>Einstellungen, eFaktúra, Provider und Schlüssel. Ab diesem Moment werden Rechnungen direkt aus der App versendet und empfangen.</p>
           </li>
         </ol>
         <p class="note">Den Provider können Sie jederzeit wechseln. Ihre Rechnungen und das XML-Archiv bleiben bei Ihnen.</p>

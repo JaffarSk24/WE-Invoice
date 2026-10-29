@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="../assets/landing.css">
   <script type="module" src="../assets/site.js"></script>
   <script type="module" src="../assets/consent.js"></script>
-  <script type="module" src="../assets/waitlist.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"WE Invoice","url":"https://jaffarsk24.github.io/WE-Invoice/cs/","inLanguage":"cs","description":"Fakturace, eFaktura přes Peppol, banka, upomínky, výkazy DPH a jednoduché účetnictví (daňová evidence). Zdarma, bez registrace a bez limitů. Data šifrovaná ve vašem Google Drive.","applicationCategory":"BusinessApplication","operatingSystem":"Web, macOS, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"featureList":["Faktury a doklady","eFaktura (Peppol) a ISDOC","Banka a párování","Upomínky s úroky","Výdaje a skenování účtenek","Výkazy DPH","Jednoduché účetnictví","Více firem zdarma","Mobil i počítač"],"image":"https://jaffarsk24.github.io/WE-Invoice/assets/og/cs.png","downloadUrl":"https://github.com/JaffarSk24/WE-Invoice/releases/latest","author":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"},"publisher":{"@type":"Organization","name":"White Eagles & Co. s. r. o.","url":"https://whiteeagles.sk/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"cs","mainEntity":[{"@type":"Question","name":"Je to opravdu zdarma? Proč?","acceptedAnswer":{"@type":"Answer","text":"Ano, bez balíčků, limitů a zkušebního období. Nemáme téměř žádné provozní náklady: stránka běží na GitHub Pages, data jsou ve vašem Google Drive a eFaktury si platíte přímo svému poskytovateli. Aplikaci vyvíjí agentura White Eagles jako ukázku své práce a jako cestu k majitelům malých firem."}},{"@type":"Question","name":"Kde jsou moje data?","acceptedAnswer":{"@type":"Answer","text":"Ve vašem zařízení a ve vašem Google Drive, zašifrovaná klíčem, který znáte jen vy. Náš server je jen brána k poskytovatelům eFaktur, veřejným rejstříkům a kurzům: nic si neukládá. Ve webové verzi přes ni prochází i váš API klíč poskytovatele, protože poskytovatelé nepřijímají požadavky přímo z prohlížeče; brána ho předá jen na dobu požadavku, nezapisuje ho a nekešuje. Desktopová verze pro macOS a Windows komunikuje s poskytovatelem přímo z vašeho počítače a bránu obchází; pokud chcete maximum soukromí, zvolte ji."}},{"@type":"Question","name":"Co když ztratím heslo?","acceptedAnswer":{"@type":"Answer","text":"Při prvním spuštění dostanete klíč pro obnovu. Uložte si ho mimo počítač, třeba vytištěný. Bez hesla a bez klíče pro obnovu se data dešifrovat nedají, ani my to nedokážeme."}},{"@type":"Question","name":"Musím přijímat eFaktury, i když nejsem plátce DPH?","acceptedAnswer":{"@type":"Answer","text":"Na Slovensku ano: od 1. 1. 2027 je musí přijímat každý podnikatel a každá právnická osoba, vystavovat je musí jen plátci DPH. Přijímání je u řady slovenských poskytovatelů zdarma. V Česku k 10/2026 žádná povinnost fakturovat přes Peppol neplatí; čeští uživatelé pracují s ISDOC a QR Platbou."}},{"@type":"Question","name":"Kolik stojí digitální pošťák?","acceptedAnswer":{"@type":"Answer","text":"Týká se slovenské eFaktury: digitální pošťák je certifikovaný slovenský poskytovatel eFaktur. Přijímání nabízí řada z nich zdarma, odesílání stojí od 0 do zhruba 3 € měsíčně, nebo několik centů za doklad, podle poskytovatele. Platíte přímo jemu, WE Invoice si nic nepřidává. České firmy mají ISDOC v aplikaci zdarma a bez poskytovatele."}},{"@type":"Question","name":"Proč Mac nechce aplikaci otevřít?","acceptedAnswer":{"@type":"Answer","text":"Aplikace zatím není notarizovaná společností Apple, proto ji macOS po stažení z prohlížeče odmítne otevřít. Před prvním spuštěním jednou zadejte v Terminálu: xattr -cr \"/Applications/WE Invoice.app\". Potom se otevírá jako každá jiná aplikace a její aktualizace tento krok nepotřebují."}},{"@type":"Question","name":"Nahradí to účetního?","acceptedAnswer":{"@type":"Answer","text":"Ne. Připraví vám podklady: výkazy, deník, exporty v běžných formátech. Za správnost daňových dokladů a jejich podání odpovídáte vy nebo váš účetní. Dobrý účetní s WE Invoice ušetří čas, ne práci."}},{"@type":"Question","name":"Co neděláme a proč","acceptedAnswer":{"@type":"Answer","text":"Vlastní pokladnu eKasa ani přímé propojení s virtuální pokladnou VRP: slovenský zákon 384/2025 Z. z. zakazuje používat VRP přes jiné aplikace a vlastní pokladna vyžaduje certifikaci finanční správy. Při hotovostní úhradě faktury vám připravíme údaje pro VRP a uložíme číslo dokladu. Banku v reálném čase přes PSD2: vyžaduje licenci a vaše data by šla přes cizí server, proto importujeme výpisy. SMS upomínky: placený kanál, který bychom museli účtovat. Místo toho e-mail a Peppol."}}]}</script>
 </head>
@@ -74,7 +73,7 @@
           <a class="btn primary" href="../app/">Otevřít webovou aplikaci</a>
           <a class="btn" href="https://github.com/JaffarSk24/WE-Invoice/releases/latest" rel="noopener">Stáhnout pro Mac / Windows</a>
         </div>
-        <p class="hint">Otevřený kód (MIT). Fakturace, výdaje a účetnictví pro všechny, eFaktura přes Peppol (pro Slovensko) v uzavřené betě na pozvánky.</p>
+        <p class="hint">Otevřený kód (MIT). Fakturace, výdaje a účetnictví pro všechny, eFaktúra přes Peppol (pro Slovensko) hned a bez čekání.</p>
         <div class="shot">
           <picture>
             <source type="image/webp" srcset="../assets/preview-720.webp 720w, ../assets/preview-1440.webp 1440w" sizes="(max-width: 720px) 100vw, 1040px">
@@ -106,39 +105,16 @@
           </div>
         </div>
         <p class="help">Kdo podniká na Slovensku, tomu WE Invoice pomůže eFaktury přijímat i posílat: přijatou fakturu načte celou, se všemi řádky, a odeslanou uloží v původním XML na 10 let, jak žádá slovenský zákon. České firmy dostanou ISDOC, QR Platbu a ARES.</p>
-        <p class="buttons"><a class="btn primary" href="#waitlist">Zapsat se do bety eFaktur</a></p>
-        <div class="waitlist-wrap" id="waitlist">
-          <form class="waitlist" id="waitlist-form" action="https://invoice-api.whiteeagles.sk/v1/waitlist" method="post" novalidate data-sending="Odesílám..." data-msg-success="Hotovo. Jste na seznamu, a až otevřeme další vlnu, napíšeme vám osobně." data-msg-invalid-email="Zadejte platnou e-mailovou adresu." data-msg-consent="Bez souhlasu vás na seznam nemůžeme zařadit." data-msg-rate-limited="Příliš mnoho pokusů. Zkuste to za minutu." data-msg-bad-request="Server přihlášku odmítl. Zkontrolujte e-mail a zkuste to znovu." data-msg-network="Nepodařilo se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.">
-            <h3 id="waitlist-title">Zapište se do bety eFaktur (Slovensko)</h3>
-            <p>Beta eFaktur přes Peppol je určená pro podnikání na Slovensku a otevíráme ji po vlnách. Zapsaným posíláme kód pozvánky a návod, jak si vybrat digitálního pošťáka (poskytovatele eFaktur). Zapsat se můžete i jako česká firma, kterou eFaktura zajímá. Žádný spam, odhlášení jedním kliknutím.</p>
-            <input type="hidden" name="lang" value="cs">
-            <input type="hidden" name="source" value="site">
-            <input type="hidden" name="startedAt" value="">
-            <div class="field">
-              <label for="wl-email">E-mail</label>
-              <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="jmeno@firma.cz">
-            </div>
-            <fieldset>
-              <legend>Co vás zajímá</legend>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-send"> eFaktura: odesílání</label>
-              <label class="check"><input type="checkbox" name="interests" value="efaktura-receive"> eFaktura: přijímání</label>
-              <label class="check"><input type="checkbox" name="interests" value="simple-bookkeeping"> Jednoduché účetnictví (daňová evidence)</label>
-              <label class="check"><input type="checkbox" name="interests" value="vat-reports"> Výkazy DPH</label>
-            </fieldset>
-            <fieldset>
-              <legend>Jsem plátce DPH</legend>
-              <label class="check"><input type="radio" name="vatPayer" value="true"> Ano</label>
-              <label class="check"><input type="radio" name="vatPayer" value="false"> Ne</label>
-            </fieldset>
-            <div class="hp" aria-hidden="true">
-              <label for="wl-website">Website</label>
-              <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-            <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>Souhlasím se zpracováním e-mailu pro účely seznamu čekatelů podle <a href="./privacy.html">zásad ochrany osobních údajů</a>.</span></label>
-            <button type="submit" class="btn primary">Zapsat se</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-            <p class="note">Žádné automatické e-maily: až otevřeme další vlnu bety, napíšeme vám osobně.</p>
-          </form>
+        <div class="start" id="start">
+          <h3>Funkci eFaktúra si zapnete sami, ještě dnes</h3>
+          <p>Funkce eFaktúra je v aplikaci označená jako Beta, protože je nová. Může ji používat každý, bez registrace u nás a bez čekání. Slouží k povinné elektronické fakturaci na Slovensku.</p>
+          <ol class="start-steps">
+            <li>Vyberte si akreditovaného slovenského poskytovatele (digitálny poštár).</li>
+            <li>V aplikaci otevřete Nastavení, eFaktúra a vložte API klíč od poskytovatele.</li>
+            <li>Odesílejte a přijímejte elektronické faktury přímo z WE Invoice.</li>
+          </ol>
+          <p class="buttons"><a class="btn primary" href="../app/">Otevřít aplikaci a zapnout funkci eFaktúra</a></p>
+          <p class="note">Od nás je to zdarma. Poskytovatel si účtuje své služby podle vlastního ceníku a příjem je u více poskytovatelů zdarma. Faktury vašemu poskytovateli jen předáváme a nic neukládáme.</p>
         </div>
       </div>
     </section>
@@ -312,7 +288,7 @@
           </li>
           <li>
             <h3>Vložte API klíč do WE Invoice</h3>
-            <p>Nastavení, eFaktura, poskytovatel a klíč. Od té chvíle se faktury posílají a přijímají přímo z aplikace.</p>
+            <p>Nastavení, eFaktúra, poskytovatel a klíč. Od té chvíle se faktury posílají a přijímají přímo z aplikace.</p>
           </li>
         </ol>
         <p class="note">Poskytovatele můžete kdykoli vyměnit. Vaše faktury a archiv XML zůstávají u vás.</p>

@@ -11,7 +11,7 @@
     "lead": "Everything others charge 5 to 15 € a month for. No sign-up, no limits. Your data encrypted in your own Google Drive.",
     "ctaApp": "Open the web app",
     "ctaDownload": "Download for Mac / Windows",
-    "hint": "Open source (MIT). Invoicing, expenses and bookkeeping for everyone; e-invoicing via Peppol in a closed, invite-only beta.",
+    "hint": "Open source (MIT). Invoicing, expenses, bookkeeping and e-invoicing via Peppol for everyone, right away.",
     "shotAlt": "WE Invoice screen: invoice list with statuses, what is overdue, and an invoice preview with a payment QR code"
   },
   "efaktura": {
@@ -33,36 +33,16 @@
       }
     ],
     "help": "WE Invoice helps you both receive and send e-invoices. A received invoice is imported in full, every line included, and a sent one is kept in its original XML for 10 years, as the law requires.",
-    "cta": "Join the e-invoicing beta"
-  },
-  "form": {
-    "title": "Join the e-invoicing beta",
-    "intro": "We open the beta in waves. Everyone on the list gets an invitation code and a guide to choosing an e-invoicing provider (digitálny poštár). No spam, one-click unsubscribe.",
-    "email": "E-mail",
-    "emailPlaceholder": "name@company.com",
-    "interests": {
-      "legend": "What interests you",
-      "send": "E-invoicing: sending",
-      "receive": "E-invoicing: receiving",
-      "bookkeeping": "Single-entry bookkeeping",
-      "vat": "VAT filings"
-    },
-    "vat": {
-      "legend": "I am a VAT payer",
-      "yes": "Yes",
-      "no": "No"
-    },
-    "consent": "I agree to my e-mail being processed for the waiting list, as described in the [privacy policy](./privacy.html).",
-    "submit": "Sign me up",
-    "sending": "Sending...",
-    "note": "No automatic e-mails: when we open the next wave of the beta, we'll write to you personally.",
-    "msg": {
-      "success": "Done. You're on the list, and when we open the next wave, we'll write to you personally.",
-      "invalidEmail": "Enter a valid e-mail address.",
-      "consent": "We can't add you to the list without your consent.",
-      "rateLimited": "Too many attempts. Try again in a minute.",
-      "badRequest": "The server rejected the sign-up. Check your e-mail address and try again.",
-      "network": "Couldn't reach the server. Check your connection and try again."
+    "cta": "Open the app and turn on eFaktúra",
+    "start": {
+      "title": "Turn on e-invoicing yourself, today",
+      "intro": "The eFaktúra feature is marked Beta in the app because it is new. Anyone can use it: no account with us, no waiting.",
+      "steps": [
+        "Choose an accredited e-invoicing provider (digitálny poštár).",
+        "In the app, open Settings, E-invoicing and paste the provider's API key.",
+        "Send and receive e-invoices straight from WE Invoice."
+      ],
+      "price": "It costs nothing on our side. Your provider charges for its service under its own price list, and several providers receive for free. We only pass your invoices on to your provider and store nothing."
     }
   },
   "features": {

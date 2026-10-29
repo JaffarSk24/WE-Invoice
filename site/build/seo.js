@@ -1,5 +1,5 @@
 // Structured data (schema.org), the sitemap and robots.txt.
-import { SITE_URL, GITHUB_URL, AGENCY_URL, LANGUAGES, PAGES, UNLISTED } from './config.js';
+import { SITE_URL, GITHUB_URL, AGENCY_URL, LANGUAGES, PAGES } from './config.js';
 import { plain } from './html.js';
 import { pageUrl } from './page.js';
 
@@ -41,9 +41,8 @@ export function faqPage(code, landing) {
 
 // One <url> per language page, each with hreflang links to its siblings.
 export function sitemap() {
-  const indexed = PAGES.filter(p => !UNLISTED.includes(p));
   const entries = [];
-  for (const page of indexed) {
+  for (const page of PAGES) {
     for (const lang of LANGUAGES) {
       const links = LANGUAGES.map(l => `    <xhtml:link rel="alternate" hreflang="${l.hreflang}" href="${pageUrl(l.code, page)}"/>`);
       links.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${page === 'index.html' ? '' : page}"/>`);
@@ -66,5 +65,5 @@ export function sitemap() {
 }
 
 export function robots() {
-  return ['User-agent: *', 'Allow: /', ...UNLISTED.map(p => `Disallow: /WE-Invoice/*/${p}`), '', `Sitemap: ${SITE_URL}sitemap.xml`, ''].join('\n');
+  return ['User-agent: *', 'Allow: /', '', `Sitemap: ${SITE_URL}sitemap.xml`, ''].join('\n');
 }

@@ -1,8 +1,8 @@
-// The landing page body: hero, the eFaktura 2027 block with the waitlist
-// form, nine feature cards, the comparison table, privacy, the three
-// connection steps, the FAQ and the White Eagles block. Section ids are the
-// contract the tests check across languages.
-import { RELEASES_URL, WAITLIST_URL, INTERESTS } from './config.js';
+// The landing page body: hero, the eFaktura 2027 block with the call to
+// turn eFaktura on in the app, nine feature cards, the comparison table,
+// privacy, the three connection steps, the FAQ and the White Eagles block.
+// Section ids are the contract the tests check across languages.
+import { RELEASES_URL } from './config.js';
 import { text, inline, attr, lines, indent } from './html.js';
 import { icon, FEATURE_ICONS, EFAKTURA_ICONS, PRIVACY_ICONS } from './icons.js';
 
@@ -38,42 +38,24 @@ function cards(items, icons, className = 'card') {
   )).join('\n');
 }
 
-function waitlistForm(code, f) {
-  const msgs = Object.entries(f.msg).map(([k, v]) => ` data-msg-${k.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}="${attr(v)}"`).join('');
-  const interests = INTERESTS.map(i => `<label class="check"><input type="checkbox" name="interests" value="${i.value}"> ${text(f.interests[i.key])}</label>`);
+// eFaktura is open to everyone: the block sends the visitor to the app,
+// where the provider's key goes into Settings, eFaktura.
+function startPanel(e) {
+  const st = e.start;
   return lines(
-    `<form class="waitlist" id="waitlist-form" action="${WAITLIST_URL}" method="post" novalidate data-sending="${attr(f.sending)}"${msgs}>`,
-    `  <h3 id="waitlist-title">${text(f.title)}</h3>`,
-    `  <p>${text(f.intro)}</p>`,
-    `  <input type="hidden" name="lang" value="${code}">`,
-    '  <input type="hidden" name="source" value="site">',
-    '  <input type="hidden" name="startedAt" value="">',
-    '  <div class="field">',
-    `    <label for="wl-email">${text(f.email)}</label>`,
-    `    <input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" maxlength="320" placeholder="${attr(f.emailPlaceholder)}">`,
-    '  </div>',
-    '  <fieldset>',
-    `    <legend>${text(f.interests.legend)}</legend>`,
-    indent(interests.join('\n'), 4),
-    '  </fieldset>',
-    '  <fieldset>',
-    `    <legend>${text(f.vat.legend)}</legend>`,
-    `    <label class="check"><input type="radio" name="vatPayer" value="true"> ${text(f.vat.yes)}</label>`,
-    `    <label class="check"><input type="radio" name="vatPayer" value="false"> ${text(f.vat.no)}</label>`,
-    '  </fieldset>',
-    '  <div class="hp" aria-hidden="true">',
-    '    <label for="wl-website">Website</label>',
-    '    <input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off">',
-    '  </div>',
-    `  <label class="check consent-check"><input type="checkbox" name="consent" value="true" required> <span>${inline(f.consent)}</span></label>`,
-    `  <button type="submit" class="btn primary">${text(f.submit)}</button>`,
-    '  <p class="form-status" role="status" aria-live="polite"></p>',
-    `  <p class="note">${text(f.note)}</p>`,
-    '</form>'
+    '<div class="start" id="start">',
+    `  <h3>${text(st.title)}</h3>`,
+    `  <p>${text(st.intro)}</p>`,
+    '  <ol class="start-steps">',
+    indent(st.steps.map(step => `<li>${inline(step)}</li>`).join('\n'), 4),
+    '  </ol>',
+    `  <p class="buttons"><a class="btn primary" href="../app/">${text(e.cta)}</a></p>`,
+    `  <p class="note">${text(st.price)}</p>`,
+    '</div>'
   );
 }
 
-function efaktura(code, e, f) {
+function efaktura(e) {
   return lines(
     '<section class="block efaktura" id="efaktura">',
     '  <div class="wrap">',
@@ -84,10 +66,7 @@ function efaktura(code, e, f) {
     indent(cards(e.cards, EFAKTURA_ICONS), 6),
     '    </div>',
     `    <p class="help">${inline(e.help)}</p>`,
-    `    <p class="buttons"><a class="btn primary" href="#waitlist">${text(e.cta)}</a></p>`,
-    '    <div class="waitlist-wrap" id="waitlist">',
-    indent(waitlistForm(code, f), 6),
-    '    </div>',
+    indent(startPanel(e), 4),
     '  </div>',
     '</section>'
   );
@@ -193,10 +172,10 @@ function agency(w) {
   );
 }
 
-export function landingBody(code, l) {
+export function landingBody(l) {
   return lines(
     hero(l.hero),
-    efaktura(code, l.efaktura, l.form),
+    efaktura(l.efaktura),
     features(l.features),
     compare(l.compare),
     privacy(l.privacy),
