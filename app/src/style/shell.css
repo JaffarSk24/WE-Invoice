@@ -63,6 +63,18 @@
 
 @media (max-width: 767px) {
   .sidebar { display: none; }
+  /* The strip over the screen and the screen stack in one column. */
+  #app:not([data-bare="true"]) { flex-direction: column; }
+  .company-block.phone-company-bar {
+    display: flex; position: sticky; top: 0; z-index: 25; flex-direction: row; align-items: center; gap: 10px;
+    margin: 0; border-radius: 0; border-width: 0 0 1px; background: var(--bg-sidebar); backdrop-filter: blur(16px);
+    padding: calc(8px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-right, 0px)) 8px calc(16px + env(safe-area-inset-left, 0px));
+  }
+  .phone-company-bar .company-block-label { display: none; }
+  .phone-company-bar .company-row { flex: 1; min-width: 0; }
+  .phone-company-bar .company-switcher { flex: 1; min-width: 0; }
+  /* The strip already keeps the notch clear above the screen. */
+  #app:not([data-bare="true"]) .main { padding-top: 16px; }
   .main { margin-left: 0; padding: calc(20px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-right, 0px)) calc(var(--bottom-bar-height) + 24px + env(safe-area-inset-bottom, 0px)) calc(16px + env(safe-area-inset-left, 0px)); }
   #app[data-bare="true"] .main { padding-bottom: 32px; }
 
@@ -102,6 +114,12 @@
 }
 
 /* Company switcher and sync status at the bottom of the menu. */
+/* The company switcher at the top of the sidebar, and the strip over the
+   screen on phones. */
+.company-block { display: flex; flex-direction: column; gap: 4px; padding: 10px 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--overlay-04); }
+.company-block-label { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.company-block .company-switcher { font-weight: 600; font-size: 14px; }
+@media (min-width: 768px) { .phone-company-bar { display: none; } }
 .company-row { display: flex; align-items: center; gap: 8px; padding: 0 2px; }
 .company-row svg { width: 16px; height: 16px; color: var(--text-muted); flex: none; }
 .company-switcher { min-height: 36px; padding: 4px 8px; font-size: 13px; }

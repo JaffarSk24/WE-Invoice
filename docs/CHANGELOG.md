@@ -63,6 +63,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Changed (29 October, company switcher)
+
+- The company switcher moved from the bottom of the sidebar to its top, under the logo, with a Company label; on a phone it is a strip over every screen instead of a select on the More screen. For people with many companies it is the first thing on the screen.
+
 #### Added (29 October, start screen)
 
 - A start screen with the logo, a spinner and a progress bar shows from the first moment the window opens (it is part of index.html, before any script), and says what the start is doing: opening the data, syncing with Google Drive (only while that sync runs), preparing the workspace. It used to be an empty window for several seconds while the sync with Google Drive ran before the first screen, longer on the first start after an update, when macOS checks the new files.

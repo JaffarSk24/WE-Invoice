@@ -1,7 +1,7 @@
 // Two companies in one workspace (test plan § 11.3, scenario 9): the
-// switch (the menu on a desktop, the More screen on a phone) shows only
-// the open company's contacts and documents, a record made in one never
-// appears in the other, and numbering runs per company.
+// switch (the top of the menu on a desktop, the strip over the screen on a
+// phone) shows only the open company's contacts and documents, a record
+// made in one never appears in the other, and numbering runs per company.
 import { test, expect } from '@playwright/test';
 import { seed, company, contact, invoice, live, offline } from './support/seed.js';
 import { issueInvoice } from './support/editor.js';
@@ -14,8 +14,7 @@ const GAMA_CLIENT = contact({ id: 'e2e-contact-g', name: 'Delta Reklama s. r. o.
 
 async function switchTo(page, isMobile, name) {
   if (isMobile) {
-    await page.goto('./#/more');
-    await page.locator('#more-company-switcher').selectOption({ label: name });
+    await page.locator('#phone-company-switcher').selectOption({ label: name });
   } else {
     await page.locator('#company-switcher').selectOption({ label: name });
   }

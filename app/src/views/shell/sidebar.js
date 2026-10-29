@@ -1,8 +1,9 @@
 // The 260 px sidebar of wide screens: logo, the brand "New invoice" button,
 // the navigation groups (tax items filtered by the company's modes) with the
 // user's favourite sections on top (a star next to each item pins it, kept
-// on this device), and at the bottom the company switcher, the sync status,
-// language and theme.
+// on this device). The company switcher sits at the top, under the logo,
+// where people with many companies look for it first; at the bottom the
+// sync status, language and theme.
 import { h, icon, selectEl, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t, currentLang } from '../../i18n/index.js';
@@ -92,6 +93,14 @@ export function companySwitcher({ id = 'company-switcher' } = {}) {
   return h('div', { class: 'company-row' }, icon('building-2'), sel);
 }
 
+// The company switcher at the top: a label over the select, so it reads as
+// the company everything below belongs to.
+export function companyBlock({ id = 'company-switcher', className = 'company-block' } = {}) {
+  return h('div', { class: className },
+    h('label', { class: 'company-block-label', for: id }, t('shell.company.label')),
+    companySwitcher({ id }));
+}
+
 export function syncStatusLine() {
   const st = syncState();
   return h('button', {
@@ -126,7 +135,7 @@ export function refreshNav(active) {
     refreshIcons(fresh);
     sidebar.scrollTop = scroll;
   }
-  ['company-switcher', 'more-company-switcher'].forEach(id => {
+  ['company-switcher', 'more-company-switcher', 'phone-company-switcher'].forEach(id => {
     const sw = document.getElementById(id);
     if (!sw) return;
     const fresh = companySwitcher({ id });
@@ -142,13 +151,13 @@ export function renderSidebar({ active, prefs, onLanguage, onTheme }) {
   theme.addEventListener('change', () => onTheme(theme.value));
   const aside = h('aside', { class: 'sidebar' },
     h('a', { class: 'logo', href: '#/dashboard' }, h('span', { class: 'logo-mark' }, icon('file-text')), h('span', { class: 'logo-text' }, t('app.name'))),
+    companyBlock(),
     h('button', {
       class: 'btn btn-brand btn-new', type: 'button', id: 'btn-new-invoice',
       onclick: () => { navigate('invoices'); emit('document:new', { kind: 'INVOICE' }); }
     }, icon('plus'), t('nav.newInvoice')),
     navList(active),
     h('div', { class: 'sidebar-footer' },
-      companySwitcher(),
       syncStatusLine(),
       h('div', { class: 'prefs-row' }, lang, theme),
       h('div', { class: 'app-version' }, t('shell.version', { version: APP_VERSION }))));
