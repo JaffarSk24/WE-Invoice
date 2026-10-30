@@ -22,6 +22,7 @@ import { buildPdf, pdfFileNameFor } from '../../pdf/index.js';
 import { canFrameBlobs, openPdf } from '../documents/pdf-frame.js';
 import { isDemo } from '../shell/demo-mode.js';
 import { createDraft, addPayment, removePayment, updatePayment, setStatus, unlockDocument, deleteDocument } from './actions.js';
+import { restorePaymentVoucher } from '../money/cash/payment-cash.js';
 import { availableConversions, convertForEditor, needsReason } from './convert.js';
 import { duplicateDocument } from './draft.js';
 import { openPaymentDialog } from './payments.js';
@@ -135,6 +136,7 @@ export function detailActions({ doc, row, company, route, documents }) {
         try {
           const payment = await addPayment(store(), doc.id, values);
           showToast(t('documents.toast.paymentAdded'), { type: 'success' });
+          if (payment.voucher) showToast(t('payments.voucherCreated', { number: payment.voucher.number }), { type: 'info' });
           return payment;
         } catch (e) { showError(e); return null; }
       }
@@ -145,7 +147,7 @@ export function detailActions({ doc, row, company, route, documents }) {
     if (!guardWrite()) return;
     const before = (doc.payments || []).slice();
     removePayment(store(), doc.id, payment.id).catch(e => showError(e));
-    showUndoToast(t('documents.toast.paymentRemoved'), { commit: () => {}, revert: () => store().update('documents', doc.id, { payments: before }).catch(e => showError(e)) });
+    showUndoToast(t('documents.toast.paymentRemoved'), { commit: () => {}, revert: () => store().update('documents', doc.id, { payments: before }).then(() => restorePaymentVoucher(store(), doc.id, payment.id)).catch(e => showError(e)) });
   }
 
   // Statuses the user may set by hand; payment statuses come from payments.

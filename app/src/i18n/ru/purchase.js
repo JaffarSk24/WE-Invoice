@@ -92,6 +92,7 @@ export default {
   "purchase.payment.amount": "Оплаченная сумма",
   "purchase.payment.save": "Сохранить оплату",
   "purchase.payment.saved": "Оплата записана.",
+  "purchase.payment.cashBooked": "Оплата наличными записана в кассу.",
   "purchase.payment.pastDue": "Срок оплаты прошёл {date}. Если документ уже оплачен, запишите оплату, иначе он будет числиться просроченным.",
   "purchase.payment.notYet": "Ещё не оплачен",
   "purchase.payment.due": "Осталось оплатить",

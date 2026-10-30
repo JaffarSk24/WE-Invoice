@@ -92,6 +92,7 @@ export default {
   "purchase.payment.amount": "Amount paid",
   "purchase.payment.save": "Save payment",
   "purchase.payment.saved": "The payment is recorded.",
+  "purchase.payment.cashBooked": "The cash payment is recorded in the cash book.",
   "purchase.payment.pastDue": "The due date was {date}. If the document is paid already, record the payment; otherwise it shows as overdue.",
   "purchase.payment.notYet": "Not paid yet",
   "purchase.payment.due": "Still due",

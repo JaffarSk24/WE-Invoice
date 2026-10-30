@@ -8,6 +8,7 @@ import { applyValues } from './review-values.js';
 import { rememberSupplier } from './supplier.js';
 import { withPayment, receivedStatus } from './data.js';
 import { deleteFile } from './file-store.js';
+import { cashVoucherForPayment } from '../money/cash/payment-cash.js';
 import { archivesFiles } from '../../sync/attachments/retention.js';
 import { assertPeriodOpen } from '../documents/period-guard.js';
 
@@ -42,9 +43,13 @@ export async function saveDocument(store, doc, values, { regions = {}, isNew = f
   return store.update('documents', id, patch);
 }
 
+/** Records a payment; one in cash also gets its expense voucher in the cash book. */
 export async function recordPayment(store, doc, payment, today) {
   const next = withPayment(doc, payment, today);
-  return store.update('documents', doc.id, { payments: next.payments, status: next.status });
+  const saved = await store.update('documents', doc.id, { payments: next.payments, status: next.status });
+  const added = next.payments[next.payments.length - 1];
+  const cash = await cashVoucherForPayment(store, doc.id, added.id);
+  return cash ? store.get('documents', doc.id) : saved;
 }
 
 export async function deleteDocument(store, doc) {

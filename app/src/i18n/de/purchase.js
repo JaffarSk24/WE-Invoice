@@ -92,6 +92,7 @@ export default {
   "purchase.payment.amount": "Gezahlter Betrag",
   "purchase.payment.save": "Zahlung speichern",
   "purchase.payment.saved": "Die Zahlung ist erfasst.",
+  "purchase.payment.cashBooked": "Die Barzahlung ist im Kassenbuch erfasst.",
   "purchase.payment.pastDue": "Die Fälligkeit war am {date}. Ist der Beleg schon bezahlt, erfassen Sie die Zahlung, sonst erscheint er als überfällig.",
   "purchase.payment.notYet": "Noch nicht bezahlt",
   "purchase.payment.due": "Offen",

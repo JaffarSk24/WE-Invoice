@@ -92,6 +92,7 @@ export default {
   "purchase.payment.amount": "Uhrazená částka",
   "purchase.payment.save": "Uložit úhradu",
   "purchase.payment.saved": "Úhrada je zaznamenaná.",
+  "purchase.payment.cashBooked": "Platba v hotovosti je zapsaná v pokladně.",
   "purchase.payment.pastDue": "Splatnost uplynula {date}. Pokud je doklad už uhrazený, zaznamenejte úhradu, jinak bude v seznamu po splatnosti.",
   "purchase.payment.notYet": "Ještě neuhrazený",
   "purchase.payment.due": "Zbývá uhradit",

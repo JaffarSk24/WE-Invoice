@@ -124,6 +124,20 @@ describe('review', () => {
     expect(window.location.hash).toBe('#/received');
   });
 
+  it('a document paid in cash is paid from the cash book on confirming', async () => {
+    const doc = await inboxDoc();
+    renderReview(root, { id: doc.id, route: 'inbox', ctx: {} });
+    root.querySelector('select[data-field="paymentMethod"]').value = 'CASH';
+    root.querySelector('[data-action="save"]').click();
+    await flush(); await flush(); await flush();
+    const saved = store.get('documents', doc.id);
+    expect(saved.payments).toEqual([expect.objectContaining({ method: 'CASH', source: 'CASH', amount: '221.40', date: saved.issueDate })]);
+    expect(saved.status).toBe('PAID');
+    expect(store.list('documents').find(d => d.kind === 'CASH_OUT')).toMatchObject({ paysDocId: doc.id, totals: expect.objectContaining({ gross: '221.40' }) });
+    expect(document.querySelector('.payment-lead')).toBe(null);
+    expect(window.location.hash).toBe('#/received');
+  });
+
   it('records the payment of a bill confirmed after its due date', async () => {
     const doc = await inboxDoc();
     renderReview(root, { id: doc.id, route: 'inbox', ctx: {} });

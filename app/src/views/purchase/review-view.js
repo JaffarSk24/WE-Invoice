@@ -1,7 +1,8 @@
 // The review of one received document: the file on the left, the form on
 // the right. A document from the Inbox is confirmed here ("Potvrdiť a
 // uložiť"); a processed one is edited, paid or deleted; "new" types one
-// in by hand. Recognised values the core was unsure of are marked.
+// in by hand. Recognised values the core was unsure of are marked. A
+// document paid in cash is recorded as paid from the cash book on its day.
 import { amountDue, cmp } from '@we-invoice/core';
 import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
@@ -75,7 +76,12 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
       const saved = await saveDocument(store, doc, values, { regions, isNew, today });
       showToast(t(inbox ? 'purchase.review.confirmed' : 'purchase.review.saved'), { type: 'success' });
       const next = inbox || isNew ? listOf(saved.kind) : `${route}/${saved.id}`;
-      if ((inbox || isNew) && pastDue(saved, today)) askPaid(saved, next);
+      // Paid in cash: the money left the cash book on the document's day.
+      if ((inbox || isNew) && saved.paymentMethod === 'CASH' && saved.totals && cmp(amountDue(saved), '0') > 0) {
+        await recordPayment(store, saved, { date: saved.issueDate || today, amount: amountDue(saved), method: 'CASH' }, today);
+        showToast(t('purchase.payment.cashBooked'), { type: 'success' });
+        navigate(next);
+      } else if ((inbox || isNew) && pastDue(saved, today)) askPaid(saved, next);
       else navigate(next);
     } catch (e) {
       showError(e, 'errors.PURCHASE_SAVE_FAILED');

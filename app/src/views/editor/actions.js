@@ -10,6 +10,7 @@ import { issueDocument, canTransition, canEdit, releaseNumber, uuidv7, contactSn
 import { resolveSeries, withSeries, takenNumbers } from '../documents/series.js';
 import { assertPeriodOpen } from '../documents/period-guard.js';
 import { emit as busEmit } from '../../events.js';
+import { cashVoucherForPayment, cancelPaymentVoucher } from '../money/cash/payment-cash.js';
 
 const STRIP = ['id', 'createdAt', 'updatedAt', 'deleted'];
 
@@ -105,7 +106,8 @@ export async function deleteDocument(store, id) {
 export const deleteDraft = deleteDocument;
 
 /**
- * Records a payment on a document in its currency.
+ * Records a payment on a document in its currency; a cash payment also
+ * gets its voucher in the cash book (entry.voucher, not stored on it).
  * @param {{date: string, amount: string, method: string, note?: string, ekasaReceiptId?: string, ekasaOkp?: string}} payment
  */
 export async function addPayment(store, docId, payment) {
@@ -116,7 +118,8 @@ export async function addPayment(store, docId, payment) {
     ekasaReceiptId: payment.ekasaReceiptId || null, ekasaOkp: payment.ekasaOkp || null, note: payment.note || null
   };
   await store.update('documents', docId, { payments: [...(doc.payments || []), entry] });
-  return entry;
+  const cash = await cashVoucherForPayment(store, docId, entry.id);
+  return cash ? { ...entry, source: 'CASH', cashBookId: cash.book.id, voucher: cash.voucher } : entry;
 }
 
 export async function updatePayment(store, docId, paymentId, patch) {
@@ -127,6 +130,7 @@ export async function updatePayment(store, docId, paymentId, patch) {
 
 export async function removePayment(store, docId, paymentId) {
   const doc = store.get('documents', docId);
+  await cancelPaymentVoucher(store, docId, paymentId);
   return store.update('documents', docId, { payments: (doc.payments || []).filter(p => p.id !== paymentId) });
 }
 
