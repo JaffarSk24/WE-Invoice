@@ -8,7 +8,7 @@ import { parseServiceGroup, encodeParticipant } from '../src/upstream/peppol-smp
 import { localDate } from '../src/lib/time.js';
 
 const ECB = 'https://www.ecb.europa.eu';
-const ZONE = 'edelivery.tech.ec.europa.eu';
+const ZONE = 'participant.sml.prod.tech.peppol.org';
 let ctx;
 afterEach(async () => { if (ctx) await ctx.app.close(); ctx = null; vi.useRealTimers(); });
 

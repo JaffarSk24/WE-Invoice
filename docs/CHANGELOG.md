@@ -168,6 +168,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Gateway
 
+#### Fixed (30 October, from testers)
+
+- Peppol participant lookup asked the SML zone of the European Commission (`edelivery.tech.ec.europa.eu`), which OpenPeppol replaced in 2026 and which answers nothing since 31 August 2026, so every company came back as not registered for eFaktúra. The default zone is now `participant.sml.prod.tech.peppol.org`; `PEPPOL_SML_ZONE` still overrides it (test zone `participant.sml.test.tech.peppol.org`).
+
 #### Removed (29 October, eFaktúra open to everyone)
 
 - The waiting list and the beta: `POST /v1/waitlist`, `GET /v1/waitlist/confirm`, `GET /v1/waitlist/unsubscribe`, `POST /v1/beta/redeem` and `GET /v1/admin/waitlist.csv` answer 404; the waiting list service, invite codes, the e-mail sending (Mailgun or SMTP, nodemailer), the owner's `scripts/send-invites.mjs` and the settings `SITE_URL`, `WAITLIST_*`, `OWNER_NOTIFY_*`, `MAILGUN_*`, `SMTP_*` and `BETA_HMAC_SECRET` are gone. The gateway now keeps nothing but the public register cache and request counters, as the privacy policy says. A new database has no waiting list tables; an older one keeps them unread.

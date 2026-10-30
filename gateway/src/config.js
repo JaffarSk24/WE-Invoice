@@ -39,7 +39,10 @@ export function loadConfig(env = process.env) {
         deleted: env.FS_LIST_DELETED || 'ds_dphv',
         taxSubjects: env.FS_LIST_TAX_SUBJECTS || 'ds_dsrdp'
       },
-      smlZone: env.PEPPOL_SML_ZONE || 'edelivery.tech.ec.europa.eu',
+      // OpenPeppol runs the SML since 2026; the zone of the European
+      // Commission (edelivery.tech.ec.europa.eu) answers nothing since
+      // 31 August 2026.
+      smlZone: env.PEPPOL_SML_ZONE || 'participant.sml.prod.tech.peppol.org',
       smlLegacyCname: env.PEPPOL_SML_LEGACY_CNAME === 'true'
     },
     proxy: {

@@ -14,6 +14,8 @@ describe('config', () => {
     expect(c.adminToken).toBe('');
     expect(c.trustProxy).toBe('loopback,uniquelocal');
     expect(c.proxy.baseUrls).toEqual({});
+    // The SML of OpenPeppol; the Commission's zone is gone since 31 August 2026.
+    expect(c.upstream.smlZone).toBe('participant.sml.prod.tech.peppol.org');
     const d = loadConfig({ PORT: '9000', CORS_ORIGINS: 'https://a.test, https://b.test', TRUST_PROXY: 'false', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}', RATE_LIMIT_SCALE: '0' });
     expect(d.port).toBe(9000);
     expect(d.corsOrigins).toEqual(['https://a.test', 'https://b.test']);

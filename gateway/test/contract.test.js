@@ -24,7 +24,7 @@ const errorValidator = ajv.getSchema('openapi#/components/schemas/Error');
 
 let ctx;
 beforeAll(async () => {
-  const resolver = fakeResolver({ naptr: { [naptrName('0245:2020317068', 'edelivery.tech.ec.europa.eu')]: [NAPTR_RECORD] } });
+  const resolver = fakeResolver({ naptr: { [naptrName('0245:2020317068', 'participant.sml.prod.tech.peppol.org')]: [NAPTR_RECORD] } });
   ctx = await createTestApp({ env: { FS_OPENDATA_API_KEY: 'k', ADMIN_TOKEN: 'admin', PROVIDER_BASE_URLS: '{"verteco":"https://api.verteco.test"}' }, resolver });
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?identifier=35763469' }).reply(200, { results: [RPO_ENTITY] }, json);
   ctx.pool('https://api.statistics.sk').intercept({ path: '/rpo/v1/search?fullName=Example' }).reply(200, { results: [RPO_ENTITY] }, json);
