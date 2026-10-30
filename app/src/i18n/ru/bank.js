@@ -75,6 +75,7 @@ export default {
   "bank.match.reason.REFS": "в сообщении указано несколько документов",
   "bank.match.reason.AMOUNT_SUM": "совпадает сумма нескольких документов",
   "bank.match.reason.MANUAL": "выбрано вручную",
+  "bank.match.reason.RECORDED": "оплата уже записана вручную, движение её подтвердит",
   "bank.match.kind.EXACT": "Полная оплата",
   "bank.match.kind.PARTIAL": "Частичная оплата, остаток {diff}",
   "bank.match.kind.OVERPAID": "Переплата {diff}",

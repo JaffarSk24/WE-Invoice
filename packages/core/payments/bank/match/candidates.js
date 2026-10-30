@@ -57,6 +57,30 @@ export function candidatesFor(tx, documents, contacts = [], pending = new Map())
   return out;
 }
 
+/**
+ * Payments recorded by hand that a bank movement may confirm: a document
+ * the user marked paid before importing the statement. Same direction and
+ * amount, not from a statement, not cash of a cash book, not an offset,
+ * not tied to a movement yet, and not reserved (`taken`) by an earlier line.
+ * @returns {Array<{doc: object, open: string, contact: object|null, paymentId: string}>}
+ */
+export function recordedFor(tx, documents, contacts = [], taken = new Set()) {
+  const direction = directionOf(tx);
+  const paid = round(abs(tx.amount), 2);
+  const byId = new Map((contacts || []).map(c => [c.id, c]));
+  const out = [];
+  for (const doc of documents || []) {
+    if (doc.deleted || CLOSED.has(doc.status) || !isPayable(doc.kind) || !kindFitsDirection(doc.kind, direction)) continue;
+    if (doc.currency && tx.currency && doc.currency !== tx.currency) continue;
+    for (const p of doc.payments || []) {
+      if (p.bankTxId || p.source === 'BANK_IMPORT' || p.source === 'CASH' || p.method === 'OFFSET' || taken.has(p.id)) continue;
+      if (cmp(round(abs(p.amount), 2), paid) !== 0) continue;
+      out.push({ doc, open: paid, contact: byId.get(doc.contactId) || null, paymentId: p.id });
+    }
+  }
+  return out;
+}
+
 // Legal form words that differ between how a name is written on an
 // invoice and in a bank statement.
 const LEGAL_FORMS = /\b(s ?r ?o|spol|a ?s|k ?s|v ?o ?s|s ?p|gmbh|ag|ltd|llc|inc|sa|se|z ?s|n ?o|o ?z)\b/g;

@@ -3,10 +3,21 @@
 // records (totalGross, paidAmount); they are shaped here like stored
 // documents, so the core functions read both the same way. Bank lines and
 // cash books do not exist in the demo: those screens show their empty state.
+// Bank lines stored before the CAMT reader learnt Tatra banka's markup are
+// shown with its narrative only, and empty zero lines (a free fee package)
+// are left out.
+import { narrative, isZero } from '@we-invoice/core';
 import { hasStore, getStore } from '../../../store/index.js';
 import { isDemo, demoData } from '../../shell/demo-mode.js';
 
 const RECEIVED = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT']);
+
+/** Bank lines as the screens show them: readable messages, no unmatched zero lines. */
+export function shownTransactions(list) {
+  return list
+    .filter(tx => !(isZero(tx.amount || '0') && !tx.matched?.confirmed))
+    .map(tx => (tx.message && tx.message.includes('<NtryInf') ? { ...tx, message: narrative(tx.message) } : tx));
+}
 
 /** A demo summary record as a document with totals and payments. */
 export function demoDocument(d) {
@@ -43,7 +54,7 @@ export function moneyState() {
   return {
     demo: false, ready: true, readOnly: Boolean(store.readOnly), company,
     documents: store.list('documents'), contacts: store.list('contacts'),
-    bankTransactions: store.list('bankTransactions'), cashBooks: store.list('cashBooks')
+    bankTransactions: shownTransactions(store.list('bankTransactions')), cashBooks: store.list('cashBooks')
   };
 }
 

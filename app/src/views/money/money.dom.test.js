@@ -20,7 +20,7 @@ import { openImportDialog } from './bank/import-dialog.js';
 import { readFileSync } from 'node:fs';
 import { t } from '../../i18n/index.js';
 import { offsetPartners } from './payments/offset-dialog.js';
-import { moneyState, demoDocument } from './shared/data.js';
+import { moneyState, demoDocument, shownTransactions } from './shared/data.js';
 import { lazyScreen } from '../../boot/bank.js';
 
 const ACCOUNT = { id: 'acc', name: 'Tatra', iban: 'SK3911000000002900123456', bic: 'TATRSKBX', currency: 'EUR', isDefault: true };
@@ -85,6 +85,17 @@ describe('bank screen', () => {
     expect(pickAccount([ACCOUNT, other], null, 'b').id).toBe('b');
     expect(pickAccount([other, ACCOUNT], null, null).id).toBe('acc');
     expect(pickAccount([], null, null)).toBeNull();
+  });
+});
+
+describe('stored bank lines', () => {
+  it('show the narrative of Tatra banka markup and leave out unmatched zero lines', () => {
+    const list = shownTransactions([
+      { id: 'a', amount: '-1.60', message: '<NtryInf Ctg="CA_252" Ini="P00" BkCh="TXA" Mthd="O"><Nrtv>Transakčná daň 05.10.2026</Nrtv></NtryInf>' },
+      { id: 'b', amount: '0.00', message: 'Poplatok za balík', matched: null },
+      { id: 'c', amount: '-36.90', message: 'Sluzby uctovnictva' }
+    ]);
+    expect(list.map(tx => [tx.id, tx.message])).toEqual([['a', 'Transakčná daň 05.10.2026'], ['c', 'Sluzby uctovnictva']]);
   });
 });
 

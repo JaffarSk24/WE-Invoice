@@ -157,3 +157,15 @@ describe('idempotent import', () => {
     expect(splitDuplicates(keyed, [{ ...keyed[0], deleted: true }]).fresh).toHaveLength(1);
   });
 });
+
+describe('CAMT.053 of Tatra banka', () => {
+  it('keeps the narrative of its markup, names the shop of a card payment and skips zero lines', () => {
+    const txs = parseBankStatement(fixture('camt053-tatra.xml')).transactions;
+    expect(txs.map(t => [t.amount, t.counterpartyName, t.message])).toEqual([
+      ['-36.90', 'Realna podpora s.r.o.', 'Sluzby uctovnictva'],
+      ['-7.26', 'ISTORES.SK', 'POS nákup'],
+      ['-1.60', null, 'Transakčná daň 05.10.2026']
+    ]);
+    expect(txs[0].vs).toBe('202601936');
+  });
+});

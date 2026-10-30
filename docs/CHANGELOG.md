@@ -481,6 +481,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Bank, cash and payments
 
+#### Fixed (30 October, from testers)
+
+- CAMT.053 of Tatra banka: the message column showed the bank's own markup (`<NtryInf Ctg="Pay310" ...><Nrtv>...`) from AddtlNtryInf; only its narrative is kept now, and lines stored before are shown that way too. A card payment or cash withdrawal names the shop or the cash machine (TradgPty) as the counterparty. Zero lines (a free fee package) are skipped on import and hidden when stored unmatched.
+- A movement that pays a document the user had already marked paid by hand found nothing to match, as only open documents were candidates. It is now proposed as that payment (same amount and VS, IBAN, number or name, reason "already recorded by hand"): confirming ties the payment to the movement and gives it the bank date instead of paying the document twice; undoing the match leaves the hand payment and only unties it. Each hand payment is claimed by one line of a statement.
+
 #### Added (30 October, from testers)
 
 - Statements can be dropped: Import statement opens a place to drop files on or pick them, and the whole bank screen takes dropped files too. Several statements import at once: every file goes to the account with its IBAN, one row per file says what was found (new, imported before, or why it was left out), one button stores the new movements of all of them, and a movement in two overlapping statements is stored once. One file still opens the full view with the bank profile and the column mapping.

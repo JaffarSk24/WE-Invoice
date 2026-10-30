@@ -75,6 +75,7 @@ export default {
   'bank.match.reason.REFS': 'správa uvádza viac dokladov',
   'bank.match.reason.AMOUNT_SUM': 'sedí súčet dokladov',
   'bank.match.reason.MANUAL': 'vybrané ručne',
+  'bank.match.reason.RECORDED': 'úhrada je už zaznamenaná ručne, pohyb ju potvrdí',
   'bank.match.kind.EXACT': 'Úplná úhrada',
   'bank.match.kind.PARTIAL': 'Čiastočná úhrada, zostáva {diff}',
   'bank.match.kind.OVERPAID': 'Preplatok {diff}',

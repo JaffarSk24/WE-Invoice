@@ -2,10 +2,15 @@
 // of Slovak banks. Versions 02 to 08 all share the paths read here. An
 // entry (Ntry) with several transaction details (a batch) becomes one
 // transaction per detail with its own amount; only booked entries count.
-// For a credit the counterparty is the debtor, for a debit the creditor.
+// For a credit the counterparty is the debtor, for a debit the creditor;
+// a card payment or withdrawal names the shop or the cash machine as the
+// trading party. Tatra banka puts its own markup into AddtlNtryInf
+// (<NtryInf Ctg=...><Nrtv>Platba ...</Nrtv></NtryInf>): only the narrative
+// is kept. Zero entries (a free fee package) are skipped.
 import { parseXml, all, one, textAt } from './xml/read.js';
 import { normalizeTransaction } from './normalize.js';
 import { parseStatementAmount, signedAmount } from './values.js';
+import { isZero } from '../../money/index.js';
 import { CoreError } from '../../errors.js';
 
 const dateOf = (node, path) => {
@@ -15,7 +20,7 @@ const dateOf = (node, path) => {
 
 function party(details, role) {
   const base = one(details, `RltdPties/${role}`);
-  const name = textAt(base, 'Nm') || textAt(base, 'Pty/Nm');
+  const name = textAt(base, 'Nm') || textAt(base, 'Pty/Nm') || textAt(details, 'RltdPties/TradgPty/Nm');
   const account = one(details, `RltdPties/${role}Acct`);
   const iban = textAt(account, 'Id/IBAN') || textAt(account, 'Id/Othr/Id');
   return { name, iban };
@@ -25,6 +30,14 @@ function remittance(details) {
   const lines = all(details, 'RmtInf/Ustrd').map(n => n.text.trim()).filter(Boolean);
   const refs = all(details, 'RmtInf/Strd/CdtrRefInf/Ref').map(n => n.text.trim()).filter(Boolean);
   return [...lines, ...refs].join(' ');
+}
+
+/** The readable part of AddtlNtryInf: the narrative of the bank's own markup, else the text without tags. */
+export function narrative(text) {
+  const s = String(text || '');
+  const inner = /<Nrtv>([\s\S]*?)<\/Nrtv>/.exec(s);
+  const plain = (inner ? inner[1] : s.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
+  return plain || null;
 }
 
 function balance(stmt, code) {
@@ -58,7 +71,7 @@ function entryTransactions(entry, currency, status) {
         counterpartyName: counter.name,
         counterpartyAccount: counter.iban,
         symbols: e2e && e2e !== 'NOTPROVIDED' ? e2e : null,
-        message: remittance(d) || textAt(entry, 'AddtlNtryInf'),
+        message: remittance(d) || narrative(textAt(entry, 'AddtlNtryInf')),
         ref
       }
     };
@@ -85,6 +98,7 @@ export function parseCamt053(text, options = {}) {
       for (const { raw } of entryTransactions(entry, currency, status)) {
         if (status !== 'BOOK') { pending++; continue; }
         if (!raw.date || raw.amount === null) { invalid++; continue; }
+        if (isZero(raw.amount)) continue;
         transactions.push(normalizeTransaction(raw, { currency, country: options.country }));
       }
     }

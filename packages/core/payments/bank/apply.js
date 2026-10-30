@@ -100,6 +100,13 @@ export function applyMatch(tx, proposal, documents, { newId = uuidv7 } = {}) {
   const patches = proposal.allocations.map(a => {
     const doc = byId.get(a.docId);
     if (!doc) throw new CoreError('BANK_DOCUMENT_NOT_FOUND', `document ${a.docId} not found`);
+    // A payment the user recorded by hand: the movement confirms it and
+    // gives it the date the money really moved; no second payment.
+    if (a.paymentId) {
+      if (!(doc.payments || []).some(p => p.id === a.paymentId)) throw new CoreError('BANK_PAYMENT_NOT_FOUND', `payment ${a.paymentId} not found`);
+      const payments = doc.payments.map(p => (p.id === a.paymentId ? { ...p, bankTxId: tx.id, date: tx.date } : p));
+      return { id: doc.id, patch: { payments, status: statusAfterPayments({ ...doc, payments }) } };
+    }
     const payment = makePayment(doc, {
       id: newId(), date: tx.date, amount: a.amount, currency: tx.currency, method: 'TRANSFER', source: 'BANK_IMPORT', bankTxId: tx.id
     });
@@ -109,15 +116,23 @@ export function applyMatch(tx, proposal, documents, { newId = uuidv7 } = {}) {
     documents: patches,
     tx: {
       matched: { docId: proposal.allocations[0].docId, confidence: proposal.confidence, confirmed: true },
-      allocations: proposal.allocations.map(a => ({ docId: a.docId, amount: a.amount }))
+      allocations: proposal.allocations.map(a => (a.paymentId ? { docId: a.docId, amount: a.amount, paymentId: a.paymentId } : { docId: a.docId, amount: a.amount }))
     }
   };
 }
 
-/** Undoes a confirmed match: removes the payments of the transaction from every document. */
+/**
+ * Undoes a confirmed match: removes the payments the transaction created
+ * from every document; a payment recorded by hand that it confirmed stays,
+ * only no longer tied to the movement.
+ */
 export function unapplyMatch(tx, documents) {
   const patches = documents
     .filter(d => (d.payments || []).some(p => p.bankTxId === tx.id))
-    .map(d => ({ id: d.id, patch: removePayments(d, p => p.bankTxId === tx.id) }));
+    .map(d => {
+      const kept = (d.payments || []).filter(p => !(p.bankTxId === tx.id && p.source === 'BANK_IMPORT'))
+        .map(p => (p.bankTxId === tx.id ? { ...p, bankTxId: null } : p));
+      return { id: d.id, patch: { payments: kept, status: statusAfterPayments({ ...d, payments: kept }) } };
+    });
   return { documents: patches, tx: { matched: null, allocations: [] } };
 }

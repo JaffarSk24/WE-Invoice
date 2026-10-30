@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.02">
+  <BkToCstmrStmt>
+    <GrpHdr><MsgId>TB-2026-10</MsgId><CreDtTm>2026-10-07T06:00:00+02:00</CreDtTm></GrpHdr>
+    <Stmt>
+      <Id>TB-2026-10-001</Id>
+      <Acct><Id><IBAN>SK3911000000002900123456</IBAN></Id><Ccy>EUR</Ccy></Acct>
+      <Ntry><NtryRef>1</NtryRef><Amt Ccy="EUR">36.90</Amt><CdtDbtInd>DBIT</CdtDbtInd><Sts>BOOK</Sts><BookgDt><Dt>2026-10-01</Dt></BookgDt><ValDt><Dt>2026-10-01</Dt></ValDt><NtryDtls><TxDtls><Refs><AcctSvcrRef>VP0000000001</AcctSvcrRef><EndToEndId>/VS202601936/SS/KS</EndToEndId></Refs><RltdPties><Cdtr><Nm>Realna podpora s.r.o.</Nm></Cdtr><CdtrAcct><Id><IBAN>SK8583300000005566778899</IBAN></Id></CdtrAcct></RltdPties><RmtInf><Ustrd>Sluzby uctovnictva</Ustrd></RmtInf></TxDtls></NtryDtls><AddtlNtryInf>&lt;NtryInf Ctg="Pay310" Ini="IB_" BkCh="INT" Mthd="S" CPAL="I" xmlns="urn:CurrentAccount:Statements:DataFile"&gt;&lt;Nrtv&gt;Platba 8330/000000-5566778899&lt;/Nrtv&gt;&lt;/NtryInf&gt;</AddtlNtryInf></Ntry>
+      <Ntry><NtryRef>2</NtryRef><Amt Ccy="EUR">7.26</Amt><CdtDbtInd>DBIT</CdtDbtInd><Sts>BOOK</Sts><BookgDt><Dt>2026-10-05</Dt></BookgDt><NtryDtls><TxDtls><Refs><AcctSvcrRef>VP0000000002</AcctSvcrRef></Refs><RltdPties><InitgPty><Nm>CARD HOLDER</Nm></InitgPty><TradgPty><Nm>ISTORES.SK</Nm></TradgPty></RltdPties></TxDtls></NtryDtls><AddtlNtryInf>&lt;NtryInf Ctg="Crd410" Ini="POS" BkCh="ISS" Mthd="O" CPAL="I" MCC="5045" xmlns="urn:CurrentAccount:Statements:DataFile"&gt;&lt;Nrtv&gt;POS nákup&lt;/Nrtv&gt;&lt;/NtryInf&gt;</AddtlNtryInf></Ntry>
+      <Ntry><NtryRef>3</NtryRef><Amt Ccy="EUR">1.60</Amt><CdtDbtInd>DBIT</CdtDbtInd><Sts>BOOK</Sts><BookgDt><Dt>2026-10-06</Dt></BookgDt><NtryDtls><TxDtls><Refs><AcctSvcrRef>VP0000000003</AcctSvcrRef></Refs><RltdPties/></TxDtls></NtryDtls><AddtlNtryInf>&lt;NtryInf Ctg="CA_252" Ini="P00" BkCh="TXA" Mthd="O" CPAL="I" xmlns="urn:CurrentAccount:Statements:DataFile"&gt;&lt;Nrtv&gt;Transakčná daň 05.10.2026&lt;/Nrtv&gt;&lt;/NtryInf&gt;</AddtlNtryInf></Ntry>
+      <Ntry><NtryRef>4</NtryRef><Amt Ccy="EUR">0.00</Amt><CdtDbtInd>CRDT</CdtDbtInd><Sts>BOOK</Sts><BookgDt><Dt>2026-09-30</Dt></BookgDt><NtryDtls><TxDtls><Refs><AcctSvcrRef>VP0000000004</AcctSvcrRef></Refs></TxDtls></NtryDtls><AddtlNtryInf>&lt;NtryInf Ctg="CA_101" Ini="CAC" BkCh="FEE" Mthd="O" CPAL="I" xmlns="urn:CurrentAccount:Statements:DataFile"&gt;&lt;Nrtv&gt;Poplatok za balík&lt;/Nrtv&gt;&lt;/NtryInf&gt;</AddtlNtryInf></Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

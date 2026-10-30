@@ -98,7 +98,9 @@ describe('which documents are candidates', () => {
       doc({ vs: '9', status: 'DRAFT' }), doc({ vs: '9', status: 'CANCELLED' }), doc({ vs: '9', currency: 'CZK' }),
       doc({ vs: '9', payments: [{ id: 'p', date: '2026-09-02', amount: '100.00', method: 'TRANSFER', source: 'MANUAL' }] })
     ];
-    expect(matchBankTx(tx({ vs: '9' }), docs)).toEqual([]);
+    // The paid one comes back only as the payment already recorded on it.
+    const proposals = matchBankTx(tx({ vs: '9' }), docs);
+    expect(proposals.map(p => [p.docId, p.recorded])).toEqual([[docs[3].id, true]]);
   });
 
   it('13. the open amount after an earlier partial payment is what must match', () => {
@@ -195,6 +197,32 @@ describe('recording the match', () => {
     const credit = doc({ payable: '-50.00', payments: [{ id: 'r', date: '2026-09-01', amount: '-50.00', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL' }] });
     expect(replacePayment(credit, 'r', { date: '2026-09-01', amount: '50', method: 'CARD' }).payments[0].amount).toBe('-50.00');
     expect(() => replacePayment(d, 'nope', { date: '2026-09-01', amount: '1' })).toThrow(expect.objectContaining({ code: 'BANK_PAYMENT_NOT_FOUND' }));
+  });
+
+  it('24. a movement confirms a payment recorded by hand instead of paying twice', () => {
+    const d = doc({ kind: 'RECEIVED_INVOICE', status: 'PAID', vs: '202601936', seller: { name: 'Realna podpora s.r.o.' }, payable: '36.90',
+      payments: [{ id: 'hand', date: '2026-10-15', amount: '36.90', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL', bankTxId: null }] });
+    const out = tx({ id: 'tx9', date: '2026-10-01', amount: '-36.90', vs: '202601936', counterpartyName: 'Realna podpora s.r.o.' });
+    const [best] = matchBankTx(out, [d]);
+    expect(best).toMatchObject({ docId: d.id, confidence: 100, recorded: true, allocations: [{ docId: d.id, amount: '36.90', paymentId: 'hand' }] });
+    expect(best.reasons).toContain('RECORDED');
+    const applied = applyMatch(out, best, [d]);
+    expect(applied.documents[0].patch.payments).toEqual([expect.objectContaining({ id: 'hand', bankTxId: 'tx9', date: '2026-10-01', source: 'MANUAL' })]);
+    expect(applied.documents[0].patch.status).toBe('PAID');
+    const linked = { ...d, ...applied.documents[0].patch };
+    expect(matchBankTx({ ...out, id: 'tx10' }, [linked])).toEqual([]);
+    const undone = unapplyMatch(out, [linked]);
+    expect(undone.documents[0].patch.payments).toEqual([expect.objectContaining({ id: 'hand', bankTxId: null })]);
+  });
+
+  it('25. a recorded payment needs the exact amount and is claimed by one line of a statement', () => {
+    const d = doc({ kind: 'RECEIVED_INVOICE', status: 'PAID', vs: '777', seller: { name: 'X' }, payable: '50.00',
+      payments: [{ id: 'hand', date: '2026-10-15', amount: '50.00', currency: 'EUR', method: 'CARD', source: 'MANUAL', bankTxId: null }] });
+    expect(matchBankTx(tx({ amount: '-49.00', vs: '777' }), [d]).filter(p => p.recorded)).toEqual([]);
+    const lines = [tx({ id: 'a', amount: '-50.00', vs: '777' }), tx({ id: 'b', date: '2026-10-06', amount: '-50.00', vs: '777' })];
+    const results = matchStatement(lines, [d]);
+    expect(results[0].preselected).toMatchObject({ recorded: true });
+    expect(results[1].proposals.filter(p => p.recorded)).toEqual([]);
   });
 
   it('23. refuses payments in another currency and empty amounts', () => {

@@ -75,6 +75,7 @@ export default {
   'bank.match.reason.REFS': 'the message names several documents',
   'bank.match.reason.AMOUNT_SUM': 'the documents add up to the amount',
   'bank.match.reason.MANUAL': 'chosen by hand',
+  'bank.match.reason.RECORDED': 'the payment is already recorded by hand; the movement confirms it',
   'bank.match.kind.EXACT': 'Paid in full',
   'bank.match.kind.PARTIAL': 'Partial payment, {diff} left',
   'bank.match.kind.OVERPAID': 'Overpaid by {diff}',

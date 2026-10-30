@@ -75,6 +75,7 @@ export default {
   "bank.match.reason.REFS": "Verwendungszweck nennt mehrere Belege",
   "bank.match.reason.AMOUNT_SUM": "Summe der Belege passt",
   "bank.match.reason.MANUAL": "manuell gewählt",
+  "bank.match.reason.RECORDED": "die Zahlung ist schon von Hand erfasst; die Buchung bestätigt sie",
   "bank.match.kind.EXACT": "Vollständig bezahlt",
   "bank.match.kind.PARTIAL": "Teilzahlung, offen {diff}",
   "bank.match.kind.OVERPAID": "Überzahlung {diff}",
