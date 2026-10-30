@@ -1,6 +1,6 @@
 {
   "name": "we-invoice-gateway",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "description": "Stateless gateway of WE Invoice: proxy to Peppol providers, public registers, VIES, eKasa and ECB rates. Stores no user data.",
   "license": "MIT",
