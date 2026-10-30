@@ -2,7 +2,7 @@
 // payments and overpayments, one transaction for several documents and
 // several transactions for one, and recording the confirmed match.
 import { describe, it, expect } from 'vitest';
-import { matchBankTx, matchStatement, applyMatch, unapplyMatch, makePayment, addPayment, statusAfterPayments } from './index.js';
+import { matchBankTx, matchStatement, applyMatch, unapplyMatch, makePayment, addPayment, replacePayment, statusAfterPayments } from './index.js';
 import { paymentState } from '../index.js';
 
 let n = 0;
@@ -181,6 +181,20 @@ describe('recording the match', () => {
     expect(statusAfterPayments(received)).toBe('PROCESSED');
     const ours = doc({ status: 'PAID' });
     expect(statusAfterPayments(ours)).toBe('ISSUED');
+  });
+
+  it('22b. an edited payment keeps its id and place and moves the status', () => {
+    const d = doc({ payments: [
+      { id: 'a', date: '2026-09-01', amount: '40.00', currency: 'EUR', method: 'CARD', source: 'MANUAL' },
+      { id: 'b', date: '2026-09-02', amount: '60.00', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL' }
+    ], status: 'PAID' });
+    const patch = replacePayment(d, 'a', { date: '2026-09-03', amount: '30', method: 'CASH', source: 'CASH', cashBookId: 'cb1', note: 'Fixed' });
+    expect(patch.payments.map(p => p.id)).toEqual(['a', 'b']);
+    expect(patch.payments[0]).toMatchObject({ id: 'a', date: '2026-09-03', amount: '30.00', currency: 'EUR', method: 'CASH', source: 'CASH', cashBookId: 'cb1', note: 'Fixed' });
+    expect(patch.status).toBe('PARTIALLY_PAID');
+    const credit = doc({ payable: '-50.00', payments: [{ id: 'r', date: '2026-09-01', amount: '-50.00', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL' }] });
+    expect(replacePayment(credit, 'r', { date: '2026-09-01', amount: '50', method: 'CARD' }).payments[0].amount).toBe('-50.00');
+    expect(() => replacePayment(d, 'nope', { date: '2026-09-01', amount: '1' })).toThrow(expect.objectContaining({ code: 'BANK_PAYMENT_NOT_FOUND' }));
   });
 
   it('23. refuses payments in another currency and empty amounts', () => {

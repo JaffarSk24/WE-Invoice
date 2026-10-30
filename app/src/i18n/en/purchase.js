@@ -23,6 +23,7 @@ export default {
   "purchase.col.number": "Number",
   "purchase.col.issueDate": "Issued",
   "purchase.col.dueDate": "Due",
+  "purchase.col.paidDate": "Paid on",
   "purchase.col.category": "Category",
   "purchase.col.vat": "VAT",
   "purchase.col.total": "Amount",

@@ -23,6 +23,7 @@ export default {
   "purchase.col.number": "Номер",
   "purchase.col.issueDate": "Выставлен",
   "purchase.col.dueDate": "Срок оплаты",
+  "purchase.col.paidDate": "Дата оплаты",
   "purchase.col.category": "Категория",
   "purchase.col.vat": "НДС",
   "purchase.col.total": "Сумма",

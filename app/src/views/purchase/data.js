@@ -46,6 +46,12 @@ export function receivedStatus(doc, today = todayLocal()) {
   return { PAID: 'PAID', OVERPAID: 'OVERPAID', PARTIAL: 'PARTIALLY_PAID', OVERDUE: 'OVERDUE' }[state] || 'PROCESSED';
 }
 
+/** The date of the latest payment of a document, or null when none was paid. */
+export function lastPaymentDate(doc) {
+  const dates = (doc.payments || []).map(p => p.date).filter(Boolean).sort();
+  return dates.length ? dates[dates.length - 1] : null;
+}
+
 export function rowOf(doc, today = todayLocal()) {
   return {
     id: doc.id,
@@ -54,6 +60,7 @@ export function rowOf(doc, today = todayLocal()) {
     supplier: (doc.seller && doc.seller.name) || '',
     issueDate: doc.issueDate || null,
     dueDate: doc.dueDate || null,
+    paidDate: lastPaymentDate(doc),
     total: (doc.totals && doc.totals.payable) || '0.00',
     vat: (doc.totals && doc.totals.vat) || '0.00',
     currency: doc.currency || 'EUR',
@@ -69,7 +76,7 @@ export function rowOf(doc, today = todayLocal()) {
 /** Rows of the demo documents of some kinds (the demo has received invoices only). */
 export function demoRows(kinds) {
   return demoData().documents.filter(d => kinds.includes(d.kind)).map(d => ({
-    id: d.id, kind: d.kind, number: d.number, supplier: d.contactName, issueDate: d.issueDate, dueDate: d.dueDate,
+    id: d.id, kind: d.kind, number: d.number, supplier: d.contactName, issueDate: d.issueDate, dueDate: d.dueDate, paidDate: d.paidDate || null,
     total: d.totalGross, vat: d.totalVat, currency: d.currency, status: d.status, category: null, vatDeductionPeriod: null,
     confidence: null, needsConfirmation: false, doc: null
   }));

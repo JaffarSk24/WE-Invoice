@@ -23,6 +23,7 @@ export default {
   "purchase.col.number": "Nummer",
   "purchase.col.issueDate": "Ausgestellt",
   "purchase.col.dueDate": "Fällig",
+  "purchase.col.paidDate": "Bezahlt am",
   "purchase.col.category": "Kategorie",
   "purchase.col.vat": "USt",
   "purchase.col.total": "Betrag",

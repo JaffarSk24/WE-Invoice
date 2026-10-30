@@ -475,6 +475,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Bank, cash and payments
 
+#### Added (30 October, from testers)
+
+- A payment recorded by hand can be edited: "Edit payment" in its actions opens date, amount, method, cash book and note, and Save writes them over the same payment (core `replacePayment`, keeping its id and place), so the document's status follows. Its cash voucher stays while it still says the same; when the payment stops being cash or its amount, date or cash book changes, the old voucher is cancelled and a new one issued. A cash payment from the purchase screen, which has no cash book, may stay without one. Payments from a bank statement and offsets are still changed where they come from.
+
 #### Added
 
 - Bank statement import in packages/core/payments/bank: CSV with bank profiles kept as data (Tatra banka, Slovenská sporiteľňa, VÚB, ČSOB SK, 365.bank, Prima banka, UniCredit, Fio, mBank, Revolut Business, Wise) and a generic layout, profile detection from the header, windows-1250 decoding, CAMT.053, MT940 and ABO/GPC. Transactions are normalised to bankTransactions records with decimal string amounts, calendar dates, VS/KS/SS, counterparty and IBAN (built from SK and CZ domestic numbers when needed).
@@ -589,6 +593,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Opening a PDF or an attachment in a new tab no longer downloads it as well: window.open answers null when "noopener" is asked for, which was taken for a blocked tab.
 
 ### Purchases, Inbox and expenses
+
+#### Added (30 October, from testers)
+
+- The lists of received invoices and expenses have a Paid on column: the date of the latest payment, sortable like the others.
 
 #### Fixed (30 October, from testers)
 

@@ -14,6 +14,7 @@ import { confirmProposal } from './bank/match-dialog.js';
 import { manualProposal } from './bank/tx-dialog.js';
 import { createCashBook, createVoucher, cancelVoucher } from './cash/operations.js';
 import { removeManualPayment, cancelOffsetProtocol, openPaymentActions } from './payments/actions-dialog.js';
+import { saveEditedPayment } from './payments/edit-dialog.js';
 import { t } from '../../i18n/index.js';
 import { offsetPartners } from './payments/offset-dialog.js';
 import { moneyState, demoDocument } from './shared/data.js';
@@ -126,6 +127,43 @@ describe('payments', () => {
     await removeManualPayment(store, doc.id, payment.id);
     expect(store.get('documents', doc.id).payments).toEqual([]);
     expect(store.get('documents', voucher.id).status).toBe('CANCELLED');
+  });
+
+  it('an edited payment keeps its cash voucher only while it still says the same', async () => {
+    const store = await freshStore();
+    const book = await createCashBook(store, { name: 'Hlavna' });
+    const doc = await store.insert('documents', invoice());
+    const payment = makePayment(doc, { date: '2026-10-05', amount: '40', method: 'CASH', source: 'CASH', cashBookId: book.id });
+    await store.update('documents', doc.id, addPayment(doc, payment));
+    const voucher = await createVoucher(store, { bookId: book.id, kind: 'CASH_IN', date: '2026-10-05', amount: '40', purpose: 'x', paysDocId: doc.id, paymentId: payment.id });
+    const same = { date: '2026-10-05', amount: '40', method: 'CASH', cashBookId: book.id };
+    let result = await saveEditedPayment(store, doc.id, payment.id, { ...same, note: 'Pokladna' }, { purpose: 'x' });
+    expect(result.voucher).toBe(null);
+    expect(store.get('documents', voucher.id).status).not.toBe('CANCELLED');
+    expect(store.get('documents', doc.id).payments[0]).toMatchObject({ id: payment.id, note: 'Pokladna', source: 'CASH' });
+    await saveEditedPayment(store, doc.id, payment.id, { date: '2026-10-05', amount: '40', method: 'CARD' }, { purpose: 'x' });
+    expect(store.get('documents', voucher.id).status).toBe('CANCELLED');
+    expect(store.get('documents', doc.id).payments).toEqual([expect.objectContaining({ id: payment.id, method: 'CARD', source: 'MANUAL', cashBookId: null })]);
+    result = await saveEditedPayment(store, doc.id, payment.id, { ...same, amount: '100' }, { purpose: 'x' });
+    expect(result.voucher).toMatchObject({ kind: 'CASH_IN', paysDocId: doc.id, paymentId: payment.id });
+    expect(store.get('documents', doc.id)).toMatchObject({ status: 'PAID', payments: [expect.objectContaining({ amount: '100.00', method: 'CASH' })] });
+  });
+
+  it('edits the method of a hand payment from its actions', async () => {
+    const store = await freshStore();
+    const doc = await store.insert('documents', invoice());
+    const payment = makePayment(doc, { date: '2026-09-03', amount: '7.26', method: 'CARD', source: 'MANUAL' });
+    await store.update('documents', doc.id, addPayment(doc, payment));
+    openPaymentActions(ctx, doc.id, payment.id);
+    [...document.querySelectorAll('.modal-actions button')].find(b => b.textContent === t('payments.edit')).click();
+    const select = document.querySelector('.modal-content select');
+    expect(select.value).toBe('CARD');
+    expect(document.querySelector('.modal-content input').value).toBe('2026-09-03');
+    select.value = 'TRANSFER';
+    select.dispatchEvent(new Event('change'));
+    [...document.querySelectorAll('.modal-actions button')].find(b => b.textContent === t('common.save')).click();
+    await new Promise(r => setTimeout(r, 0));
+    expect(store.get('documents', doc.id).payments).toEqual([expect.objectContaining({ id: payment.id, method: 'TRANSFER', amount: '7.26', date: '2026-09-03' })]);
   });
 
   it('offers the eKasa helper for a cash payment unless the company does not use eKasa', async () => {

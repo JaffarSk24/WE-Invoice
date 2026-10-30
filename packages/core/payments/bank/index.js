@@ -6,7 +6,7 @@ export { BANK_PROFILES } from './csv/profiles.js';
 export { withImportKeys, splitDuplicates } from './normalize.js';
 export { parseSymbols, ibanFromDomestic } from './text.js';
 export { matchBankTx, matchStatement, PRESELECT_FROM, CONFIDENCE as MATCH_CONFIDENCE, directionOf as bankTxDirection } from './match/index.js';
-export { makePayment, addPayment, removePayments, applyMatch, unapplyMatch, statusAfterPayments } from './apply.js';
+export { makePayment, addPayment, replacePayment, removePayments, applyMatch, unapplyMatch, statusAfterPayments } from './apply.js';
 export { buildPain001, validatePain001, sepaText, PAIN001_NAMESPACE } from './pain001.js';
 export { paymentsForReceived, creditorIbanOf } from './payables.js';
 export { CASH_KINDS, defaultCashSeries, bookVouchers, cashBalance, cashBookRows, checkCashOut, cashKindForPayment, buildCashVoucher, cashDifference } from './cash.js';

@@ -66,6 +66,21 @@ export function addPayment(document, payment) {
   return { payments, status: statusAfterPayments({ ...document, payments }) };
 }
 
+/**
+ * The patch that replaces one payment, edited by the user, keeping its id
+ * and place. input is what makePayment takes.
+ */
+export function replacePayment(document, paymentId, input) {
+  const old = (document.payments || []).find(p => p.id === paymentId);
+  if (!old) throw new CoreError('BANK_PAYMENT_NOT_FOUND', `payment ${paymentId} not found`);
+  const next = makePayment(document, { ...input, id: paymentId, currency: input.currency || old.currency });
+  if (next.currency && document.currency && next.currency !== document.currency) {
+    throw new CoreError('BANK_PAYMENT_CURRENCY_MISMATCH', `${next.currency} payment on a ${document.currency} document`);
+  }
+  const payments = document.payments.map(p => (p.id === paymentId ? next : p));
+  return { payments, status: statusAfterPayments({ ...document, payments }) };
+}
+
 /** The patch that removes payments matching a predicate. */
 export function removePayments(document, predicate) {
   const payments = (document.payments || []).filter(p => !predicate(p));

@@ -163,10 +163,16 @@ describe('review', () => {
 describe('lists', () => {
   it('shows processed received invoices and the expense summary', async () => {
     const doc = await inboxDoc();
-    await store.update('documents', doc.id, { status: 'PROCESSED', issueDate: today });
+    await store.update('documents', doc.id, { status: 'PROCESSED', issueDate: today, payments: [
+      { id: 'p1', date: '2026-10-02', amount: '100.00', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL' },
+      { id: 'p2', date: '2026-10-09', amount: '121.40', currency: 'EUR', method: 'TRANSFER', source: 'MANUAL' }
+    ] });
     renderList(root, LISTS.received);
     expect(root.querySelector('h1').textContent).toBe('Prijaté faktúry');
     expect(root.textContent).toContain('Účtovníctvo Pro s.r.o.');
+    // The date it was actually paid: the latest payment.
+    expect(root.querySelector('thead').textContent).toContain('Uhradené');
+    expect(root.querySelector('tbody').textContent).toContain('9. 10. 2026');
     const receipt = await inboxDoc(read('text/sk-receipt-shop.txt'));
     await store.update('documents', receipt.id, { status: 'PROCESSED', expenseCategory: 'OFFICE' });
     root.replaceChildren();

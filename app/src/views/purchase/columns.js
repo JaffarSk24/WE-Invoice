@@ -30,6 +30,7 @@ export function listColumns({ withCategory = true, withDue = true } = {}) {
     { id: 'number', label: t('purchase.col.number'), render: r => r.number, sortValue: r => r.number },
     { id: 'issueDate', label: t('purchase.col.issueDate'), render: r => formatDate(r.issueDate), sortValue: r => r.issueDate || '' },
     withDue ? { id: 'dueDate', label: t('purchase.col.dueDate'), render: r => formatDate(r.dueDate), sortValue: r => r.dueDate || '' } : null,
+    { id: 'paidDate', label: t('purchase.col.paidDate'), render: r => formatDate(r.paidDate), sortValue: r => r.paidDate || '' },
     withCategory ? { id: 'category', label: t('purchase.col.category'), render: r => categoryLabel(r.category), sortValue: r => categoryLabel(r.category) } : null,
     { id: 'vat', label: t('purchase.col.vat'), align: 'num', hidden: true, render: r => formatAmount(r.vat, r.currency), sortValue: r => Number(r.vat) },
     { id: 'total', label: t('purchase.col.total'), align: 'num', primary: true, render: r => formatAmount(r.total, r.currency), sortValue: r => Number(r.total), total: totalOf },

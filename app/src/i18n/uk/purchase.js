@@ -23,6 +23,7 @@ export default {
   "purchase.col.number": "Номер",
   "purchase.col.issueDate": "Виставлено",
   "purchase.col.dueDate": "Строк оплати",
+  "purchase.col.paidDate": "Дата оплати",
   "purchase.col.category": "Категорія",
   "purchase.col.vat": "ПДВ",
   "purchase.col.total": "Сума",

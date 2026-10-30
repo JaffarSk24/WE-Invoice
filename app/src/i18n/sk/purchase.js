@@ -23,6 +23,7 @@ export default {
   "purchase.col.number": "Číslo",
   "purchase.col.issueDate": "Vyhotovená",
   "purchase.col.dueDate": "Splatnosť",
+  "purchase.col.paidDate": "Uhradené",
   "purchase.col.category": "Kategória",
   "purchase.col.vat": "DPH",
   "purchase.col.total": "Suma",

@@ -1,5 +1,6 @@
 // What can be done with one payment: open the eKasa helper (cash, card or
-// on-site QR payment of a sale) and remove a payment recorded by hand,
+// on-site QR payment of a sale), edit a payment recorded by hand
+// (edit-dialog.js) and remove it,
 // together with the cash voucher it created. A payment from a bank
 // statement is undone by unmatching the movement, an offset by its
 // protocol, so they are not removed here.
@@ -12,6 +13,7 @@ import { moneyState } from '../shared/data.js';
 import { canWrite, guarded } from '../shared/write.js';
 import { money, day } from '../shared/format.js';
 import { openEkasaDialog } from './ekasa-dialog.js';
+import { openEditDialog } from './edit-dialog.js';
 import { printOffset } from './offset-print.js';
 
 const SALES = new Set(['INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'DEBIT_NOTE', 'SALES_RECEIPT']);
@@ -53,6 +55,7 @@ export function openPaymentActions(ctx, docId, paymentId) {
     });
   }
   if (removable) {
+    actions.push({ label: t('payments.edit'), kind: 'primary', onClick: (m) => { m.close(); openEditDialog(ctx, docId, paymentId); } });
     actions.push({
       label: t('payments.remove'), kind: 'danger', onClick: async (m) => {
         if (!canWrite(state)) return;
