@@ -32,20 +32,21 @@ export function itemsOf(lib, content, viewport, page) {
 }
 
 /**
- * Opens a PDF from its bytes.
+ * Opens a PDF from its bytes, with its password when it has one.
  * @returns {Promise<{numPages: number, pageItems: (n: number) => Promise<object[]>,
  *   attachments: () => Promise<Array<{name: string, bytes: Uint8Array}>>,
  *   renderPage: (n: number, canvas: HTMLCanvasElement, width: number) => Promise<{width: number, height: number}>,
  *   destroy: () => Promise<void>}>}
  */
-export async function openPdf(bytes) {
+export async function openPdf(bytes, { password = undefined } = {}) {
   const lib = await pdfjs();
   let doc;
-  const task = lib.getDocument({ data: bytes.slice(0), isEvalSupported: false, useSystemFonts: false });
+  const task = lib.getDocument({ data: bytes.slice(0), password, isEvalSupported: false, useSystemFonts: false });
   try {
     doc = await task.promise;
   } catch (e) {
-    const code = e && e.name === 'PasswordException' ? 'PDF_PASSWORD' : 'PDF_DAMAGED';
+    // pdf.js: code 1 asks for a password, code 2 refuses the one given.
+    const code = e && e.name === 'PasswordException' ? (password && e.code === 2 ? 'PDF_PASSWORD_WRONG' : 'PDF_PASSWORD') : 'PDF_DAMAGED';
     throw new CoreError(code, `The PDF could not be opened: ${e && e.message}`);
   }
   return {

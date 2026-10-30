@@ -11,6 +11,8 @@ const COMPANY_ID = '0192a000-0000-7000-8000-000000000001';
 const ACCOUNT_ID = 'acc-main';
 const INVOICE_ID = '0192a000-0000-7000-8000-000000000101';
 const STATEMENT = readFileSync(new URL('../fixtures/bank/csv/tatra.csv', import.meta.url));
+// A PDF statement locked with a password, as banks send them (make-statement.js).
+const PDF_STATEMENT = readFileSync(new URL('../fixtures/bank/pdf/tatra-statement.pdf', import.meta.url));
 
 function seed() {
   const company = {
@@ -91,6 +93,32 @@ async function openBank(page) {
   await page.reload();
   await expect(page.locator('main h1, .view-header h1').first()).toHaveText('Banka');
 }
+
+test('a PDF statement with a password: asked once, then the next one opens by itself', async ({ page }) => {
+  await openBank(page);
+  const pdf = { name: 'vypis-10.pdf', mimeType: 'application/pdf', buffer: PDF_STATEMENT };
+  await page.locator('.view-actions .btn-primary').click();
+  const chooser = page.waitForEvent('filechooser');
+  await page.locator('.file-drop [data-action="choose"]').click();
+  await (await chooser).setFiles(pdf);
+  const ask = page.locator('.modal-content', { hasText: 'Heslo k výpisom' });
+  await expect(ask).toBeVisible();
+  await ask.locator('#bank-pdf-password').fill('nespravne');
+  await ask.locator('.modal-actions .btn-primary').click();
+  await expect(page.locator('.modal-content', { hasText: 'nesedí' })).toBeVisible();
+  await page.locator('#bank-pdf-password').fill('Vypis-2026');
+  await page.locator('.modal-content .modal-actions .btn-primary').click();
+  await expect(page.locator('.import-body')).toContainText('Formát: PDF');
+  await expect(page.locator('.import-body')).toContainText('nové 6, už importované 0.');
+  await page.locator('.modal-actions .btn-primary').click();
+  await expect.poll(async () => (await readCompanyData(page)).bankTransactions.length).toBe(6);
+  await page.keyboard.press('Escape');
+
+  // The same statement again: no password asked, nothing new.
+  await importStatement(page, [pdf]);
+  await expect(page.locator('.import-body')).toContainText('nové 0, už importované 6.');
+  await expect(page.locator('#bank-pdf-password')).toHaveCount(0);
+});
 
 test('several statements at once: an overlapping movement is stored once', async ({ page }) => {
   await openBank(page);

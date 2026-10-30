@@ -2,7 +2,7 @@
 // readers and the idempotent import keys.
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { parseBankStatement, detectStatementFormat, withImportKeys, splitDuplicates, parseSymbols, ibanFromDomestic } from './index.js';
+import { parseBankStatement, parsePdfStatementText, detectStatementFormat, withImportKeys, splitDuplicates, parseSymbols, ibanFromDomestic } from './index.js';
 import { parseStatementDate, parseStatementAmount } from './values.js';
 import { parseXml } from './xml/read.js';
 
@@ -167,5 +167,31 @@ describe('CAMT.053 of Tatra banka', () => {
       ['-1.60', null, 'Transakčná daň 05.10.2026']
     ]);
     expect(txs[0].vs).toBe('202601936');
+  });
+});
+
+describe('PDF statement of Tatra banka', () => {
+  const text = readFileSync(new URL('../../../../tests/fixtures/bank/pdf/tatra-statement.txt', import.meta.url), 'utf8');
+
+  it('reads every movement with its sign, party, symbols and detail, and checks the balances', () => {
+    const result = parsePdfStatementText(text);
+    expect(result).toMatchObject({ format: 'PDF', profile: 'tatra-pdf', account: { iban: 'SK3911000000002900123456', currency: 'EUR' }, warnings: [] });
+    expect(result.openingBalance).toEqual({ amount: '1000.00', date: '2026-09-30' });
+    expect(result.closingBalance.amount).toBe('1313.66');
+    expect(result.transactions.map(t => [t.date, t.amount, t.counterpartyName, t.vs, t.message])).toEqual([
+      ['2026-10-01', '1230.00', 'Alfa s.r.o.', '20260001', 'Platba 0900/000000-1234567891'],
+      // The detail continues after a page header and on the next line.
+      ['2026-10-03', '-369.00', 'Dodávateľ s.r.o.', '2026555', 'Úhrada faktúry za september a október 2026'],
+      ['2026-10-05', '-200.00', 'TB Lamac', null, 'Výber z bankomatu, Bratislava'],
+      ['2026-10-06', '-7.26', 'GOPAY *IDOKLAD.SK', null, 'POS nákup, BRATISLAVA'],
+      ['2026-10-06', '-1.60', null, null, 'Transakčná daň 05.10.2026'],
+      ['2026-10-21', '-338.48', 'O2 Slovakia, s.r.o.', '1511928641', 'DIRECT DEBIT']
+    ]);
+    expect(result.transactions[0]).toMatchObject({ valueDate: '2026-10-02', ks: '308', counterpartyIban: 'SK9709000000001234567891', ref: 'VP0000000101' });
+  });
+
+  it('warns when the movements do not add up to the balances, and refuses another PDF', () => {
+    expect(parsePdfStatementText(text.replace('1,313.66', '1,313.00')).warnings).toEqual(['BANK_PDF_BALANCE_MISMATCH']);
+    expect(() => parsePdfStatementText('Faktúra 2026001\nSpolu 100.00')).toThrow(expect.objectContaining({ code: 'BANK_PDF_UNKNOWN' }));
   });
 });

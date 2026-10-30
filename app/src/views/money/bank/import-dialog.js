@@ -10,7 +10,8 @@ import { h, clear, append } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast, showError } from '../../../ui/toast.js';
-import { parseBankStatement, withImportKeys, splitDuplicates, BANK_PROFILES, uuidv7 } from '@we-invoice/core';
+import { parseBankStatement, parsePdfStatementText, withImportKeys, splitDuplicates, BANK_PROFILES, uuidv7 } from '@we-invoice/core';
+import { isPdf, statementPdfReader } from './pdf-statement.js';
 import { moneyState } from '../shared/data.js';
 import { canWrite, guarded } from '../shared/write.js';
 import { day, money } from '../shared/format.js';
@@ -18,7 +19,7 @@ import { openMatchDialog } from './match-dialog.js';
 import { openBatchDialog } from './import-batch.js';
 import { fileDrop } from '../../../components/file-drop.js';
 
-export const ACCEPT = '.csv,.txt,.xml,.sta,.mt940,.940,.gpc,.abo';
+export const ACCEPT = '.csv,.txt,.xml,.sta,.mt940,.940,.gpc,.abo,.pdf,application/pdf';
 const MAPPED = ['date', 'amount', 'direction', 'debit', 'credit', 'currency', 'counterpartyName', 'counterpartyAccount', 'vs', 'message', 'ref'];
 const PREVIEW_ROWS = 8;
 
@@ -84,8 +85,12 @@ async function openStatementDialog(ctx, file, { accountId = '' } = {}) {
   const state = moneyState();
   let bytes;
   const fileName = file.name || '';
+  // A PDF is read once (its password asked at most once); other formats
+  // are parsed again whenever the profile or a column changes.
+  let pdfResult = null;
   try {
     bytes = await readFile(file);
+    if (isPdf(bytes)) pdfResult = parsePdfStatementText(await (await statementPdfReader(ctx, state.company.id))(bytes, fileName));
   } catch (e) {
     showError(e);
     return;
@@ -100,7 +105,7 @@ async function openStatementDialog(ctx, file, { accountId = '' } = {}) {
     clear(body);
     let result;
     try {
-      result = parseBankStatement(bytes, { profile: options.profile || undefined, mapping: options.mapping });
+      result = pdfResult || parseBankStatement(bytes, { profile: options.profile || undefined, mapping: options.mapping });
     } catch (e) {
       showError(e);
       body.append(h('p', { class: 'field-error' }, t(e?.code ? `errors.${e.code}` : 'errors.UNKNOWN')));

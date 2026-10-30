@@ -481,6 +481,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Bank, cash and payments
 
+#### Added (30 October, PDF statements)
+
+- PDF statements of Tatra banka import like the other formats, alone or several at once: the text of the PDF (read as in the Inbox) goes to the core reader `parsePdfStatementText`, checked against two real statements. Every movement takes its sign from the trailing minus, the payer reference gives the symbols, the IBAN and name of the counterparty come from Príjemca or Platiteľ, a card payment names its shop and a withdrawal its cash machine, a detail that runs over lines or a page break is joined, and the opening and closing balances check that every movement was read (warning `BANK_PDF_BALANCE_MISMATCH` otherwise). Another bank's PDF is refused with a message that names the formats to use instead.
+- Statements protected by a password: the password is asked once (a wrong one is asked again), kept with the device secrets (`bank-pdf:<company>`; the system keychain on the desktop, sealed with the data key in the browser) and in memory while the app runs, and tried on every next PDF; a batch asks at most once. `openPdf` takes a password and tells a missing one from a wrong one. The fixture `tests/fixtures/bank/pdf/tatra-statement.pdf` is a password-protected statement built by `make-statement.js`.
+
 #### Fixed (30 October, from testers)
 
 - CAMT.053 of Tatra banka: the message column showed the bank's own markup (`<NtryInf Ctg="Pay310" ...><Nrtv>...`) from AddtlNtryInf; only its narrative is kept now, and lines stored before are shown that way too. A card payment or cash withdrawal names the shop or the cash machine (TradgPty) as the counterparty. Zero lines (a free fee package) are skipped on import and hidden when stored unmatched.

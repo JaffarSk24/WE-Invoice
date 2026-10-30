@@ -4,25 +4,28 @@
 // all of them. A movement in two files (overlapping statements) is stored
 // once. A file that cannot be read, or a CSV whose columns need choosing
 // by hand, is left out with a note: imported alone it opens the full view.
+// PDF statements share one password prompt (pdf-statement.js).
 import { h } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast } from '../../../ui/toast.js';
-import { parseBankStatement, withImportKeys, splitDuplicates, uuidv7 } from '@we-invoice/core';
+import { parseBankStatement, parsePdfStatementText, withImportKeys, splitDuplicates, uuidv7 } from '@we-invoice/core';
+import { isPdf, statementPdfReader } from './pdf-statement.js';
 import { moneyState } from '../shared/data.js';
 import { guarded } from '../shared/write.js';
 import { openMatchDialog } from './match-dialog.js';
 import { pickAccount, readFile } from './import-dialog.js';
 
 /** What every file holds: { name, format, account, fresh, duplicates, problem }. */
-export async function readBatch(files, { accounts, existing, accountId = '' }) {
+export async function readBatch(files, { accounts, existing, accountId = '', readPdfText = null }) {
   const seen = [...existing];
   const out = [];
   for (const file of files) {
     const name = file.name || '';
     let result;
     try {
-      result = parseBankStatement(await readFile(file), {});
+      const bytes = await readFile(file);
+      result = isPdf(bytes) ? parsePdfStatementText(await readPdfText(bytes, name)) : parseBankStatement(bytes, {});
     } catch (e) {
       out.push({ name, problem: t(e?.code ? `errors.${e.code}` : 'errors.UNKNOWN'), fresh: [], duplicates: [] });
       continue;
@@ -59,7 +62,10 @@ export async function storeBatch(store, rows) {
 
 export async function openBatchDialog(ctx, files, { accountId = '' } = {}) {
   const state = moneyState();
-  const rows = await readBatch(files, { accounts: state.company.bankAccounts || [], existing: state.bankTransactions, accountId });
+  // One reader for the whole batch: the PDF password is asked once at most.
+  let reader = null;
+  const readPdfText = async (bytes, name) => { reader = reader || await statementPdfReader(ctx, state.company.id); return reader(bytes, name); };
+  const rows = await readBatch(files, { accounts: state.company.bankAccounts || [], existing: state.bankTransactions, accountId, readPdfText });
   const total = rows.reduce((n, r) => n + r.fresh.length, 0);
   const table = h('table', { class: 'table preview-table batch-table' },
     h('thead', {}, h('tr', {}, [t('bank.import.batch.file'), t('bank.import.account'), t('bank.import.batch.fresh'), t('bank.import.batch.duplicates')]
