@@ -590,6 +590,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Purchases, Inbox and expenses
 
+#### Fixed (30 October, from testers)
+
+- Labels printed side by side with their values on the next line ("Dátum vystavenia  Dátum splatnosti" over "28.02.2026  15.03.2026") gave every label the first value of that line, so the due date became the issue date. A value under a label is now taken from the label's own column. New fixture `sk-invoice-columns`.
+
 #### Fixed (29 October, from testers)
 
 - The back arrow of a received document, an expense or an Inbox document opened the same card again: the router took "#/received/abc" and "received" for the same place because it compared only the first segment. It now compares the whole path, which also makes "Show all" in the change log drop its filter and the card redraw after a recorded payment. Changing the language in Settings stays on the section it was changed in.

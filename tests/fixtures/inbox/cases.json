@@ -48,6 +48,8 @@
     { "id": "sk-receipt-shop", "type": "text", "file": "text/sk-receipt-shop.txt",
       "expected": { "kind": "EXPENSE_RECEIPT", "supplierName": "PAPIERNICTVO U SOVY", "ico": "50778811", "dic": "2099887702", "issueDate": "2026-10-10", "currency": "EUR", "total": "15.40", "net": "12.52", "vat": "2.88" } },
     { "id": "sk-invoice-noisy", "type": "text", "file": "text/sk-invoice-noisy.txt",
-      "expected": { "number": "7712345601", "ico": "47773332", "icDph": "SK2077733306", "iban": "SK6609000000005012345678", "vs": "7712345601", "issueDate": "2026-10-02", "dueDate": "2026-10-16", "currency": "EUR", "net": "32.52", "vat": "7.48", "total": "40.00" } }
+      "expected": { "number": "7712345601", "ico": "47773332", "icDph": "SK2077733306", "iban": "SK6609000000005012345678", "vs": "7712345601", "issueDate": "2026-10-02", "dueDate": "2026-10-16", "currency": "EUR", "net": "32.52", "vat": "7.48", "total": "40.00" } },
+    { "id": "sk-invoice-columns", "type": "text", "file": "text/sk-invoice-columns.txt",
+      "expected": { "ico": "53792319", "iban": "SK1483300000002902012085", "vs": "202600472", "issueDate": "2026-02-28", "dueDate": "2026-03-15", "currency": "EUR", "total": "36.90" } }
   ]
 }

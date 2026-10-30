@@ -56,10 +56,39 @@ export function labeled(scan, labels, value) {
     if (hits.length) {
       const hit = hits[0];
       const start = hit.end - hit.groups[0].length;
-      return { raw: scan.text.slice(start, hit.end), index: hit.index, label: i };
+      const below = scan.folded.slice(hit.index, start).includes('\n') ? columnBelow(scan, labels[i], hit.index, value) : null;
+      return below ? { ...below, label: i } : { raw: scan.text.slice(start, hit.end), index: hit.index, label: i };
     }
   }
   return null;
+}
+
+// Runs of text on a line, split at column breaks (two spaces or more).
+function columns(line, offset) {
+  return findAll(line, '\\S+(?: \\S+)*').map(h => ({ start: offset + h.index, end: offset + h.end }));
+}
+
+// Labels side by side with their values on the next line
+// ("Datum vystavenia  Datum splatnosti" over "28.02.2026  15.03.2026"):
+// the value is the one in the label's column, not the first of the line.
+function columnBelow(scan, label, from, value) {
+  const at = findAll(scan.folded.slice(from), `(?:${label})`)[0];
+  if (!at) return null;
+  const labelStart = from + at.index;
+  const line = lineAt(scan.folded, labelStart);
+  const above = columns(scan.folded.slice(line.start, line.end), line.start);
+  if (above.length < 2 || line.end >= scan.folded.length) return null;
+  const next = lineAt(scan.folded, line.end + 1);
+  const below = columns(scan.folded.slice(next.start, next.end), next.start);
+  const k = above.findIndex(c => labelStart >= c.start && labelStart < c.end);
+  if (k < 0 || below.length < 2) return null;
+  // The same column by its number, else the one starting nearest.
+  const column = below.length === above.length ? below[k]
+    : below.reduce((a, b) => (Math.abs(b.start - next.start - (above[k].start - line.start)) < Math.abs(a.start - next.start - (above[k].start - line.start)) ? b : a));
+  const hit = findAll(scan.folded.slice(column.start, column.end), `^${value}`)[0];
+  if (!hit) return null;
+  const start = column.start + hit.end - hit.groups[0].length;
+  return { raw: scan.text.slice(start, column.start + hit.end), index: labelStart };
 }
 
 export function scanOf(text) {

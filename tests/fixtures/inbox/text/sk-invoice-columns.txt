@@ -1,0 +1,15 @@
+Zálohová faktúra  202600472
+DODÁVATEĽ  ODBERATEĽ
+Reálna podpora s.r.o.  Biela Orlica s.r.o.
+Agátová 3460/7F  Hlavná 1
+84101 Bratislava-Dúbravka  81101 Bratislava
+IČO:  53792319  IČO:  36123455
+DIČ:  2121513515  DIČ:  2020123402
+PAY by square
+Dátum vystavenia  Dátum splatnosti
+28.02.2026  15.03.2026
+IBAN  SWIFT  VS  Suma na úhradu
+SK1483300000002902012085  FIOZSKBA  202600472  36,90 EUR
+Č.  Názov položky  Cena bez DPH  DPH %  Cena spolu z DPH
+1  Služby účtovníctva  30,00  23  36,90
+Spolu  EUR 36,90
