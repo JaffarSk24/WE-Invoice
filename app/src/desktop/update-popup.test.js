@@ -2,7 +2,7 @@
 // The large window about a new version: once per version and run, the
 // download and restart steps inside it, the release notes drawn as text.
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createUpdatePopup, notesView } from './update-popup.js';
+import { createUpdatePopup, notesView, notesFor } from './update-popup.js';
 import { t } from '../i18n/index.js';
 
 function fakeUpdates() {
@@ -58,5 +58,17 @@ describe('update popup', () => {
     expect(view.querySelector('a, strong')).toBeNull();
     expect(view.textContent).not.toContain('WE Invoice 0.1.5');
     expect(notesView('', 'none').textContent).toBe('none');
+  });
+
+  it('shows the notes in the language of the app, else in English', () => {
+    const notes = '# WE Invoice 0.1.7\n\n## English\n\n### Fixed\n\n- Back arrow.\n\n## Slovenčina\n\n### Opravené\n\n- Šípka späť.\n\n## Русский\n\n### Исправлено\n\n- Стрелка «Назад».\n';
+    expect(notesFor(notes, 'ru')).toBe('### Исправлено\n\n- Стрелка «Назад».');
+    expect(notesFor(notes, 'sk')).toContain('Šípka späť.');
+    expect(notesFor(notes, 'de')).toBe('### Fixed\n\n- Back arrow.');
+    expect(notesFor(NOTES, 'ru')).toBe(NOTES);
+    const updates = fakeUpdates();
+    createUpdatePopup({ updates, t, lang: () => 'ru' });
+    updates.emit({ status: 'available', latest: '0.1.7', current: '0.1.6', notes });
+    expect(document.querySelector('.update-popup-notes').textContent).toBe('ИсправленоСтрелка «Назад».');
   });
 });

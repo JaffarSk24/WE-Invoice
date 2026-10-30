@@ -206,6 +206,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Fixed (30 October, from testers)
+
+- The update window shows "What's new" in the language of the app: the release notes carry a section per language (`## English`, `## Slovenčina`, `## Čeština`, `## Deutsch`, `## Русский`, `## Українська`) and the window picks the user's one, else the English one; notes without sections are shown whole. `tests/release-notes.test.js` fails on release notes after 0.1.6 that miss a language. The "What's new" dialog of the banner shows the same section.
+- The download progress bar of the update window was not drawn, only its percentage: the banner's `flex: 1 1 100%` gave it no height in the column of the window. It now shows, 10 px high.
+- The list of changes in the update window takes the height the screen has left instead of 280 px, so it is no longer cut in the middle of a line on a large screen; a longer list scrolls inside a visible frame.
+
 #### Added (29 October)
 
 - A new release opens a large window over the app at start: the new and the installed version, what is new (the release notes), a large Update now button, then the download progress and Restart and update in the same window. Later closes it until the next start; the banner stays as a reminder. The web app asks to reload in the same kind of window instead of a small notice.

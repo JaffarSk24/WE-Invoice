@@ -4,10 +4,30 @@
 // new (the release notes from GitHub), and one large "Update now" button.
 // It then shows the download progress and "Restart and update", the same
 // steps as the banner (desktop/updates.js), which stays as a reminder after
-// "Later". "Later" closes the window until the next start.
+// "Later". "Later" closes the window until the next start. The notes are
+// shown in the language of the app (see notesFor).
 import { h, clear, icon } from '../ui/dom.js';
 import { refreshIcons } from '../ui/icons.js';
 import { openModal } from '../ui/modal.js';
+import { currentLang } from '../i18n/index.js';
+
+// The notes of a release (docs/release-notes/<version>.md) carry one
+// section per language, headed by its own name: Slovencina and Cestina
+// with their diacritics, written as escapes because they are markers, not
+// interface text.
+export const NOTES_LANGUAGES = Object.freeze({ English: 'en', 'Sloven\u010dina': 'sk', '\u010ce\u0161tina': 'cs', Deutsch: 'de', Русский: 'ru', Українська: 'uk' });
+
+/** The section of the notes in a language, else the English one; notes without sections whole. */
+export function notesFor(markdown, lang) {
+  const sections = {};
+  let current = null;
+  for (const line of String(markdown || '').split(/\r?\n/)) {
+    const heading = /^##\s+(.+?)\s*$/.exec(line);
+    if (heading && NOTES_LANGUAGES[heading[1]]) { current = NOTES_LANGUAGES[heading[1]]; sections[current] = []; } else if (current) sections[current].push(line);
+  }
+  const chosen = sections[lang] || sections.en;
+  return chosen ? chosen.join('\n').trim() : String(markdown || '');
+}
 
 // Release notes are short Markdown: headings, list items, bold and links.
 // They are drawn as text nodes, never as HTML.
@@ -31,7 +51,7 @@ export function notesView(markdown, emptyText) {
   return h('div', { class: 'update-popup-notes' }, nodes.length ? nodes : h('p', { class: 'muted' }, emptyText));
 }
 
-export function createUpdatePopup({ updates, t, open = openModal }) {
+export function createUpdatePopup({ updates, t, open = openModal, lang = currentLang }) {
   const shownFor = new Set();
   let modal = null;
   let body = null;
@@ -45,7 +65,7 @@ export function createUpdatePopup({ updates, t, open = openModal }) {
         h('div', {}, h('p', { class: 'update-popup-lead' }, t('desktop.updates.popupLead', { version: state.latest, current: state.current || '' })),
           h('p', { class: 'muted' }, t('desktop.updates.popupSafe')))),
       h('h3', { class: 'update-popup-subtitle' }, t('desktop.updates.whatsNew')),
-      notesView(state.notes, t('desktop.updates.noNotes')));
+      notesView(notesFor(state.notes, lang()), t('desktop.updates.noNotes')));
     const actions = h('div', { class: 'update-popup-actions' });
     if (state.status === 'downloading') {
       const percent = Math.round((state.progress || 0) * 100);

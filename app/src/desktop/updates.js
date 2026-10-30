@@ -8,6 +8,8 @@
 import { h, clear, icon } from '../ui/dom.js';
 import { refreshIcons } from '../ui/icons.js';
 import { openModal } from '../ui/modal.js';
+import { currentLang } from '../i18n/index.js';
+import { notesFor, notesView } from './update-popup.js';
 
 const START_DELAY_MS = 2500;
 const CHECK_EVERY_MS = 24 * 60 * 60 * 1000;
@@ -73,7 +75,7 @@ export function createUpdates({ weUpdates, t, showToast, showError, setTimer = s
   function showNotes() {
     openModal({
       title: t('desktop.updates.notesTitle', { version: state.latest }),
-      body: h('div', { class: 'release-notes' }, state.notes || t('desktop.updates.noNotes')),
+      body: h('div', { class: 'release-notes' }, notesView(notesFor(state.notes, currentLang()), t('desktop.updates.noNotes'))),
       actions: [{ label: t('common.close'), onClick: (m) => m.close() }]
     });
   }
