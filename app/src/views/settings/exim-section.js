@@ -12,7 +12,7 @@ export function eximSection(root, deps = {}) {
   const backup = h('div', { class: 'settings-section', id: 'settings-exim-backup' });
   append(root, [
     h('p', { class: 'muted' }, t('settings.section.exim.text')),
-    h('div', { class: 'exim-actions' }, links),
+    h('div', { class: 'actions-row' }, links),
     backup]);
   // The backup panel and its styles load on first use.
   return import('../exim/backup-section.js')

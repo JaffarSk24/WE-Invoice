@@ -51,6 +51,10 @@
    row wraps and each button takes the full width. */
 .modal-actions .btn { white-space: nowrap; flex: 0 1 auto; }
 @media (max-width: 480px) { .modal-actions .btn { flex: 1 1 auto; } }
+/* A row of buttons anywhere, in this always-loaded sheet: a row class from
+   the stylesheet of another screen is only there once that screen opened. */
+.actions-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; }
+@media (max-width: 767px) { .actions-row .btn { flex: 1 1 auto; } }
 
 /* Sync dialogs (WP-SYNC): fields, recovery words, hints. */
 .sync-text { color: var(--text-secondary); margin: 0 0 16px; line-height: 1.5; }

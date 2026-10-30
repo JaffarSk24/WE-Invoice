@@ -10,7 +10,7 @@
 .widget.is-drop { border-color: var(--accent-blue); box-shadow: var(--shadow-glow); }
 .widget-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .widget-head h2 { font-size: 15px; flex: 1; min-width: 0; }
-.widget-tools { display: flex; gap: 2px; opacity: 0.55; }
+.widget-tools { display: flex; gap: 4px; opacity: 0.55; }
 .widget:hover .widget-tools, .widget:focus-within .widget-tools { opacity: 1; }
 .widget-body { flex: 1; }
 @media (max-width: 767px) { .widget-tools .widget-move { display: none; } .widget-tools { opacity: 1; } }

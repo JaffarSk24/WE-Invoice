@@ -63,6 +63,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Interface shell and components
 
+#### Fixed (30 October, from testers)
+
+- The buttons of the sync section in Settings (Sync, Change password, Sign out; Sign in with Google and the encryption password before signing in) stood glued together and against the text above: the row borrowed `.exim-actions` from the stylesheet of the export screen, which loads only once that screen is opened. Rows of buttons outside their own screen now use `.actions-row` from the always-loaded components.css, the export links of Settings too. The tool buttons of a dashboard widget keep 4 px instead of 2 px.
+- `tests/e2e/button-spacing.spec.js` opens every screen and every settings section by a fresh load, so only its own stylesheets are in force, and fails on sibling buttons on one line closer than 4 px; a signed-in sync section is checked too.
+
 #### Changed (29 October, company switcher)
 
 - The company switcher moved from the bottom of the sidebar to its top, under the logo, with a Company label; on a phone it is a strip over every screen instead of a select on the More screen. For people with many companies it is the first thing on the screen.

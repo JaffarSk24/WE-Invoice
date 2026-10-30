@@ -63,7 +63,7 @@ export function createSyncSection({ engine, transport }) {
         state.lastSyncAt ? h('p', { class: 'muted small' }, t('sync.lastSync', { time: formatDateTime(state.lastSyncAt) })) : null,
         pendingFiles(engine) ? h('p', { class: 'muted small', id: 'settings-sync-files' }, t('sync.attachments.pending', { n: pendingFiles(engine) })) : null,
         h('p', { class: 'muted' }, t('sync.signIn.text')),
-        h('div', { class: 'exim-actions' }, syncActions(state).map(a => button(`settings-sync-${a}`, labels[a], handlers[a], a === 'signIn' || a === 'sync')))
+        h('div', { class: 'actions-row' }, syncActions(state).map(a => button(`settings-sync-${a}`, labels[a], handlers[a], a === 'signIn' || a === 'sync')))
       ]);
     }
 
