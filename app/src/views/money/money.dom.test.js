@@ -16,6 +16,7 @@ import { createCashBook, createVoucher, cancelVoucher } from './cash/operations.
 import { removeManualPayment, cancelOffsetProtocol, openPaymentActions } from './payments/actions-dialog.js';
 import { saveEditedPayment } from './payments/edit-dialog.js';
 import { readBatch, storeBatch } from './bank/import-batch.js';
+import { bookCashTransfer, undoCashTransfer } from './bank/cash-transfer.js';
 import { openImportDialog } from './bank/import-dialog.js';
 import { readFileSync } from 'node:fs';
 import { t } from '../../i18n/index.js';
@@ -96,6 +97,45 @@ describe('stored bank lines', () => {
       { id: 'c', amount: '-36.90', message: 'Sluzby uctovnictva' }
     ]);
     expect(list.map(tx => [tx.id, tx.message])).toEqual([['a', 'Transakčná daň 05.10.2026'], ['c', 'Sluzby uctovnictva']]);
+  });
+});
+
+describe('cash moved between bank and cash book', () => {
+  it('books a withdrawal as a cash receipt outside VAT, and undoes it', async () => {
+    const store = await freshStore();
+    const [tx] = withImportKeys(ACCOUNT.id, [{ date: '2026-10-05', amount: '-200.00', currency: 'EUR', message: 'Výber z bankomatu, Bratislava', counterpartyName: 'TB Lamac', ref: 'atm1' }]);
+    const saved = await store.insert('bankTransactions', { ...tx, matched: null });
+    const [proposal] = matchBankTx(saved, store.list('documents'));
+    expect(proposal).toMatchObject({ kind: 'CASH_TRANSFER', transfer: 'WITHDRAWAL' });
+    const voucher = await bookCashTransfer(store, saved.id, proposal, { bookName: 'Hlavna', purpose: 'Výber hotovosti' });
+    expect(voucher).toMatchObject({ kind: 'CASH_IN', bankTxId: saved.id, ekasaSale: false, totals: expect.objectContaining({ gross: '200.00' }) });
+    expect(voucher.lines[0].vatCategory).toBe('O');
+    expect(store.list('cashBooks')).toHaveLength(1);
+    expect(store.get('bankTransactions', saved.id).matched).toMatchObject({ docId: voucher.id, confirmed: true });
+    expect(moneyState().bankTransactions[0].counterpartyName).toBe('TB Lamac');
+    await undoCashTransfer(store, saved.id);
+    expect(store.get('documents', voucher.id).status).toBe('CANCELLED');
+    expect(store.get('bankTransactions', saved.id).matched).toBe(null);
+  });
+
+  it('puts the transfer into the cash journal of a sole trader with simple bookkeeping', async () => {
+    const store = await freshStore();
+    await store.updateCompany({ taxpayerType: 'FO', accountingMode: 'SIMPLE' });
+    const [tx] = withImportKeys(ACCOUNT.id, [{ date: '2026-10-06', amount: '500.00', currency: 'EUR', message: 'Vklad hotovosti cez bankomat', ref: 'dep1' }]);
+    const saved = await store.insert('bankTransactions', { ...tx, matched: null });
+    const voucher = await bookCashTransfer(store, saved.id, { transfer: 'DEPOSIT' }, { bookName: 'Hlavna', purpose: 'Vklad' });
+    expect(voucher.kind).toBe('CASH_OUT');
+    expect(store.list('ledgerEntries')).toEqual([expect.objectContaining({ direction: 'TRANSFER', medium: 'CASH', amount: '500.00', category: 'TRANSFER', docId: voucher.id })]);
+    await undoCashTransfer(store, saved.id);
+    expect(store.list('ledgerEntries')).toEqual([]);
+  });
+
+  it('shows the party of the matched document when the line names none', async () => {
+    const store = await freshStore();
+    const doc = await store.insert('documents', invoice({ kind: 'RECEIVED_INVOICE', status: 'PROCESSED', seller: { name: 'Seyfor Slovensko, a.s.' }, buyer: null }));
+    const [tx] = withImportKeys(ACCOUNT.id, [{ date: '2026-09-03', amount: '-100.00', currency: 'EUR', message: 'POS nákup', ref: 'pos1' }]);
+    const saved = await store.insert('bankTransactions', { ...tx, matched: { docId: doc.id, confidence: 100, confirmed: true } });
+    expect(moneyState().bankTransactions.find(x => x.id === saved.id).counterpartyName).toBe('Seyfor Slovensko, a.s.');
   });
 });
 

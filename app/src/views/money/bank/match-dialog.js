@@ -10,9 +10,15 @@ import { matchStatement, applyMatch } from '@we-invoice/core';
 import { moneyState } from '../shared/data.js';
 import { canWrite, guarded, patchDocuments } from '../shared/write.js';
 import { proposalLabel, proposalExplanation, txTitle } from './explain.js';
+import { bookCashTransfer } from './cash-transfer.js';
 
-/** Stores one confirmed proposal: the payments on the documents, the mark on the movement. */
+/** Stores one confirmed proposal: the payments on the documents (or a cash voucher), the mark on the movement. */
 export async function confirmProposal(store, txId, proposal) {
+  if (proposal.kind === 'CASH_TRANSFER') {
+    const purpose = t(proposal.transfer === 'WITHDRAWAL' ? 'bank.transfer.purposeWithdrawal' : 'bank.transfer.purposeDeposit');
+    await bookCashTransfer(store, txId, proposal, { bookName: t('cash.book.defaultName'), purpose });
+    return;
+  }
   const tx = store.get('bankTransactions', txId);
   const result = applyMatch(tx, proposal, store.list('documents'));
   await patchDocuments(store, result.documents);

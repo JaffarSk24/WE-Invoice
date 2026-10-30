@@ -10,6 +10,7 @@
 import { candidatesFor, recordedFor, partyIban, partyOf } from './candidates.js';
 import { scoreCandidate, PRESELECT_FROM, CONFIDENCE } from './rules.js';
 import { multiProposals } from './combine.js';
+import { cashTransferProposal } from '../cash-transfer.js';
 import { add } from '../../../money/index.js';
 
 const MAX_PROPOSALS = 5;
@@ -34,6 +35,9 @@ function openPerParty(candidates) {
  */
 export function matchBankTx(tx, documents, contacts = [], options = {}) {
   if (!tx || !tx.amount) return [];
+  // Cash from a cash machine pays no document: it goes to the cash book.
+  const transfer = cashTransferProposal(tx);
+  if (transfer) return [transfer];
   const candidates = candidatesFor(tx, documents, contacts, options.pending);
   const perParty = openPerParty(candidates);
   const single = candidates.map(c => scoreCandidate(tx, c, perParty(c))).filter(Boolean);
@@ -91,4 +95,4 @@ export function matchStatement(transactions, documents, contacts = []) {
 }
 
 export { PRESELECT_FROM, CONFIDENCE } from './rules.js';
-export { directionOf, namesMatch, openAmount } from './candidates.js';
+export { directionOf, namesMatch, openAmount, recordedFor } from './candidates.js';

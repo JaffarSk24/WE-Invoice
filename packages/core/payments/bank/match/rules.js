@@ -6,14 +6,30 @@
 //   number in message         80  (70 with another amount)
 //   amount + name             60  a suggestion only
 //   IBAN, other amount        50  only when the party has one open document
+//   card, amount and date  90/75  a card payment names a shop, not the
+//                                 supplier: the same amount within 3 days
+//                                 of a document paid by card (90), or
+//                                 within 7 days otherwise (75)
 // Every proposal carries its reasons as codes, so the interface explains
 // it in the user's language, and the amount it would record.
 import { abs, round, cmp, sub } from '../../../money/index.js';
 import { docVs, partyIban, partyOf, namesMatch, searchText, digitRuns } from './candidates.js';
 
 export const CONFIDENCE = Object.freeze({
-  VS_AMOUNT: 100, IBAN_AMOUNT: 90, VS_OTHER_AMOUNT: 85, NUMBER: 80, NUMBER_OTHER_AMOUNT: 70, NAME_AMOUNT: 60, IBAN_OTHER_AMOUNT: 50
+  VS_AMOUNT: 100, IBAN_AMOUNT: 90, VS_OTHER_AMOUNT: 85, NUMBER: 80, NUMBER_OTHER_AMOUNT: 70, NAME_AMOUNT: 60, IBAN_OTHER_AMOUNT: 50,
+  CARD_AMOUNT: 90, CARD_AMOUNT_NEAR: 75
 });
+
+const DAY = 24 * 60 * 60 * 1000;
+const daysApart = (a, b) => (a && b ? Math.abs(Date.parse(`${a}T00:00:00Z`) - Date.parse(`${b}T00:00:00Z`)) / DAY : null);
+
+const nearest = (date, others) => {
+  const found = others.map(o => daysApart(date, o)).filter(d => d !== null);
+  return found.length ? Math.min(...found) : null;
+};
+
+// A movement as a card payment shows it: no counter account and no symbol.
+const cardLike = (tx) => !tx.counterpartyIban && !tx.vs;
 
 /** Confidence from which a proposal is ticked in the confirmation dialog. */
 export const PRESELECT_FROM = 90;
@@ -44,7 +60,12 @@ export function evidence(tx, candidate, openByParty = 1) {
     iban: Boolean(iban && tx.counterpartyIban && iban === tx.counterpartyIban),
     number: numberInText(candidate.doc, searchText(tx)),
     name: Boolean(tx.counterpartyName && names.some(n => namesMatch(n, tx.counterpartyName))),
-    soleOpen: openByParty === 1
+    soleOpen: openByParty === 1,
+    // The nearer of the document's date and, for a hand payment, the date
+    // typed for it (often the due date rather than the day of the card).
+    days: nearest(tx.date, [candidate.paymentDate, candidate.doc.issueDate]),
+    byCard: (candidate.paymentMethod || candidate.doc.paymentMethod) === 'CARD',
+    card: cardLike(tx)
   };
 }
 
@@ -60,6 +81,8 @@ export function scoreCandidate(tx, candidate, openByParty = 1) {
   let reasons = [];
   if (e.vs && e.amount) { rule = 'VS_AMOUNT'; reasons = ['VS', 'AMOUNT', ...extra]; }
   else if (e.iban && e.amount) { rule = 'IBAN_AMOUNT'; reasons = ['IBAN', 'AMOUNT', ...(e.name ? ['NAME'] : [])]; }
+  else if (e.card && e.amount && e.days !== null && e.days <= 3 && e.byCard) { rule = 'CARD_AMOUNT'; reasons = ['CARD', 'AMOUNT', 'DATE']; }
+  else if (e.card && e.amount && e.days !== null && e.days <= 7 && !e.name) { rule = 'CARD_AMOUNT_NEAR'; reasons = ['AMOUNT', 'DATE']; }
   else if (e.vs) { rule = 'VS_OTHER_AMOUNT'; reasons = ['VS', ...extra]; }
   else if ((e.number || e.vsInText) && e.amount) { rule = 'NUMBER'; reasons = [e.number ? 'NUMBER' : 'VS_IN_TEXT', 'AMOUNT', ...extra]; }
   else if (e.number || e.vsInText) { rule = 'NUMBER_OTHER_AMOUNT'; reasons = [e.number ? 'NUMBER' : 'VS_IN_TEXT', ...extra]; }

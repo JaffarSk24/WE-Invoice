@@ -12,6 +12,7 @@ const ACCOUNT_ID = 'acc-main';
 const INVOICE_ID = '0192a000-0000-7000-8000-000000000101';
 const STATEMENT = readFileSync(new URL('../fixtures/bank/csv/tatra.csv', import.meta.url));
 // A PDF statement locked with a password, as banks send them (make-statement.js).
+const TATRA_EXPORT = readFileSync(new URL('../fixtures/bank/csv/tatra-export.csv', import.meta.url));
 const PDF_STATEMENT = readFileSync(new URL('../fixtures/bank/pdf/tatra-statement.pdf', import.meta.url));
 
 function seed() {
@@ -118,6 +119,22 @@ test('a PDF statement with a password: asked once, then the next one opens by it
   await importStatement(page, [pdf]);
   await expect(page.locator('.import-body')).toContainText('nové 0, už importované 6.');
   await expect(page.locator('#bank-pdf-password')).toHaveCount(0);
+});
+
+test('a cash withdrawal is matched with the cash book as a cash receipt', async ({ page }) => {
+  await openBank(page);
+  await importStatement(page, [{ name: 'Export pohybov.csv', mimeType: 'text/csv', buffer: TATRA_EXPORT }]);
+  await page.locator('.modal-actions .btn-primary').click();
+  const match = page.locator('.modal-content', { hasText: 'Párovanie platieb' });
+  const atm = match.locator('.match-row', { hasText: '800,00' });
+  await expect(atm.locator('select option:checked')).toHaveText(/Výber do pokladne/);
+  await expect(atm.locator('.match-check')).toBeChecked();
+  await match.locator('.modal-actions .btn-primary').click();
+  await expect.poll(async () => {
+    const data = await readCompanyData(page);
+    const voucher = data.documents.find(d => d.kind === 'CASH_IN');
+    return voucher ? [voucher.totals.gross, voucher.ekasaSale, Boolean(voucher.bankTxId)] : null;
+  }).toEqual(['800.00', false, true]);
 });
 
 test('several statements at once: an overlapping movement is stored once', async ({ page }) => {

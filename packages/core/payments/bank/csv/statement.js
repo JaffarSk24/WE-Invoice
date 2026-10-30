@@ -18,6 +18,10 @@ const first = (row, indexes = []) => {
   return '';
 };
 
+// Every non-empty message column, once each: the payer's note and the
+// bank's description ("Výber z bankomatu") both say what the line is.
+const joined = (row, indexes = []) => [...new Set(indexes.map(i => cellAt(row, i)).filter(Boolean))].join(', ');
+
 function headerIndexOf(table) {
   const known = table.slice(0, 40).findIndex(isProfileHeader);
   return known >= 0 ? known : detectHeaderRow(table);
@@ -89,7 +93,7 @@ export function parseCsvStatement(text, options = {}) {
       ks: first(row, mapping.ks),
       ss: first(row, mapping.ss),
       symbols: first(row, mapping.symbols),
-      message: first(row, mapping.message),
+      message: meta.joinMessage ? joined(row, mapping.message) : first(row, mapping.message),
       ref: first(row, mapping.ref),
       fee: fee && !isZero(fee) ? round(abs(fee), 2) : null
     }, { currency: options.currency, country }));

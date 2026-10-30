@@ -50,9 +50,9 @@ describe('Tatra banka, Export pohybov of Internet banking', () => {
     expect(result.transactions.map(t => t.amount)).toEqual(['1230.00', '-369.00', '-338.48', '-800.00']);
     expect(result.transactions[0]).toMatchObject({ date: '2026-10-05', valueDate: '2026-10-06', vs: '20260001', ks: '308', counterpartyIban: 'SK9709000000001234567891' });
     // Symbols padded with spaces; a direct debit carries its VS only in the payer reference.
-    expect(result.transactions[1]).toMatchObject({ vs: '2026555', ss: '12026', message: 'Úhrada faktúry' });
-    expect(result.transactions[2]).toMatchObject({ vs: '1511928641', counterpartyIban: 'SK1109000000000630964920', message: 'DIRECT DEBIT' });
-    expect(result.transactions[3].message).toContain('Bratislava');
+    expect(result.transactions[1]).toMatchObject({ vs: '2026555', ss: '12026', message: 'Úhrada faktúry, Platba 8330/000000-5566778899' });
+    expect(result.transactions[2]).toMatchObject({ vs: '1511928641', counterpartyIban: 'SK1109000000000630964920', message: 'DIRECT DEBIT, CC 0900/000000-0630964920' });
+    expect(result.transactions[3].message).toMatch(/Bratislava .*, Výber z bankomatu$/);
   });
 
   it('the generic names find its date and direction too', () => {

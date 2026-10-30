@@ -1,18 +1,21 @@
-// One movement: what it paid (with undo), or its proposals and a search to
-// pick the document by hand. A hand-picked document gets the whole amount
-// of the movement, as a partial payment or an overpayment if it differs.
+// One movement: what it paid or the cash voucher it became (with undo), or
+// its proposals and a search to pick the document by hand. A hand-picked
+// document gets the whole amount of the movement, as a partial payment or
+// an overpayment if it differs; a document already paid by hand with the
+// same amount is offered too, and picking it ties that payment.
 import { h } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
 import { showToast } from '../../../ui/toast.js';
 import { autocomplete } from '../../../components/autocomplete.js';
-import { matchBankTx, unapplyMatch, abs, round, sub, cmp } from '@we-invoice/core';
+import { matchBankTx, unapplyMatch, recordedFor, abs, round, sub, cmp } from '@we-invoice/core';
 import { moneyState } from '../shared/data.js';
 import { canWrite, guarded, patchDocuments } from '../shared/write.js';
 import { money } from '../shared/format.js';
 import { proposalLabel, proposalExplanation, txTitle } from './explain.js';
 import { confirmProposal } from './match-dialog.js';
 import { openDocuments, documentLabel } from '../payments/documents.js';
+import { transferVoucher, undoCashTransfer } from './cash-transfer.js';
 
 /** A proposal for a document the user picked. */
 export function manualProposal(tx, doc, open) {
@@ -24,7 +27,22 @@ export function manualProposal(tx, doc, open) {
   };
 }
 
+function transferBody(tx, voucher, state, close) {
+  return h('div', {},
+    h('p', {}, t('bank.transfer.booked', { number: voucher.number || '' })),
+    h('button', {
+      type: 'button', class: 'btn btn-danger', onclick: async () => {
+        if (!canWrite(state)) return;
+        close();
+        const ok = await guarded(async (store) => { await undoCashTransfer(store, tx.id); return true; });
+        if (ok) showToast(t('bank.match.unmatched'), { type: 'success' });
+      }
+    }, t('bank.transfer.undo')));
+}
+
 function matchedBody(tx, state, close) {
+  const voucher = transferVoucher(tx, state.documents);
+  if (voucher) return transferBody(tx, voucher, state, close);
   const paid = state.documents.filter(d => (d.payments || []).some(p => p.bankTxId === tx.id));
   return h('div', {},
     h('h4', {}, t('bank.match.paidDocs')),
@@ -53,14 +71,19 @@ function openBody(tx, state, close) {
     if (ok) showToast(t('bank.match.applied', { n: 1 }), { type: 'success' });
   };
   const proposals = matchBankTx(tx, state.documents, state.contacts);
-  const candidates = openDocuments(state, tx.amount.startsWith('-') ? 'OUT' : 'IN', tx.currency);
+  const open = openDocuments(state, tx.amount.startsWith('-') ? 'OUT' : 'IN', tx.currency).map(c => ({ ...c, key: c.doc.id }));
+  const recorded = recordedFor(tx, state.documents, state.contacts).map(c => ({ ...c, key: `${c.doc.id}:${c.paymentId}` }));
+  const candidates = [...open, ...recorded];
   const search = autocomplete({
     label: t('bank.match.manual'), placeholder: t('bank.match.search'),
     search: (q) => candidates.filter(c => documentLabel(c).toLowerCase().includes(q.toLowerCase())).slice(0, 20)
-      .map(c => ({ id: c.doc.id, label: documentLabel(c), hint: money(c.open, c.doc.currency) })),
+      .map(c => ({ id: c.key, label: documentLabel(c), hint: c.paymentId ? t('bank.match.recordedHint', { amount: money(c.open, c.doc.currency) }) : money(c.open, c.doc.currency) })),
     onPick: (item) => {
-      const c = candidates.find(x => x.doc.id === item.id);
-      if (c) apply(manualProposal(tx, c.doc, c.open));
+      const c = candidates.find(x => x.key === item.id);
+      if (!c) return;
+      const proposal = manualProposal(tx, c.doc, c.open);
+      if (c.paymentId) proposal.allocations = proposal.allocations.map(a => ({ ...a, paymentId: c.paymentId }));
+      apply(proposal);
     }
   });
   return h('div', {},

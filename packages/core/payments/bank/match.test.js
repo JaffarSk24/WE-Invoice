@@ -225,6 +225,27 @@ describe('recording the match', () => {
     expect(results[1].proposals.filter(p => p.recorded)).toEqual([]);
   });
 
+  it('26. a card payment matches its document by amount and date, not by the shop name', () => {
+    const receipt = doc({ kind: 'RECEIVED_INVOICE', status: 'PAID', vs: '1202626490', issueDate: '2026-09-01', seller: { name: 'Seyfor Slovensko, a.s.' }, payable: '7.26',
+      payments: [{ id: 'card', date: '2026-09-11', amount: '7.26', currency: 'EUR', method: 'CARD', source: 'MANUAL', bankTxId: null }] });
+    const later = doc({ kind: 'RECEIVED_INVOICE', status: 'PAID', issueDate: '2026-10-01', seller: { name: 'Seyfor Slovensko, a.s.' }, payable: '7.26',
+      payments: [{ id: 'card2', date: '2026-10-01', amount: '7.26', currency: 'EUR', method: 'CARD', source: 'MANUAL', bankTxId: null }] });
+    const pos = tx({ id: 'pos', date: '2026-09-03', amount: '-7.26', counterpartyName: 'GOPAY *IDOKLAD.SK', message: 'POS nákup' });
+    const [best, ...rest] = matchBankTx(pos, [receipt, later]);
+    expect(best).toMatchObject({ docId: receipt.id, confidence: 90, recorded: true, reason: 'CARD_AMOUNT', allocations: [{ paymentId: 'card' }] });
+    expect(rest.map(p => p.docId)).not.toContain(later.id);
+    // A transfer with a counter account is no card payment.
+    expect(matchBankTx({ ...pos, counterpartyIban: 'SK1109000000000630964920' }, [receipt])).toEqual([]);
+  });
+
+  it('27. cash from a cash machine goes to the cash book, a deposit comes from it', () => {
+    const open = doc({ kind: 'RECEIVED_INVOICE', vs: '1', payable: '200.00' });
+    expect(matchBankTx(tx({ amount: '-200.00', message: 'Výber z bankomatu, Bratislava', counterpartyName: 'TB Lamac' }), [open]))
+      .toEqual([expect.objectContaining({ kind: 'CASH_TRANSFER', transfer: 'WITHDRAWAL', confidence: 100, docIds: [] })]);
+    expect(matchBankTx(tx({ amount: '500.00', message: 'Vklad hotovosti cez bankomat' }), [open])[0]).toMatchObject({ transfer: 'DEPOSIT' });
+    expect(matchBankTx(tx({ amount: '-200.00', vs: '1', message: 'Úhrada' }), [open])[0].kind).not.toBe('CASH_TRANSFER');
+  });
+
   it('23. refuses payments in another currency and empty amounts', () => {
     const d = doc();
     expect(() => addPayment(d, { ...makePayment(d, { date: '2026-10-05', amount: '5' }), currency: 'CZK' })).toThrow(expect.objectContaining({ code: 'BANK_PAYMENT_CURRENCY_MISMATCH' }));

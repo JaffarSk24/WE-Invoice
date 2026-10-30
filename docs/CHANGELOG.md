@@ -481,6 +481,15 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Bank, cash and payments
 
+#### Added (30 October, cash and cards)
+
+- Cash taken out at a cash machine or paid in is moved between the bank account and the cash book: the match proposes it (100, ticked) and confirming writes a cash receipt for a withdrawal or an expense voucher for a deposit in the cash book of the currency (created when there is none), outside VAT and not an eKasa sale, tied to the movement; a sole trader with simple bookkeeping also gets it in the cash journal as priebežná položka. Undoing the match cancels the voucher and removes that entry; a voucher cancelled in the cash book opens the movement again.
+- A card payment, which names a shop and no supplier, matches its document by amount and date: within 3 days of a document paid or to be paid by card (90, ticked), within 7 days otherwise (75). The date counted is the nearer of the document's date and the date typed for a hand payment.
+- A matched movement without a counterparty shows the party of its document, or the cash book.
+- Picking a document by hand in a movement also offers documents already paid by hand with the same amount; picking one ties that payment.
+- The Tatra banka CSV export keeps both its message columns (the payer's note and the bank's description), so a withdrawal is recognised there too.
+- The texts of statement files and cash transfers moved to their own dictionary part (`bank-files.js`), the bank dictionaries being at their size limit.
+
 #### Added (30 October, PDF statements)
 
 - PDF statements of Tatra banka import like the other formats, alone or several at once: the text of the PDF (read as in the Inbox) goes to the core reader `parsePdfStatementText`, checked against two real statements. Every movement takes its sign from the trailing minus, the payer reference gives the symbols, the IBAN and name of the counterparty come from Príjemca or Platiteľ, a card payment names its shop and a withdrawal its cash machine, a detail that runs over lines or a page break is joined, and the opening and closing balances check that every movement was read (warning `BANK_PDF_BALANCE_MISMATCH` otherwise). Another bank's PDF is refused with a message that names the formats to use instead.

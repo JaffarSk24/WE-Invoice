@@ -8,6 +8,7 @@ export function proposalDocs(proposal, docsById) {
 }
 
 export function proposalLabel(proposal, docsById) {
+  if (proposal.kind === 'CASH_TRANSFER') return t(proposal.transfer === 'WITHDRAWAL' ? 'bank.transfer.withdrawal' : 'bank.transfer.deposit');
   return `${proposalDocs(proposal, docsById)} (${t('bank.match.confidence', { n: proposal.confidence })})`;
 }
 

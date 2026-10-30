@@ -6,17 +6,35 @@
 // Bank lines stored before the CAMT reader learnt Tatra banka's markup are
 // shown with its narrative only, and empty zero lines (a free fee package)
 // are left out.
-import { narrative, isZero } from '@we-invoice/core';
+import { narrative, isZero, paymentParty } from '@we-invoice/core';
+import { t } from '../../../i18n/index.js';
 import { hasStore, getStore } from '../../../store/index.js';
 import { isDemo, demoData } from '../../shell/demo-mode.js';
 
 const RECEIVED = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT']);
 
-/** Bank lines as the screens show them: readable messages, no unmatched zero lines. */
-export function shownTransactions(list) {
+/**
+ * Bank lines as the screens show them: readable messages, no unmatched
+ * zero lines, and a matched line without a counterparty (a card payment
+ * names only a shop, if anything) shows the party of its document, or the
+ * cash book for cash moved to or from it. A line whose cash voucher was
+ * cancelled in the cash book is open again.
+ */
+export function shownTransactions(list, documents = []) {
+  const byId = new Map(documents.map(d => [d.id, d]));
   return list
     .filter(tx => !(isZero(tx.amount || '0') && !tx.matched?.confirmed))
-    .map(tx => (tx.message && tx.message.includes('<NtryInf') ? { ...tx, message: narrative(tx.message) } : tx));
+    .map(tx => {
+      let shown = tx.message && tx.message.includes('<NtryInf') ? { ...tx, message: narrative(tx.message) } : tx;
+      const doc = tx.matched?.confirmed ? byId.get(tx.matched.docId) : null;
+      const voucher = doc && doc.bankTxId === tx.id && (doc.kind === 'CASH_IN' || doc.kind === 'CASH_OUT');
+      if (voucher && (doc.status === 'CANCELLED' || doc.deleted)) return { ...shown, matched: null };
+      if (doc && !tx.counterpartyName) {
+        const name = voucher ? t('bank.transfer.party') : paymentParty(doc)?.name;
+        if (name) shown = { ...shown, counterpartyName: name };
+      }
+      return shown;
+    });
 }
 
 /** A demo summary record as a document with totals and payments. */
@@ -54,7 +72,7 @@ export function moneyState() {
   return {
     demo: false, ready: true, readOnly: Boolean(store.readOnly), company,
     documents: store.list('documents'), contacts: store.list('contacts'),
-    bankTransactions: shownTransactions(store.list('bankTransactions')), cashBooks: store.list('cashBooks')
+    bankTransactions: shownTransactions(store.list('bankTransactions'), store.list('documents')), cashBooks: store.list('cashBooks')
   };
 }
 

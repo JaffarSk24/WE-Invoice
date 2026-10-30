@@ -75,7 +75,7 @@ export function recordedFor(tx, documents, contacts = [], taken = new Set()) {
     for (const p of doc.payments || []) {
       if (p.bankTxId || p.source === 'BANK_IMPORT' || p.source === 'CASH' || p.method === 'OFFSET' || taken.has(p.id)) continue;
       if (cmp(round(abs(p.amount), 2), paid) !== 0) continue;
-      out.push({ doc, open: paid, contact: byId.get(doc.contactId) || null, paymentId: p.id });
+      out.push({ doc, open: paid, contact: byId.get(doc.contactId) || null, paymentId: p.id, paymentDate: p.date, paymentMethod: p.method });
     }
   }
   return out;

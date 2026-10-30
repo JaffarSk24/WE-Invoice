@@ -7,6 +7,7 @@
       "id": "tatra-export",
       "name": "Tatra banka (Export pohybov)",
       "country": "SK",
+      "joinMessage": true,
       "$comment": "The CSV that Internet banking of Tatra banka exports under 'Export pohybov', checked against a real export on 2026-10-30: unsigned amounts with Debet or Kredit in Typ, no counterparty name, symbols padded with spaces, a direct debit with its VS only in the payer reference.",
       "signature": ["datum zuctovania", "typ", "predcislie", "referencia platitela", "informacia pre prijemcu"],
       "columns": {
