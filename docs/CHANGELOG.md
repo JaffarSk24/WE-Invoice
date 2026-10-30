@@ -65,6 +65,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Fixed (30 October, from testers)
 
+- The icon of the action button on an empty screen (Import statement on an empty bank screen) was drawn at the 40 px size of the empty-state picture; it keeps the size of a button icon.
 - The buttons of the sync section in Settings (Sync, Change password, Sign out; Sign in with Google and the encryption password before signing in) stood glued together and against the text above: the row borrowed `.exim-actions` from the stylesheet of the export screen, which loads only once that screen is opened. Rows of buttons outside their own screen now use `.actions-row` from the always-loaded components.css, the export links of Settings too. The tool buttons of a dashboard widget keep 4 px instead of 2 px.
 - `tests/e2e/button-spacing.spec.js` opens every screen and every settings section by a fresh load, so only its own stylesheets are in force, and fails on sibling buttons on one line closer than 4 px; a signed-in sync section is checked too.
 
@@ -482,6 +483,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Added (30 October, from testers)
 
+- Statements can be dropped: Import statement opens a place to drop files on or pick them, and the whole bank screen takes dropped files too. Several statements import at once: every file goes to the account with its IBAN, one row per file says what was found (new, imported before, or why it was left out), one button stores the new movements of all of them, and a movement in two overlapping statements is stored once. One file still opens the full view with the bank profile and the column mapping.
+- The CSV that Internet banking of Tatra banka exports ("Export pohybov") is read: profile `tatra-export`, checked against a real export. It has no signed amounts but a Typ column with Debet or Kredit, dates headed "Dátum zúčtovania" and "Dátum spracovania", symbols padded with spaces and direct debits whose VS stands only in the payer reference. Before, no bank was detected, the generic names found no date, and an assigned amount column would have made every debit an income. A direction column (Debet/Kredit, Soll/Haben...) is now a field of every CSV layout and of the column mapping, and the generic names know these headers.
 - A payment recorded by hand can be edited: "Edit payment" in its actions opens date, amount, method, cash book and note, and Save writes them over the same payment (core `replacePayment`, keeping its id and place), so the document's status follows. Its cash voucher stays while it still says the same; when the payment stops being cash or its amount, date or cash book changes, the old voucher is cancelled and a new one issued. A cash payment from the purchase screen, which has no cash book, may stay without one. Payments from a bank statement and offsets are still changed where they come from.
 
 #### Added

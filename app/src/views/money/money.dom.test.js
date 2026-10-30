@@ -15,6 +15,9 @@ import { manualProposal } from './bank/tx-dialog.js';
 import { createCashBook, createVoucher, cancelVoucher } from './cash/operations.js';
 import { removeManualPayment, cancelOffsetProtocol, openPaymentActions } from './payments/actions-dialog.js';
 import { saveEditedPayment } from './payments/edit-dialog.js';
+import { readBatch, storeBatch } from './bank/import-batch.js';
+import { openImportDialog } from './bank/import-dialog.js';
+import { readFileSync } from 'node:fs';
 import { t } from '../../i18n/index.js';
 import { offsetPartners } from './payments/offset-dialog.js';
 import { moneyState, demoDocument } from './shared/data.js';
@@ -82,6 +85,33 @@ describe('bank screen', () => {
     expect(pickAccount([ACCOUNT, other], null, 'b').id).toBe('b');
     expect(pickAccount([other, ACCOUNT], null, null).id).toBe('acc');
     expect(pickAccount([], null, null)).toBeNull();
+  });
+});
+
+describe('several statements at once', () => {
+  // Tests run from the repository root.
+  const fixture = (name) => readFileSync(`tests/fixtures/bank/${name}`);
+  const file = (name, bytes) => ({ name, arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) });
+
+  it('reads every file, stores an overlapping movement once and leaves out what it cannot read', async () => {
+    const store = await freshStore();
+    const csv = fixture('csv/365bank.csv');
+    const rows = await readBatch([file('a.csv', csv), file('copy.csv', csv), file('broken.csv', new TextEncoder().encode('nothing here'))],
+      { accounts: [ACCOUNT], existing: [], accountId: ACCOUNT.id });
+    expect(rows[0].fresh.length).toBeGreaterThan(0);
+    expect(rows[1]).toMatchObject({ fresh: [], duplicates: expect.any(Array) });
+    expect(rows[1].duplicates).toHaveLength(rows[0].fresh.length);
+    expect(rows[2].problem).toBeTruthy();
+    const ids = await storeBatch(store, rows);
+    expect(ids).toHaveLength(rows[0].fresh.length);
+    expect(new Set(store.list('bankTransactions').map(tx => tx.importId)).size).toBe(1);
+  });
+
+  it('opens a place to drop statements on', async () => {
+    await freshStore();
+    openImportDialog(ctx);
+    expect(document.querySelector('.modal-content .file-drop input[type="file"]').multiple).toBe(true);
+    expect(document.querySelector('.modal-content .file-drop h3').textContent).toBe(t('bank.import.drop.title'));
   });
 });
 

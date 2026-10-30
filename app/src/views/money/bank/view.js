@@ -12,6 +12,7 @@ import { moneyState } from '../shared/data.js';
 import { keepFresh } from '../shared/live.js';
 import { day, amountCell } from '../shared/format.js';
 import { openImportDialog } from './import-dialog.js';
+import { acceptDrops } from '../../../components/file-drop.js';
 import { openMatchDialog } from './match-dialog.js';
 import { openTxDialog } from './tx-dialog.js';
 import { openPainDialog } from './pain-dialog.js';
@@ -67,25 +68,28 @@ function header(ctx, state) {
 export function renderBank(root, ctx) {
   const draw = () => {
     clear(root);
+    // Statements dropped anywhere on the screen are imported.
+    const screen = acceptDrops(h('div', { class: 'drop-target bank-screen' }), (files) => openImportDialog(ctx, { accountId: view.accountId, files }));
+    root.append(screen);
     const state = moneyState();
     if (!state.ready) {
-      root.append(h('header', { class: 'view-header' }, h('h1', {}, t('nav.bank'))),
+      screen.append(h('header', { class: 'view-header' }, h('h1', {}, t('nav.bank'))),
         emptyState({ title: t('bank.noCompany.title'), text: t('bank.noCompany.text'), iconName: 'landmark' }));
       return;
     }
-    root.append(header(ctx, state));
+    screen.append(header(ctx, state));
     if (!(state.company.bankAccounts || []).length) {
-      root.append(h('p', { class: 'callout callout-warning' }, t('bank.noAccounts'), ' ',
+      screen.append(h('p', { class: 'callout callout-warning' }, t('bank.noAccounts'), ' ',
         h('button', { type: 'button', class: 'btn btn-ghost btn-sm', onclick: () => navigate('settings') }, t('bank.openSettings'))));
     }
-    append(root, [toolbar(ctx, state, draw)]);
+    append(screen, [toolbar(ctx, state, draw)]);
     const rows = visibleTransactions(state, view);
     const empty = emptyState({
       title: t('bank.empty.title'), text: t('bank.empty.text'), iconName: 'landmark',
       actionLabel: t('bank.import'), actionIcon: 'import', onAction: () => openImportDialog(ctx, { accountId: view.accountId })
     });
     const table = createTable({ key: 'bank-tx', columns: columns(), rows, onRowClick: (tx) => openTxDialog(ctx, tx.id), empty });
-    root.append(table.el);
+    screen.append(table.el);
     refreshIcons(root);
   };
   draw();

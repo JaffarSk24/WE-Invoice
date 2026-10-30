@@ -4,6 +4,19 @@
   "verifiedAt": null,
   "profiles": [
     {
+      "id": "tatra-export",
+      "name": "Tatra banka (Export pohybov)",
+      "country": "SK",
+      "$comment": "The CSV that Internet banking of Tatra banka exports under 'Export pohybov', checked against a real export on 2026-10-30: unsigned amounts with Debet or Kredit in Typ, no counterparty name, symbols padded with spaces, a direct debit with its VS only in the payer reference.",
+      "signature": ["datum zuctovania", "typ", "predcislie", "referencia platitela", "informacia pre prijemcu"],
+      "columns": {
+        "date": ["datum zuctovania"], "valueDate": ["datum spracovania"], "amount": ["suma"], "direction": ["typ"], "currency": ["mena"],
+        "counterpartyAccount": ["iban"], "counterpartyBankCode": ["kod banky"],
+        "vs": ["variabilny symbol"], "ks": ["konstantny symbol"], "ss": ["specificky symbol"],
+        "symbols": ["referencia platitela"], "message": ["informacia pre prijemcu", "popis"]
+      }
+    },
+    {
       "id": "tatra",
       "name": "Tatra banka",
       "country": "SK",
@@ -129,10 +142,11 @@
     }
   ],
   "generic": {
-    "date": ["datum zauctovania", "datum zauctovani", "booking date", "datum transakcie", "datum transakce", "transaction date", "datum", "date"],
-    "valueDate": ["datum valuty", "value date", "valuta"],
+    "date": ["datum zauctovania", "datum zuctovania", "datum zauctovani", "booking date", "datum transakcie", "datum transakce", "transaction date", "datum", "date"],
+    "valueDate": ["datum valuty", "datum spracovania", "value date", "valuta"],
     "amount": ["suma", "castka", "ciastka", "amount", "objem", "betrag"],
     "debit": ["debet", "debit", "vydaj", "odchozi", "paid out"],
+    "direction": ["typ", "debet/kredit", "smer", "d/c"],
     "credit": ["kredit", "credit", "prijem", "prichozi", "paid in"],
     "currency": ["mena", "currency", "waehrung"],
     "counterpartyName": ["nazov protistrany", "protistrana", "nazev protiuctu", "partner", "counterparty", "payee", "name"],
@@ -141,10 +155,14 @@
     "vs": ["variabilny symbol", "variabilni symbol", "vs"],
     "ks": ["konstantny symbol", "konstantni symbol", "ks"],
     "ss": ["specificky symbol", "ss"],
-    "message": ["sprava pre prijemcu", "zprava pro prijemce", "poznamka", "popis", "message", "description", "reference"],
+    "symbols": ["referencia platitela"],
+    "message": ["sprava pre prijemcu", "informacia pre prijemcu", "zprava pro prijemce", "poznamka", "popis", "message", "description", "reference"],
     "ref": ["referencia", "reference id", "id transakcie", "id"],
     "fee": ["poplatok", "poplatek", "fee"],
     "state": ["stav", "state", "status"]
   },
+  "$commentMarks": "Values of a direction column (Typ): a debit makes the amount negative, a credit positive; any other value leaves the amount as it is.",
+  "debitMarks": ["debet", "debit", "d", "dr", "vydaj", "odchozi", "odchozi platba"],
+  "creditMarks": ["kredit", "credit", "k", "c", "cr", "prijem", "prichozi", "prichozi platba"],
   "completedStates": ["completed", "booked", "zauctovane", "zauctovano", "done", "settled", ""]
 }

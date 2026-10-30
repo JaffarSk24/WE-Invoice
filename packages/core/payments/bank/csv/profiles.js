@@ -9,11 +9,13 @@ import { CoreError } from '../../../errors.js';
 
 export const CSV_FIELDS = Object.freeze([
   'date', 'valueDate', 'amount', 'debit', 'credit', 'currency', 'counterpartyName', 'counterpartyAccount',
-  'counterpartyBankCode', 'vs', 'ks', 'ss', 'symbols', 'message', 'ref', 'fee', 'state'
+  'counterpartyBankCode', 'vs', 'ks', 'ss', 'symbols', 'message', 'ref', 'fee', 'state', 'direction'
 ]);
 
 export const BANK_PROFILES = Object.freeze(data.profiles.map(p => Object.freeze({ id: p.id, name: p.name, country: p.country })));
 export const COMPLETED_STATES = Object.freeze(data.completedStates);
+export const DEBIT_MARKS = Object.freeze(data.debitMarks);
+export const CREDIT_MARKS = Object.freeze(data.creditMarks);
 
 /** Header cell as profiles name it: no case, no diacritics, no leading "#". */
 export function headerName(cell) {

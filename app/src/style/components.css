@@ -7,6 +7,8 @@
   padding: 56px 24px; color: var(--text-secondary);
 }
 .empty-state svg { width: 40px; height: 40px; color: var(--text-muted); }
+/* The icon of the action button keeps the size and colour of a button icon. */
+.empty-state .btn svg { width: 18px; height: 18px; color: currentColor; }
 .empty-state h2 { color: var(--text-primary); }
 
 .badge {
@@ -80,3 +82,18 @@
 .attachment-state[data-state="downloading"] svg { animation: attachment-spin 1s linear infinite; }
 @keyframes attachment-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .attachment-state[data-state="downloading"] svg { animation: none; } }
+
+/* A place to drop files on (components/file-drop.js): a dashed box that
+   lights up while files are dragged over it. */
+.file-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 28px 20px;
+  border: 2px dashed var(--border-color); border-radius: var(--radius-md); background: var(--overlay-04);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.file-drop.is-over { border-color: var(--accent-blue); background: var(--overlay-hover); }
+.file-drop > svg { width: 36px; height: 36px; color: var(--accent-blue); }
+.file-drop h3 { font-size: 16px; margin: 0; }
+.file-drop p { margin: 0; }
+.file-drop .actions-row { justify-content: center; }
+/* A whole screen that takes dropped files shows it while they hover. */
+.drop-target.is-over { outline: 2px dashed var(--accent-blue); outline-offset: -6px; border-radius: var(--radius-md); }

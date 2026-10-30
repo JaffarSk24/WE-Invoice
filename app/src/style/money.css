@@ -54,3 +54,4 @@
 .modal-body .callout[hidden] { display: none; }
 .list-card .bank-party { display: inline; }
 .list-card .bank-party small { display: none; }
+.bank-screen { min-height: calc(100vh - 120px); }

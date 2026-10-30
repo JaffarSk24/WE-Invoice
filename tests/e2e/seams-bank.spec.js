@@ -35,8 +35,9 @@ test('a CAMT.053 statement pays the invoices and the aging report follows', asyn
   await expect(panel.locator('.report-cards').first()).toContainText('1 845,00');
 
   await page.goto('./#/bank');
-  const chooser = page.waitForEvent('filechooser');
   await page.locator('.view-actions .btn-primary').click();
+  const chooser = page.waitForEvent('filechooser');
+  await page.locator('.file-drop [data-action="choose"]').click();
   await (await chooser).setFiles({ name: 'vypis.xml', mimeType: 'application/xml', buffer: STATEMENT });
   await expect(page.locator('.import-body')).toContainText('nové');
   await page.locator('.modal-actions .btn-primary').click();

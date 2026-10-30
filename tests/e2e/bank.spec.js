@@ -71,14 +71,16 @@ async function readCompanyData(page) {
   }, `company:${COMPANY_ID}`);
 }
 
-async function importStatement(page) {
-  const chooser = page.waitForEvent('filechooser');
+async function importStatement(page, files = [{ name: 'tatra.csv', mimeType: 'text/csv', buffer: STATEMENT }]) {
   await page.locator('.view-actions .btn-primary').click();
-  await (await chooser).setFiles({ name: 'tatra.csv', mimeType: 'text/csv', buffer: STATEMENT });
-  await expect(page.locator('.modal-content')).toBeVisible();
+  await expect(page.locator('.modal-content .file-drop')).toBeVisible();
+  const chooser = page.waitForEvent('filechooser');
+  await page.locator('.file-drop [data-action="choose"]').click();
+  await (await chooser).setFiles(files);
+  await expect(page.locator('.modal-content .import-body')).toBeVisible();
 }
 
-test('import a CSV statement, match it and the invoice is paid', async ({ page }) => {
+async function openBank(page) {
   await page.goto('./');
   // Wait until the app has started: its first run writes an empty workspace,
   // which would otherwise land over the seed.
@@ -88,6 +90,23 @@ test('import a CSV statement, match it and the invoice is paid', async ({ page }
   await page.goto('./#/bank');
   await page.reload();
   await expect(page.locator('main h1, .view-header h1').first()).toHaveText('Banka');
+}
+
+test('several statements at once: an overlapping movement is stored once', async ({ page }) => {
+  await openBank(page);
+  await importStatement(page, [
+    { name: 'tatra-1.csv', mimeType: 'text/csv', buffer: STATEMENT },
+    { name: 'tatra-2.csv', mimeType: 'text/csv', buffer: STATEMENT }
+  ]);
+  await expect(page.locator('.import-body')).toContainText('Súborov: 2, nových pohybov: 3.');
+  await expect(page.locator('.batch-table tbody tr')).toHaveCount(2);
+  await page.locator('.modal-actions .btn-primary').click();
+  await expect(page.locator('.modal-content', { hasText: 'Párovanie platieb' })).toBeVisible();
+  await expect.poll(async () => (await readCompanyData(page)).bankTransactions.length).toBe(3);
+});
+
+test('import a CSV statement, match it and the invoice is paid', async ({ page }) => {
+  await openBank(page);
 
   await importStatement(page);
   await expect(page.locator('.import-body')).toContainText('3 pohyby: nové 3, už importované 0.');

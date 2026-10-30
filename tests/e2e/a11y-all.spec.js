@@ -57,8 +57,11 @@ test('the main dialogs', async ({ page }) => {
   await page.keyboard.press('Escape');
 
   await page.goto('./#/bank');
-  const chooser = page.waitForEvent('filechooser');
   await page.locator('.view-actions .btn-primary').click();
+  await expect(page.locator('.modal-content .file-drop')).toBeVisible();
+  bad.push(...await serious(page, 'statement drop'));
+  const chooser = page.waitForEvent('filechooser');
+  await page.locator('.file-drop [data-action="choose"]').click();
   await (await chooser).setFiles({ name: 'vypis.xml', mimeType: 'application/xml', buffer: Buffer.from((await import('node:fs')).readFileSync(new URL('../fixtures/bank/camt053.xml', import.meta.url))) });
   await expect(page.locator('.import-body')).toBeVisible();
   bad.push(...await serious(page, 'statement import'));

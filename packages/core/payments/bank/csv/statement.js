@@ -1,12 +1,13 @@
 // A CSV statement to transactions: delimiter, header row, bank profile,
 // column mapping, then one transaction per booked row. Rows without a date
 // or an amount are counted as invalid, unfinished card payments (a state
-// column that is not "completed") as pending, zero amounts are skipped.
+// column that is not "completed") as pending, zero amounts are skipped. An
+// unsigned amount takes its sign from a Debet/Kredit column (direction).
 import { parseCsv, detectDelimiter, detectHeaderRow } from './read.js';
-import { detectProfiles, isProfileHeader, columnMapping, mappingUsable, profileById, headerName, COMPLETED_STATES } from './profiles.js';
+import { detectProfiles, isProfileHeader, columnMapping, mappingUsable, profileById, headerName, COMPLETED_STATES, DEBIT_MARKS, CREDIT_MARKS } from './profiles.js';
 import { parseStatementDate, parseStatementAmount, detectDateOrder } from '../values.js';
 import { normalizeTransaction } from '../normalize.js';
-import { sub, abs, round, isZero } from '../../../money/index.js';
+import { sub, abs, neg, round, isZero } from '../../../money/index.js';
 
 const cellAt = (row, i) => String(row[i] ?? '').trim();
 const first = (row, indexes = []) => {
@@ -22,8 +23,17 @@ function headerIndexOf(table) {
   return known >= 0 ? known : detectHeaderRow(table);
 }
 
+// An amount printed without a sign next to a Debet or Kredit column.
+function signed(amount, row, mapping) {
+  if (amount === null || !mapping.direction?.length) return amount;
+  const mark = headerName(first(row, mapping.direction));
+  if (DEBIT_MARKS.includes(mark)) return round(neg(abs(amount)), 2);
+  if (CREDIT_MARKS.includes(mark)) return round(abs(amount), 2);
+  return amount;
+}
+
 function amountOf(row, mapping) {
-  if (mapping.amount.length) return parseStatementAmount(first(row, mapping.amount));
+  if (mapping.amount.length) return signed(parseStatementAmount(first(row, mapping.amount)), row, mapping);
   const debit = parseStatementAmount(first(row, mapping.debit));
   const credit = parseStatementAmount(first(row, mapping.credit));
   if (debit === null && credit === null) return null;

@@ -42,6 +42,26 @@ describe('Slovak bank CSV profiles', () => {
   });
 });
 
+describe('Tatra banka, Export pohybov of Internet banking', () => {
+  it('is detected and signs the unsigned amounts by Debet and Kredit', () => {
+    const result = parseBankStatement(fixture('tatra-export.csv'));
+    expect(result.profile).toBe('tatra-export');
+    expect(result.warnings).toEqual([]);
+    expect(result.transactions.map(t => t.amount)).toEqual(['1230.00', '-369.00', '-338.48', '-800.00']);
+    expect(result.transactions[0]).toMatchObject({ date: '2026-10-05', valueDate: '2026-10-06', vs: '20260001', ks: '308', counterpartyIban: 'SK9709000000001234567891' });
+    // Symbols padded with spaces; a direct debit carries its VS only in the payer reference.
+    expect(result.transactions[1]).toMatchObject({ vs: '2026555', ss: '12026', message: 'Úhrada faktúry' });
+    expect(result.transactions[2]).toMatchObject({ vs: '1511928641', counterpartyIban: 'SK1109000000000630964920', message: 'DIRECT DEBIT' });
+    expect(result.transactions[3].message).toContain('Bratislava');
+  });
+
+  it('the generic names find its date and direction too', () => {
+    const result = parseBankStatement(fixture('tatra-export.csv'), { profile: 'generic' });
+    expect(result.warnings).toEqual([]);
+    expect(result.transactions.map(t => t.amount)).toEqual(['1230.00', '-369.00', '-338.48', '-800.00']);
+  });
+});
+
 describe('Czech bank CSV profiles', () => {
   it('fio: skips the preamble and builds IBANs from domestic numbers', () => {
     const result = parseBankStatement(fixture('fio.csv'));
@@ -84,7 +104,7 @@ describe('payment institution CSV profiles', () => {
 describe('profile detection', () => {
   it('lists every profile of the task', () => {
     expect(BANK_PROFILES.map(p => p.id)).toEqual([
-      'tatra', 'slsp', 'vub', 'csob-sk', '365bank', 'prima', 'unicredit', 'fio', 'mbank', 'revolut-business', 'wise'
+      'tatra-export', 'tatra', 'slsp', 'vub', 'csob-sk', '365bank', 'prima', 'unicredit', 'fio', 'mbank', 'revolut-business', 'wise'
     ]);
   });
 

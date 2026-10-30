@@ -1,8 +1,11 @@
-// Importing a bank statement: the user picks a file, sees what was read
-// (format, bank profile, account, how many movements are new and how many
-// were imported before, a preview) and may switch the CSV profile or
-// assign columns by hand. Only new movements are stored, so importing the
-// same statement twice changes nothing; the new ones go to matching.
+// Importing bank statements: a dialog to drop them on or pick them (the
+// bank screen takes dropped files too). One file opens the full view of
+// what was read (format, bank profile, account, how many movements are
+// new and how many were imported before, a preview), where the user may
+// switch the CSV profile or assign columns by hand; several files go to
+// the batch view (import-batch.js). Only new movements are stored, so
+// importing the same statement twice changes nothing; the new ones go to
+// matching.
 import { h, clear, append } from '../../../ui/dom.js';
 import { openModal } from '../../../ui/modal.js';
 import { t } from '../../../i18n/index.js';
@@ -12,12 +15,14 @@ import { moneyState } from '../shared/data.js';
 import { canWrite, guarded } from '../shared/write.js';
 import { day, money } from '../shared/format.js';
 import { openMatchDialog } from './match-dialog.js';
+import { openBatchDialog } from './import-batch.js';
+import { fileDrop } from '../../../components/file-drop.js';
 
-const ACCEPT = '.csv,.txt,.xml,.sta,.mt940,.940,.gpc,.abo';
-const MAPPED = ['date', 'amount', 'debit', 'credit', 'currency', 'counterpartyName', 'counterpartyAccount', 'vs', 'message', 'ref'];
+export const ACCEPT = '.csv,.txt,.xml,.sta,.mt940,.940,.gpc,.abo';
+const MAPPED = ['date', 'amount', 'direction', 'debit', 'credit', 'currency', 'counterpartyName', 'counterpartyAccount', 'vs', 'message', 'ref'];
 const PREVIEW_ROWS = 8;
 
-async function readFile(file) {
+export async function readFile(file) {
   if (file && typeof file.arrayBuffer === 'function') return new Uint8Array(await file.arrayBuffer());
   if (file && file.data) return file.data;
   return file;
@@ -56,15 +61,30 @@ function preview(list) {
       h('td', {}, day(tx.date)), h('td', {}, tx.counterpartyName || tx.message || ''), h('td', {}, tx.vs || ''), h('td', { class: 'num' }, money(tx.amount, tx.currency))))));
 }
 
-export async function openImportDialog(ctx, { accountId = '' } = {}) {
+/** Opens the import with files already in hand, or the dialog to drop or pick them. */
+export function openImportDialog(ctx, { accountId = '', files = null } = {}) {
+  if (!canWrite(moneyState())) return;
+  if (files && files.length) { importFiles(ctx, files, accountId); return; }
+  const modal = openModal({
+    title: t('bank.import.title'), wide: true,
+    body: h('div', {}, fileDrop({
+      title: t('bank.import.drop.title'), hint: t('bank.import.drop.hint'), chooseLabel: t('bank.import.drop.choose'), accept: ACCEPT,
+      onFiles: (picked) => { modal.close(); importFiles(ctx, picked, accountId); }
+    }), h('p', { class: 'field-hint' }, t('bank.import.hint'))),
+    actions: [{ label: t('common.cancel'), onClick: (m) => m.close() }]
+  });
+}
+
+function importFiles(ctx, files, accountId) {
+  if (files.length > 1) openBatchDialog(ctx, files, { accountId });
+  else openStatementDialog(ctx, files[0], { accountId });
+}
+
+async function openStatementDialog(ctx, file, { accountId = '' } = {}) {
   const state = moneyState();
-  if (!canWrite(state)) return;
   let bytes;
-  let fileName = '';
+  const fileName = file.name || '';
   try {
-    const file = await ctx.transport.files.openFile({ accept: ACCEPT });
-    if (!file) return;
-    fileName = file.name || '';
     bytes = await readFile(file);
   } catch (e) {
     showError(e);
