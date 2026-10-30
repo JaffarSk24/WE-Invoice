@@ -4,6 +4,8 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { parseXml, textAt, at } from './xml.js';
 import { encodePayBySquare } from '../../paybysquare/pay.js';
+import { findItemBreakdown } from './text-fields.js';
+import { scanOf } from './text-scan.js';
 import {
   parseEkasaQr, detectQrFormat, recognizeQr, recognizeEkasaReceipt, recognizeXml, detectXmlFormat, registerInboxParser,
   recognizeFound, detectInboxFile, mergeRecognitions, pickFieldValue, applyUserValue, learnTemplate, applyTemplateRegions,
@@ -136,6 +138,22 @@ describe('combining what a file holds', () => {
     expect(recognizeFound({ qr: [qr], text }, { company }).fieldConfidence.supplierName).toBeGreaterThanOrEqual(0.7);
     const other = recognizeFound({ qr: [qr], text: text.replace(/O2 Slovakia, s\.r\.o\., /, '') }, { company });
     expect(other.fieldConfidence.supplierName).toBeLessThan(0.7);
+  });
+
+  it('reads base and VAT from item rows whose rate has no % sign', () => {
+    const text = [
+      'Č.  Názov položky  Množstvo  Cena bez DPH  DPH %  DPH  Cena s DPH',
+      '1  Služby účtovníctva  1  30,00  23  6,90  36,90',
+      '2  Školenie  2  100,00  23  23,00  123,00',
+      '3  Kniha  1  20,00  5  1,00  21,00',
+      '4  Poznámka  12  5,00  7',
+      'Spolu  EUR 180,90'
+    ].join('\n');
+    expect(findItemBreakdown(scanOf(text))).toEqual([
+      { category: 'S', rate: '23', base: '130.00', vat: '29.90' },
+      { category: 'S', rate: '5', base: '20.00', vat: '1.00' }
+    ]);
+    expect(findItemBreakdown(scanOf('1  Kniha  30,00  23  36,90'))).toEqual([]);
   });
 
   it('uses OCR text only when there is no text layer', () => {

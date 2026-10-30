@@ -59,6 +59,11 @@ export function labeled(scan, labels, value) {
       const below = scan.folded.slice(hit.index, start).includes('\n') ? columnBelow(scan, labels[i], hit.index, value) : null;
       return below ? { ...below, label: i } : { raw: scan.text.slice(start, hit.end), index: hit.index, label: i };
     }
+    // A label that is a whole column, its neighbour's label next to it.
+    for (const only of findAll(scan.folded, `(?:^|  )(?:${labels[i]})[ \\t]*:?(?=  |$)`)) {
+      const below = columnBelow(scan, labels[i], only.index, value);
+      if (below) return { ...below, label: i };
+    }
   }
   return null;
 }

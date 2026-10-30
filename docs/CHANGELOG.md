@@ -593,6 +593,8 @@ All notable changes to this project are documented here. The format follows [Kee
 #### Fixed (30 October, from testers)
 
 - Labels printed side by side with their values on the next line ("Dátum vystavenia  Dátum splatnosti" over "28.02.2026  15.03.2026") gave every label the first value of that line, so the due date became the issue date. A value under a label is now taken from the label's own column. New fixture `sk-invoice-columns`.
+- A label that is a whole column next to another label ("Dátum vystavenia  Dátum splatnosti") finds its value in the column below too; the issue date of such an invoice was the first date of the text, marked "Check".
+- Tax base and VAT come from the item rows when the rate stands there as a bare number under a "DPH %" header ("Služby  30,00  23  36,90"): the row counts when the amount before the rate times the rate gives the VAT or the gross amount after it, and rows of one rate are added up. Only whole-number rates that an EU country charges count, and a VAT recap with % signs still wins. Such an invoice used to come in with the whole amount as the base and no VAT.
 
 #### Fixed (29 October, from testers)
 

@@ -9,9 +9,13 @@ import { scanOf, findAll, labeled, toDate, toAmount, amountValue, amountsIn, lin
 import { LABELS, KIND_HINTS, CURRENCIES } from './text-labels.js';
 import { findIds, findIbans, findSupplierName } from './text-party.js';
 import { emptyRecognition, setField, finish } from './result.js';
+import euRates from '../../legislation/eu-vat-rates.json' with { type: 'json' };
 
 const NUMBER_VALUE = '(?:(?:c|cislo|no|nr)\\.?[ \\t]*:?[ \\t]*)?([a-z0-9][a-z0-9/.-]*\\d[a-z0-9/-]*)';
 const near = (a, b, tolerance = '0.02') => cmp(abs(sub(a, b)), tolerance) <= 0;
+// Whole-number rates some EU country charges: a bare number in an item row
+// counts as its rate only when it is one of them.
+const KNOWN_RATES = new Set(Object.values(euRates.countries).flatMap(c => c.rates).filter(r => /^\d+$/.test(r)));
 
 function findDates(scan, result, ctx) {
   for (const name of ['issueDate', 'taxDate', 'dueDate']) {
@@ -74,6 +78,41 @@ export function findBreakdown(scan) {
   return rows;
 }
 
+// The rate, base and VAT of one item row split into cells, or null. Any
+// cell may look like a rate ("20,00" is an amount too): the one whose
+// arithmetic holds wins.
+function itemRow(cells) {
+  for (let at = 1; at < cells.length; at++) {
+    if (!/^\d{1,2}(?:[.,]0{1,2})?$/.test(cells[at]) || !KNOWN_RATES.has(String(parseInt(cells[at], 10)))) continue;
+    const rate = String(parseInt(cells[at], 10));
+    const base = amountsIn(cells.slice(0, at).join('  ')).pop();
+    const after = amountsIn(cells.slice(at + 1).join('  '));
+    if (!base || !after.length) continue;
+    const vatOf = round(div(mul(base, rate), '100', 6), 2);
+    const vat = after.find(a => near(a, vatOf)) || (after.some(a => near(a, add(base, vatOf))) ? vatOf : null);
+    if (vat) return { rate, base, vat };
+  }
+  return null;
+}
+
+// Item rows of a table whose rate column is headed "DPH %" ("1  Sluzby
+// 30,00  23  36,90"): the rate is a bare number in its own column, and the
+// row counts when the amount before it times the rate gives the VAT or the
+// gross amount after it. Rows of one rate are added up.
+export function findItemBreakdown(scan) {
+  const header = findAll(scan.folded, '^.*(?:dph|vat|mwst|sadzba|sazba)[^\\n]*%.*$')[0];
+  if (!header) return [];
+  const byRate = new Map();
+  for (const line of scan.folded.slice(header.end).split('\n')) {
+    const found = itemRow(line.split(/ {2,}/).map(c => c.trim()));
+    if (!found) continue;
+    const { rate, base, vat } = found;
+    const row = byRate.get(rate) || { category: 'S', rate, base: '0.00', vat: '0.00' };
+    byRate.set(rate, { ...row, base: round(add(row.base, base), 2), vat: round(add(row.vat, vat), 2) });
+  }
+  return [...byRate.values()];
+}
+
 function findAmounts(scan, result, ctx) {
   const value = amountValue();
   // "DPH 23 %: 14,72": the rate may stand between the VAT label and the amount.
@@ -82,7 +121,8 @@ function findAmounts(scan, result, ctx) {
     const hit = labeled(scan, LABELS[name], name === 'vat' ? vatValue : value);
     if (hit) setField(result, name, toAmount(hit.raw.match(new RegExp(AMOUNT))[0]), ctx.source, 0.75);
   }
-  const breakdown = findBreakdown(scan);
+  const recap = findBreakdown(scan);
+  const breakdown = recap.length ? recap : findItemBreakdown(scan);
   if (breakdown.length) {
     setField(result, 'breakdown', breakdown, ctx.source, 0.8);
     const net = round(sum(breakdown.map(b => b.base)), 2);
