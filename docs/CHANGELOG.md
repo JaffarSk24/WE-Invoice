@@ -216,6 +216,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Security (9 November)
+
+- `minimatch` 7.x to 11.0.0, pulled in by `eslint` and `electron-builder` (build tools only, nothing of it ships in the app), allowed a denial of service through crafted patterns (Dependabot alert 69). An npm override puts 11.0.5 in their place until they move on; the packaged app holds exactly the same files as before.
+
 #### Changed (9 November, smaller Mac downloads)
 
 - macOS ships one build per CPU instead of one universal build: `WE-Invoice-<version>-mac-arm64` for Apple silicon and `-mac-x64` for Intel, about half the size each (the universal zip was 230 MB, so an update took long). The updater takes the build of the Mac's CPU, also when an Intel build runs on Apple silicon through Rosetta (`app.runningUnderARM64Translation`), and still understands a release with a universal build only; apps of 0.1.8 and older already pick `-mac-<arch>.zip` when there is no universal file. The release check verifies the checksum, signature, CPU, version and Google client of both builds and runs the arm64 one. README tells which file to download.
