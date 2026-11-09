@@ -93,5 +93,33 @@ export function createPeppolService({ getStore, transport, emit, buildPdf = null
     return ticking;
   }
 
-  return { connect, send, sendMany, receiveNow, tick, ready };
+  /**
+   * The provider's PDF of a received document: from the archive, else
+   * fetched from the provider once and archived. Null when there is none.
+   * @returns {Promise<Uint8Array|null>}
+   */
+  async function receivedPdf(documentId) {
+    const s = store();
+    const company = s.company();
+    const doc = s.get('documents', documentId);
+    if (!doc || doc.peppol?.direction !== 'IN') return null;
+    if (doc.peppol.pdfFileId) {
+      const kept = await archive.readPdf(company.id, doc.peppol.pdfFileId);
+      if (kept) return kept;
+    }
+    if (!doc.peppol.providerMessageId) return null;
+    const connection = await connect();
+    if (!connection.adapter.visual) return null;
+    const visual = await connection.adapter.visual(doc.peppol.providerMessageId);
+    if (!visual) return null;
+    try {
+      const key = await archive.savePdf(company.id, doc.receivedDate || doc.issueDate, doc.id, visual.bytes);
+      if (!s.readOnly) await s.update('documents', doc.id, { peppol: { ...doc.peppol, pdfFileId: key } });
+    } catch (error) {
+      console.warn('peppol: the picture was shown but not archived', error.code || error.name);
+    }
+    return visual.bytes;
+  }
+
+  return { connect, send, sendMany, receiveNow, tick, ready, receivedPdf };
 }

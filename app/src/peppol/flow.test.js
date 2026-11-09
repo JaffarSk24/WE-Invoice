@@ -35,7 +35,9 @@ async function setup({ inbox = [], platform = 'web', files: deviceFiles = {} } =
   const files = new Map();
   const archive = {
     saveXml: async (cid, date, docId, xml) => { files.set(`${cid}/${date.slice(0, 4)}/${docId}.xml`, xml); return `${date.slice(0, 4)}/${docId}`; },
-    saveAttachment: async (cid, id, name, bytes) => { files.set(`${cid}/att/${id}`, bytes); }
+    saveAttachment: async (cid, id, name, bytes) => { files.set(`${cid}/att/${id}`, bytes); },
+    savePdf: async (cid, date, docId, bytes) => { files.set(`${cid}/${date.slice(0, 4)}/${docId}.pdf`, bytes); return `${date.slice(0, 4)}/${docId}`; },
+    readPdf: async (cid, key) => files.get(`${cid}/${key}.pdf`) || null
   };
   const events = [];
   let clock = '2027-01-16T08:00:00.000Z';
@@ -169,6 +171,24 @@ describe('receiving', () => {
     expect(contacts).toHaveLength(1);
     expect(contacts[0]).toMatchObject({ dic: '2020000004', name: 'Alfa Softvér s.r.o.', peppolId: '0245:2020000004' });
     expect([...env.files.keys()].filter(k => k.endsWith('.xml'))).toHaveLength(2);
+  });
+
+  it('keeps the provider PDF of a received document, and fetches it once for one stored without', async () => {
+    const env = await setup({ inbox: [{ id: 'in-1', xml: fixture('01-basic-23'), pdf: '%PDF-1.7 provider picture' }, { id: 'in-2', xml: fixture('02-three-rates') }] });
+    expect(await env.service.receiveNow()).toEqual({ stored: 2, duplicates: 0, failed: [] });
+    const [withPdf, without] = ['in-1', 'in-2'].map(id => env.store.list('documents').find(d => d.peppol.providerMessageId === id));
+    expect(withPdf.peppol.pdfFileId).toMatch(/^\d{4}\//);
+    expect(without.peppol.pdfFileId).toBeNull();
+    expect(new TextDecoder().decode(await env.service.receivedPdf(withPdf.id))).toBe('%PDF-1.7 provider picture');
+    expect(await env.service.receivedPdf(without.id)).toBeNull();
+    // A document stored before the app kept PDFs: fetched from the provider once, then archived.
+    env.server.state.inbox.find(d => d.id === 'in-2').pdf = '%PDF-1.7 later';
+    const requests = () => env.server.state.requests.filter(r => r.path.endsWith('/pdf')).length;
+    const before = requests();
+    expect(new TextDecoder().decode(await env.service.receivedPdf(without.id))).toBe('%PDF-1.7 later');
+    expect(env.store.get('documents', without.id).peppol.pdfFileId).toMatch(/^\d{4}\//);
+    await env.service.receivedPdf(without.id);
+    expect(requests()).toBe(before + 1);
   });
 
   it('acknowledges a duplicate without a second copy', async () => {

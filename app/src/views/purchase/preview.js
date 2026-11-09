@@ -4,8 +4,8 @@
 // the chosen field and its place on the page is remembered for the
 // supplier. Pages come from this session's reading or are drawn again
 // from the file kept on the device (taken from Google Drive when another
-// device took it in). An e-invoice (XML) shows the supplier's PDF from it,
-// or the document printed by the app with its payment QR (visual.js).
+// device took it in). An eFaktúra from Peppol shows the provider's PDF of
+// it (with the payment QR), else the PDF attached in its XML (visual.js).
 import { h, icon, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
@@ -26,32 +26,30 @@ function copyCanvas(source) {
   return canvas;
 }
 
-// The picture of an e-invoice: its PDF from the Peppol archive (an
-// eFaktúra from Peppol keeps its attachments there), else printed.
-async function visualPages(doc, company, known) {
-  const [{ openPdf }, { buildPdf }] = await Promise.all([import('../../ocr/pdf.js'), import('../../pdf/index.js')]);
-  const fromPeppol = doc.peppol && doc.peppol.direction === 'IN' && company;
-  const readAttachment = fromPeppol ? async (a) => {
+// The picture of an eFaktúra: the provider's PDF (archived, or fetched
+// once), else the PDF attached in its XML (kept in the Peppol archive).
+async function visualPages(doc, company) {
+  const [{ openPdf }, { getPeppolService }] = await Promise.all([import('../../ocr/pdf.js'), import('../../peppol/runtime.js')]);
+  const providerPdf = async () => { const service = await getPeppolService(); return service ? service.receivedPdf(doc.id) : null; };
+  const readAttachment = company ? async (a) => {
     const { createArchive } = await import('../../peppol/archive.js');
     return createArchive().readAttachment(company.id, a.id, a.name);
   } : null;
-  const { pages, source } = await receivedVisual(doc, company, { readAttachment, buildPdf, openPdf, width: WIDTH, max: PAGES, known });
-  pages.note = source === 'ATTACHMENT' ? 'purchase.preview.attachedPdf' : 'purchase.preview.printed';
-  return pages;
+  const visual = await receivedVisual(doc, { providerPdf, readAttachment, openPdf, width: WIDTH, max: PAGES });
+  if (!visual) return [];
+  visual.pages.note = visual.source === 'PROVIDER' ? 'purchase.preview.providerPdf' : 'purchase.preview.attachedPdf';
+  return visual.pages;
 }
 
-const isXml = (file) => /xml/i.test(file.type || '') || /\.(xml|isdoc)$/i.test(file.name || '');
-
 // Pages to show: [{ canvas, items }], with an optional note key.
-async function loadPages(doc, company, known) {
+async function loadPages(doc, company) {
   const read = recentRead(doc.id);
   if (read && read.canvases && read.canvases.length) return read.canvases.map((c, i) => ({ canvas: copyCanvas(c), items: (read.pages && read.pages[i]) || [] }));
-  // An eFaktúra from Peppol is structured data; its XML lives in the Peppol archive.
-  if (doc.peppol && doc.peppol.direction === 'IN') return visualPages(doc, company, known);
+  // An eFaktúra from Peppol is structured data; its picture comes from the provider.
+  if (doc.peppol && doc.peppol.direction === 'IN') return visualPages(doc, company);
   const attachment = (doc.attachments || [])[0];
   const file = attachment ? await getFile(attachment.id) : null;
   if (!file) return null;
-  if (isXml(file)) return visualPages(doc, company, known);
   const pages = file.pages || [];
   if (/pdf/i.test(file.type) || /\.pdf$/i.test(file.name)) {
     const { openPdf } = await import('../../ocr/pdf.js');
@@ -85,7 +83,7 @@ function noFileKey(doc) {
   return 'purchase.preview.noFile';
 }
 
-export function createPreview(doc, { onPicked, company = null, known = null }) {
+export function createPreview(doc, { onPicked, company = null }) {
   let picking = null;
   let pages = [];
   const banner = h('div', { class: 'pick-banner', hidden: true, role: 'status' });
@@ -134,7 +132,7 @@ export function createPreview(doc, { onPicked, company = null, known = null }) {
     return h('div', { class: 'preview-page' }, page.canvas, overlay);
   }
 
-  loadPages(doc, company, known).then(loaded => {
+  loadPages(doc, company).then(loaded => {
     clear(body);
     pages = loaded || [];
     if (!loaded) body.append(h('p', { class: 'muted' }, t(noFileKey(doc))));

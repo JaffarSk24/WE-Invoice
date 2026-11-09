@@ -56,6 +56,12 @@ export function createArchive(remote = null) {
       const bytes = await drive().getSealed(PATHS.attachment(companyId, `${id}.${ext.toLowerCase()}`));
       return bytes || null;
     },
+    /** The provider's PDF of a received document, archived next to its XML, or null. */
+    async readPdf(companyId, key) {
+      const [year, docId] = String(key).split('/');
+      const bytes = await drive().getSealed(PATHS.archive(companyId, year, docId, 'pdf'));
+      return bytes || null;
+    },
     async readXml(companyId, key) {
       const [year, docId] = String(key).split('/');
       const bytes = await drive().getSealed(PATHS.archive(companyId, year, docId, 'xml'));

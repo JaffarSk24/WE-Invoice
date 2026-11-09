@@ -75,6 +75,8 @@ export const PEPPOL_STATE = object({
   // params: what an error text needs, e.g. {bytes, limit} of a message over the size limit.
   errors: { type: 'array', items: object({ code: SHORT_TEXT, message: TEXT, field: { type: ['string', 'null'] }, params: { type: 'object' } }) },
   xmlFileId: NULLABLE_ID,
+  // The provider's PDF of a received document (with its payment QR), archived next to the XML.
+  pdfFileId: NULLABLE_ID,
   revision: { type: 'integer', minimum: 0 },
   // Send queue: attempts of the current revision and when to retry after a
   // network or server failure; delivery checks made and when to ask again.

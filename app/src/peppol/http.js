@@ -48,11 +48,11 @@ export function createProviderClient({ transport, provider, sandbox = false, cus
   }
 
   /**
-   * @param {{method?: string, path: string, headers?: object, body?: string|null, json?: object, auth?: string|null}} req
-   *   auth: the full Authorization value ("Bearer ...") or null
+   * @param {{method?: string, path: string, headers?: object, body?: string|null, json?: object, auth?: string|null, raw?: boolean}} req
+   *   auth: the full Authorization value ("Bearer ...") or null; raw: the answer as bytes (a PDF)
    * @returns {Promise<{status: number, headers: object, body: any}>}  body parsed as JSON when it is JSON
    */
-  async function request({ method = 'GET', path, headers = {}, body = null, json, auth = null }) {
+  async function request({ method = 'GET', path, headers = {}, body = null, json, auth = null, raw = false }) {
     const out = { accept: 'application/json', ...headers };
     let payload = body;
     if (json !== undefined) {
@@ -67,6 +67,10 @@ export function createProviderClient({ transport, provider, sandbox = false, cus
       response = await transport.http({ url: urlOf(path), method, headers: out, body: payload, timeoutMs });
     } catch (error) {
       throw networkError(error, context);
+    }
+    if (raw && response.ok) {
+      const bytes = typeof response.bytes === 'function' ? await response.bytes() : new Uint8Array(await response.arrayBuffer());
+      return { status: response.status, headers: response.headers || {}, body: bytes };
     }
     const parsed = await readBody(response);
     if (!response.ok) throw errorFromResponse(response, parsed, context);

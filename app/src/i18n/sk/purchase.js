@@ -84,7 +84,7 @@ export default {
   "purchase.preview.noFile": "Súbor dokladu nie je v tomto zariadení.",
   "purchase.preview.structured": "Doklad prišiel ako eFaktúra (XML), všetky údaje sú načítané priamo z nej.",
   "purchase.preview.attachedPdf": "Vlastný PDF dodávateľa priložený k eFaktúre.",
-  "purchase.preview.printed": "Vzhľad eFaktúry vytlačený aplikáciou z jej údajov, s QR kódom na úhradu.",
+  "purchase.preview.providerPdf": "Vzhľad eFaktúry od poskytovateľa Peppol, s QR kódom na úhradu.",
   "purchase.preview.failed": "Náhľad sa nepodarilo zobraziť.",
   "purchase.preview.page": "Strana dokladu",
   "purchase.preview.pickHint": "Kliknite na text pre pole {field}",

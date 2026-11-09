@@ -77,6 +77,16 @@ export function createInbox({ store, archive, connect, emit = () => {}, now = ()
     }
     const contact = await supplierContact(parsed.seller);
     const at = now();
+    // The provider's picture of it (with the payment QR), kept like the XML:
+    // the provider keeps the content only for a while. Without it the
+    // document is still stored; the review asks again later.
+    let pdfFileId = null;
+    try {
+      const visual = connection.adapter.visual ? await connection.adapter.visual(item.id) : null;
+      if (visual) pdfFileId = await archive.savePdf(company.id, receivedOn, docId, visual.bytes);
+    } catch (error) {
+      console.warn('peppol: the picture of a received document was not kept', error.code || error.name);
+    }
     const record = await store.insert('documents', {
       ...parsed,
       // The account to pay to, where the review, the payment QR and the bank matching read it.
@@ -88,7 +98,7 @@ export function createInbox({ store, archive, connect, emit = () => {}, now = ()
       attachments: await saveAttachments(company.id, docId, attachments),
       peppol: {
         direction: 'IN', status: 'RECEIVED', providerId, providerMessageId: item.id, receivedAt: at, acknowledgedAt: null,
-        xmlFileId, errors: warnings.map(w => ({ code: w.code, message: [w.field, w.stated, w.computed].filter(Boolean).join(' '), field: w.field || null }))
+        xmlFileId, pdfFileId, errors: warnings.map(w => ({ code: w.code, message: [w.field, w.stated, w.computed].filter(Boolean).join(' '), field: w.field || null }))
       }
     });
     await connection.adapter.ack(item.id);

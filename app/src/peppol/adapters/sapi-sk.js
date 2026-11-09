@@ -88,6 +88,20 @@ export function createSapiSkAdapter({ client, credentials, participantId, prefix
       if (!xml) throw new PeppolError('PEPPOL_BAD_RESPONSE', 'received document without XML payload');
       return { xml };
     },
+    // The provider's picture of a received document as PDF (Verteco: the
+    // supplier's own PDF when the XML has one, else one it renders, with
+    // the payment QR). Not part of SAPI-SK 1.0 itself: a provider without
+    // it answers 404, which means no picture.
+    async visual(id) {
+      try {
+        const { headers, body } = await call({ method: 'GET', path: p(`document/receive/${encodeURIComponent(id)}/pdf`), headers: { accept: 'application/pdf' }, raw: true });
+        if (!body || !body.length || body[0] !== 0x25) return null;
+        return { bytes: body, source: headers['x-verteco-pdf-source'] || null };
+      } catch (error) {
+        if (error.code === 'PEPPOL_NOT_FOUND' || error.status === 404 || error.code === 'PEPPOL_UNSUPPORTED') return null;
+        throw error;
+      }
+    },
     async ack(id) {
       await call({ method: 'POST', path: p(`document/receive/${encodeURIComponent(id)}/acknowledge`) });
     },

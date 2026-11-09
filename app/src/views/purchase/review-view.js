@@ -18,7 +18,6 @@ import { isDemo } from '../shell/demo-mode.js';
 import { storeOrNull, canWrite, receivedStatus } from './data.js';
 import { createReviewForm } from './review-form.js';
 import { createPreview } from './preview.js';
-import { knownSupplierAccount } from './visual.js';
 import { validateValues } from './review-values.js';
 import { blankDocument, saveDocument, recordPayment, deleteDocument, pickedValue } from './review-actions.js';
 import { openPaymentDialog } from './payment-dialog.js';
@@ -61,7 +60,6 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
   if (!isNew) {
     preview = createPreview(doc, {
       company: store.company(),
-      known: knownSupplierAccount(doc, store.list('contacts'), store.list('documents')),
       onPicked: (field, text, region) => {
         const value = pickedValue(field, text);
         if (value === null) { showToast(t('purchase.review.pickInvalid', { text }), { type: 'error' }); return; }

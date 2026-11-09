@@ -1,5 +1,6 @@
 // An in-memory Peppol provider for tests: speaks SAPI-SK (auth/token,
-// document/send, document/receive, acknowledge) and records every request,
+// document/send, document/receive, acknowledge, and the PDF of a received
+// document as Verteco offers it) and records every request,
 // behind a transport of the shape of app/src/transport. Used by the unit
 // tests of this module; never imported by the app itself.
 
@@ -12,7 +13,7 @@ function response(status, body, headers = {}) {
   };
 }
 
-/** A SAPI-SK provider. `inbox` holds {id, xml, senderParticipantId}; `sent` collects send bodies. */
+/** A SAPI-SK provider. `inbox` holds {id, xml, senderParticipantId, pdf?}; `sent` collects send bodies. */
 export function createSapiProvider({ clientId = 'client', clientSecret = 'secret', inbox = [] } = {}) {
   const state = { inbox: [...inbox], sent: [], acked: [], tokens: 0, fail: null, requests: [] };
   function handle({ method, path, headers, body }) {
@@ -42,10 +43,14 @@ export function createSapiProvider({ clientId = 'client', clientSecret = 'secret
       const docs = state.inbox.filter(d => !state.acked.includes(d.id));
       return response(200, { documents: docs.map(d => ({ documentId: d.id, senderParticipantId: d.senderParticipantId || '0245:2020000004', status: 'RECEIVED' })), nextPageToken: null });
     }
-    const one = /^document\/receive\/([^/]+)(\/acknowledge)?$/.exec(path);
+    const one = /^document\/receive\/([^/]+)(\/acknowledge|\/pdf)?$/.exec(path);
     if (one) {
       const doc = state.inbox.find(d => d.id === decodeURIComponent(one[1]));
       if (!doc) return response(404, { error: { code: 'NOT_FOUND' } });
+      if (one[2] === '/pdf') {
+        if (!doc.pdf) return response(404, { error: { code: 'NOT_FOUND' } });
+        return response(200, doc.pdf, { 'content-type': 'application/pdf', 'x-verteco-pdf-source': 'generated' });
+      }
       if (one[2] && method === 'POST') {
         state.acked.push(doc.id);
         return response(200, { documentId: doc.id, status: 'ACKNOWLEDGED' });

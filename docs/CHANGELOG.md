@@ -632,7 +632,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 #### Added (9 November, from testers)
 
-- A received eFaktúra (from Peppol or an XML put into the Inbox) has a picture in its review: the supplier's own PDF when the XML carries one (read from the Peppol archive), else the document printed by the app's PDF engine with the supplier as the seller, in the company's document language, without the user's logo or footer, and with the payment QR (PAY by square, QR Platba) to the supplier's account. The account comes from the XML, else from the supplier's contact card or its latest document with one. It used to show only the line "all data was loaded from the XML".
+- A received eFaktúra has a picture in its review: the PDF its Peppol provider makes of it (Verteco: `GET document/receive/{id}/pdf`, the supplier's own PDF when the XML carries one, else one the provider renders with the payment QR). It is fetched when the document is received and archived in Drive next to the XML (`peppol.pdfFileId`), as the provider keeps the content only for a while; a document received before is fetched once when opened. When the provider has none, the PDF attached in the XML is shown. It used to show only the line "all data was loaded from the XML".
 
 #### Fixed (9 November, from testers)
 
