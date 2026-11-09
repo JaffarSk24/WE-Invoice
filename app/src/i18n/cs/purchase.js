@@ -83,6 +83,8 @@ export default {
   "purchase.preview.loading": "Načítá se náhled...",
   "purchase.preview.noFile": "Soubor dokladu není v tomto zařízení.",
   "purchase.preview.structured": "Doklad přišel jako eFaktúra (XML), všechny údaje jsou načtené přímo z ní.",
+  "purchase.preview.attachedPdf": "Vlastní PDF dodavatele přiložené k eFaktúře.",
+  "purchase.preview.printed": "Vzhled eFaktúry vytištěný aplikací z jejích údajů, s QR kódem k úhradě.",
   "purchase.preview.failed": "Náhled se nepodařilo zobrazit.",
   "purchase.preview.page": "Strana dokladu",
   "purchase.preview.pickHint": "Klikněte na text pro pole {field}",

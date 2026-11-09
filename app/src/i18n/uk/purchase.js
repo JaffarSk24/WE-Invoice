@@ -83,6 +83,8 @@ export default {
   "purchase.preview.loading": "Завантаження попереднього перегляду…",
   "purchase.preview.noFile": "Файлу документа немає на цьому пристрої.",
   "purchase.preview.structured": "Документ надійшов як рахунок eFaktúra (XML), усі дані зчитано безпосередньо з нього.",
+  "purchase.preview.attachedPdf": "PDF постачальника, вкладений в eFaktúru.",
+  "purchase.preview.printed": "Вигляд eFaktúry, надрукований застосунком за її даними, з QR-кодом на оплату.",
   "purchase.preview.failed": "Не вдалося показати попередній перегляд.",
   "purchase.preview.page": "Сторінка документа",
   "purchase.preview.pickHint": "Клацніть на текст для поля {field}",

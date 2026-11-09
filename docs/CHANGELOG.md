@@ -362,6 +362,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Export, import, migration and backup
 
+#### Fixed (9 November, from testers)
+
+- The accountant package was written in the language of the interface: the summary, the CSV and XLSX headers, the names of kinds, statuses and payment methods, and the file names. It is now in the company's document language (the accountant's, Slovak by default), whatever language the app shows; so is the default line text of received documents, whichever language it was stored in.
+
 #### Fixed (22 October, 0.1.4)
 
 - The import from iDoklad reads its Slovak export too ("Názov/Meno", "Vystavenie", "Dodané", "Dátum platby", "Spolu", "Uhradená suma"); every invoice of such a list used to be skipped for want of an issue date and a buyer.
@@ -625,6 +629,15 @@ All notable changes to this project are documented here. The format follows [Kee
 - Opening a PDF or an attachment in a new tab no longer downloads it as well: window.open answers null when "noopener" is asked for, which was taken for a blocked tab.
 
 ### Purchases, Inbox and expenses
+
+#### Added (9 November, from testers)
+
+- A received eFaktúra (from Peppol or an XML put into the Inbox) has a picture in its review: the supplier's own PDF when the XML carries one (read from the Peppol archive), else the document printed by the app's PDF engine with the supplier as the seller, in the company's document language, without the user's logo or footer, and with the payment QR (PAY by square, QR Platba) to the supplier's account. The account comes from the XML, else from the supplier's contact card or its latest document with one. It used to show only the line "all data was loaded from the XML".
+
+#### Fixed (9 November, from testers)
+
+- The supplier's IBAN of a received eFaktúra stayed empty: the XML reader keeps it as `paymentAccount`, the review and the payment QR read `payee`. Received documents now get `payee` from it, and those stored before show it too.
+- The line of a received document read without items ("Nákup podľa dokladu") was written in the language of the interface, so an accountant saw Russian text in Pohoda. It is now in the company's document language.
 
 #### Added (30 October, from testers)
 

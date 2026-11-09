@@ -83,6 +83,8 @@ export default {
   "purchase.preview.loading": "Vorschau wird geladen…",
   "purchase.preview.noFile": "Die Belegdatei ist nicht auf diesem Gerät.",
   "purchase.preview.structured": "Der Beleg kam als eFaktúra (XML), alle Angaben wurden direkt daraus gelesen.",
+  "purchase.preview.attachedPdf": "Das eigene PDF des Lieferanten aus der eFaktúra.",
+  "purchase.preview.printed": "Die eFaktúra, von der App aus ihren Daten gedruckt, mit dem Zahlungs-QR-Code.",
   "purchase.preview.failed": "Die Vorschau konnte nicht angezeigt werden.",
   "purchase.preview.page": "Belegseite",
   "purchase.preview.pickHint": "Klicken Sie auf den Text für das Feld {field}",

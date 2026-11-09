@@ -24,7 +24,8 @@ export function valuesOf(doc) {
     issueDate: orEmpty(doc.issueDate), taxDate: orEmpty(doc.taxDate), dueDate: orEmpty(doc.dueDate), receivedDate: orEmpty(doc.receivedDate),
     currency: doc.currency || 'EUR',
     net: orEmpty(totals.net), vat: orEmpty(totals.vat), total: orEmpty(totals.payable ?? totals.gross),
-    iban: orEmpty(doc.payee && doc.payee.iban),
+    // An eFaktúra stored before the account was copied to payee has it in paymentAccount.
+    iban: orEmpty((doc.payee && doc.payee.iban) || (doc.paymentAccount && doc.paymentAccount.iban)),
     category: expenseCategoryOf(doc) || '',
     paymentMethod: doc.paymentMethod || '',
     vatDeductionPeriod: orEmpty(doc.vatDeductionPeriod),

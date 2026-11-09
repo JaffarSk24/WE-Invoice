@@ -63,6 +63,18 @@ export function t(key, params = null) {
   return s;
 }
 
+/**
+ * A text in a given language, not the one of the interface: what goes into
+ * the documents and the accountant's files follows the company's document
+ * language. Falls back to the interface language while that dictionary is
+ * not loaded (ensureLanguage loads it).
+ */
+export function tIn(lang, key, params = null) {
+  if (!translations[lang] || translations[lang][key] === undefined) return t(key, params);
+  const s = translations[lang][key];
+  return params ? applyPlurals(s, params, localeOf(lang)).replace(/\{(\w+)\}/g, (m, name) => (params[name] !== undefined ? String(params[name]) : m)) : s;
+}
+
 // Fills every [data-i18n] element of a static page part with its text.
 export function translatePage(root = document) {
   root.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.getAttribute('data-i18n')); });

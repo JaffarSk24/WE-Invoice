@@ -79,6 +79,8 @@ export function createInbox({ store, archive, connect, emit = () => {}, now = ()
     const at = now();
     const record = await store.insert('documents', {
       ...parsed,
+      // The account to pay to, where the review, the payment QR and the bank matching read it.
+      payee: parsed.paymentAccount && parsed.paymentAccount.iban ? { iban: parsed.paymentAccount.iban.replace(/\s/g, '').toUpperCase(), bic: parsed.paymentAccount.bic || null, name: parsed.paymentAccount.name || null } : null,
       id: docId,
       status: 'TO_PROCESS',
       contactId: contact.id,

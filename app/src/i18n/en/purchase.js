@@ -83,6 +83,8 @@ export default {
   "purchase.preview.loading": "Loading the preview…",
   "purchase.preview.noFile": "The document file is not on this device.",
   "purchase.preview.structured": "The document arrived as an e-invoice (XML); every detail was read from it directly.",
+  "purchase.preview.attachedPdf": "The supplier's own PDF attached to the eFaktúra.",
+  "purchase.preview.printed": "The eFaktúra printed by the app from its data, with the payment QR code.",
   "purchase.preview.failed": "The preview could not be shown.",
   "purchase.preview.page": "Document page",
   "purchase.preview.pickHint": "Click the text for {field}",

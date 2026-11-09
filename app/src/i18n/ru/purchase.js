@@ -83,6 +83,8 @@ export default {
   "purchase.preview.loading": "Загружаем превью…",
   "purchase.preview.noFile": "Файла документа нет на этом устройстве.",
   "purchase.preview.structured": "Документ пришёл как eFaktúra (XML), все данные загружены прямо из неё.",
+  "purchase.preview.attachedPdf": "PDF поставщика, вложенный в eFaktúru.",
+  "purchase.preview.printed": "Вид eFaktúry, напечатанный приложением по её данным, с QR-кодом на оплату.",
   "purchase.preview.failed": "Не удалось показать превью.",
   "purchase.preview.page": "Страница документа",
   "purchase.preview.pickHint": "Нажмите на текст для поля {field}",

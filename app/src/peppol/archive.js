@@ -50,6 +50,12 @@ export function createArchive(remote = null) {
         throw new PeppolError('PEPPOL_ARCHIVE_UNAVAILABLE', `attachment write failed: ${error.code || error.name}`, { retryable: true });
       }
     },
+    /** The bytes of an attachment of a received document, or null. */
+    async readAttachment(companyId, id, name) {
+      const ext = (/\.([a-z0-9]{1,8})$/i.exec(name || '') || [])[1] || 'bin';
+      const bytes = await drive().getSealed(PATHS.attachment(companyId, `${id}.${ext.toLowerCase()}`));
+      return bytes || null;
+    },
     async readXml(companyId, key) {
       const [year, docId] = String(key).split('/');
       const bytes = await drive().getSealed(PATHS.archive(companyId, year, docId, 'xml'));

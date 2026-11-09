@@ -4,7 +4,7 @@
 // checks it. Clicking a row opens the review.
 import { h, icon, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
-import { t } from '../../i18n/index.js';
+import { t, tIn, ensureLanguage } from '../../i18n/index.js';
 import { on } from '../../events.js';
 import { showToast, showError } from '../../ui/toast.js';
 import { navigate } from '../../router.js';
@@ -37,6 +37,11 @@ export async function handleFiles(files, { transport, progressList }) {
     return [];
   }
   const store = storeOrNull();
+  // The line of a document read without items is booked text: it goes into
+  // the accountant's export, so it is in the company's document language.
+  const docLang = store.company()?.defaults?.language || 'sk';
+  await ensureLanguage(docLang);
+  const lineName = tIn(docLang, 'purchase.line.default');
   const created = [];
   for (const file of files) {
     const row = progressRow(file);
@@ -44,7 +49,7 @@ export async function handleFiles(files, { transport, progressList }) {
     refreshIcons(row.el);
     try {
       const { doc, warnings } = await intakeFile(file, {
-        store, transport, today: todayLocal(), lineName: t('purchase.line.default'), onProgress: (stage, f) => row.update(stage, f)
+        store, transport, today: todayLocal(), lineName, onProgress: (stage, f) => row.update(stage, f)
       });
       created.push(doc);
       if (warnings.length) showToast(t('purchase.inbox.ekasaFailed'), { type: 'info' });

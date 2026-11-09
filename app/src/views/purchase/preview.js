@@ -4,7 +4,8 @@
 // the chosen field and its place on the page is remembered for the
 // supplier. Pages come from this session's reading or are drawn again
 // from the file kept on the device (taken from Google Drive when another
-// device took it in).
+// device took it in). An e-invoice (XML) shows the supplier's PDF from it,
+// or the document printed by the app with its payment QR (visual.js).
 import { h, icon, clear } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
@@ -12,6 +13,7 @@ import { phraseAt } from '../../ocr/text-layout.js';
 import { getFile } from './file-store.js';
 import { recentRead } from './intake.js';
 import { attachmentState } from '../../sync/attachments/registry.js';
+import { receivedVisual } from './visual.js';
 
 const PAGES = 3;
 const WIDTH = 1400;
@@ -24,15 +26,32 @@ function copyCanvas(source) {
   return canvas;
 }
 
-// Pages to show: [{ canvas, items }].
-async function loadPages(doc) {
+// The picture of an e-invoice: its PDF from the Peppol archive (an
+// eFaktúra from Peppol keeps its attachments there), else printed.
+async function visualPages(doc, company, known) {
+  const [{ openPdf }, { buildPdf }] = await Promise.all([import('../../ocr/pdf.js'), import('../../pdf/index.js')]);
+  const fromPeppol = doc.peppol && doc.peppol.direction === 'IN' && company;
+  const readAttachment = fromPeppol ? async (a) => {
+    const { createArchive } = await import('../../peppol/archive.js');
+    return createArchive().readAttachment(company.id, a.id, a.name);
+  } : null;
+  const { pages, source } = await receivedVisual(doc, company, { readAttachment, buildPdf, openPdf, width: WIDTH, max: PAGES, known });
+  pages.note = source === 'ATTACHMENT' ? 'purchase.preview.attachedPdf' : 'purchase.preview.printed';
+  return pages;
+}
+
+const isXml = (file) => /xml/i.test(file.type || '') || /\.(xml|isdoc)$/i.test(file.name || '');
+
+// Pages to show: [{ canvas, items }], with an optional note key.
+async function loadPages(doc, company, known) {
   const read = recentRead(doc.id);
   if (read && read.canvases && read.canvases.length) return read.canvases.map((c, i) => ({ canvas: copyCanvas(c), items: (read.pages && read.pages[i]) || [] }));
   // An eFaktúra from Peppol is structured data; its XML lives in the Peppol archive.
-  if (doc.peppol && doc.peppol.direction === 'IN') return [];
+  if (doc.peppol && doc.peppol.direction === 'IN') return visualPages(doc, company, known);
   const attachment = (doc.attachments || [])[0];
   const file = attachment ? await getFile(attachment.id) : null;
   if (!file) return null;
+  if (isXml(file)) return visualPages(doc, company, known);
   const pages = file.pages || [];
   if (/pdf/i.test(file.type) || /\.pdf$/i.test(file.name)) {
     const { openPdf } = await import('../../ocr/pdf.js');
@@ -66,7 +85,7 @@ function noFileKey(doc) {
   return 'purchase.preview.noFile';
 }
 
-export function createPreview(doc, { onPicked }) {
+export function createPreview(doc, { onPicked, company = null, known = null }) {
   let picking = null;
   let pages = [];
   const banner = h('div', { class: 'pick-banner', hidden: true, role: 'status' });
@@ -115,12 +134,15 @@ export function createPreview(doc, { onPicked }) {
     return h('div', { class: 'preview-page' }, page.canvas, overlay);
   }
 
-  loadPages(doc).then(loaded => {
+  loadPages(doc, company, known).then(loaded => {
     clear(body);
     pages = loaded || [];
     if (!loaded) body.append(h('p', { class: 'muted' }, t(noFileKey(doc))));
     else if (!loaded.length) body.append(h('p', { class: 'muted' }, t('purchase.preview.structured')));
-    else loaded.forEach(p => body.append(pageEl(p)));
+    else {
+      if (loaded.note) body.append(h('p', { class: 'muted preview-note' }, t(loaded.note)));
+      loaded.forEach(p => body.append(pageEl(p)));
+    }
     el.dataset.ready = '1';
   }).catch(e => {
     console.error('Preview failed', e);

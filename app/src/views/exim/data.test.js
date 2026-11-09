@@ -7,6 +7,7 @@ import { computeTotals, readZip, buildBackup, serializeBackup, parseBackup } fro
 import { Store, memoryAdapter } from '../../store/index.js';
 import { company, contacts, documents } from '../../../../tests/fixtures/exports/period.js';
 import { demoDocument } from './source.js';
+import { setLanguage } from '../../i18n/index.js';
 import { buildAccountantZip, markExported, summaryText, localStamp } from './export-run.js';
 import { replaceCompanyData, withAudit } from './store-bulk.js';
 import { backupText, readBackup, isEncryptedBackup } from './backup-file.js';
@@ -52,6 +53,25 @@ describe('accountant ZIP', () => {
     expect(names.filter(n => n.startsWith('pdf/'))).toHaveLength(3);
     expect(out.fileName).toBe('Biela_Hora_s._r._o._2026-09-01_2026-09-30.zip');
     expect(new TextDecoder().decode(files.get(names[0]))).toContain('Biela Hora s. r. o.');
+  });
+
+  it('is written in the document language of the company, not the one of the interface', async () => {
+    await setLanguage('ru');
+    try {
+      const received = { ...documents.find(d => d.kind === 'INVOICE'), id: 'r1', kind: 'RECEIVED_INVOICE', number: 'PF1', seller: { name: 'Seyfor Slovensko, a.s.' },
+        lines: documents.find(d => d.kind === 'INVOICE').lines.map(l => ({ ...l, name: 'Покупка по документу' })) };
+      const out = await buildAccountantZip({ company: { ...company, defaults: { ...(company.defaults || {}), language: 'sk' } }, contacts, documents: [...documents, received] },
+        { from: '2026-09-01', to: '2026-09-30', formats: ['csv', 'pohoda'] }, { ...fakePdf, now: new Date('2026-10-01T10:00:00Z') });
+      const files = await readZip(out.bytes);
+      const text = (name) => new TextDecoder().decode(files.get(name));
+      expect([...files.keys()]).toEqual(expect.arrayContaining(['prehlad.txt', 'doklady.csv', 'polozky.csv', 'pohoda.xml']));
+      expect(text('prehlad.txt')).not.toMatch(/[\u0400-\u04ff]/);
+      expect(text('doklady.csv')).not.toMatch(/[\u0400-\u04ff]/);
+      expect(text('pohoda.xml')).toContain('Nákup podľa dokladu');
+      expect(text('pohoda.xml')).not.toMatch(/[\u0400-\u04ff]/);
+    } finally {
+      await setLanguage('sk');
+    }
   });
 
   it('lists a PDF that failed instead of failing the package', async () => {
