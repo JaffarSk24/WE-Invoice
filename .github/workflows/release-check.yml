@@ -82,7 +82,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - name: Download the app and check its checksum
+      - name: Download both Mac builds and check their checksums
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.release.tag_name || inputs.tag }}
@@ -90,34 +90,38 @@ jobs:
           set -euo pipefail
           tag="${TAG:-$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)}"
           echo "Release: $tag"
-          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'WE-Invoice-*-mac-universal.zip' --pattern 'latest-mac.yml' --dir asset
-          zip=$(ls asset/*.zip)
-          name=$(basename "$zip")
-          expected=$(awk -v n="$name" '$0 ~ "url: "n"$" {getline; sub(/.*sha512: */, ""); print; exit}' asset/latest-mac.yml)
-          actual=$(shasum -a 512 "$zip" | cut -d' ' -f1 | xxd -r -p | base64)
-          [ "$expected" = "$actual" ] || { echo "::error::Checksum of $name does not match latest-mac.yml"; exit 1; }
-          echo "Checksum matches latest-mac.yml: $name"
-          ditto -x -k "$zip" app
+          # One build per CPU since 0.1.9: arm64 (Apple silicon) and x64 (Intel).
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'WE-Invoice-*-mac-arm64.zip' --pattern 'WE-Invoice-*-mac-x64.zip' --pattern 'latest-mac.yml' --dir asset
+          for cpu in arm64 x64; do
+            zip=$(ls asset/*-mac-$cpu.zip)
+            name=$(basename "$zip")
+            expected=$(awk -v n="$name" '$0 ~ "url: "n"$" {getline; sub(/.*sha512: */, ""); print; exit}' asset/latest-mac.yml)
+            actual=$(shasum -a 512 "$zip" | cut -d' ' -f1 | xxd -r -p | base64)
+            [ "$expected" = "$actual" ] || { echo "::error::Checksum of $name does not match latest-mac.yml"; exit 1; }
+            echo "Checksum matches latest-mac.yml: $name ($(du -m "$zip" | cut -f1) MB)"
+            ditto -x -k "$zip" "app-$cpu"
+          done
           echo "VERSION=${tag#v}" >> "$GITHUB_ENV"
-      - name: Signature, version and Google sign-in client
+      - name: Signature, CPU, version and Google sign-in client of each build
         run: |
           set -euo pipefail
-          app="app/WE Invoice.app"
-          codesign --verify --deep --strict "$app"
-          echo "Signature: valid"
-          lipo -info "$app/Contents/MacOS/WE Invoice" | grep -q 'x86_64 arm64' || { echo "::error::The app is not a universal build"; exit 1; }
-          echo "Universal build: yes"
-          version=$(defaults read "$PWD/$app/Contents/Info.plist" CFBundleShortVersionString)
-          [ "$version" = "$VERSION" ] || { echo "::error::App version $version, release $VERSION"; exit 1; }
-          echo "Version: $version"
-          npx --yes @electron/asar list "$app/Contents/Resources/app.asar" | grep -q '^/oauth-credentials.json$' \
-            || { echo "::error::The app has no Google sign-in client (oauth-credentials.json)"; exit 1; }
-          echo "Google sign-in client: bundled"
+          for cpu in arm64 x64; do
+            app="app-$cpu/WE Invoice.app"
+            codesign --verify --deep --strict "$app"
+            arch=$([ "$cpu" = arm64 ] && echo arm64 || echo x86_64)
+            lipo -archs "$app/Contents/MacOS/WE Invoice" | grep -qx "$arch" || { echo "::error::The $cpu build is not $arch only: $(lipo -archs "$app/Contents/MacOS/WE Invoice")"; exit 1; }
+            version=$(defaults read "$PWD/$app/Contents/Info.plist" CFBundleShortVersionString)
+            [ "$version" = "$VERSION" ] || { echo "::error::App version $version in the $cpu build, release $VERSION"; exit 1; }
+            npx --yes @electron/asar list "$app/Contents/Resources/app.asar" | grep -q '^/oauth-credentials.json$' \
+              || { echo "::error::The $cpu build has no Google sign-in client (oauth-credentials.json)"; exit 1; }
+            echo "$cpu build: signature valid, $arch, version $version, Google sign-in client bundled"
+          done
       - name: Start the app and let it run
         run: |
           set -uo pipefail
           export WE_INVOICE_USER_DATA="$RUNNER_TEMP/we-invoice-data"
-          "app/WE Invoice.app/Contents/MacOS/WE Invoice" > app.log 2>&1 &
+          # The runner is an Apple silicon Mac: its own build is the arm64 one.
+          "app-arm64/WE Invoice.app/Contents/MacOS/WE Invoice" > app.log 2>&1 &
           pid=$!
           sleep 20
           if kill -0 "$pid" 2>/dev/null; then

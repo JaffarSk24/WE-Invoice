@@ -49,6 +49,12 @@ function launchDetached(file, args) {
   child.unref();
 }
 
+// The CPU of the Mac, not of the app: an Intel build running on Apple
+// silicon (Rosetta) moves to the native build with its next update.
+function cpuArch() {
+  return process.platform === 'darwin' && app.runningUnderARM64Translation ? 'arm64' : process.arch;
+}
+
 function updatesDir() {
   return path.join(app.getPath('userData'), 'updates');
 }
@@ -68,7 +74,7 @@ async function check() {
     if (!res.ok) return { ok: false, error: `release feed ${res.status}` };
     const release = await res.json();
     const version = String(release.tag_name || release.name || '').replace(/^v/, '');
-    const assets = pickAsset(release.assets, process.platform, process.arch);
+    const assets = pickAsset(release.assets, process.platform, cpuArch());
     const sums = checksumsAsset(release.assets, process.platform);
     latest = { version, assets, sums, page: release.html_url || `https://github.com/${REPO}/releases/latest` };
     const newer = compareVersions(version, app.getVersion()) > 0;

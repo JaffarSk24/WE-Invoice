@@ -104,7 +104,7 @@ Full details are in the [privacy policy](https://jaffarsk24.github.io/WE-Invoice
 
 ### macOS (10.15 or newer, Intel and Apple silicon)
 
-1. Download `WE-Invoice-<version>-mac-universal.dmg`, open it and drag WE Invoice to Applications.
+1. Download the file for your Mac: `WE-Invoice-<version>-mac-arm64.dmg` for Apple silicon (M1 and newer), `WE-Invoice-<version>-mac-x64.dmg` for an Intel Mac (Apple menu > About This Mac tells which). Open it and drag WE Invoice to Applications.
 2. Before opening the app for the first time, run this once in Terminal:
 
    ```bash

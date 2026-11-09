@@ -24,15 +24,17 @@ function compareVersions(a, b) {
 }
 
 // Release assets are named WE-Invoice-<version>-<os>-<arch>.<ext>. macOS
-// ships one universal build (Intel and Apple silicon); the zip is installed
-// in place, the dmg is the manual fallback. Older per-CPU names are still
-// understood, an Intel build runs on Apple silicon too.
+// ships one build per CPU since 0.1.9 (arm64 for Apple silicon, x64 for
+// Intel), half the size of the universal one shipped before; the zip is
+// installed in place, the dmg is the manual fallback. A release with a
+// universal build only is still understood, and an Intel build runs on
+// Apple silicon too.
 function pickAsset(assets, platform, arch) {
   const list = (assets || []).filter(a => a && a.name && a.browser_download_url);
   const find = (re) => list.find(a => re.test(a.name));
   if (platform === 'darwin') {
-    const zip = find(/-mac-universal\.zip$/) || find(new RegExp(`-mac-${arch}\\.zip$`)) || find(/-mac-x64\.zip$/) || find(/-mac\.zip$/);
-    const dmg = find(/-mac-universal\.dmg$/) || find(new RegExp(`-mac-${arch}\\.dmg$`)) || find(/-mac-x64\.dmg$/) || find(/\.dmg$/);
+    const zip = find(new RegExp(`-mac-${arch}\\.zip$`)) || find(/-mac-universal\.zip$/) || find(/-mac-x64\.zip$/) || find(/-mac\.zip$/);
+    const dmg = find(new RegExp(`-mac-${arch}\\.dmg$`)) || find(/-mac-universal\.dmg$/) || find(/-mac-x64\.dmg$/) || find(/\.dmg$/);
     return { install: zip || null, manual: dmg || null };
   }
   if (platform === 'win32') {

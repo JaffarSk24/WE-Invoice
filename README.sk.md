@@ -50,7 +50,7 @@ English version: [README.md](README.md).
 
 ### macOS (10.15 a novší, Intel aj Apple silicon)
 
-1. Stiahnite `WE-Invoice-<verzia>-mac-universal.dmg`, otvorte ho a presuňte WE Invoice do priečinka Aplikácie.
+1. Stiahnite súbor pre svoj Mac: `WE-Invoice-<verzia>-mac-arm64.dmg` pre Apple silicon (M1 a novšie), `WE-Invoice-<verzia>-mac-x64.dmg` pre Mac s procesorom Intel (zistíte v menu Apple > O tomto Macu). Otvorte ho a presuňte WE Invoice do priečinka Aplikácie.
 2. Pred prvým spustením raz zadajte v Termináli:
 
    ```bash

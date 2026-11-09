@@ -216,6 +216,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Changed (9 November, smaller Mac downloads)
+
+- macOS ships one build per CPU instead of one universal build: `WE-Invoice-<version>-mac-arm64` for Apple silicon and `-mac-x64` for Intel, about half the size each (the universal zip was 230 MB, so an update took long). The updater takes the build of the Mac's CPU, also when an Intel build runs on Apple silicon through Rosetta (`app.runningUnderARM64Translation`), and still understands a release with a universal build only; apps of 0.1.8 and older already pick `-mac-<arch>.zip` when there is no universal file. The release check verifies the checksum, signature, CPU, version and Google client of both builds and runs the arm64 one. README tells which file to download.
+
 #### Changed (9 November, release check)
 
 - The Windows part of the release check is split in two jobs. "Windows installer from the release" installs, starts, updates and uninstalls the published installer with Defender left as the runner has it (`check-windows-install.ps1 -SkipDefender`, about 3 minutes, 15 at most) and gives the verdict. "Windows installer under Defender (advisory)" runs the same with Defender protection on and its scans, `continue-on-error`, 12 minutes at most. Every Defender wait is bounded: the signature update 90 seconds (it had no limit), a scan 2 minutes (was 5), an installer 6 (was 10). The 0.1.8 check had waited on Defender for over 20 minutes.

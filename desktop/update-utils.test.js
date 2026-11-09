@@ -28,15 +28,16 @@ describe('release assets', () => {
     asset('WE-Invoice-0.2.0-win-x64.exe')
   ];
 
-  it('prefers the universal macOS build on any CPU', () => {
+  it('takes a universal macOS build when a release has only that one', () => {
     expect(pickAsset(universal, 'darwin', 'arm64').install.name).toBe('WE-Invoice-1.0.0-mac-universal.zip');
     expect(pickAsset(universal, 'darwin', 'x64').manual.name).toBe('WE-Invoice-1.0.0-mac-universal.dmg');
     expect(pickAsset(universal, 'win32', 'x64').install.name).toBe('WE-Invoice-1.0.0-win-x64.exe');
   });
 
-  it('picks the build for the running CPU when there is no universal one', () => {
+  it('picks the build for the CPU, the smaller one, even next to a universal build', () => {
     expect(pickAsset(perCpu, 'darwin', 'arm64').install.name).toBe('WE-Invoice-0.2.0-mac-arm64.zip');
     expect(pickAsset(perCpu, 'darwin', 'x64').manual.name).toBe('WE-Invoice-0.2.0-mac-x64.dmg');
+    expect(pickAsset([...universal, ...perCpu], 'darwin', 'arm64').install.name).toBe('WE-Invoice-0.2.0-mac-arm64.zip');
   });
 
   it('falls back to the Intel build on Apple silicon', () => {
