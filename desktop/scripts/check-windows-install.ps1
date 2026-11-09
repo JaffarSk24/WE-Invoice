@@ -14,9 +14,13 @@
 # Defender itself does not answer on the machine (its service fails on some
 # runners), the install, start, update and uninstall are still checked and
 # the Defender part is reported as a warning. No step waits without limit:
-# a scan gets 5 minutes, an installer or uninstaller 10.
+# the signature update gets 90 seconds, a scan 2 minutes, an installer or
+# uninstaller 6. -SkipDefender checks the install, start, update and
+# uninstall alone: the release check runs it that way for its verdict and
+# the Defender part in a job of its own, which a slow Defender on the
+# runner must not hold up (a release once waited 40 minutes for it).
 #
-#   pwsh desktop/scripts/check-windows-install.ps1 [-Installer <path to WE-Invoice-x.y.z-win-x64.exe>] [-ExpectGoogleClient] [-Repeat <n>]
+#   pwsh desktop/scripts/check-windows-install.ps1 [-Installer <path to WE-Invoice-x.y.z-win-x64.exe>] [-ExpectGoogleClient] [-Repeat <n>] [-SkipDefender]
 
 param(
   [string]$Installer,
@@ -24,7 +28,9 @@ param(
   [switch]$ExpectGoogleClient,
   # Install and uninstall this many times first, to catch an installer that
   # fails only now and then.
-  [int]$Repeat = 0
+  [int]$Repeat = 0,
+  # Leave Defender as the machine has it: no settings, signatures or scans.
+  [switch]$SkipDefender
 )
 
 $ErrorActionPreference = 'Stop'
@@ -37,9 +43,10 @@ $Publisher = 'White Eagles & Co. s. r. o.'
 $UninstallRoot = 'Software\Microsoft\Windows\CurrentVersion\Uninstall'
 $StartedAt = Get-Date
 $script:Warnings = 0
-$script:Defender = $true
-$ScanMinutes = 5
-$SetupMinutes = 10
+$script:Defender = -not $SkipDefender
+$ScanMinutes = 2
+$SetupMinutes = 6
+$SignatureSeconds = 90
 
 function Step([string]$Text) { Write-Host ''; Write-Host "== $Text" }
 function Fail([string]$Text) { Write-Host "::error::$Text"; exit 1 }
@@ -101,7 +108,10 @@ function Assert-NoDetections([string]$Stage) {
 }
 
 function Scan([string]$Path) {
-  if (-not $script:Defender) { Warn "Defender is not available, $Path was not scanned"; return }
+  if (-not $script:Defender) {
+    if (-not $SkipDefender) { Warn "Defender is not available, $Path was not scanned" }
+    return
+  }
   $job = Start-Job -ScriptBlock { param($p) Start-MpScan -ScanType CustomScan -ScanPath $p } -ArgumentList $Path
   if (-not (Wait-Job $job -Timeout ($ScanMinutes * 60))) {
     Stop-Job $job; Remove-Job $job -Force
@@ -185,11 +195,15 @@ $Installer = (Resolve-Path $Installer).Path
 Write-Host "Installer: $Installer"
 
 Step 'Microsoft Defender with the protection of a home computer'
-try {
-  $preference = Get-MpPreference -ErrorAction Stop
-} catch {
-  $script:Defender = $false
-  Warn "Microsoft Defender does not answer on this machine ($($_.Exception.Message)); the install, start, update and uninstall are checked without it"
+if ($SkipDefender) {
+  Write-Host 'Defender is checked in a job of its own (-SkipDefender).'
+} else {
+  try {
+    $preference = Get-MpPreference -ErrorAction Stop
+  } catch {
+    $script:Defender = $false
+    Warn "Microsoft Defender does not answer on this machine ($($_.Exception.Message)); the install, start, update and uninstall are checked without it"
+  }
 }
 if ($script:Defender) {
 # CI images come with Defender switched off and whole drives excluded.
@@ -224,7 +238,15 @@ if (Test-Path $policy) {
     Remove-Item -Path (Join-Path $policy $key) -Recurse -Force -ErrorAction SilentlyContinue
   }
 }
-try { Update-MpSignature } catch { Warn "Defender signatures were not updated: $($_.Exception.Message)" }
+# The signature update has no timeout of its own and once hung for long.
+$update = Start-Job -ScriptBlock { Update-MpSignature }
+if (-not (Wait-Job $update -Timeout $SignatureSeconds)) {
+  Stop-Job $update
+  Warn "Defender signatures were not updated within $SignatureSeconds seconds"
+} else {
+  try { Receive-Job $update -ErrorAction Stop | Out-Null } catch { Warn "Defender signatures were not updated: $($_.Exception.Message)" }
+}
+Remove-Job $update -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 10
 try {
   Get-MpPreference -ErrorAction Stop | Format-List DisableRealtimeMonitoring, DisableBehaviorMonitoring, DisableIOAVProtection, MAPSReporting,

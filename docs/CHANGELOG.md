@@ -216,6 +216,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Desktop app
 
+#### Changed (9 November, release check)
+
+- The Windows part of the release check is split in two jobs. "Windows installer from the release" installs, starts, updates and uninstalls the published installer with Defender left as the runner has it (`check-windows-install.ps1 -SkipDefender`, about 3 minutes, 15 at most) and gives the verdict. "Windows installer under Defender (advisory)" runs the same with Defender protection on and its scans, `continue-on-error`, 12 minutes at most. Every Defender wait is bounded: the signature update 90 seconds (it had no limit), a scan 2 minutes (was 5), an installer 6 (was 10). The 0.1.8 check had waited on Defender for over 20 minutes.
+
 #### Fixed (30 October, from testers)
 
 - The update window shows "What's new" in the language of the app: the release notes carry a section per language (`## English`, `## Slovenčina`, `## Čeština`, `## Deutsch`, `## Русский`, `## Українська`) and the window picks the user's one, else the English one; notes without sections are shown whole. `tests/release-notes.test.js` fails on release notes after 0.1.6 that miss a language. The "What's new" dialog of the banner shows the same section.

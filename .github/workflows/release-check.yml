@@ -19,7 +19,9 @@ jobs:
   windows:
     name: Windows installer from the release
     runs-on: windows-latest
-    timeout-minutes: 40
+    # The verdict on the release: install, start, update and uninstall.
+    # Defender is checked in the next job, which may take its time.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -41,6 +43,37 @@ jobs:
           Write-Host "Checksum matches latest.yml: $($exe.Name)"
           "INSTALLER=$($exe.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
       - name: Install, run, update and uninstall
+        shell: pwsh
+        run: ./desktop/scripts/check-windows-install.ps1 -Installer $env:INSTALLER -ExpectGoogleClient -SkipDefender
+
+  windows-defender:
+    name: Windows installer under Defender (advisory)
+    runs-on: windows-latest
+    # Defender on a GitHub runner is sometimes slow or broken; its findings
+    # are reported here without holding up or failing the release check.
+    continue-on-error: true
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Download the installer and check its checksum
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          $tag = $env:TAG
+          if (-not $tag) { $tag = gh release view --repo $env:GITHUB_REPOSITORY --json tagName --jq .tagName }
+          Write-Host "Release: $tag"
+          gh release download $tag --repo $env:GITHUB_REPOSITORY --pattern 'WE-Invoice-*-win-x64.exe' --pattern 'latest.yml' --dir asset
+          $exe = Get-ChildItem asset -Filter '*.exe' | Select-Object -First 1
+          $expected = (Select-String -Path asset/latest.yml -Pattern '^sha512:\s*(.+)$').Matches[0].Groups[1].Value.Trim()
+          $actual = [Convert]::ToBase64String([Security.Cryptography.SHA512]::Create().ComputeHash([IO.File]::ReadAllBytes($exe.FullName)))
+          if ($expected -ne $actual) { Write-Host "::error::Checksum of $($exe.Name) does not match latest.yml"; exit 1 }
+          Write-Host "Checksum matches latest.yml: $($exe.Name)"
+          "INSTALLER=$($exe.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - name: Install with Defender protection on, scan and uninstall
         shell: pwsh
         run: ./desktop/scripts/check-windows-install.ps1 -Installer $env:INSTALLER -ExpectGoogleClient
 
