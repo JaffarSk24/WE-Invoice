@@ -141,7 +141,7 @@
     "copyright": "Copyright (c) 2026 White Eagles & Co. s. r. o."
   },
   "dependencies": {
-    "nodemailer": "^10.1.7"
+    "nodemailer": "^10.3.1"
   },
   "overrides": {
     "minimatch@>=7.0.0 <11.0.1": "11.0.5"
