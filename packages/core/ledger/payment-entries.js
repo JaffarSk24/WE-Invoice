@@ -11,7 +11,9 @@ import { CoreError } from '../errors.js';
 import { LEDGER_CATEGORIES, lineCategory, isTaxCategory } from './categories.js';
 
 const INCOME_KINDS = ['INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'SELF_BILLING', 'SALES_RECEIPT'];
-const EXPENSE_KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
+// The payment of a received proforma is the day the money left; the invoice
+// that settles it later records no payment of its own (ADVANCE_PAID link).
+const EXPENSE_KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA'];
 const CREDIT_KINDS = ['CREDIT_NOTE', 'RECEIVED_CREDIT_NOTE'];
 
 /** INCOME or EXPENSE for a document kind whose payments are booked, else null. */

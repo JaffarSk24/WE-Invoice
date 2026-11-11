@@ -31,6 +31,7 @@ export default {
   "crm.kind.INTERNAL": "Interner Beleg",
   "crm.kind.RECEIVED_INVOICE": "Eingangsrechnung",
   "crm.kind.RECEIVED_CREDIT_NOTE": "Eingangsgutschrift",
+  "crm.kind.RECEIVED_PROFORMA": "Erhaltene Vorauszahlungsrechnung",
   "crm.kind.EXPENSE_RECEIPT": "Kassenbon",
   "crm.kind.REMINDER": "Mahnung",
   "crm.kind.SELF_BILLING": "Gutschrift (vom Leistungsempfänger ausgestellt)",

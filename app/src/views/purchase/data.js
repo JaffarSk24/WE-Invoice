@@ -7,7 +7,7 @@ import { getStore, hasStore } from '../../store/index.js';
 import { isDemo, demoData } from '../shell/demo-mode.js';
 import { todayLocal } from '../../components/dates.js';
 
-export const RECEIVED_KINDS = Object.freeze(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE']);
+export const RECEIVED_KINDS = Object.freeze(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'RECEIVED_PROFORMA']);
 export const EXPENSE_KINDS = Object.freeze(['EXPENSE_RECEIPT']);
 export const PURCHASE_KINDS = Object.freeze([...RECEIVED_KINDS, ...EXPENSE_KINDS]);
 const STORED = new Set(['TO_PROCESS', 'CANCELLED', 'BOOKED']);
@@ -52,7 +52,29 @@ export function lastPaymentDate(doc) {
   return dates.length ? dates[dates.length - 1] : null;
 }
 
-export function rowOf(doc, today = todayLocal()) {
+// An invoice settled by a paid proforma was paid when the proforma was.
+function paidDateOf(doc, byId) {
+  const own = lastPaymentDate(doc);
+  if (own || !byId) return own;
+  const dates = (doc.links || []).filter(l => l.kind === 'ADVANCE_PAID').map(l => byId.get(l.docId)).filter(Boolean).map(lastPaymentDate).filter(Boolean).sort();
+  return dates.length ? dates[dates.length - 1] : null;
+}
+
+/** Ids of the received proformas some invoice settles. */
+export function settledIds(documents) {
+  const ids = new Set();
+  documents.forEach(d => { if (!d.deleted) (d.links || []).forEach(l => { if (l.kind === 'ADVANCE_PAID') ids.add(l.docId); }); });
+  return ids;
+}
+
+/** What the rows need to know about advances, from all documents of the company (once per list). */
+export function advanceContext(documents) {
+  return { byId: new Map(documents.map(d => [d.id, d])), settled: settledIds(documents) };
+}
+
+/** A list row; ctx (advanceContext) gives the advance facts. */
+export function rowOf(doc, today = todayLocal(), ctx = null) {
+  const byId = ctx ? ctx.byId : null;
   return {
     id: doc.id,
     kind: doc.kind,
@@ -60,7 +82,8 @@ export function rowOf(doc, today = todayLocal()) {
     supplier: (doc.seller && doc.seller.name) || '',
     issueDate: doc.issueDate || null,
     dueDate: doc.dueDate || null,
-    paidDate: lastPaymentDate(doc),
+    paidDate: paidDateOf(doc, byId),
+    settled: Boolean(ctx) && doc.kind === 'RECEIVED_PROFORMA' && ctx.settled.has(doc.id),
     total: (doc.totals && doc.totals.payable) || '0.00',
     vat: (doc.totals && doc.totals.vat) || '0.00',
     currency: doc.currency || 'EUR',
@@ -88,7 +111,8 @@ export function listRows(kinds, { inbox = false } = {}) {
   const store = storeOrNull();
   const docs = inbox ? inboxQueue(store) : processedDocuments(store, kinds);
   const today = todayLocal();
-  return docs.map(d => rowOf(d, today));
+  const ctx = advanceContext(store && store.company() ? store.list('documents') : []);
+  return docs.map(d => rowOf(d, today, ctx));
 }
 
 /** The document with one more payment and its status set from the payments. */

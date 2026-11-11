@@ -20,6 +20,7 @@ import { negativeAllowed } from '../cash/voucher-dialog.js';
 import { allOpenDocuments, documentLabel } from './documents.js';
 import { openEkasaDialog } from './ekasa-dialog.js';
 import { limitWarning } from './limits.js';
+import { settleAdvances } from '../../purchase/advances.js';
 
 const METHODS = schema.PAYMENT_METHODS.filter(m => m !== 'OFFSET');
 
@@ -70,6 +71,7 @@ export function openRecordDialog(ctx, { docId = null } = {}) {
       const doc = store.get('documents', chosen.doc.id);
       const payment = makePayment(doc, { date: when, amount: value, method: method.value(), source: cash ? 'CASH' : 'MANUAL', cashBookId: book?.id || null, note: note.value() || null });
       await store.update('documents', doc.id, addPayment(doc, payment));
+      await settleAdvances(store, doc.id);
       const voucher = cash ? await createVoucher(store, {
         bookId: book.id, kind, date: when, amount: value, purpose: t('cash.voucher.purposePayment', { number: doc.number || '' }),
         partner: paymentParty(doc) ? { name: paymentParty(doc).name } : null, contactId: doc.contactId || null, paysDocId: doc.id, paymentId: payment.id

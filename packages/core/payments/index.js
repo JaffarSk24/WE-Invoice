@@ -3,11 +3,12 @@
 // to pay is the payable total (BT-115) less those payments. Interest uses
 // the ECB base rate passed in by the caller (the gateway fetches it) and
 // the margins from legislation, never constants in code.
-import { add, sub, mul, div, round, cmp, sum, isZero } from '../money/index.js';
+import { add, sub, mul, div, round, cmp, isZero } from '../money/index.js';
 import { getLegislation } from '../legislation/index.js';
 import { diffDays, addDays, localDate } from '../documents/dates.js';
 import { computeTotals } from '../vat/index.js';
 import { CoreError } from '../errors.js';
+import { paidWithAdvances } from './advances.js';
 
 const DAYS_IN_YEAR = '365';
 
@@ -17,12 +18,14 @@ export function payableOf(document) {
   return round(payable, 2);
 }
 
-/** Sum of the payments recorded in the document currency. */
+/**
+ * Sum of the payments recorded in the document currency, plus the paid
+ * advances a received invoice settles (payments/advances.js).
+ */
 export function paidAmount(document) {
-  const payments = (document.payments || []).filter(p => !p.deleted && (!p.currency || !document.currency || p.currency === document.currency));
-  // Most documents of a list have no payment yet: no arithmetic needed.
-  if (!payments.length) return '0.00';
-  return round(sum(payments.map(p => p.amount)), 2);
+  // Most documents of a list have no payment and no link: no arithmetic needed.
+  if (!(document.payments || []).length && !(document.links || []).length) return '0.00';
+  return paidWithAdvances(document);
 }
 
 /** @returns {'UNPAID'|'PARTIAL'|'PAID'|'OVERPAID'} */
@@ -74,3 +77,4 @@ export function lateInterest(input) {
   const flat = b2b && recoveryCost && days > 0 ? round(getLegislation('recoveryCostFlat.amount', firstDay, country), 2) : null;
   return { interest, days, ratePct, recoveryCost: flat };
 }
+export * from './advances.js';

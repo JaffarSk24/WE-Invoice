@@ -31,6 +31,7 @@ export default {
   'crm.kind.INTERNAL': 'Internal document',
   'crm.kind.RECEIVED_INVOICE': 'Received invoice',
   'crm.kind.RECEIVED_CREDIT_NOTE': 'Received credit note',
+  'crm.kind.RECEIVED_PROFORMA': 'Received proforma invoice',
   'crm.kind.EXPENSE_RECEIPT': 'Receipt',
   'crm.kind.REMINDER': 'Payment reminder',
   'crm.kind.SELF_BILLING': 'Self-billed invoice',

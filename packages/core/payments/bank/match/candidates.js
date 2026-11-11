@@ -11,9 +11,9 @@ import { abs, sub, round, cmp, isNegative, isZero } from '../../../money/index.j
 import { normalizeText, symbolDigits, compactIban } from '../text.js';
 
 const INCOMING = new Set(['INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'DEBIT_NOTE', 'SALES_RECEIPT', 'RECEIVED_CREDIT_NOTE']);
-const OUTGOING = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT', 'CREDIT_NOTE', 'SELF_BILLING']);
+const OUTGOING = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT', 'CREDIT_NOTE', 'SELF_BILLING', 'RECEIVED_PROFORMA']);
 const CLOSED = new Set(['DRAFT', 'CANCELLED']);
-const FROM_SUPPLIER = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'SELF_BILLING']);
+const FROM_SUPPLIER = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'SELF_BILLING', 'RECEIVED_PROFORMA']);
 
 /** 'IN' for money received, 'OUT' for money paid. */
 export function directionOf(tx) {

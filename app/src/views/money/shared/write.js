@@ -4,6 +4,7 @@
 import { getStore } from '../../../store/index.js';
 import { t } from '../../../i18n/index.js';
 import { showToast, showError } from '../../../ui/toast.js';
+import { settleAdvancesOf } from '../../purchase/advances.js';
 
 /** False (after telling the user why) when the state cannot be written. */
 export function canWrite(state) {
@@ -23,7 +24,12 @@ export async function guarded(work) {
   }
 }
 
-/** Stores document patches [{id, patch}] one by one. */
+/**
+ * Stores document patches [{id, patch}] one by one; a received proforma or
+ * invoice paid this way is then linked to its pair (purchase/advances.js).
+ */
 export async function patchDocuments(store, patches) {
   for (const { id, patch } of patches) await store.update('documents', id, patch);
+  const pairs = await settleAdvancesOf(store, patches.map(p => p.id));
+  pairs.forEach(pair => showToast(t('purchase.advance.linked', { proforma: pair.proforma.number || '', invoice: pair.invoice.number || '' }), { type: 'success' }));
 }

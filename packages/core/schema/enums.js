@@ -19,7 +19,7 @@ export const DOCUMENT_KINDS = list(
   'INVOICE', 'PROFORMA', 'ADVANCE_TAX_DOC', 'CREDIT_NOTE', 'DEBIT_NOTE', 'QUOTE',
   'ORDER_IN', 'ORDER_OUT', 'DELIVERY_NOTE', 'CASH_IN', 'CASH_OUT', 'INTERNAL',
   'RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'REMINDER', 'SELF_BILLING',
-  'SALES_RECEIPT'
+  'SALES_RECEIPT', 'RECEIVED_PROFORMA'
 );
 
 // Statuses of every document kind in one list; which ones a kind may take is
@@ -37,7 +37,9 @@ export const PRICE_TYPES = list('NET', 'GROSS');
 export const PAYMENT_METHODS = list('TRANSFER', 'CASH', 'CARD', 'COD', 'OFFSET', 'ONLINE', 'QR_ON_SITE');
 export const PAYMENT_SOURCES = list('MANUAL', 'BANK_IMPORT', 'CASH');
 
-export const LINK_KINDS = list('FROM_QUOTE', 'FROM_ORDER', 'FROM_PROFORMA', 'CORRECTS', 'ADVANCE_DEDUCTION', 'DELIVERY_FOR');
+// ADVANCE_PAID: on a received invoice, the paid received proforma it
+// settles; its amount counts as paid on the invoice (no money moves again).
+export const LINK_KINDS = list('FROM_QUOTE', 'FROM_ORDER', 'FROM_PROFORMA', 'CORRECTS', 'ADVANCE_DEDUCTION', 'DELIVERY_FOR', 'ADVANCE_PAID');
 
 export const SEND_CHANNELS = list('EMAIL', 'PEPPOL', 'LINK', 'PRINT');
 

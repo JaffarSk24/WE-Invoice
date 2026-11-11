@@ -10,7 +10,7 @@ import { PURCHASE_CATEGORIES, schema } from '@we-invoice/core';
 import { valuesOf, AMOUNT_FIELDS } from './review-values.js';
 
 const LOW = 0.7;
-const KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
+const KINDS = ['RECEIVED_INVOICE', 'RECEIVED_PROFORMA', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
 const PICKABLE = new Set(['supplierName', 'ico', 'dic', 'icDph', 'number', 'vs', 'ks', 'ss', 'issueDate', 'taxDate', 'dueDate', 'net', 'vat', 'total', 'iban']);
 
 // Sections of the form and their fields, in order.

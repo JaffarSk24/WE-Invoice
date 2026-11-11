@@ -8,7 +8,7 @@ import {
 } from '@we-invoice/core';
 
 export const AMOUNT_FIELDS = Object.freeze(['net', 'vat', 'total']);
-const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
+const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA'];
 
 const orEmpty = (v) => (v === null || v === undefined ? '' : String(v));
 const orNull = (v) => (v === null || v === undefined || String(v).trim() === '' ? null : String(v).trim());

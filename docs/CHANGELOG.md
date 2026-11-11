@@ -646,6 +646,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Purchases, Inbox and expenses
 
+#### Added (11 November, from the owner)
+
+- Received proforma invoices (zálohová faktúra, new kind `RECEIVED_PROFORMA`): recognised by their title ("Zálohová faktúra", "Predfaktúra", "Proforma", ISDOC type 4) or chosen in the form. A proforma is paid like any bill (bank match, SEPA batch, cash), its payment is the expense of the cash principle ledger, but it is no tax document: it stays out of the VAT records, the kontrolný výkaz, the accountant package and the profit reports.
+- An invoice that settles a paid proforma is linked to it on its own when it is saved, paid or the proforma gets paid (link `ADVANCE_PAID` with the amount it covers): same supplier and currency, and either the proforma number written on the invoice or the amount (the whole invoice, or the advance it deducts in BT-113). The invoice then shows as paid with no second payment, its paid-on date is the proforma's, and the proforma shows as settled (Vyúčtovaná). Both cards name the other; the link can be undone, and an unpaid invoice offers the supplier's paid proformas to link by hand when the amounts differ. When two proformas fit only by amount, nothing is linked.
+
 #### Added (9 November, from testers)
 
 - A received eFaktúra has a picture in its review: the PDF its Peppol provider makes of it (Verteco: `GET document/receive/{id}/pdf`, the supplier's own PDF when the XML carries one, else one the provider renders with the payment QR). It is fetched when the document is received and archived in Drive next to the XML (`peppol.pdfFileId`), as the provider keeps the content only for a while; a document received before is fetched once when opened. When the provider has none, the PDF attached in the XML is shown. It used to show only the line "all data was loaded from the XML".

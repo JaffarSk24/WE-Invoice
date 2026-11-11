@@ -6,7 +6,7 @@ import { openAmount } from './match/candidates.js';
 import { compactIban } from './text.js';
 import { cmp } from '../../money/index.js';
 
-const PAYABLE_OUT = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT']);
+const PAYABLE_OUT = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA']);
 
 /** The creditor IBAN: the contact card, else what the received document carries. */
 export function creditorIbanOf(document, contact) {

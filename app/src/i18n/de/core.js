@@ -37,6 +37,7 @@ export default {
   "document.kind.INTERNAL": "Interner Beleg",
   "document.kind.RECEIVED_INVOICE": "Eingangsrechnung",
   "document.kind.RECEIVED_CREDIT_NOTE": "Eingangsgutschrift",
+  "document.kind.RECEIVED_PROFORMA": "Erhaltene Vorauszahlungsrechnung",
   "document.kind.EXPENSE_RECEIPT": "Kassenbon",
   "document.kind.REMINDER": "Mahnung",
   "document.kind.SELF_BILLING": "Gutschrift (vom Leistungsempfänger ausgestellt)",

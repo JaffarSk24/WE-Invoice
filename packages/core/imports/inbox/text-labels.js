@@ -44,6 +44,7 @@ export const ID_LABELS = Object.freeze({
 
 export const KIND_HINTS = Object.freeze([
   { kind: 'RECEIVED_CREDIT_NOTE', pattern: 'dobropis|opravny danovy doklad|credit note|gutschrift|rechnungskorrektur' },
+  { kind: 'RECEIVED_PROFORMA', pattern: 'zalohova faktura|predfaktura|\\bpro ?forma\\b|zalohovy list|vyzva na (?:za)?platenie|vyzva k (?:za)?platbe|vorauszahlungsrechnung|anzahlungsrechnung|prepayment invoice|advance invoice' },
   { kind: 'EXPENSE_RECEIPT', pattern: 'pokladnicny doklad|pokladnicni doklad|\\bokp\\b|ekasa|e-kasa|uctenka|kassenbon|\\bblocek\\b|kod pokladne' }
 ]);
 

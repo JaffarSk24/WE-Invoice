@@ -39,7 +39,7 @@ const KIND_ROUTES = Object.freeze({
   PROFORMA: 'proformas', CREDIT_NOTE: 'credit-notes', DEBIT_NOTE: 'credit-notes', QUOTE: 'quotes',
   ORDER_IN: 'orders', ORDER_OUT: 'orders', DELIVERY_NOTE: 'delivery-notes', REMINDER: 'reminders',
   CASH_IN: 'cash', CASH_OUT: 'cash', INTERNAL: 'cash',
-  RECEIVED_INVOICE: 'received', RECEIVED_CREDIT_NOTE: 'received', EXPENSE_RECEIPT: 'expenses'
+  RECEIVED_INVOICE: 'received', RECEIVED_CREDIT_NOTE: 'received', EXPENSE_RECEIPT: 'expenses', RECEIVED_PROFORMA: 'received'
 });
 
 /** The route a search result opens: "<list>/<id>", e.g. "invoices/0193...". */

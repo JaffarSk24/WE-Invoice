@@ -31,6 +31,7 @@ export default {
   "crm.kind.INTERNAL": "Внутрішній документ",
   "crm.kind.RECEIVED_INVOICE": "Вхідний рахунок",
   "crm.kind.RECEIVED_CREDIT_NOTE": "Вхідна кредит-нота",
+  "crm.kind.RECEIVED_PROFORMA": "Вхідна передфактура",
   "crm.kind.EXPENSE_RECEIPT": "Чек",
   "crm.kind.REMINDER": "Нагадування про оплату",
   "crm.kind.SELF_BILLING": "Рахунок, виставлений покупцем",

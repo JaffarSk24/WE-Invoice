@@ -31,6 +31,7 @@ export default {
   "crm.kind.INTERNAL": "Interní doklad",
   "crm.kind.RECEIVED_INVOICE": "Přijatá faktura",
   "crm.kind.RECEIVED_CREDIT_NOTE": "Přijatý dobropis",
+  "crm.kind.RECEIVED_PROFORMA": "Přijatá zálohová faktura",
   "crm.kind.EXPENSE_RECEIPT": "Účtenka",
   "crm.kind.REMINDER": "Upomínka",
   "crm.kind.SELF_BILLING": "Faktura vystavená odběratelem",

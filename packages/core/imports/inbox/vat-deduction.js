@@ -44,6 +44,8 @@ export function deductibleVat(doc, category = null) {
  * charge. The tax package (WP-TAX) builds the statement itself.
  */
 export function kvSections(doc) {
+  // A proforma is no tax document; its invoice goes into the kontrolný výkaz.
+  if (doc.kind === 'RECEIVED_PROFORMA') return [];
   const reverse = ((doc.totals && doc.totals.breakdown) || []).some(b => b.category === 'AE');
   if (reverse) return ['A2', 'B1'];
   if (doc.kind === 'EXPENSE_RECEIPT') return ['B3'];

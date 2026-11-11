@@ -3,6 +3,8 @@
 // uložiť"); a processed one is edited, paid or deleted; "new" types one
 // in by hand. Recognised values the core was unsure of are marked. A
 // document paid in cash is recorded as paid from the cash book on its day.
+// After a save or a payment an invoice and its paid proforma are linked
+// (advances.js), so a bill paid in advance is not offered for payment again.
 import { amountDue, cmp } from '@we-invoice/core';
 import { h, icon, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
@@ -22,6 +24,8 @@ import { validateValues } from './review-values.js';
 import { blankDocument, saveDocument, recordPayment, deleteDocument, pickedValue } from './review-actions.js';
 import { openPaymentDialog } from './payment-dialog.js';
 import { confidenceChip } from './columns.js';
+import { settleAdvances } from './advances.js';
+import { advancePanel } from './advance-panel.js';
 
 const listOf = (kind) => (kind === 'EXPENSE_RECEIPT' ? 'expenses' : 'received');
 const pastDue = (doc, today) => Boolean(doc.dueDate && doc.dueDate < today && doc.totals && cmp(amountDue(doc), '0') > 0);
@@ -74,7 +78,8 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
     const values = form.values();
     if (form.showErrors(validateValues(values))) return;
     try {
-      const saved = await saveDocument(store, doc, values, { regions, isNew, today });
+      const stored = await saveDocument(store, doc, values, { regions, isNew, today });
+      const saved = (await settled(stored.id)) || stored;
       showToast(t(inbox ? 'purchase.review.confirmed' : 'purchase.review.saved'), { type: 'success' });
       const next = inbox || isNew ? listOf(saved.kind) : `${route}/${saved.id}`;
       // Paid in cash: the money left the cash book on the document's day.
@@ -87,6 +92,14 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
     } catch (e) {
       showError(e, 'errors.PURCHASE_SAVE_FAILED');
     }
+  }
+
+  // Links an invoice and its paid proforma; the invoice as it is now, when they were linked.
+  async function settled(id) {
+    const pair = await settleAdvances(store, id, { today });
+    if (!pair) return null;
+    showToast(t('purchase.advance.linked', { proforma: pair.proforma.number || '', invoice: pair.invoice.number || '' }), { type: 'success' });
+    return pair.invoice.id === id ? pair.invoice : null;
   }
 
   async function remove() {
@@ -113,6 +126,7 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
         try {
           await recordPayment(store, saved, payment, today);
           showToast(t('purchase.payment.saved'), { type: 'success' });
+          await settled(saved.id);
           return true;
         } catch (e) {
           showError(e, 'errors.PURCHASE_SAVE_FAILED');
@@ -129,6 +143,7 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
         try {
           await recordPayment(store, doc, payment, today);
           showToast(t('purchase.payment.saved'), { type: 'success' });
+          await settled(doc.id);
           navigate(`${route}/${doc.id}`);
           return true;
         } catch (e) {
@@ -157,6 +172,6 @@ export function renderReview(root, { id, route, ctx, newKind = null }) {
         doc.inbox ? confidenceChip(doc.inbox.confidence, doc.inbox.needsConfirmation) : null)),
     inbox && doc.inbox && doc.inbox.needsConfirmation ? h('p', { class: 'review-notice', role: 'note' }, icon('info'), t('purchase.review.notice')) : null,
     h('div', { class: `review-grid ${preview ? '' : 'no-preview'}`.trim() }, preview ? preview.el : null,
-      h('div', { class: 'review-side' }, isNew ? null : paymentInfo(doc), form.el, actions))]);
+      h('div', { class: 'review-side' }, isNew ? null : paymentInfo(doc), isNew ? null : advancePanel(doc, { store, today, writable, route }), form.el, actions))]);
   refreshIcons(root);
 }

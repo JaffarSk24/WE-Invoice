@@ -17,7 +17,7 @@ export function accountsWithTurnover(company, transactions) {
   }));
 }
 
-const INBOX_KINDS = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT']);
+const INBOX_KINDS = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA']);
 
 export function dashboardSource(store = hasStore() ? getStore() : null) {
   const company = store ? store.company() : null;

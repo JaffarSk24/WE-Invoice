@@ -117,7 +117,8 @@ export function readUbl(root) {
 const zeroRate = (rate) => rate === null || !/[1-9]/.test(rate);
 
 // ISDOC document types: 1 invoice, 2 credit note, 3 debit note, 4 advance.
-const ISDOC_KINDS = { 1: 'RECEIVED_INVOICE', 2: 'RECEIVED_CREDIT_NOTE', 3: 'RECEIVED_INVOICE', 4: 'RECEIVED_INVOICE' };
+// ISDOC 4 is the zálohová faktúra (no tax document), 5 the tax document to an advance.
+const ISDOC_KINDS = { 1: 'RECEIVED_INVOICE', 2: 'RECEIVED_CREDIT_NOTE', 3: 'RECEIVED_INVOICE', 4: 'RECEIVED_PROFORMA' };
 
 function isdocParty(party) {
   const out = { supplierName: textAt(party, 'PartyName/Name'), supplierAddress: address(child(party, 'PostalAddress')) };

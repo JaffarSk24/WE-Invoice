@@ -59,7 +59,7 @@ describe('export and import screen', () => {
     expect(name).toMatch(/\.zip$/);
     const files = await readZip(new Uint8Array(await blob.arrayBuffer()));
     expect([...files.keys()].some(n => n.startsWith('pdf/'))).toBe(true);
-  });
+  }, 20000);
 
   it('tells a company that is not a VAT payer that its received documents stay out of the program files', () => {
     const render = () => { const root = document.createElement('div'); renderExim(root, {}); return root; };

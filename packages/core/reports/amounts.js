@@ -6,6 +6,7 @@
 import Big from 'big.js';
 import { sub, div, round, cmp, sum, abs, neg, isZero } from '../money/index.js';
 import { computeTotals } from '../vat/index.js';
+import { advanceSettled } from '../payments/advances.js';
 
 // Sales: the tax documents and receipts the company issues. A proforma is
 // a request for payment and an order is a promise, so neither is revenue.
@@ -15,7 +16,7 @@ const PURCHASES = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_
 const NEGATIVE = new Set(['CREDIT_NOTE', 'RECEIVED_CREDIT_NOTE']);
 // Documents that are claims to collect or to pay (aging, cash flow).
 const RECEIVABLE = new Set(['INVOICE', 'DEBIT_NOTE', 'SALES_RECEIPT']);
-const PAYABLE = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT']);
+const PAYABLE = new Set(['RECEIVED_INVOICE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA']);
 const NOT_COUNTED = new Set(['DRAFT', 'CANCELLED']);
 
 export const BASE_CURRENCY = 'EUR';
@@ -62,9 +63,10 @@ export function toEur(amount, doc) {
   return { amount: round(div(amount, doc.fxRate, 10), 2), converted: true };
 }
 
+// Payments in the document currency plus the paid advances a received invoice settles.
 function paidOf(doc) {
   const payments = (doc.payments || []).filter(p => p && !p.deleted && (!p.currency || !doc.currency || p.currency === doc.currency));
-  return sum(payments.map(p => p.amount || '0'));
+  return sum([...payments.map(p => p.amount || '0'), advanceSettled(doc)]);
 }
 
 // What is still due in the document's currency, never below zero.

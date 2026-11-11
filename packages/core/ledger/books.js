@@ -5,6 +5,7 @@
 import { sub, div, round, cmp, sum, isZero } from '../money/index.js';
 import { computeTotals } from '../vat/index.js';
 import { diffDays } from '../documents/dates.js';
+import { advanceSettled } from '../payments/advances.js';
 
 const RECEIVABLE_KINDS = ['INVOICE', 'DEBIT_NOTE', 'CREDIT_NOTE', 'SELF_BILLING'];
 const PAYABLE_KINDS = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
@@ -19,7 +20,8 @@ function eur(amount, document) {
 
 function bookRow(document, date, party) {
   const total = round(document.totals?.payable ?? computeTotals(document).payable, 2);
-  const paid = round(sum((document.payments || []).filter(p => live(p) && p.date <= date).map(p => p.amount)), 2);
+  // A paid advance a received invoice settles was paid before the invoice came.
+  const paid = round(sum([...(document.payments || []).filter(p => live(p) && p.date <= date).map(p => p.amount), advanceSettled(document)]), 2);
   const outstanding = round(sub(total, paid), 2);
   const overdueDays = document.dueDate && document.dueDate < date && cmp(outstanding, '0') > 0 ? diffDays(document.dueDate, date) : 0;
   return {

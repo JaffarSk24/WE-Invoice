@@ -77,3 +77,13 @@
   .inbox-progress-item progress { grid-column: 1 / -1; width: 100%; }
   .review-actions { bottom: var(--bottom-bar-height); }
 }
+
+/* A received invoice settled by its paid proforma, and the proforma's invoice. */
+.advance-info { padding: 12px 18px; display: grid; gap: 8px; }
+.advance-info p { margin: 0; }
+.advance-title { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); }
+.advance-title svg { width: 16px; height: 16px; flex: none; }
+.advance-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.advance-row .num { font-weight: 600; }
+.advance-row .btn { margin-left: auto; }
+.advance-info > .btn { justify-self: start; }

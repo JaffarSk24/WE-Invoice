@@ -11,7 +11,7 @@ import { deductionPeriod } from './vat-deduction.js';
 import { withCategory } from './categories.js';
 
 const digits = (value, max) => (value && new RegExp(`^\\d{1,${max}}$`).test(String(value)) ? String(value) : null);
-const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT'];
+const RECEIVED = ['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA'];
 
 function emptyAddress(country = 'SK') {
   return { street: '', city: '', zip: '', country };

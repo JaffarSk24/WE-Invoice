@@ -37,6 +37,7 @@ export default {
   "document.kind.INTERNAL": "Internal document",
   "document.kind.RECEIVED_INVOICE": "Received invoice",
   "document.kind.RECEIVED_CREDIT_NOTE": "Received credit note",
+  "document.kind.RECEIVED_PROFORMA": "Received proforma invoice",
   "document.kind.EXPENSE_RECEIPT": "Receipt",
   "document.kind.REMINDER": "Reminder",
   "document.kind.SELF_BILLING": "Self-billed invoice",

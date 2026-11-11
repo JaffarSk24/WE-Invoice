@@ -127,5 +127,13 @@ describe('input VAT', () => {
     expect(receivedKvSections({ kind: 'RECEIVED_CREDIT_NOTE' })).toEqual(['C2']);
     expect(receivedKvSections({ kind: 'RECEIVED_INVOICE', totals: { breakdown: [{ category: 'AE' }] } })).toEqual(['A2', 'B1']);
     expect(receivedKvSections({ kind: 'RECEIVED_INVOICE', seller: { icDph: 'DE123456789' } })).toEqual([]);
+    expect(receivedKvSections({ kind: 'RECEIVED_PROFORMA', seller: { icDph: 'SK2030556605' } })).toEqual([]);
+  });
+
+  it('reads a proforma invoice by its title and keeps it as one', () => {
+    const text = 'Zálohová faktúra č. ZF2026007\nDodávateľ: Reálna podpora s.r.o.\nIČO: 12345679\nSuma na úhradu: 120,00 EUR';
+    expect(extractInvoiceFields(text).fields.kind).toBe('RECEIVED_PROFORMA');
+    expect(extractInvoiceFields('Predfaktúra 7\nSpolu 10,00 EUR').fields.kind).toBe('RECEIVED_PROFORMA');
+    expect(extractInvoiceFields('Faktúra 260101476\nSpolu 10,00 EUR').fields.kind).toBe('RECEIVED_INVOICE');
   });
 });

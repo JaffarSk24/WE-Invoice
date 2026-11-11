@@ -34,7 +34,7 @@ export function listColumns({ withCategory = true, withDue = true } = {}) {
     withCategory ? { id: 'category', label: t('purchase.col.category'), render: r => categoryLabel(r.category), sortValue: r => categoryLabel(r.category) } : null,
     { id: 'vat', label: t('purchase.col.vat'), align: 'num', hidden: true, render: r => formatAmount(r.vat, r.currency), sortValue: r => Number(r.vat) },
     { id: 'total', label: t('purchase.col.total'), align: 'num', primary: true, render: r => formatAmount(r.total, r.currency), sortValue: r => Number(r.total), total: totalOf },
-    { id: 'status', label: t('purchase.col.status'), render: r => statusBadge(r.status), sortValue: r => r.status }
+    { id: 'status', label: t('purchase.col.status'), render: r => statusBadge(r.status, { label: r.settled ? t('purchase.advance.settled') : null }), sortValue: r => r.status }
   ].filter(Boolean);
 }
 

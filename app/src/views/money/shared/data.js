@@ -11,7 +11,7 @@ import { t } from '../../../i18n/index.js';
 import { hasStore, getStore } from '../../../store/index.js';
 import { isDemo, demoData } from '../../shell/demo-mode.js';
 
-const RECEIVED = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT']);
+const RECEIVED = new Set(['RECEIVED_INVOICE', 'RECEIVED_CREDIT_NOTE', 'EXPENSE_RECEIPT', 'RECEIVED_PROFORMA']);
 
 /**
  * Bank lines as the screens show them: readable messages, no unmatched

@@ -37,6 +37,7 @@ export default {
   "document.kind.INTERNAL": "Interní doklad",
   "document.kind.RECEIVED_INVOICE": "Přijatá faktura",
   "document.kind.RECEIVED_CREDIT_NOTE": "Přijatý dobropis",
+  "document.kind.RECEIVED_PROFORMA": "Přijatá zálohová faktura",
   "document.kind.EXPENSE_RECEIPT": "Účtenka",
   "document.kind.REMINDER": "Upomínka",
   "document.kind.SELF_BILLING": "Faktura vystavená odběratelem",

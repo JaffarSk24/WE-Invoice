@@ -37,6 +37,7 @@ export default {
   "document.kind.INTERNAL": "Внутренний документ",
   "document.kind.RECEIVED_INVOICE": "Входящий счёт",
   "document.kind.RECEIVED_CREDIT_NOTE": "Входящая кредит-нота",
+  "document.kind.RECEIVED_PROFORMA": "Входящая предфактура",
   "document.kind.EXPENSE_RECEIPT": "Чек",
   "document.kind.REMINDER": "Напоминание об оплате",
   "document.kind.SELF_BILLING": "Счёт, выставленный покупателем",
