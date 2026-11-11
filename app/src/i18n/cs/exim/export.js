@@ -17,6 +17,7 @@ export default {
   "exim.export.already": "Již exportovaných: {n}.",
   "exim.export.changed": "Změněných po exportu: {n}. Pošlete účetní nový export.",
   "exim.export.formats": "Co má ZIP obsahovat",
+  "exim.export.nonPayer": "Firma není plátce DPH, proto soubory pro účetní program (Pohoda, Money S3, Omega) a ISDOC obsahují pouze vydané doklady. Přijaté faktury a výdajové doklady jsou jen v soupisu dokladů (CSV, XLSX), účetní je zpracuje ručně.",
   "exim.export.mark": "Po uložení označit doklady jako exportované a uzamknout je",
   "exim.export.zip": "Stáhnout ZIP",
   "exim.export.working": "Připravuje se...",

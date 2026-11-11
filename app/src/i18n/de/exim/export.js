@@ -17,6 +17,7 @@ export default {
   "exim.export.already": "Bereits exportiert: {n}.",
   "exim.export.changed": "Nach dem Export geändert: {n}. Senden Sie Ihrem Buchhalter einen neuen Export.",
   "exim.export.formats": "Was die ZIP-Datei enthalten soll",
+  "exim.export.nonPayer": "Die Firma ist nicht umsatzsteuerpflichtig, daher enthalten die Dateien für das Buchhaltungsprogramm (Pohoda, Money S3, Omega) und ISDOC nur die ausgestellten Belege. Erhaltene Rechnungen und Ausgabenbelege stehen nur in der Belegliste (CSV, XLSX); die Buchhaltung erfasst sie von Hand.",
   "exim.export.mark": "Nach dem Speichern die Belege als exportiert markieren und sperren",
   "exim.export.zip": "ZIP herunterladen",
   "exim.export.working": "Wird vorbereitet…",

@@ -5,7 +5,12 @@
 // engine and the dictionary); the app then zips everything with buildZip.
 // Nothing here writes to the data: the caller marks the documents
 // exported with exportedPatch() after the user has the file.
-import { selectDocuments, documentTotals } from './period.js';
+// A company that is not a VAT payer gives its accountant the received
+// documents only in the register: the programs (Pohoda above all) book
+// every imported purchase as one with VAT, while a non-payer's costs are
+// split by hand from the receipts. The program files and ISDOC then carry
+// the issued documents only.
+import { selectDocuments, documentTotals, isPurchase } from './period.js';
 import { exportCsv } from './csv.js';
 import { buildXlsx } from './xlsx.js';
 import { registerRows, lineRows, csvColumns, sheetRows, REGISTER_COLUMNS, LINE_COLUMNS } from './register.js';
@@ -17,6 +22,12 @@ import { buildUbl } from '../ubl/index.js';
 import { sum, round } from '../money/index.js';
 
 export const ACCOUNTANT_FORMATS = Object.freeze(['csv', 'xlsx', 'pohoda', 'money', 'omega', 'isdoc', 'ubl', 'pdf']);
+const PROGRAM_FORMATS = ['pohoda', 'money', 'omega', 'isdoc'];
+
+/** Whether the accounting programs get the received documents of the company: only a VAT payer's. */
+export function purchasesForPrograms(company) {
+  return Boolean(company && company.vatMode === 'PAYER');
+}
 const DEFAULT_FORMATS = ['csv', 'xlsx', 'pohoda', 'isdoc', 'pdf'];
 const DEFAULT_NAMES = { register: 'documents', lines: 'lines', pohoda: 'pohoda', money: 'money-s3' };
 
@@ -59,7 +70,11 @@ export async function accountantFiles(data, ctx) {
   const files = [];
   const skipped = [];
   const warnings = [];
-  const xmlData = { documents: data.documents, contacts: data.contacts, company: data.company };
+  const withPurchases = purchasesForPrograms(data.company);
+  const forPrograms = withPurchases ? data.documents : (data.documents || []).filter(d => !isPurchase(d));
+  const programDocuments = withPurchases ? documents : documents.filter(d => !isPurchase(d));
+  const xmlData = { documents: forPrograms, contacts: data.contacts, company: data.company };
+  if (programDocuments.length < documents.length && PROGRAM_FORMATS.some(f => formats.has(f))) warnings.push('PURCHASES_NOT_FOR_PROGRAMS');
   const range = { from: ctx.from, to: ctx.to, now: ctx.now };
 
   if (formats.has('csv') || formats.has('xlsx')) {
@@ -96,7 +111,7 @@ export async function accountantFiles(data, ctx) {
     if (r.replaced) warnings.push('OMEGA_CHARACTERS_REPLACED');
   }
   if (formats.has('isdoc')) {
-    documents.forEach(d => {
+    programDocuments.forEach(d => {
       try {
         files.push({ name: `isdoc/${safeName(d.number)}.isdoc`, data: buildIsdoc(d, { company: data.company, documents: data.documents }) });
       } catch (e) {

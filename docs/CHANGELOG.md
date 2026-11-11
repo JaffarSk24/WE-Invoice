@@ -374,6 +374,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Export, import, migration and backup
 
+#### Changed (11 November, from the accountant)
+
+- A company that is not a VAT payer no longer gives the accounting programs its received documents: the Pohoda, Money S3 and Omega files and ISDOC hold only the issued documents. Pohoda booked every imported purchase as one with VAT, while a non-payer's costs are split by hand from the receipts. Received invoices and expense receipts stay in the register (CSV, XLSX); the export screen and the summary of the package say so.
+
 #### Fixed (9 November, from testers)
 
 - The accountant package was written in the language of the interface: the summary, the CSV and XLSX headers, the names of kinds, statuses and payment methods, and the file names. It is now in the company's document language (the accountant's, Slovak by default), whatever language the app shows; so is the default line text of received documents, whichever language it was stored in.

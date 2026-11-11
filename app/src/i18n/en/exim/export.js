@@ -17,6 +17,7 @@ export default {
   "exim.export.already": "Already exported: {n}.",
   "exim.export.changed": "Changed after export: {n}. Send your accountant a new export.",
   "exim.export.formats": "What the ZIP contains",
+  "exim.export.nonPayer": "The company is not a VAT payer, so the files for the accounting program (Pohoda, Money S3, Omega) and ISDOC hold only the issued documents. Received invoices and expense receipts are only in the register (CSV, XLSX); the accountant books them by hand.",
   "exim.export.mark": "After saving, mark the documents exported and lock them",
   "exim.export.zip": "Download ZIP",
   "exim.export.working": "Preparing…",

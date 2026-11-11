@@ -5,7 +5,7 @@ export {
   exportWeBudgetCsv, buildBackup, serializeBackup, parseBackup, planRestore, SCHEMA_VERSION, readXlsx, readCsv, decodeText,
   isZip, importIdoklad, importSuperfaktura, importKros, importPohoda, importCsv, parseIsdoc, buildImportPlan, applyImportPlan,
   continueSeries, guessMapping, importFields, importTimeTracker, readTimeTracker, timeTrackerClients, timeTrackerStatus,
-  vatRatesOn, createReport, ACCOUNTANT_FORMATS
+  vatRatesOn, createReport, purchasesForPrograms, ACCOUNTANT_FORMATS
 } from '@we-invoice/core';
 
 // Kinds whose PDF we print ourselves (received documents have the supplier's).

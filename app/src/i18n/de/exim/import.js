@@ -88,6 +88,7 @@ export default {
   "exim.reason.ISDOC_INVALID": "die Datei ist keine gültige ISDOC-Rechnung",
   "exim.reason.UBL_FAILED": "UBL konnte nicht erstellt werden",
   "exim.reason.UBL_NOT_AVAILABLE": "UBL ist noch nicht verfügbar, die ZIP-Datei enthält es nicht",
+  "exim.reason.PURCHASES_NOT_FOR_PROGRAMS": "die Firma ist nicht umsatzsteuerpflichtig: erhaltene Belege stehen nur in der Belegliste, die Programmdateien und ISDOC enthalten nur die ausgestellten Belege",
   "exim.reason.OMEGA_CHARACTERS_REPLACED": "einige Zeichen lassen sich in Windows-1250 nicht schreiben und wurden durch ein Fragezeichen ersetzt",
   "exim.reason.PDF_FAILED": "das PDF konnte nicht erstellt werden",
   "exim.reason.PDF_MISSING_FIELDS": "dem Beleg fehlen Angaben für das PDF",

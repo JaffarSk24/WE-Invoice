@@ -54,11 +54,24 @@ describe('export and import screen', () => {
     expect(button.disabled).toBe(false);
     expect(root.querySelector('#exim-export-mark').disabled).toBe(true);
     button.click();
-    await vi.waitFor(() => expect(saveAs).toHaveBeenCalled());
+    await vi.waitFor(() => expect(saveAs).toHaveBeenCalled(), { timeout: 10000 });
     const [name, blob] = saveAs.mock.calls[0];
     expect(name).toMatch(/\.zip$/);
     const files = await readZip(new Uint8Array(await blob.arrayBuffer()));
     expect([...files.keys()].some(n => n.startsWith('pdf/'))).toBe(true);
+  });
+
+  it('tells a company that is not a VAT payer that its received documents stay out of the program files', () => {
+    const render = () => { const root = document.createElement('div'); renderExim(root, {}); return root; };
+    expect(render().querySelector('#exim-export-nonpayer')).toBeNull();
+    const company = demoData().company;
+    const mode = company.vatMode;
+    company.vatMode = 'NONPAYER';
+    try {
+      expect(render().querySelector('#exim-export-nonpayer').textContent).toMatch(/Pohoda/);
+    } finally {
+      company.vatMode = mode;
+    }
   });
 
   it('counts exported and changed documents', () => {

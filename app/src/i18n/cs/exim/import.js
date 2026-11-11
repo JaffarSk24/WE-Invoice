@@ -88,6 +88,7 @@ export default {
   "exim.reason.ISDOC_INVALID": "soubor není platná faktura ISDOC",
   "exim.reason.UBL_FAILED": "UBL se nepodařilo vytvořit",
   "exim.reason.UBL_NOT_AVAILABLE": "UBL zatím není k dispozici, ZIP je bez něj",
+  "exim.reason.PURCHASES_NOT_FOR_PROGRAMS": "firma není plátce DPH: přijaté doklady jsou jen v soupisu dokladů, soubory pro účetní program a ISDOC mají pouze vydané doklady",
   "exim.reason.OMEGA_CHARACTERS_REPLACED": "některé znaky nelze v kódování Windows-1250 zapsat a jsou nahrazeny otazníkem",
   "exim.reason.PDF_FAILED": "PDF se nepodařilo vytvořit",
   "exim.reason.PDF_MISSING_FIELDS": "doklad nemá všechny náležitosti pro PDF",

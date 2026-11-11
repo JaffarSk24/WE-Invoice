@@ -88,6 +88,7 @@ export default {
   "exim.reason.ISDOC_INVALID": "файл не является корректным счётом ISDOC",
   "exim.reason.UBL_FAILED": "не удалось создать UBL",
   "exim.reason.UBL_NOT_AVAILABLE": "UBL пока недоступен, ZIP собран без него",
+  "exim.reason.PURCHASES_NOT_FOR_PROGRAMS": "фирма не плательщик НДС: входящие документы есть только в реестре, файлы для бухгалтерской программы и ISDOC содержат только выставленные документы",
   "exim.reason.OMEGA_CHARACTERS_REPLACED": "некоторые символы нельзя записать в кодировке Windows-1250, они заменены вопросительным знаком",
   "exim.reason.PDF_FAILED": "не удалось создать PDF",
   "exim.reason.PDF_MISSING_FIELDS": "в документе не хватает реквизитов для PDF",

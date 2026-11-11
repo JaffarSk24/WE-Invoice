@@ -1,12 +1,13 @@
 // "Export pre účtovníka": a period, the formats the accountant's program
 // reads, one ZIP. After the file is saved the documents are marked
 // exported (and locked), so a later change shows as "zmenené po exporte".
-// The WE Budget CSV of the same period sits below.
-import { h, clear, append } from '../../ui/dom.js';
+// The WE Budget CSV of the same period sits below. A company that is not a
+// VAT payer is told that its received documents stay out of the program files.
+import { h, icon, clear, append } from '../../ui/dom.js';
 import { refreshIcons } from '../../ui/icons.js';
 import { t } from '../../i18n/index.js';
 import { showToast, showError } from '../../ui/toast.js';
-import { selectExportDocuments, exportState, exportWeBudgetCsv, ACCOUNTANT_FORMATS } from './core-bridge.js';
+import { selectExportDocuments, exportState, exportWeBudgetCsv, purchasesForPrograms, ACCOUNTANT_FORMATS } from './core-bridge.js';
 import { eximSource } from './source.js';
 import { periodPicker } from './period-picker.js';
 import { buildAccountantZip, markExported } from './export-run.js';
@@ -62,6 +63,8 @@ export function renderExportPanel(panel, deps = {}) {
     }));
 
   const source0 = eximSource();
+  const nonPayerNote = source0.company && !purchasesForPrograms(source0.company)
+    ? h('p', { class: 'callout callout-info', role: 'note', id: 'exim-export-nonpayer' }, icon('info'), h('span', {}, t('exim.export.nonPayer'))) : null;
   const markBox = h('input', { type: 'checkbox', id: 'exim-export-mark', checked: source0.writable, disabled: !source0.writable });
   markBox.addEventListener('change', () => { state.mark = markBox.checked; });
   state.mark = source0.writable;
@@ -112,7 +115,7 @@ export function renderExportPanel(panel, deps = {}) {
     h('section', { class: 'card exim-card' },
       h('h2', {}, t('exim.export.title')),
       h('p', { class: 'muted' }, t('exim.export.text')),
-      picker.el, info, formatList,
+      picker.el, info, formatList, nonPayerNote,
       h('label', { for: 'exim-export-mark', class: 'checkbox-label exim-mark' }, markBox, h('span', {}, t('exim.export.mark'))),
       h('div', { class: 'exim-actions' }, zipButton), result),
     h('section', { class: 'card exim-card' },

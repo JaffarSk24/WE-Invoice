@@ -11,7 +11,7 @@ export { exportWeBudgetCsv, weBudgetRows, WE_BUDGET_COLUMNS } from './webudget.j
 export { selectDocuments as selectExportDocuments, ACCOUNTING_KINDS as EXPORT_KINDS } from './period.js';
 export { registerRows, lineRows, REGISTER_COLUMNS, LINE_COLUMNS } from './register.js';
 export { exportState, exportFingerprint, exportedPatch } from './state.js';
-export { accountantFiles, periodSummary as accountantSummary, safeName as exportFileName, ACCOUNTANT_FORMATS } from './accountant.js';
+export { accountantFiles, purchasesForPrograms, periodSummary as accountantSummary, safeName as exportFileName, ACCOUNTANT_FORMATS } from './accountant.js';
 export { buildBackup, serializeBackup, backupChecksum, BACKUP_FORMAT, BACKUP_VERSION } from './backup.js';
 export { buildZip } from './zip.js';
 export { buildXlsx } from './xlsx.js';

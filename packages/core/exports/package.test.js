@@ -91,6 +91,25 @@ describe('accountant package', () => {
     expect(result.skipped.filter(s => s.format === 'money').map(s => s.number)).toEqual(['BL-77']);
   });
 
+  it('gives the programs only the issued documents of a company that is not a VAT payer', async () => {
+    const nonPayer = { ...data, company: { ...company, vatMode: 'NONPAYER', icDph: null } };
+    const result = await accountantFiles(nonPayer, { ...period, formats: ['csv', 'pohoda', 'money', 'omega', 'isdoc'], names: { register: 'doklady' } });
+    const file = (name) => result.files.find(f => f.name === name);
+    expect(result.documents).toHaveLength(5);
+    expect(file('doklady.csv').data).toContain('2026/0815');
+    expect(file('doklady.csv').data).toContain('BL-77');
+    expect(file('pohoda.xml').data).toContain('FA2026001');
+    expect(file('pohoda.xml').data).not.toContain('receivedInvoice');
+    expect(file('pohoda.xml').data).not.toContain('BL-77');
+    expect(file('money-s3.xml').data).not.toContain('SeznamFaktPrij');
+    expect(file('omega-received.txt')).toBeUndefined();
+    expect(result.files.map(f => f.name).filter(n => n.startsWith('isdoc/')).sort()).toEqual(['isdoc/DB2026001.isdoc', 'isdoc/FA2026001.isdoc', 'isdoc/FA2026002.isdoc']);
+    expect(result.skipped.filter(s => s.format === 'money')).toEqual([]);
+    expect(result.warnings).toEqual(['PURCHASES_NOT_FOR_PROGRAMS']);
+    const registerOnly = await accountantFiles(nonPayer, { ...period, formats: ['csv'] });
+    expect(registerOnly.warnings).toEqual([]);
+  });
+
   it('adds UBL through the registered builder and says when there is none yet', async () => {
     const mock = (doc) => `<Invoice>${doc.number}</Invoice>`;
     const withUbl = await accountantFiles(data, { ...period, formats: ['ubl'], buildUbl: mock });

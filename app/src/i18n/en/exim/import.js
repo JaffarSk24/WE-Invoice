@@ -88,6 +88,7 @@ export default {
   "exim.reason.ISDOC_INVALID": "the file is not a valid ISDOC invoice",
   "exim.reason.UBL_FAILED": "the UBL could not be made",
   "exim.reason.UBL_NOT_AVAILABLE": "UBL is not available yet, the ZIP is without it",
+  "exim.reason.PURCHASES_NOT_FOR_PROGRAMS": "the company is not a VAT payer: received documents are only in the register, the program files and ISDOC have the issued documents only",
   "exim.reason.OMEGA_CHARACTERS_REPLACED": "some characters cannot be written in Windows-1250 and became a question mark",
   "exim.reason.PDF_FAILED": "the PDF could not be made",
   "exim.reason.PDF_MISSING_FIELDS": "the document lacks details the PDF needs",
